@@ -10,13 +10,14 @@
 #include "CMiss.h"
 #include <vector>
 #include "CCharacterManager.h"
-
 #include "CGame.h"
 #include "CSound.h"
+#include "CVector.h"
 
 class CApplication
 {
 private:
+	CVector mEye;
 	CSound mSoundBgm;	//BGM
 	CSound mSoundOver;	//ゲームオーバー
 	CGame* mpGame;
