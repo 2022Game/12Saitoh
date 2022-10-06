@@ -18,7 +18,7 @@ void CTriangle::Normal(const CVector& n)
 }
 
 //Normal(法線ベクトル1, 法線ベクトル2, 法線ベクトル3)
-void CTriangle::Normal(const CVector& v0, const CVector& v1, const CVector& v2)
+void CTriangle::Normal(const CVector &v0, const CVector &v1, const CVector &v2)
 {
 	mN[0] = v0;
     mN[1] = v1;
@@ -35,4 +35,15 @@ void CTriangle::Render()
 	glNormal3f(mN[2].X(), mN[2].Y(), mN[2].Z());
 	glVertex3f(mV[2].X(), mV[2].Y(), mV[2].Z());
 	glEnd();
+}
+
+int mMaterialIdx = 0;
+int CTriangle::MaterialIdx()
+{
+	return mMaterialIdx;
+}
+
+void CTriangle::MaterialIdx(int idx)
+{
+	idx = mMaterialIdx;
 }

@@ -1,4 +1,3 @@
-//vectorのインクルード
 #include<vector>
 #include "CTriangle.h"
 #ifndef CMODEL_H
@@ -19,5 +18,4 @@ public:
 	//Load(モデルファイル名, マテリアルファイル名)
 	void Load(char* obj, char* mtl);
 };
-
 #endif

@@ -2,7 +2,6 @@
 //標準入出力のインクルード
 #include <stdio.h>
 #include "CVector.h"
-
 //文字列s1と文字列s2の比較
 //s1とs2が等しければ0を
 //等しくなければ0以外を返す
@@ -18,7 +17,6 @@ int strcmp(const char* s1, const char* s2)
 	//同じなら引いて0
 	return s1[i] - s2[i];
 }
-
 //モデルファイルの入力
 //Load(モデルファイル名, マテリアルファイル名)
 void CModel::Load(char* obj, char* mtl)
@@ -31,7 +29,6 @@ void CModel::Load(char* obj, char* mtl)
 	//ファイルからデータを入力
 	//入力エリアを作成する
 	char buf[256];
-
 	//ファイルのオープン
 	//fopen(ファイル名, モード)
 	//オープンできないときはNULLを返す
@@ -41,7 +38,7 @@ void CModel::Load(char* obj, char* mtl)
 	if (fp == NULL)
 	{
 		//コンソールにエラー出力して戻る
-		printf("%s file open error\n",mtl);
+		printf("%s file open error\n", mtl);
 		return;
 	}
 	//ファイルから1行入力
@@ -52,7 +49,6 @@ void CModel::Load(char* obj, char* mtl)
 		//入力した値をコンソールに出力する
 		printf("%s", buf);
 	}
-
 	fp = fopen(obj, "r");
 	if (fp == NULL)
 	{
@@ -74,6 +70,10 @@ void CModel::Load(char* obj, char* mtl)
 			//可変長配列vertexに追加
 			//atof(文字列) 文字列からfloat型の値を返す
 			vertex.push_back(CVector(atof(str[1]), atof(str[2]), atof(str[3])));
+		}
+		//先頭がvnの時,normalに値を追加
+		if (strcmp(str[0], "vn") == 0)
+		{
 			normal.push_back(CVector(atof(str[0]), atof(str[1]), atof(str[2])));
 		}
 		//先頭がfの時,三角形を作成して追加する
@@ -87,8 +87,8 @@ void CModel::Load(char* obj, char* mtl)
 			sscanf(str[3], "%d//%d", &v[2], &n[2]);
 			//三角形作成
 			CTriangle t;
-			t.Vertex(vertex[v[0]-1], vertex[v[1]-1], vertex[v[2]-1]);
-			t.Normal(normal[n[0]-1], normal[n[1]-1], normal[n[2]-1]);
+			t.Vertex(vertex[v[0] - 1], vertex[v[1] - 1], vertex[v[2] - 1]);
+			t.Normal(normal[n[0] - 1], normal[n[1] - 1], normal[n[2] - 1]);
 			//可変長配列mTrianglesに三角形を追加
 			mTriangles.push_back(t);
 		}
@@ -96,7 +96,6 @@ void CModel::Load(char* obj, char* mtl)
 	//ファイルのクローズ
 	fclose(fp);
 }
-
 //描画
 void CModel::Render()
 {
