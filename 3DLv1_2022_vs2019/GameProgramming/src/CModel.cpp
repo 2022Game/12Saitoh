@@ -49,6 +49,9 @@ void CModel::Load(char* obj, char* mtl)
 		//入力した値をコンソールに出力する
 		printf("%s", buf);
 	}
+	//ファイルのクローズ
+	fclose(fp);
+
 	fp = fopen(obj, "r");
 	if (fp == NULL)
 	{
@@ -74,7 +77,7 @@ void CModel::Load(char* obj, char* mtl)
 		//先頭がvnの時,normalに値を追加
 		if (strcmp(str[0], "vn") == 0)
 		{
-			normal.push_back(CVector(atof(str[0]), atof(str[1]), atof(str[2])));
+			normal.push_back(CVector(atof(str[1]), atof(str[2]), atof(str[3])));
 		}
 		//先頭がfの時,三角形を作成して追加する
 		else if (strcmp(str[0], "f") == 0)
