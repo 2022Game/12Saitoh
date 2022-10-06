@@ -2,8 +2,8 @@
 #include "CApplication.h"
 
 #define TEXCOORD 168, 188, 158, 128 //テクスチャマッピング
-#define GRAVITY (TIPSIZE / 6.0f)   //重力加速度
-#define JUMPV0 (TIPSIZE / 0.6f)     //ジャンプの初速
+#define GRAVITY (TIPSIZE / 4.5f)   //重力加速度
+#define JUMPV0 (TIPSIZE / 0.55f)     //ジャンプの初速
 #define TEXCRY 196, 216, 158, 128   //テクスチャマッピング
 #define TEXCOORD2 136,156,158,128   //右向き2
 #define TEXLEFT1 188,168,158,128    //左向き1
@@ -31,12 +31,12 @@ void CPlayer2::Update()
 	}
 	if (mInput.Key('A'))
 	{
-		mVx = -VELOCITY - 7;
+		mVx = -VELOCITY - 5;
 		X(X() + mVx + mVx);
 	}
 	if (mInput.Key('D'))
 	{
-		mVx = VELOCITY + 7;
+		mVx = VELOCITY + 5;
 		X(X() + mVx + mVx);
 	}
 	if (mState != EState::EJUMP)
@@ -94,7 +94,7 @@ void CPlayer2::Update()
 	}
 	else
 	{
-		const int PITCH = 32;  //画像を切り替える間隔
+		const int PITCH = 100;  //画像を切り替える間隔
 		if ((int)X() % PITCH < PITCH / 2)
 			if (mVx < 0.0f)  //左へ移動
 			{
@@ -169,10 +169,10 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			{
 				//Y軸速度を0にする
 				mVy = 0.0f;
-				if (y > 0.0f)
-				{
-					mState = EState::EMOVE;
-				}
+					if (y > 0.0f)
+					{
+						mState = EState::EMOVE;
+					}
 			}
 		}
 		break;
