@@ -1,5 +1,6 @@
 #include<vector>
 #include "CTriangle.h"
+#include "CMaterial.h"
 #ifndef CMODEL_H
 #define CMEDEL_H
 /*
@@ -9,6 +10,8 @@
 class CModel
 {
 private:
+	//マテリアルポインタの可変長配列
+	std::vector<CMaterial*> mpMaterials;
 	//三角形の可変長配列
 	std::vector<CTriangle> mTriangles;
 public:
@@ -17,5 +20,6 @@ public:
 	//モデルファイルの入力
 	//Load(モデルファイル名, マテリアルファイル名)
 	void Load(char* obj, char* mtl);
+	~CModel();
 };
 #endif

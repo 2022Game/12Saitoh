@@ -45,5 +45,5 @@ int CTriangle::MaterialIdx()
 
 void CTriangle::MaterialIdx(int idx)
 {
-	idx = mMaterialIdx;
+	mMaterialIdx = idx;
 }
