@@ -13,7 +13,7 @@ CEnemy2::CEnemy2(float x, float y, float w, float h, CTexture* pt)
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EENEMY;
 	//X²‘¬“x‚Ì‰Šú’l‚ğˆÚ“®‘¬“x‚É‚·‚é
-	mVx = VELOCITY;
+	mVx = VELOCITY - 2;
 	sNum++;
 }
 

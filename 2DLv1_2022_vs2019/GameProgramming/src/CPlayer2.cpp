@@ -2,28 +2,36 @@
 #include "CApplication.h"
 
 #define TEXCOORD 168, 188, 158, 128 //テクスチャマッピング
-#define GRAVITY (TIPSIZE / 4.5f)   //重力加速度
-#define JUMPV0 (TIPSIZE / 0.55f)     //ジャンプの初速
+#define GRAVITY (TIPSIZE / 5.0f)    //重力加速度
+#define JUMPV0 (TIPSIZE / 0.55f)    //ジャンプの初速
 #define TEXCRY 196, 216, 158, 128   //テクスチャマッピング
 #define TEXCOORD2 136,156,158,128   //右向き2
 #define TEXLEFT1 188,168,158,128    //左向き1
 #define TEXLEFT2 156,136,158,128    //左向き2
-#define VELOCITY 4.0f               //移動速度
+#define SOUND_JUMP "res\\jump.wav"  //ジャンプSE
+//#define VELOCITY 4.0f             //移動速度
 //#define HP 3                      //HPの初期値は3
 
 
 CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	:mInvincible(0)
+	,interval(0)
 	//,mVy(0.0f)
 {
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EPLAYER;
-	sHp = 3;
+	sHp = 1;
+	mSoundJump.Load(SOUND_JUMP);
 }
 
 void CPlayer2::Update()
 {
+	if (interval > 0)
+	{
+		//ジャンプのインターバル
+		interval--;
+	}
 	if (mInvincible > 0)
 	{
 		//無敵時間中は1減算する
@@ -41,10 +49,15 @@ void CPlayer2::Update()
 	}
 	if (mState != EState::EJUMP)
 	{
-		if (mInput.Key('J'))
+		if (interval == 0)
 		{
-			mVy = JUMPV0;
-			mState = EState::EJUMP;
+			if (mInput.Key('J'))
+			{
+				mVy = JUMPV0;
+				mSoundJump.Play();
+				mState = EState::EJUMP;
+				interval = 20;
+			}
 		}
 	}
 	if (mState == EState::EJUMP)
@@ -52,10 +65,6 @@ void CPlayer2::Update()
 		if (mInput.Key('A'))
 		{
 			mVx = -VELOCITY;
-			if (mVy < 0)
-			{
-				mVx = 0;
-			}
 			X(X() + mVx + mVx);
 		}
 		if (mInput.Key('D'))
@@ -144,7 +153,10 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-					mState = EState::EMOVE;
+					if (interval > 0)
+					{
+						mState = EState::EMOVE;
+					}
 				}
 				else
 				{//ジャンプでなければ泣く
@@ -171,7 +183,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 					if (y > 0.0f)
 					{
-						mState = EState::EMOVE;
+					mState = EState::EMOVE;
 					}
 			}
 		}
