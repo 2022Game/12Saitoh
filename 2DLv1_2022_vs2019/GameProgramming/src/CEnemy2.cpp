@@ -13,8 +13,7 @@ CEnemy2::CEnemy2(float x, float y, float w, float h, CTexture* pt)
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EENEMY;
 	//X²‘¬“x‚Ì‰Šú’l‚ğˆÚ“®‘¬“x‚É‚·‚é
-	mVx = VELOCITY - 2;
-	sNum++;
+	mVx = VELOCITY - 1;
 }
 
 void CEnemy2::Update()
@@ -90,10 +89,6 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 		{
 			if (o->State() == EState::EJUMP)
 			{
-				if (mState != EState::ECRY)
-				{
-					sNum--;
-				}
 				mState = EState::ECRY;
 			}
 		}
@@ -122,15 +117,4 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 		break;
 	}
 
-}
-
-int CEnemy2::rNum()
-{
-	return sNum = 0;
-}
-
-int CEnemy2::sNum = 0;  //“G‚Ì”
-int CEnemy2::Num()
-{
-	return sNum;
 }

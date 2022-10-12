@@ -4,13 +4,7 @@
 
 class CEnemy2 :public CCharacter
 {
-private:
-	static int sNum;  //“G‚Ì”
 public:
-	//“G‚Ì”‚Ì‰Šú‰»
-	static int rNum();
-	//“G‚Ì”‚ğæ“¾
-	static int Num();
 	//Õ“Ëˆ—2
 	void Collision();
 	//Õ“Ëˆ—4

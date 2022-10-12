@@ -21,14 +21,15 @@ CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EPLAYER;
-	sHp = 1;
-	mSoundJump.Load(SOUND_JUMP);
+	sHp = 5;
+	mSoundJump.Load(SOUND_JUMP);;
 }
 
 void CPlayer2::Update()
 {
 	if (interval > 0)
 	{
+		mState = EState::EJUMP;
 		//ジャンプのインターバル
 		interval--;
 	}
@@ -39,12 +40,12 @@ void CPlayer2::Update()
 	}
 	if (mInput.Key('A'))
 	{
-		mVx = -VELOCITY - 5;
+		mVx = -VELOCITY - 3;
 		X(X() + mVx + mVx);
 	}
 	if (mInput.Key('D'))
 	{
-		mVx = VELOCITY + 5;
+		mVx = VELOCITY + 3;
 		X(X() + mVx + mVx);
 	}
 	if (mState != EState::EJUMP)
@@ -64,12 +65,12 @@ void CPlayer2::Update()
 	{
 		if (mInput.Key('A'))
 		{
-			mVx = -VELOCITY;
+			mVx = -VELOCITY - 3;
 			X(X() + mVx + mVx);
 		}
 		if (mInput.Key('D'))
 		{
-			mVx = VELOCITY;
+			mVx = VELOCITY + 3;
 			if (mVy < 0)
 			{
 				mVx = 0;
@@ -153,10 +154,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-					if (interval > 0)
-					{
 						mState = EState::EMOVE;
-					}
 				}
 				else
 				{//ジャンプでなければ泣く
@@ -186,6 +184,10 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 					mState = EState::EMOVE;
 					}
 			}
+		}
+		if (mInput.Key('S'))
+		{
+			mVy = mVy - 1;
 		}
 		break;
 	}

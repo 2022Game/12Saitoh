@@ -17,7 +17,7 @@ public:
 	//更新処理
 	void Update();
 private:
-	int interval;
+	int interval; //ジャンプのインターバル
 	CSound mSoundJump;	//ジャンプSE
 	static int sHp;	//HP
 	int mInvincible; //無敵カウンタ
