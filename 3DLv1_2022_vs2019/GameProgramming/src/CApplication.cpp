@@ -29,6 +29,7 @@ void CApplication::Start()
 	//モデルファイルの入力
 	mModel.Load(MODEL_OBJ);
 	mBackGround.Load(MODEL_BACKGROUND);
+	matrix.Print();
 }
 
 void CApplication::Update()

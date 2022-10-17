@@ -14,10 +14,12 @@
 #include "CSound.h"
 #include "CVector.h"
 #include "CModel.h"
+#include "CMatrix.h"
 
 class CApplication
 {
 private:
+	CMatrix matrix;
 	CModel mBackGround; //背景モデル
 	//モデルクラスのインスタンス作成
 	CModel mModel;
