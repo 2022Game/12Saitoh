@@ -16,6 +16,9 @@ private:
 	std::vector<CTriangle> mTriangles;
 public:
 	//描画
+	// Render(行列)
+	void Render(const CMatrix &m);
+	//描画
 	void Render();
 	//モデルファイルの入力
 	//Load(モデルファイル名, マテリアルファイル名)
