@@ -15,10 +15,14 @@
 #include "CVector.h"
 #include "CModel.h"
 #include "CMatrix.h"
+#include "CCharacter3.h"
+#include "CTransform.h"
 
 class CApplication
 {
 private:
+	CCharacter3 mPlayer;
+	CCharacter3 mCharacter;
 	CMatrix matrix;
 	CModel mBackGround; //背景モデル
 	//モデルクラスのインスタンス作成

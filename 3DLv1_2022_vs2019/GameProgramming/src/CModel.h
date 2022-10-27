@@ -2,7 +2,7 @@
 #include "CTriangle.h"
 #include "CMaterial.h"
 #ifndef CMODEL_H
-#define CMEDEL_H
+#define CMODEL_H
 /*
 モデルクラス
 モデルデータの入力や表示
