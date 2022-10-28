@@ -21,7 +21,7 @@
 class CApplication
 {
 private:
-	CCharacter3 mPlayer;
+	CPlayer mPlayer;
 	CCharacter3 mCharacter;
 	CMatrix matrix;
 	CModel mBackGround; //”wŒiƒ‚ƒfƒ‹
