@@ -1,6 +1,7 @@
 #include<vector>
 #include "CTriangle.h"
 #include "CMaterial.h"
+#include"CVertex.h"
 #ifndef CMODEL_H
 #define CMODEL_H
 /*
@@ -10,6 +11,9 @@
 class CModel
 {
 private:
+	//頂点の配列
+	CVertex* mpVertexes;
+	void CreateVertexBuffer();
 	//マテリアルポインタの可変長配列
 	std::vector<CMaterial*> mpMaterials;
 	//三角形の可変長配列
