@@ -3,19 +3,19 @@
 
 void CUi::Clear()
 {
-	mFont.Draw(36, 300, 18, 36, "GAME CLEAR!!");
-	mFont.Draw(36, 200, 18, 36, "PUSH ENTER KEY!");
+	mFont.Draw(350, 500, 18, 36, "GAME CLEAR!!");
+	mFont.Draw(350, 400, 18, 36, "PUSH ENTER KEY!");
 }
 
 void CUi::Over()
 {
-	mFont.Draw(36, 300, 18, 36, "GAME OVER!!");
-	mFont.Draw(36, 200, 18, 36, "PUSH ENTER KEY!");
+	mFont.Draw(350, 500, 18, 36, "GAME OVER!!");
+	mFont.Draw(350, 400, 18, 36, "PUSH ENTER KEY!");
 }
 
 void CUi::Start()
 {
-	mFont.Draw(36, 300, 18, 36, "START PUSH ENTER KEY!");
+	mFont.Draw(250, 500, 18, 36, "START PUSH ENTER KEY!");
 }
 
 void CUi::Enemy(int enemy)
@@ -45,7 +45,7 @@ void CUi::Render()
 {
 	char str[16];
 	sprintf(str, "TIME:%03d", mTime);
-	mFont.Draw(620, 580, 10, 20, str);
+	mFont.Draw(850, 760, 10, 20, str);
 	sprintf(str, "HP:%d", mHp);
 	mFont.Draw(20, 20, 10, 20, str);;
 }

@@ -2,8 +2,8 @@
 #include "CApplication.h"
 
 #define TEXCOORD 168, 188, 158, 128 //テクスチャマッピング
-#define GRAVITY (TIPSIZE / 5.0f)    //重力加速度
-#define JUMPV0 (TIPSIZE / 0.55f)    //ジャンプの初速
+#define GRAVITY (TIPSIZE / 25.0f)   //重力加速度
+#define JUMPV0 (TIPSIZE / 1.35f)     //ジャンプの初速
 #define TEXCRY 196, 216, 158, 128   //テクスチャマッピング
 #define TEXCOORD2 136,156,158,128   //右向き2
 #define TEXLEFT1 188,168,158,128    //左向き1
@@ -11,7 +11,6 @@
 #define SOUND_JUMP "res\\jump.wav"  //ジャンプSE
 //#define VELOCITY 4.0f             //移動速度
 //#define HP 3                      //HPの初期値は3
-
 
 CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	:mInvincible(0)
@@ -21,8 +20,9 @@ CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EPLAYER;
-	sHp = 5;
-	mSoundJump.Load(SOUND_JUMP);;
+	sHp = 1;
+	mSoundJump.Load(SOUND_JUMP);
+	spInstance = this;
 }
 
 void CPlayer2::Update()
@@ -40,44 +40,44 @@ void CPlayer2::Update()
 	}
 	if (mInput.Key('A'))
 	{
-		mVx = -VELOCITY - 3;
+		mVx = -VELOCITY - 1;
 		X(X() + mVx + mVx);
 	}
 	if (mInput.Key('D'))
 	{
-		mVx = VELOCITY + 3;
+		mVx = VELOCITY + 1;
 		X(X() + mVx + mVx);
 	}
 	if (mState != EState::EJUMP)
 	{
 		if (interval == 0)
 		{
-			if (mInput.Key('J'))
+			if (mInput.Key('W'))
 			{
 				mVy = JUMPV0;
 				mSoundJump.Play();
 				mState = EState::EJUMP;
-				interval = 20;
+				interval = 30;
 			}
 		}
 	}
-	if (mState == EState::EJUMP)
-	{
-		if (mInput.Key('A'))
-		{
-			mVx = -VELOCITY - 3;
-			X(X() + mVx + mVx);
-		}
-		if (mInput.Key('D'))
-		{
-			mVx = VELOCITY + 3;
-			if (mVy < 0)
-			{
-				mVx = 0;
-			}
-			X(X() + mVx + mVx);
-		}
-	}
+	//if (mState == EState::EJUMP)
+	//{
+	//	if (mInput.Key('A'))
+	//	{
+	//		mVx = -VELOCITY + 1;
+	//		X(X() + mVx + mVx);
+	//	}
+	//	if (mInput.Key('D'))
+	//	{
+	//		mVx = VELOCITY + 1;
+	//		if (mVy < 0)
+	//		{
+	//			mVx = 0;
+	//		}
+	//		X(X() + mVx + mVx);
+	//	}
+	//}
 
 	//Y座標にY軸速度を加える
 	Y(Y() + mVy);
@@ -154,7 +154,8 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-						mState = EState::EMOVE;
+					mState = EState::EJUMP;
+					mVy = JUMPV0;
 				}
 				else
 				{//ジャンプでなければ泣く
@@ -185,9 +186,20 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 					}
 			}
 		}
-		if (mInput.Key('S'))
+		break;
+	case ETag::ETRAP:
+		if (CRectangle::Collision(o, &x, &y))
 		{
-			mVy = mVy - 1;
+			if (y > 0)
+			{
+				mState = EState::EMOVE;
+			}
+		}
+		break;
+	case ETag::EWALL:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			sHp--;
 		}
 		break;
 	}
@@ -198,4 +210,10 @@ int CPlayer2::sHp = 0;  //HP
 int CPlayer2::Hp()
 {
 	return sHp;
+}
+
+CPlayer2* CPlayer2::spInstance = nullptr;
+CPlayer2* CPlayer2::Instance()
+{
+	return spInstance;
 }

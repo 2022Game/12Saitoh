@@ -31,6 +31,7 @@ public:
 private:
 	int mCdx, mCdy; //カメラとプレイヤーの座標の差分
 	void CameraSet(); //カメラ設定
+	void CameraSet2();//スタート画面のカメラ設定
 	CPlayer2 *mpPlayer; //プレイヤーのポインタ
 	int mTime; //経過時間
 	CUi *mpUi; //UIクラスのポインタ

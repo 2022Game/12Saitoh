@@ -110,11 +110,13 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-					mState = EState::EMOVE;
+					if (mState != EState::ECRY)
+					{
+						mState = EState::EMOVE;
+					}
 				}
 			}
 		}
 		break;
 	}
-
 }

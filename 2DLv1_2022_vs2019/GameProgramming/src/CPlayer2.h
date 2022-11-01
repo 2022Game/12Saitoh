@@ -6,6 +6,7 @@
 class CPlayer2 : public CCharacter
 {
 public:
+	static CPlayer2* Instance();
 	//HPを取得
 	static int Hp();
 	//衝突処理2
@@ -17,6 +18,7 @@ public:
 	//更新処理
 	void Update();
 private:
+	static CPlayer2* spInstance;
 	int interval; //ジャンプのインターバル
 	CSound mSoundJump;	//ジャンプSE
 	static int sHp;	//HP
