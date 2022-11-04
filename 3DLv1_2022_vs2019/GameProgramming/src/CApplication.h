@@ -22,7 +22,6 @@ class CApplication
 {
 private:
 	CPlayer mPlayer;
-	CCharacter3 mCharacter;
 	CMatrix matrix;
 	CModel mBackGround; //背景モデル
 	//モデルクラスのインスタンス作成
