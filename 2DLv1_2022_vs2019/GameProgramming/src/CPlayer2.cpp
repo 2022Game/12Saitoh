@@ -1,13 +1,13 @@
 #include"CPlayer2.h"
 #include "CApplication.h"
 
-#define TEXCOORD 168, 188, 158, 128 //テクスチャマッピング
+#define TEXCOORD 168, 188, 158, 130 //テクスチャマッピング
 #define GRAVITY (TIPSIZE / 25.0f)   //重力加速度
 #define JUMPV0 (TIPSIZE / 1.35f)     //ジャンプの初速
-#define TEXCRY 196, 216, 158, 128   //テクスチャマッピング
-#define TEXCOORD2 136,156,158,128   //右向き2
-#define TEXLEFT1 188,168,158,128    //左向き1
-#define TEXLEFT2 156,136,158,128    //左向き2
+#define TEXCRY 196, 216, 158, 130   //テクスチャマッピング
+#define TEXCOORD2 136,156,158,130   //右向き2
+#define TEXLEFT1 188,168,158,130    //左向き1
+#define TEXLEFT2 156,136,158,130    //左向き2
 #define SOUND_JUMP "res\\jump.wav"  //ジャンプSE
 //#define VELOCITY 4.0f             //移動速度
 //#define HP 3                      //HPの初期値は3
@@ -29,7 +29,7 @@ void CPlayer2::Update()
 {
 	if (interval > 0)
 	{
-		mState = EState::EJUMP;
+//		mState = EState::EJUMP;
 		//ジャンプのインターバル
 		interval--;
 	}
@@ -50,14 +50,17 @@ void CPlayer2::Update()
 	}
 	if (mState != EState::EJUMP)
 	{
-		if (interval == 0)
+		if (mState != EState::EFOLL)
 		{
-			if (mInput.Key('W'))
+			if (interval == 0)
 			{
-				mVy = JUMPV0;
-				mSoundJump.Play();
-				mState = EState::EJUMP;
-				interval = 35;
+				if (mInput.Key('W'))
+				{
+					mVy = JUMPV0;
+					mSoundJump.Play();
+					mState = EState::EJUMP;
+					interval = 30;
+				}
 			}
 		}
 	}
@@ -173,9 +176,12 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::ETRAP:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-			if (y > 0)
+			if (interval > 0)
 			{
-				//mState = EState::EMOVE;
+				if (y > 0)
+				{
+					mState = EState::EFOLL;
+				}
 			}
 		}
 		break;

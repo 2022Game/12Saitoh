@@ -26,9 +26,9 @@ void CTrap::Collision(CCharacter* m, CCharacter* o)
 		{
 			if (y > 0.0f)
 			{
-				if (CPlayer2::Instance()->State() == EState::EJUMP)
+				if (CPlayer2::Instance()->State() != EState::EFOLL)
 				{
-					CPlayer2::Instance()->mVy > 0.0;
+					if (CPlayer2::Instance()->State() == EState::EJUMP)
 					{
 						Texture(Texture(), TEXCOORD2);
 						mTag = ETag::EBLOCK;

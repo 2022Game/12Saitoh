@@ -47,10 +47,10 @@ void CCharacter::Render()
 	);
 }
 
-void CCharacter::Move()
-{
-	mState = EState::EMOVE;
-}
+//void CCharacter::Move()
+//{
+//	mState = EState::EMOVE;
+//}
 
 CTexture* CCharacter::Texture()
 {
