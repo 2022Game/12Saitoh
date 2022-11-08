@@ -88,6 +88,8 @@ void CApplication::Update()
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	mPlayer.Render();
 	mBackGround.Render();
+	mPlayer.bullet.Update();
+	mPlayer.bullet.Render();
 	//CTransform trans; //変換行列インスタンスの作成
 	//trans.Position(CVector(0.5f, 1.8f, 0.5f)); //位置の設定
 	//trans.Rotation(CVector(-10.0f, -20.0f, -30.0f)); //回転の設定
