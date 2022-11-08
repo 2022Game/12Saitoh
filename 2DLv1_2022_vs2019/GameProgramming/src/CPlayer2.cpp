@@ -57,27 +57,10 @@ void CPlayer2::Update()
 				mVy = JUMPV0;
 				mSoundJump.Play();
 				mState = EState::EJUMP;
-				interval = 30;
+				interval = 35;
 			}
 		}
 	}
-	//if (mState == EState::EJUMP)
-	//{
-	//	if (mInput.Key('A'))
-	//	{
-	//		mVx = -VELOCITY + 1;
-	//		X(X() + mVx + mVx);
-	//	}
-	//	if (mInput.Key('D'))
-	//	{
-	//		mVx = VELOCITY + 1;
-	//		if (mVy < 0)
-	//		{
-	//			mVx = 0;
-	//		}
-	//		X(X() + mVx + mVx);
-	//	}
-	//}
 
 	//YÀ•W‚ÉYŽ²‘¬“x‚ð‰Á‚¦‚é
 	Y(Y() + mVy);
@@ -192,7 +175,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 		{
 			if (y > 0)
 			{
-				mState = EState::EMOVE;
+				//mState = EState::EMOVE;
 			}
 		}
 		break;
