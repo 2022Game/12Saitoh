@@ -10,6 +10,11 @@
 #define MODEL_OBJ "res\\f14.obj","res\\f14.mtl"//モデルデータの指定
 #define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"
 
+CTaskManager CApplication::mTaskManager;
+CTaskManager* CApplication::TaskManager()
+{
+	return &mTaskManager;
+}
 //クラスのstatic変数
 CTexture CApplication::mTexture;
 CCharacterManager CApplication::mCharacterManager;
@@ -88,8 +93,10 @@ void CApplication::Update()
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	mPlayer.Render();
 	mBackGround.Render();
-	mPlayer.bullet.Update();
-	mPlayer.bullet.Render();
+	//タスクマネージャの更新
+	mTaskManager.Update();
+	//タスクマネージャの描画
+	mTaskManager.Render();
 	//CTransform trans; //変換行列インスタンスの作成
 	//trans.Position(CVector(0.5f, 1.8f, 0.5f)); //位置の設定
 	//trans.Rotation(CVector(-10.0f, -20.0f, -30.0f)); //回転の設定

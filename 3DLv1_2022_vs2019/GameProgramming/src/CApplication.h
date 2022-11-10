@@ -16,10 +16,12 @@
 #include "CMatrix.h"
 #include "CCharacter3.h"
 #include "CTransform.h"
+#include "CTaskManager.h"
 
 class CApplication
 {
 private:
+	static CTaskManager mTaskManager;
 	CPlayer mPlayer;
 	CMatrix matrix;
 	CModel mBackGround; //背景モデル
@@ -49,6 +51,7 @@ private:
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
 public:
+	static CTaskManager* TaskManager();
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
 	//最初に一度だけ実行するプログラム

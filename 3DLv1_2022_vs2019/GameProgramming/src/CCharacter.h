@@ -1,11 +1,12 @@
 #pragma once
+#include"CTaskManager.h"
 #include "CRectangle.h"
 #include "CTexture.h"
 #include <stdio.h>
 
 #define VELOCITY 2.0f	//ˆÚ“®‘¬“x
 
-class CCharacter : public CRectangle
+class CCharacter : public CRectangle 
 {
 public:
 	enum class ETag
