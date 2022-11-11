@@ -4,7 +4,7 @@
 
 CBlock::CBlock(float x, float y, float w, float h, CTexture* pt)
 {
-	Set(x, y, w, h*3.0);
+	Set(x, y, w*1.1, h*1.1);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EBLOCK;
 }

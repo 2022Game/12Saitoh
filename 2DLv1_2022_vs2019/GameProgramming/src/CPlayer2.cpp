@@ -21,6 +21,7 @@ CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EPLAYER;
 	sHp = 1;
+	sgoal = 1;
 	mSoundJump.Load(SOUND_JUMP);
 	spInstance = this;
 }
@@ -64,11 +65,10 @@ void CPlayer2::Update()
 			}
 		}
 	}
-
-	//Y座標にY軸速度を加える
-	Y(Y() + mVy);
 	//Y軸速度に重力を減算する
 	mVy -= GRAVITY;
+	//Y座標にY軸速度を加える
+	Y(Y() + mVy);
 	{//通常の画像を設定
 		Texture(Texture(), TEXCOORD);
 	}
@@ -191,7 +191,13 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			sHp--;
 		}
 		break;
+	case ETag::EGOAL:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			sgoal--;
+		}
 	}
+
 }
 
 int CPlayer2::sHp = 0;  //HP
@@ -205,4 +211,11 @@ CPlayer2* CPlayer2::spInstance = nullptr;
 CPlayer2* CPlayer2::Instance()
 {
 	return spInstance;
+}
+
+int CPlayer2::sgoal = 0; //ゴール判定値
+
+int CPlayer2::Goal()
+{
+	return sgoal;
 }

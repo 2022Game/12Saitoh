@@ -18,6 +18,7 @@ public:
 		EBLOCK,		//ブロック
 		ETRAP,      //トラップ
 		EWALL,      //ゲームオーバー判定用の壁
+		EGOAL,      //ゴール
 	};
 	enum class EState	//状態
 	{
