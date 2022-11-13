@@ -2,7 +2,6 @@
 #include "CRectangle.h"
 #include "CTexture.h"
 #include "CCharacter.h"
-#include "CEnemy.h"
 #include "CPlayer.h"
 #include "CInput.h"
 #include "CFont.h"
@@ -21,6 +20,8 @@
 class CApplication
 {
 private:
+	//C5ƒ‚ƒfƒ‹
+	CModel mModelC5;
 	static CTaskManager mTaskManager;
 	CPlayer mPlayer;
 	CMatrix matrix;
@@ -43,7 +44,7 @@ private:
 //	CCharacter mRectangle;
 	CPlayer* mpPlayer;
 	static CTexture mTexture;
-	CEnemy* mpEnemy;
+//	CEnemy* mpEnemy;
 //	CBullet* mpBullet;
 	CInput mInput;
 	CFont mFont;

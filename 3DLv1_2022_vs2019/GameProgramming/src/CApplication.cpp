@@ -4,11 +4,12 @@
 #include "CVector.h"
 #include "CTriangle.h"
 #include "CPlayer.h"
-
+#include "CEnemy.h"
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
 #define MODEL_OBJ "res\\f14.obj","res\\f14.mtl"//モデルデータの指定
-#define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"
+#define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
+#define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
 
 CTaskManager CApplication::mTaskManager;
 CTaskManager* CApplication::TaskManager()
@@ -34,12 +35,18 @@ void CApplication::Start()
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 	//モデルファイルの入力
 	mModel.Load(MODEL_OBJ);
+	//C5モデルの読み込み
+	mModelC5.Load(MODEL_C5);
 	mBackGround.Load(MODEL_BACKGROUND);
 	matrix.Print();
 	mPlayer.Model(&mModel);
 	mPlayer.Scale(CVector(0.1f, 0.1f, 0.1f));
 	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
+	new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
+		CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f),
+		CVector(), CVector(0.1f, 0.1f, 0.1f));
 }
 
 void CApplication::Update()
