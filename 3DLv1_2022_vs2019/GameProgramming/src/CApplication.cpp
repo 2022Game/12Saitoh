@@ -11,11 +11,12 @@
 #define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
 
-CTaskManager CApplication::mTaskManager;
-CTaskManager* CApplication::TaskManager()
-{
-	return &mTaskManager;
-}
+//CTaskManager CApplication::mTaskManager;
+//CTaskManager* CApplication::TaskManager()
+//{
+//	return &mTaskManager;
+//}
+
 //クラスのstatic変数
 CTexture CApplication::mTexture;
 CCharacterManager CApplication::mCharacterManager;
@@ -52,7 +53,7 @@ void CApplication::Start()
 void CApplication::Update()
 {
 	//タスクマネージャの更新
-	mTaskManager.Update();
+	CTaskManager::Instance()->Update();
 
 	if (mInput.Key('J'))
 	{
@@ -102,9 +103,11 @@ void CApplication::Update()
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	mBackGround.Render();
 	//タスクリストの削除
-	mTaskManager.Delete();
+	CTaskManager::Instance()->Delete();
 	//タスクマネージャの描画
-	mTaskManager.Render();
+	CTaskManager::Instance()->Render();
+	//コリジョンマネージャ描画
+	CCollisionManager::Instance()->Render();
 	//CTransform trans; //変換行列インスタンスの作成
 	//trans.Position(CVector(0.5f, 1.8f, 0.5f)); //位置の設定
 	//trans.Rotation(CVector(-10.0f, -20.0f, -30.0f)); //回転の設定

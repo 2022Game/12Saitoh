@@ -1,4 +1,5 @@
-#include"CCollider.h"
+#include "CCollider.h"
+#include "CCollisionManager.h"
 
 CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	const CVector& position, float radius)
@@ -11,6 +12,8 @@ CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	mPosition = position;  //位置
 	//半径設定
 	mRadius = radius;
+	//コリジョンマネージャyに追加
+	CCollisionManager::Instance()->Add(this);
 }
 
 CCharacter3* CCollider::Parent()
@@ -31,4 +34,10 @@ void CCollider::Render()
 	//球描画
 	glutWireSphere(mRadius, 16, 16);
 	glPopMatrix();
+}
+
+CCollider::~CCollider()
+{
+	//コリジョンリストから削除
+	CCollisionManager::Instance()->Remove(this);
 }
