@@ -5,6 +5,8 @@
   CCharacter.cpp
   CCharacter3.cpp
   CCharacterManager.cpp
+  CCollider.cpp
+  CCollisionManager.cpp
   CEnemy.cpp
   CEnemy2.cpp
   CFont.cpp
@@ -27,10 +29,10 @@ C:\Users\hiror\OneDrive\デスクトップ\Git\12Saitoh\3DLv1_2022_vs2019\GamePr
 C:\Users\hiror\OneDrive\デスクトップ\Git\12Saitoh\3DLv1_2022_vs2019\GameProgramming\src\CCharacter.h(7): message : 'VELOCITY' の以前の定義を確認してください
   CPoint.cpp
   CRectangle.cpp
-  CSound.cpp
-  CTaskManager.cpp
   コードを生成中...
   コンパイル中...
+  CSound.cpp
+  CTaskManager.cpp
   CTexture.cpp
   CInput.cpp
   CTransform.cpp
