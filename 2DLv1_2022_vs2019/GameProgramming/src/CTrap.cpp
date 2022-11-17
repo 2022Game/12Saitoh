@@ -1,7 +1,7 @@
 #include "CTrap.h"
 #include "CApplication.h"
 
-#define TEXCOORD 222,255,204,169 //テクスチャマッピング
+#define TEXCOORD 115.0f,126.0f,46.0f,35.0f //テクスチャマッピング
 #define TEXCOORD2 0.0f, 48.0f, 128.0f, 80.0f //テクスチャ座標
 
 CTrap::CTrap(float x, float y, float w, float h, CTexture* pt)

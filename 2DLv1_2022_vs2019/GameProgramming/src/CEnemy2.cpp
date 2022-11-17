@@ -53,9 +53,12 @@ void CEnemy2::Update()
 		Texture(Texture(), TEXCRY);
 		break;
 	case EState::EMOVE:
-		//X軸速度分、X座標を更新する
-		float x = X() - mVx;
-		X(x);
+	//	if (CPlayer2::Instance()->X()+CEnemy2::X() >100)
+		//{
+			//X軸速度分、X座標を更新する
+			float x = X() - mVx;
+			X(x);
+		//}
 		break;
 	}
 }
@@ -84,7 +87,6 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 		}
 		break;
 	case ETag::EPLAYER:
-	{
 		if (CRectangle::Collision(o))
 		{
 			if (o->State() == EState::EJUMP)
@@ -92,8 +94,7 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 				mState = EState::ECRY;
 			}
 		}
-	}
-	break;
+		break;
 	case ETag::EBLOCK:
 		if (CRectangle::Collision(o, &x, &y))
 		{
