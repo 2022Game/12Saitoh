@@ -7,6 +7,7 @@
 コライダクラス
 衝突判定データ
 */
+class CTask;//コミットテスト用
 class CCollider : public CTransform, public CTask
 {
 public:
