@@ -51,14 +51,15 @@ void CEnemy2::Update()
 	case EState::ECRY:
 		//泣く画像を設定
 		Texture(Texture(), TEXCRY);
+			mEnabled = false;
 		break;
 	case EState::EMOVE:
-	//	if (CPlayer2::Instance()->X()+CEnemy2::X() >100)
-		//{
+		if (CEnemy2::X() - CPlayer2::Instance()->X() < 1500)
+		{
 			//X軸速度分、X座標を更新する
 			float x = X() - mVx;
 			X(x);
-		//}
+		}
 		break;
 	}
 }
