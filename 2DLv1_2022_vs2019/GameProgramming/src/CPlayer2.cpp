@@ -30,9 +30,12 @@ void CPlayer2::Update()
 {
 	if (interval > 0)
 	{
-//		mState = EState::EJUMP;
 		//ジャンプのインターバル
 		interval--;
+		if (interval < 25)
+		{
+			mState = EState::EFOLL;
+		}
 	}
 	if (mInvincible > 0)
 	{
@@ -207,15 +210,14 @@ int CPlayer2::Hp()
 	return sHp;
 }
 
+int CPlayer2::sgoal = 0; //ゴール判定値
+int CPlayer2::Goal()
+{
+	return sgoal;
+}
+
 CPlayer2* CPlayer2::spInstance = nullptr;
 CPlayer2* CPlayer2::Instance()
 {
 	return spInstance;
-}
-
-int CPlayer2::sgoal = 0; //ゴール判定値
-
-int CPlayer2::Goal()
-{
-	return sgoal;
 }
