@@ -7,10 +7,15 @@
 コライダクラス
 衝突判定データ
 */
-class CCCharacter3;//コミットテスト
+class CCollisionManager;
 class CCollider : public CTransform, public CTask
 {
+	friend CCollisionManager;
 public:
+	//衝突判定
+	//Collision(コライダ1,コライダ2)
+	//return::true(衝突している)false(衝突していない)
+	static bool Collision(CCollider* m, CCollider* o);
 	~CCollider();
 	//コンストラクタ
 	//CCollider(親、親行列、位置、半径)

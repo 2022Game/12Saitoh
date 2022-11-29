@@ -16,6 +16,9 @@ private:
 	CCollider mCollider2;
 	CCollider mCollider3;
 public:
+	//衝突処理
+	//Collision(コライダ1,コライダ2)
+	void Collision(CCollider* m, CCollider* o);
 	//コンストラクタ
 	//CEnemy(モデル、位置、回転、拡縮)
 	CEnemy(CModel* model, const CVector& position,

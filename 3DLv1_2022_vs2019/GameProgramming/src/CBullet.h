@@ -6,7 +6,6 @@
 #include "CTriangle.h"
 //コライダクラスのインクルード
 #include "CCollider.h"
-
 /*
 弾クラス
 三角形を飛ばす
@@ -14,6 +13,9 @@
 class CBullet : public CCharacter3
 {
 public:
+	//衝突処理
+	//Collision(コライダ1,コライダ2)
+	void Collision(CCollider* m, CCollider* o);
 	CBullet();
 	//幅と奥行きの設定
 	//Set(幅,奥行)
