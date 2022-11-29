@@ -8,12 +8,14 @@
 #define TEXLEFT2 156,136,190,160  //¶Œü‚«2
 
 CEnemy2::CEnemy2(float x, float y, float w, float h, CTexture* pt)
+	:cooltime(0)
 {
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EENEMY;
 	//XŽ²‘¬“x‚Ì‰Šú’l‚ðˆÚ“®‘¬“x‚É‚·‚é
 	mVx = VELOCITY - 1;
+	spInstance = this;
 }
 
 void CEnemy2::Update()
@@ -51,7 +53,8 @@ void CEnemy2::Update()
 	case EState::ECRY:
 		//‹ƒ‚­‰æ‘œ‚ðÝ’è
 		Texture(Texture(), TEXCRY);
-			mEnabled = false;
+		//‹ƒ‚¢‚½‚çÁ–Å
+		mEnabled = false;
 		break;
 	case EState::EMOVE:
 		if (CEnemy2::X() - CPlayer2::Instance()->X() < 1500)
@@ -121,4 +124,10 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 		}
 		break;
 	}
+}
+
+CEnemy2* CEnemy2::spInstance = nullptr;
+CEnemy2* CEnemy2::Instance()
+{
+	return spInstance;
 }

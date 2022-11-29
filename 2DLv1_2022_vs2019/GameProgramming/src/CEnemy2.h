@@ -5,6 +5,7 @@
 class CEnemy2 :public CCharacter
 {
 public:
+	static CEnemy2* Instance();
 	//Õ“Ëˆ—2
 	void Collision();
 	//Õ“Ëˆ—4
@@ -14,5 +15,6 @@ public:
 	//XVˆ—
 	void Update();
 private:
+	static CEnemy2* spInstance;
 	int cooltime;
 };

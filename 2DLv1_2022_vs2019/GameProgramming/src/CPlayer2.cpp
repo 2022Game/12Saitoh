@@ -144,7 +144,10 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				if (y > 0.0f)
 				{
 					mState = EState::EJUMP;
-					mVy = JUMPV0;
+					if (CEnemy2::Instance()->State() == EState::ECRY)
+					{
+						mVy = JUMPV0;
+					}
 				}
 				else
 				{//ƒWƒƒƒ“ƒv‚Å‚È‚¯‚ê‚Î‹ƒ‚­
