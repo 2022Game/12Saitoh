@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "CRectangle.h"
 #include "CTexture.h"
 #include "CCharacter.h"
@@ -6,7 +7,6 @@
 #include "CInput.h"
 #include "CFont.h"
 #include "CMiss.h"
-#include <vector>
 #include "CCharacterManager.h"
 #include "CGame.h"
 #include "CSound.h"
@@ -20,6 +20,8 @@
 class CApplication
 {
 private:
+	//モデルビューの逆行列
+	static CMatrix mModelViewInverse;
 	//C5モデル
 	CModel mModelC5;
 	//static CTaskManager mTaskManager;
@@ -52,6 +54,8 @@ private:
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
 public:
+	//モデルビュー行列の取得
+	static const CMatrix& ModelViewInverse();
 	//static CTaskManager* TaskManager();
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
