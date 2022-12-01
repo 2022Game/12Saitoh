@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CApplication.cpp" />
+    <ClCompile Include="src\CBillBoard.cpp" />
     <ClCompile Include="src\CBlock.cpp" />
     <ClCompile Include="src\CBullet.cpp" />
     <ClCompile Include="src\CCamera.cpp" />
@@ -20,6 +21,7 @@
     <ClCompile Include="src\CCharacterManager.cpp" />
     <ClCompile Include="src\CCollider.cpp" />
     <ClCompile Include="src\CCollisionManager.cpp" />
+    <ClCompile Include="src\CEffect.cpp" />
     <ClCompile Include="src\CEnemy.cpp" />
     <ClCompile Include="src\CEnemy2.cpp" />
     <ClCompile Include="src\CFont.cpp" />
@@ -43,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CApplication.h" />
+    <ClInclude Include="src\CBillBoard.h" />
     <ClInclude Include="src\CBlock.h" />
     <ClInclude Include="src\CBullet.h" />
     <ClInclude Include="src\CCamera.h" />
@@ -51,6 +54,7 @@
     <ClInclude Include="src\CCharacterManager.h" />
     <ClInclude Include="src\CCollider.h" />
     <ClInclude Include="src\CCollisionManager.h" />
+    <ClInclude Include="src\CEffect.h" />
     <ClInclude Include="src\CEnemy.h" />
     <ClInclude Include="src\CEnemy2.h" />
     <ClInclude Include="src\CFont.h" />
