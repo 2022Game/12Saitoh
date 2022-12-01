@@ -1,8 +1,18 @@
 #include "CCollider.h"
 #include "CCollisionManager.h"
 
+CCollider::CCollider()
+	:mpParent(nullptr)
+	, mpMatrix(&mMatrix)
+	, mType(ESPHERE)
+	, mRadius(0)
+{
+	//コリジョンマネージャに追加
+	CCollisionManager::Instance()->Add(this);
+}
 CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	const CVector& position, float radius)
+	:CCollider()
 {
 	//親設定
 	mpParent = parent;
@@ -12,8 +22,6 @@ CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	mPosition = position;  //位置
 	//半径設定
 	mRadius = radius;
-	//コリジョンマネージャyに追加
-	CCollisionManager::Instance()->Add(this);
 }
 
 CCharacter3* CCollider::Parent()

@@ -17,9 +17,13 @@
 #include "CTransform.h"
 #include "CTaskManager.h"
 #include "CCollisionManager.h"
+#include "CColliderTriangle.h"
 class CApplication
 {
 private:
+	//三角コライダの作成
+	CColliderTriangle mColliderTriangle;
+	CColliderTriangle mColliderTriangle2;
 	//モデルビューの逆行列
 	static CMatrix mModelViewInverse;
 	//C5モデル
