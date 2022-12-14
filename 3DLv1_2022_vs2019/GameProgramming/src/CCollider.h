@@ -12,6 +12,10 @@ class CCollider : public CTransform, public CTask
 {
 	friend CCollisionManager;
 public:
+	//CollisionTriangleLine(三角コライダ,線分コライダ,調整値)
+	//retrun:true(衝突している)false(衝突していない)
+	// 調整値:衝突しない位置まで戻す値
+	static bool CollisionTriangleLine(CCollider* triangle, CCollider* line, CVector* adjust);
 	//コライダタイプ
 	enum EType
 	{
@@ -41,5 +45,7 @@ protected:
 	CCharacter3* mpParent;//親
 	CMatrix* mpMatrix;//親行列
 	float mRadius;//半径
+public:
+	EType Type();
 };
 #endif

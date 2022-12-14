@@ -8,7 +8,7 @@
 
 #define TEXCOORD2 136,156,158,128	//‰EŒü‚«2
 #define TEXLEFT1 188,168,158,128	//¶Œü‚«1
-#define TEXLEFT2 156,136,158,128	//¶Œü‚«2
+#define TEXLEFT2 156,136,158,128	//¶Œü‚«
 #define VELOCITY 4.0f	//ˆÚ“®‘¬“x
 
 #define HP 3 //HP‚Ì‰Šú’l‚Í3
