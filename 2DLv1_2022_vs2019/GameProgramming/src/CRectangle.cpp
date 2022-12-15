@@ -4,6 +4,10 @@
 
 
 CRectangle::CRectangle()
+	:mX(0)
+	,mY(0)
+	,mW(0)
+	,mH(0)
 {
 	printf("インスタンスが生まれました\n");
 	//glBegin(GL_QUADS);

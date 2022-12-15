@@ -9,7 +9,7 @@ class CFallBlock : public CCharacter
 {
 public:
 	//—‰º”»’è’l‚ğæ“¾
-	static int Fall();
+	int Fall();
 	//Õ“Ëˆ—2
 	void Collision();
 	//Õ“Ëˆ—4
@@ -19,5 +19,5 @@ public:
 	//XVˆ—
 	void Update();
 private:
-	static int sfall;
+	int sfall;
 };

@@ -100,7 +100,6 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 		if (CRectangle::Collision(o))
 		{
 			if ((o->State() == EState::EJUMP)||
-				(o->State() == EState::EMOVE)||
 				(o->State() == EState::EFOLL))
 			{
 				mState = EState::ECRY;
@@ -135,6 +134,16 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 			}
 		}
 		break;
+	case ETag::EFOLLBLOCK:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			if (mVy < -mVy)
+			{
+				mVy = -10.0;
+			}
+		}
 	}
 }
 

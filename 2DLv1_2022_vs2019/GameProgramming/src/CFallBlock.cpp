@@ -6,15 +6,15 @@
 
 CFallBlock::CFallBlock(float x, float y, float w, float h, CTexture* pt)
 {
-	Set(x, y, w*5, h*3);
+	Set(x, y, w*3, h*3);
 	Texture(pt, FOLLBOCK_TEXCOORD);
-	mTag = ETag::EBLOCK;
+	mTag = ETag::EFOLLBLOCK;
 	sfall = 1;
 }
 
 void CFallBlock::Update()
 {
-	if ((sfall == 0)||(mTag == ETag::ETRAP))
+	if ((sfall == 0))
 	{
 		mVy -= GRAVITY;
 		Y(Y() + mVy);
@@ -39,10 +39,13 @@ void CFallBlock::Collision(CCharacter* m, CCharacter* o)
 		break;
 	case ETag::EBLOCK:
 			break;
+	case ETag::EFOLLBLOCK:
+		break;
+	case ETag::EENEMY:
+		break;
 	}
 }
 
-int CFallBlock::sfall = 0; //—Ž‰º”»’è’l
 int CFallBlock::Fall()
 {
 	return sfall;

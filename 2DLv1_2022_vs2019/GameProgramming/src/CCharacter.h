@@ -19,6 +19,7 @@ public:
 		ETRAP,      //トラップ
 		EWALL,      //ゲームオーバー判定用の壁
 		EGOAL,      //ゴール
+		EFOLLBLOCK, //落下床
 	};
 	enum class EState	//状態
 	{
@@ -30,7 +31,8 @@ public:
 	};
 	enum class Espstate  //隠しステイタス
 	{
-		ESPMOVE,  //移動
+		ESPMOVE,    //移動
+		EHIGHJUMP,  //ハイジャンプ 
 		NULLSTATE,  //空
 	};
 protected:
