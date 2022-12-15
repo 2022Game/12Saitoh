@@ -1,4 +1,5 @@
 #include"CEnemy2.h"
+#include "CApplication.h"
 
 #define TEXCOORD 168, 188, 190, 160 //テクスチャマッピング
 #define TEXCRY 196, 216, 190, 160   //テクスチャマッピング
@@ -16,6 +17,7 @@ CEnemy2::CEnemy2(float x, float y, float w, float h, CTexture* pt)
 	//X軸速度の初期値を移動速度にする
 	mVx = VELOCITY - 1;
 	spInstance = this;
+	cooltime = 30;
 }
 
 void CEnemy2::Update()
@@ -47,13 +49,17 @@ void CEnemy2::Update()
 	Y(Y() + mVy);
 	//Y軸速度に重力を減算する
 	mVy -= GRAVITY;
-
+	if (mState == EState::ECRY)
+	{
+		cooltime--;
+	}
 	switch (mState)
 	{
 	case EState::ECRY:
 		//泣く画像を設定
 		Texture(Texture(), TEXCRY);
-		//泣いたら消滅
+		//クールタイムが0になったら消滅
+		if(cooltime == 0)
 		mEnabled = false;
 		break;
 	case EState::EMOVE:
@@ -93,9 +99,15 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EPLAYER:
 		if (CRectangle::Collision(o))
 		{
-			if (o->State() == EState::EJUMP)
+			if ((o->State() == EState::EJUMP)||
+				(o->State() == EState::EMOVE)||
+				(o->State() == EState::EFOLL))
 			{
 				mState = EState::ECRY;
+			}
+			else if (o->State() == EState::ECRY)
+			{
+				mState = EState::EMOVE;
 			}
 		}
 		break;

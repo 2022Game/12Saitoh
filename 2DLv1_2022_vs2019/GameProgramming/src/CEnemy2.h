@@ -1,6 +1,5 @@
 #pragma once
 #include"CCharacter.h"
-#include"CApplication.h"
 
 class CEnemy2 :public CCharacter
 {

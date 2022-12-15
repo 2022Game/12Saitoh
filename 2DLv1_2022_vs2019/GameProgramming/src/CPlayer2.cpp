@@ -15,11 +15,11 @@
 CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	:mInvincible(0)
 	,interval(0)
-	//,mVy(0.0f)
 {
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EPLAYER;
+	mspState = Espstate::NULLSTATE;
 	sHp = 1;
 	sgoal = 1;
 	mSoundJump.Load(SOUND_JUMP);
@@ -58,15 +58,26 @@ void CPlayer2::Update()
 		{
 			if (interval == 0)
 			{
-				if (mInput.Key('W'))
+				if (mspState == Espstate::ESPMOVE)
 				{
-					mVy = JUMPV0;
-					mSoundJump.Play();
-					mState = EState::EJUMP;
-					interval = 30;
+					if (mInput.Key('W'))
+					{
+						mVy = JUMPV0;
+						mSoundJump.Play();
+						mState = EState::EJUMP;
+						interval = 30;
+					}
+					else if (mInput.Key('J'))
+					{
+						mVy = JUMPV0;
+						mSoundJump.Play();
+						mState = EState::EJUMP;
+						interval = 30;
+					}
 				}
 			}
 		}
+		mspState = Espstate::NULLSTATE;
 	}
 	//Y軸速度に重力を減算する
 	mVy -= GRAVITY;
@@ -105,7 +116,7 @@ void CPlayer2::Update()
 				//通常の画像を設定
 				Texture(Texture(), TEXCOORD);
 			}
-		else
+		    else
 			if (mVx < 0.0f) //左へ移動
 			{
 				//左向き2を設定
@@ -144,7 +155,11 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				if (y > 0.0f)
 				{
 					mState = EState::EJUMP;
-					if (CEnemy2::Instance()->State() == EState::ECRY)
+					if (o->State() != EState::ECRY)
+					{
+						mVy = JUMPV0;
+					}
+					else if (o->State() == EState::ECRY)
 					{
 						mVy = JUMPV0;
 					}
@@ -165,6 +180,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EBLOCK:
 		if (CRectangle::Collision(o, &x, &y))
 		{
+			mspState = Espstate::ESPMOVE;
 			X(X() + x);
 			Y(Y() + y);
 			//着地した時
@@ -172,10 +188,10 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			{
 				//Y軸速度を0にする
 				mVy = 0.0f;
-					if (y > 0.0f)
-					{
-					mState = EState::EMOVE;
-					}
+				if (y > 0.0f)
+				{
+				mState = EState::EMOVE;
+				}
 			}
 		}
 		break;

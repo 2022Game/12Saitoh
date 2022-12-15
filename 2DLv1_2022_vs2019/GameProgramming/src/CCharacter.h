@@ -28,12 +28,18 @@ public:
 		ECRY,	//泣く
 		EFOLL,  //落下
 	};
+	enum class Espstate  //隠しステイタス
+	{
+		ESPMOVE,  //移動
+		NULLSTATE,  //空
+	};
 protected:
 	float mVx;	//X軸速度
 	float mVy;	//Y軸速度
 	bool mEnabled;
 	ETag mTag;
 	EState mState;
+	Espstate mspState;
 private:
 	CTexture *mpTexture;
 	int mLeft, mRight, mBottom, mTop;
