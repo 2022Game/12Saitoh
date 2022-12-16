@@ -120,10 +120,9 @@ bool CCollider::CollisionTriangleLine(CCollider* t, CCollider* l, CVector* a)
 		*a = CVector(0.0f, 0.0f, 0.0f);
 		return false;
 	}
-
 	//頂点3と頂点1ベクトルと頂点3交点ベクトルとの外積を求め、
 	// 法線と内積がマイナスなら、三角形の外
-	if ((v[3] - v[1]).Cross(cross - v[2]).Dot(normal) < 0.0f)
+	if ((v[0] - v[2]).Cross(cross - v[2]).Dot(normal) < 0.0f)
 	{
 		//衝突していない
 		*a = CVector(0.0f, 0.0f, 0.0f);
