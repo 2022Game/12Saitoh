@@ -4,7 +4,6 @@
 #define TEXCOORD 168, 188, 158, 130 //テクスチャマッピング
 #define GRAVITY (TIPSIZE / 25.0f)   //重力加速度
 #define JUMPV0 (TIPSIZE / 1.35f)    //ジャンプの初速
-//#define HIGHJUMP (TIPSIZE / 0.f)   //ハイジャンプ時の初速
 #define TEXCRY 196, 216, 158, 130   //テクスチャマッピング
 #define TEXCOORD2 136,156,158,130   //右向き2
 #define TEXLEFT1 188,168,158,130    //左向き1
@@ -53,23 +52,6 @@ void CPlayer2::Update()
 		mVx = VELOCITY + 1;
 		X(X() + mVx + mVx);
 	}
-	//if (mspState == Espstate::EHIGHJUMP)
-	//{
-	//	if (mInput.Key('W'))
-	//	{
-	//		mVy = HIGHJUMP;
-	//		mSoundJump.Play();
-	//		mState = EState::EJUMP;
-	//		interval = 30;
-	//	}
-	//	else if (mInput.Key('J'))
-	//	{
-	//		mVy = HIGHJUMP;
-	//		mSoundJump.Play();
-	//		mState = EState::EJUMP;
-	//		interval = 30;
-	//	}
-	//}
 	if (mState != EState::EJUMP)
 	{
 		if (mState != EState::EFOLL)
@@ -240,16 +222,14 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EFOLLBLOCK:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-			mspState = Espstate::EHIGHJUMP;
 			X(X() + x);
 			Y(Y() + y);
 			//着地した時
 			if (y != 0.0f)
 			{
-				//Y軸速度を0にする
-				mVy = 0.0f;
 				if (y > 0.0f)
 				{
+					mspState = Espstate::ESPMOVE;
 					mState = EState::EMOVE;
 				}
 			}
