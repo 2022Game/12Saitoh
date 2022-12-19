@@ -1,5 +1,5 @@
 #ifndef CCOLLIDERTRIANGLE_H
-#define CCOLLLIDERTRIANGLE_H
+#define CCOLLIDERTRIANGLE_H
 #include "CCollider.h"
 /*
 三角形コライダの定義
@@ -7,7 +7,7 @@
 class CColliderTriangle : public CCollider
 {
 public:
-	CColliderTriangle(){}
+	CColliderTriangle() {}
 	//コンストラクタ(三角コライダ)
 	//CColliderTriangle(親、親行列、頂点1、頂点2、頂点3)
 	CColliderTriangle(CCharacter3* parent, CMatrix* matrix,
