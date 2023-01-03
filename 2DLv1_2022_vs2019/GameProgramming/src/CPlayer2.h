@@ -25,6 +25,7 @@ private:
 	static CPlayer2* spInstance;
 	int interval; //ジャンプのインターバル
 	CSound mSoundJump;	//ジャンプSE
+	CSound mSoundDown;  //踏みつけSE
 	static int sHp;	//HP
 	int mInvincible; //無敵カウンタ
 	CInput mInput;

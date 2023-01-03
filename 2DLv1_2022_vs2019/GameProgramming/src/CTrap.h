@@ -1,8 +1,9 @@
 #pragma once
 #include "CCharacter.h"
 #include"CPlayer2.h"
+#include "CSound.h"
 /*
-透明ブロッククラス
+トラップクラス
 */
 
 class CTrap : public CCharacter
@@ -16,4 +17,6 @@ public:
 	CTrap(float x, float y, float w, float h, CTexture* pt);
 	//更新処理
 	void Update(){};
+private:
+	CSound mSoundcoin;
 };

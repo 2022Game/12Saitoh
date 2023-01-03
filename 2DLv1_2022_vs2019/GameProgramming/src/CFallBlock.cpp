@@ -1,7 +1,7 @@
 #include "CFallBlock.h"
 #include "CApplication.h"
-#define FOLLBOCK_TEXCOORD 0, 48, 128, 80 //テクスチャ座標
-#define GRAVITY (TIPSIZE / 25.0f) //重力加速度
+#define FOLLBOCK_TEXCOORD 49.0f, 95.0f, 63.0f, 40.0f //テクスチャ座標
+#define GRAVITY (TIPSIZE / 30.0f) //重力加速度
 
 
 CFallBlock::CFallBlock(float x, float y, float w, float h, CTexture* pt)
@@ -15,7 +15,7 @@ CFallBlock::CFallBlock(float x, float y, float w, float h, CTexture* pt)
 void CFallBlock::Update()
 {
 	if ((sfall == 0))
-	{
+    {
 		mVy -= GRAVITY;
 		Y(Y() + mVy);
 	}

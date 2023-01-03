@@ -9,8 +9,7 @@
 #define TEXLEFT1 188,168,158,130    //左向き1
 #define TEXLEFT2 156,136,158,130    //左向き2
 #define SOUND_JUMP "res\\jump.wav"  //ジャンプSE
-//#define VELOCITY 4.0f             //移動速度
-//#define HP 3                      //HPの初期値は3
+#define SOUND_DOWN "res\\down.wav"  //踏みつけSE
 
 CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	:mInvincible(0)
@@ -23,6 +22,7 @@ CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	sHp = 1;
 	sgoal = 1;
 	mSoundJump.Load(SOUND_JUMP);
+	mSoundDown.Load(SOUND_DOWN);
 	spInstance = this;
 }
 
@@ -86,7 +86,6 @@ void CPlayer2::Update()
 	{//通常の画像を設定
 		Texture(Texture(), TEXCOORD);
 	}
-
 	if (mState == EState::ECRY)
 	{
 		//泣く画像を設定
@@ -116,8 +115,7 @@ void CPlayer2::Update()
 				//通常の画像を設定
 				Texture(Texture(), TEXCOORD);
 			}
-		    else
-			if (mVx < 0.0f) //左へ移動
+		    else if (mVx < 0.0f) //左へ移動
 			{
 				//左向き2を設定
 				Texture(Texture(), TEXLEFT2);
@@ -158,10 +156,12 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 					if (o->State() != EState::ECRY)
 					{
 						mVy = JUMPV0;
+						mSoundDown.Play();
 					}
 					else if (o->State() == EState::ECRY)
 					{
 						mVy = JUMPV0;
+						mSoundDown.Play();
 					}
 				}
 				else

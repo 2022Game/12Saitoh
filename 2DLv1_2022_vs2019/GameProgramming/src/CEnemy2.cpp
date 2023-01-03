@@ -141,7 +141,7 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 			Y(Y() + y);
 			if (mVy < -mVy)
 			{
-				mVy = -10.0;
+				mVy = 0.0f;
 			}
 		}
 	}

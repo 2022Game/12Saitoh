@@ -1,10 +1,10 @@
 #include "CBlock.h"
 
-#define TEXCOORD 0.0f, 48.0f, 128.0f, 80.0f //テクスチャ座標
+#define TEXCOORD 49.0f, 80.0f, 63.0f, 40.0f //テクスチャ座標
 
 CBlock::CBlock(float x, float y, float w, float h, CTexture* pt)
 {
-	Set(x, y, w*1.1, h*1.1);
+	Set(x, y, w, h*3);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EBLOCK;
 }
