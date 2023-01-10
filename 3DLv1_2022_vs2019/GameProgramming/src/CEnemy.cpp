@@ -41,7 +41,7 @@ void CEnemy::Collision(CCollider* m, CCollider* o)
 			//エフェクト生成
 			new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
 			//衝突している時は無効にする
-			mEnabled = false;
+			//mEnabled = false;
 		}
 		break;
 	case CCollider::ETRIANGLE: //三角コライダの時
