@@ -48,7 +48,7 @@ void CTaskManager::Update()
 void CTaskManager::Render()
 {
 	CTask* task = mTail.mpPrev;
-	while (task != false(0))
+	while (task != nullptr)
 	{
 		task->Render();
 		task = task->mpPrev;
