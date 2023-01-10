@@ -24,7 +24,7 @@ protected:
 	bool mEnabled;  //有効フラグ
 private:
 	CTask* mpNext;  //次のポインタ
-	CTask* mpPrev;  //次のポインタ
+	CTask* mpPrev;  //前のポインタ
 };
 
 #endif

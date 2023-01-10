@@ -23,3 +23,10 @@ CCharacter3::~CCharacter3()
 	//タスクリストから削除
 	CTaskManager::Instance()->Remove(this);
 }
+
+CCharacter3::CCharacter3(int priority)
+	:mpModel(nullptr)
+{
+	mPriority = priority;
+	CTaskManager::Instance()->Add(this);
+}
