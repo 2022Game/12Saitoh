@@ -1,4 +1,5 @@
-#include"CBullet.h"
+#include "CBullet.h"
+#include "CApplication.h"
 
 CBullet::CBullet()
 	:mLife(50)
@@ -53,4 +54,12 @@ void CBullet::Collision(CCollider* m, CCollider* o)
 		//衝突している時は無効にする
 		mEnabled = false;
 	}
+}
+
+void CBullet::Collision()
+{
+	//コライダの優先度変更
+	mCollider.ChangePriority();
+	//衝突処理を実行
+	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);
 }

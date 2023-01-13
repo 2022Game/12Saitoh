@@ -12,6 +12,7 @@
 class CPlayer : public CCharacter3
 {
 public:
+	void Collision();
 	//Õ“Ëˆ—
 	void Collision(CCollider* o, CCollider* m);
 	CPlayer();
