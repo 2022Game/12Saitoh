@@ -12,6 +12,13 @@
 #define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
 
+CUi* CApplication::spUi = nullptr;
+
+CUi* CApplication::Ui()
+{
+	return spUi; //インスタンスのポインタを返す
+}
+
 CMatrix CApplication::mModelViewInverse;
 
 const CMatrix& CApplication::ModelViewInverse()
@@ -34,6 +41,7 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
+	spUi = new CUi(); //Uiクラスの生成
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 	//モデルファイルの入力
 	mModel.Load(MODEL_OBJ);
@@ -117,12 +125,17 @@ void CApplication::Update()
 	mModelViewInverse.M(0, 3, 0);
 	mModelViewInverse.M(1, 3, 0);
 	mModelViewInverse.M(2, 3, 0);
-
 	mBackGround.Render();
+	spUi->Render(); //Uiの描画
 	//タスクリストの削除
 	CTaskManager::Instance()->Delete();
 	//タスクマネージャの描画
 	CTaskManager::Instance()->Render();
 	//コリジョンマネージャ描画
 	CCollisionManager::Instance()->Render();
+}
+
+CApplication::~CApplication()
+{
+	delete spUi; //インスタンスUiの削除
 }
