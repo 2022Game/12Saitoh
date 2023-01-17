@@ -20,7 +20,6 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
-	//Sound
 	mSoundBgm.Load(SOUND_BGM);
 	mSoundOver.Load(SOUND_OVER);
 

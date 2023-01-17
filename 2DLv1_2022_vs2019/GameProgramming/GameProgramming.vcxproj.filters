@@ -96,6 +96,9 @@
     <ClCompile Include="src\CTransparentBlock.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\CNclimbBlock.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSound.h">
@@ -177,6 +180,9 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="src\CTransparentBlock.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CNclimbBlock.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>

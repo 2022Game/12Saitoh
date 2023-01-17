@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CEnemy.h"
 #include "CBillBoard.h"
+#include "CEnemy3.h"
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
 #define MODEL_OBJ "res\\f14.obj","res\\f14.mtl"//モデルデータの指定
@@ -57,6 +58,8 @@ void CApplication::Start()
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
 	//ビルボードの作成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 	//背景モデルから三角コライダを生成

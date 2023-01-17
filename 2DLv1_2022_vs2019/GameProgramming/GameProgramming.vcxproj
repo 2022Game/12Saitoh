@@ -25,6 +25,7 @@
     <ClCompile Include="src\CFont.cpp" />
     <ClCompile Include="src\CGame.cpp" />
     <ClCompile Include="src\CGoal.cpp" />
+    <ClCompile Include="src\CNclimbBlock.cpp" />
     <ClCompile Include="src\CPlayer.cpp" />
     <ClCompile Include="src\CPlayer2.cpp" />
     <ClCompile Include="src\CPoint.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="src\CGame.h" />
     <ClInclude Include="src\CGoal.h" />
     <ClInclude Include="src\CMiss.h" />
+    <ClInclude Include="src\CNclimbBlock.h" />
     <ClInclude Include="src\CPlayer.h" />
     <ClInclude Include="src\CPlayer2.h" />
     <ClInclude Include="src\CPoint.h" />

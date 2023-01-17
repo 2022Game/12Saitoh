@@ -33,8 +33,11 @@ void CTrap::Collision(CCharacter* m, CCharacter* o)
 					if (CPlayer2::Instance()->State() == EState::EJUMP)
 					{
 						Texture(Texture(), TEXCOORD2);
+						if (mTag == ETag::ETRAP)
+						{
+							mSoundcoin.Play();
+						}
 						mTag = ETag::EBLOCK;
-						mSoundcoin.Play();
 					}
 				}
 			}
