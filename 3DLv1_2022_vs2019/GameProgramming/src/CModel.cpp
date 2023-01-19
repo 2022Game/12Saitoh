@@ -2,6 +2,7 @@
 //標準入出力のインクルード
 #include <stdio.h>
 #include "CVector.h"
+#include "CMatrix.h"
 //文字列s1と文字列s2の比較
 //s1とs2が等しければ0を
 //等しくなければ0以外を返す

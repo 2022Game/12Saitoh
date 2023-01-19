@@ -1,6 +1,8 @@
 #ifndef CTRANSFORM_H
 #define CTRANSFORM_H
 #include "CVector.h"
+#include "CMatrix.h"
+
 /*
 トランスフォームクラス
 位置、回転、縮小、変換行列の基本クラス

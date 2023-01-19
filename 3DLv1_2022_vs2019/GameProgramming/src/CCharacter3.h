@@ -14,6 +14,16 @@ class CCollider;
 class CCharacter3 : public CTransform, public CTask
 {
 public:
+	enum ETag
+	{
+		EZERO,          //初期値
+		EPLAYER,        //プレイヤー
+		EENEMY,         //敵
+		EBULLETPLAYER,  //プレイヤー弾
+		EBULLETRNRMY,   //敵弾
+	};
+	//タグの取得
+	ETag Tag();
 	//コンストラクタ
 	CCharacter3(int priority);
 	//衝突処理
@@ -28,6 +38,7 @@ public:
 	//描画処理
 	void Render();
 protected:
+	ETag mTag; //タグ
 	CModel* mpModel; //モデルのポインタ
 };
 
