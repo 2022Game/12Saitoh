@@ -1,5 +1,9 @@
 #include "CCharacter.h"
 
+CCharacter::Espstate CCharacter::spState()
+{
+	return mspState;
+}
 CCharacter::EState CCharacter::State()
 {
 	return mState;

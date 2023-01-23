@@ -2,7 +2,6 @@
 #include "CCharacter.h"
 #include "CInput.h"
 #include "CSound.h"
-#include "CEnemy2.h"
 
 class CPlayer2 : public CCharacter
 {

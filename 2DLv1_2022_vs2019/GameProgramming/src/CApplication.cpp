@@ -5,7 +5,7 @@
 CTexture CApplication::mTexture;
 CCharacterManager CApplication::mCharacterManager;
 
-#define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
+#define SOUND_BGM /*"res\\mario.wav"*/"res\\zyopurin.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
 
 CCharacterManager* CApplication::CharacterManager()

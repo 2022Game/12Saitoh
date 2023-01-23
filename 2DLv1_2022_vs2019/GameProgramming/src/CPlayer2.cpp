@@ -1,9 +1,12 @@
 #include"CPlayer2.h"
+#include "CEnemy.h"
+#include "CEnemy2.h"
 #include "CApplication.h"
 
 #define TEXCOORD 168, 188, 158, 130 //テクスチャマッピング
 #define GRAVITY (TIPSIZE / 25.0f)   //重力加速度
 #define JUMPV0 (TIPSIZE / 1.35f)    //ジャンプの初速
+#define HIGHJUMP0 (TIPSIZE / 0.6f)  //ハイジャンプの初速
 #define TEXCRY 196, 216, 158, 130   //テクスチャマッピング
 #define TEXCOORD2 136,156,158,130   //右向き2
 #define TEXLEFT1 188,168,158,130    //左向き1
@@ -153,12 +156,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				if (y > 0.0f)
 				{
 					mState = EState::EJUMP;
-					if (o->State() != EState::ECRY)
-					{
-						mVy = JUMPV0;
-						mSoundDown.Play();
-					}
-					else if (o->State() == EState::ECRY)
+					if (o->State() == EState::ECRY)
 					{
 						mVy = JUMPV0;
 						mSoundDown.Play();
@@ -175,6 +173,37 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			}
 		}
 		break;
+	case ETag::EENEMY2:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			//敵の衝突判定を実行
+			o->Collision(o, m);
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EJUMP;
+					if (o->State() == EState::ECRY)
+					{
+						mVy = HIGHJUMP0;
+						mSoundDown.Play();
+					}
+				}
+				else
+				{//ジャンプでなければ泣く
+					mState = EState::ECRY;
+				}
+			}
+			else
+			{//ジャンプでなければ泣く
+				mState = EState::ECRY;
+			}
+		}
 	case ETag::EPLAYER:
 		break;
 	case ETag::EBLOCK:

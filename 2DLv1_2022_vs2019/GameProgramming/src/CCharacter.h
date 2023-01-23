@@ -13,6 +13,7 @@ public:
 		EZERO,		//初期値
 		EBULLET,	//弾
 		EENEMY,		//敵
+		EENEMY2,    //敵2
 		EPLAYER,	//プレイヤー
 		ETURN,		//折り返し
 		EBLOCK,		//ブロック
@@ -46,6 +47,7 @@ private:
 	CTexture *mpTexture;
 	int mLeft, mRight, mBottom, mTop;
 public:
+	Espstate spState(); //隠しステータスを取得する
 	EState State();	//状態を取得する
 	bool Enabled();
 	ETag Tag();
