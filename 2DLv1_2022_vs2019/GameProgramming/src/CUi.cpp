@@ -28,7 +28,7 @@ CUi::CUi()
 	, mTime(0)
 	, mEnemy(0)
 {
-	mFont.Load("FontWhite.png", 1, 64);
+	mFont.Load("FontG.png", 1, 64);
 }
 
 void CUi::Hp(int hp)

@@ -188,7 +188,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				if (y > 0.0f)
 				{
 					mState = EState::EJUMP;
-					if (o->State() == EState::ECRY)
+					if (o->State() == EState::EMOVE)
 					{
 						mVy = HIGHJUMP0;
 						mSoundDown.Play();
@@ -219,7 +219,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-				mState = EState::EMOVE;
+					mState = EState::EMOVE;
 				}
 			}
 		}
@@ -259,6 +259,24 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				if (y > 0.0f)
 				{
 					mspState = Espstate::ESPMOVE;
+					mState = EState::EMOVE;
+				}
+			}
+		}
+		break;
+	case ETag::EDOKAN:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			mspState = Espstate::ESPMOVE;
+			X(X() + x);
+			Y(Y() + y);
+			//’…’n‚µ‚½Žž
+			if (y != 0.0f)
+			{
+				//YŽ²‘¬“x‚ð0‚É‚·‚é
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
 					mState = EState::EMOVE;
 				}
 			}

@@ -21,6 +21,8 @@ public:
 		EWALL,      //ゲームオーバー判定用の壁
 		EGOAL,      //ゴール
 		EFOLLBLOCK, //落下床
+		EDOKAN,     //土管
+		EBACK,      //背景
 	};
 	enum class EState	//状態
 	{

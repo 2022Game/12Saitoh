@@ -16,8 +16,10 @@
 class CApplication
 {
 private:
+	int clear;
 	CSound mSoundBgm;	//BGM
 	CSound mSoundOver;	//ゲームオーバー
+	CSound mSoundClear; //ゲームクリア
 	CGame* mpGame;
 	static CCharacterManager mCharacterManager;
 	enum class EState

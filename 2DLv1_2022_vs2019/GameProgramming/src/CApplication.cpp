@@ -7,6 +7,8 @@ CCharacterManager CApplication::mCharacterManager;
 
 #define SOUND_BGM /*"res\\mario.wav"*/"res\\zyopurin.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
+#define SOUND_CLEAR "res\\mclear.wav" //ゲームクリア音声ファイル
+#define CLEAR 20
 
 CCharacterManager* CApplication::CharacterManager()
 {
@@ -20,9 +22,10 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
+	clear = CLEAR;
 	mSoundBgm.Load(SOUND_BGM);
 	mSoundOver.Load(SOUND_OVER);
-
+	mSoundClear.Load(SOUND_CLEAR);
 	mFont.Load("FontWhite.png", 1, 64);
 	mState = EState::ESTART;
 	mpGame = new CGame();
@@ -57,6 +60,10 @@ void CApplication::Update()
 		if (mpGame->IsClear())
 		{	//状態をゲームクリアにする
 			mState = EState::ECLEAR;
+			//BGMストップ
+			mSoundBgm.Stop();
+			//ゲームクリア
+			mSoundClear.Play();
 		}
 		break;
 	case EState::EOVER:

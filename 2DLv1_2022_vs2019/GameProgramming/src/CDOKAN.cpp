@@ -5,5 +5,5 @@ CDOKAN::CDOKAN(float x, float y, float w, float h, CTexture* pt)
 {
 	Set(x, y, w*2, h*3.0);
 	Texture(pt, TEXCOORD);
-	mTag = ETag::EBLOCK;
+	mTag = ETag::EDOKAN;
 }

@@ -144,6 +144,31 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 			}
 		}
+		break;
+	case ETag::EDOKAN:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			if (mVy < -mVy)
+			{
+				mVy = -10.0;
+			}
+			//’…’n‚µ‚½Žž
+			if (y != 0.0f)
+			{
+				//YŽ²‘¬“x‚ð0‚É‚·‚é
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					if (mState != EState::ECRY)
+					{
+						mState = EState::EMOVE;
+					}
+				}
+			}
+		}
+		break;
 	}
 }
 
