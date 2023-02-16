@@ -31,57 +31,37 @@ CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 
 void CPlayer2::Update()
 {
+	CPlayer2::Move();
 	if (interval > 0)
 	{
 		//ジャンプのインターバル
 		interval--;
 		if (interval < 25)
-		{
+		{//落下状態を取得
 			mState = EState::EFOLL;
 		}
 	}
-	if (mInvincible > 0)
-	{
-		//無敵時間中は1減算する
-		mInvincible--;
+	if (mInput.Key('W'))
+	{//ジャンプ状態にする
+		mState = EState::EJUMP;
+		CPlayer2::Jump();
 	}
-	if (mInput.Key('A'))
-	{
-		mVx = -VELOCITY - 1;
-		X(X() + mVx + mVx);
+	else if (mInput.Key('J'))
+	{//ジャンプ状態にする
+		mState = EState::EJUMP;
+		CPlayer2::Jump();
 	}
-	if (mInput.Key('D'))
-	{
-		mVx = VELOCITY + 1;
-		X(X() + mVx + mVx);
+	if (mState == EState::EJUMP)
+	{//ジャンプ動作を呼び出す
+		CPlayer2::Jump();
 	}
-	if (mState != EState::EJUMP)
-	{
-		if (mState != EState::EFOLL)
-		{
-			if (interval == 0)
-			{
-				if (mspState == Espstate::ESPMOVE)
-				{
-					if (mInput.Key('W'))
-					{
-						mVy = JUMPV0;
-						mSoundJump.Play();
-						mState = EState::EJUMP;
-						interval = 30;
-					}
-					else if (mInput.Key('J'))
-					{
-						mVy = JUMPV0;
-						mSoundJump.Play();
-						mState = EState::EJUMP;
-						interval = 30;
-					}
-				}
-			}
-		}
-		mspState = Espstate::NULLSTATE;
+	if (mState == EState::ECRY)
+	{//泣く動作を呼び出す
+		CPlayer2::Cry();
 	}
+	//落下状態の時は何もしない
+	if (mState == EState::EFOLL){}
+	mspState = Espstate::NULLSTATE;
 	//Y軸速度に重力を減算する
 	mVy -= GRAVITY;
 	//Y座標にY軸速度を加える
@@ -89,15 +69,11 @@ void CPlayer2::Update()
 	{//通常の画像を設定
 		Texture(Texture(), TEXCOORD);
 	}
-	if (mState == EState::ECRY)
+
+	if (mInvincible > 0)
 	{
-		//泣く画像を設定
-		Texture(Texture(), TEXCRY);
-		if (mInvincible == 0)
-		{
-			mInvincible = 60;
-			sHp--;
-		}
+		//無敵時間中は1減算する
+		mInvincible--;
 	}
 	if (mInvincible > 0)
 	{
@@ -302,4 +278,47 @@ CPlayer2* CPlayer2::spInstance = nullptr;
 CPlayer2* CPlayer2::Instance()
 {
 	return spInstance;
+}
+
+void CPlayer2::Jump()
+{
+	if (mState == EState::EJUMP)
+	{
+		if (interval == 0
+			&& mspState == Espstate::ESPMOVE)
+		{
+			mVy = JUMPV0;
+			mSoundJump.Play();
+			interval = 30;
+		}
+	}
+}
+
+void CPlayer2::Move()
+{
+	//泣く状態以外は移動できる
+	if (mState != EState::ECRY)
+	{
+		if (mInput.Key('A'))
+		{
+			mVx = -VELOCITY - 1;
+			X(X() + mVx + mVx);
+		}
+		if (mInput.Key('D'))
+		{
+			mVx = VELOCITY + 1;
+			X(X() + mVx + mVx);
+		}
+	}
+}
+
+void CPlayer2::Cry()
+{
+	//泣く画像を設定
+	Texture(Texture(), TEXCRY);
+	if (mInvincible == 0)
+	{
+		mInvincible = 60;
+		sHp--;
+	}
 }

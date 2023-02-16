@@ -6,6 +6,13 @@
 class CPlayer2 : public CCharacter
 {
 public:
+	//プレイヤーの泣く動作を取得
+	void Cry();
+	//プレイヤーの移動動作を取得
+	void Move();
+	//プレイヤーのジャンプ動作を取得
+	void Jump();
+	//プレイヤーのインスタンスを取得
 	static CPlayer2* Instance();
 	//ゴールの値を取得
 	static int Goal();
