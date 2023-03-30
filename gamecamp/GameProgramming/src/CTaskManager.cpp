@@ -1,78 +1,128 @@
 #include "CTaskManager.h"
-//デフォルトコンストラクタ
+#include "CCharacter.h"
+
+CTaskManager* CTaskManager::spinstance = nullptr;
+
+//コンストラクタ
 CTaskManager::CTaskManager()
+	:mhead(nullptr)
 {
-	mHead.mpNext = &mTail;
-	mTail.mpPrev = &mHead;
+
 }
+
+//デストラクタ
 CTaskManager::~CTaskManager()
-{}
+{
+	CTask* next = mhead;
+	while (next != nullptr)
+	{
+		CTask* deleteTask = next;
+		next = next->mpnext;
+		delete deleteTask;
+	}
+}
+
+//インスタンスを取得
+CTaskManager* CTaskManager::Instance()
+{
+	if (spinstance == nullptr)
+	{
+		spinstance = new CTaskManager;
+	}
+	return spinstance;
+}
+
+//インスタンスを破棄
+void CTaskManager::ClearInstance()
+{
+	if (spinstance != nullptr)
+	{
+		delete spinstance;
+		spinstance = nullptr;
+	}
+}
+
 //リストに追加
-//Add(タスクのポインタ)
-void CTaskManager::Add(CTask *addTask)
+void CTaskManager::Add(CTask* task)
 {
-	//mHeadの次から検索
-	CTask* task = mHead.mpNext;
-
-	//優先度の大きい順位挿入する
-	//挿入位置の検索(優先度が同じか大きくなった前)
-	//mPriority >= 0のこと
-	while (addTask->mPriority < task->mPriority)
+	//リストにタスクがない時
+	if (mhead == nullptr)
 	{
-		task = task->mpNext; //次へ
+		mhead = task;
 	}
+	else  //リストにすでにタスクが追加されている時
+	{
+		CTask* prev = nullptr;
+		CTask* next = mhead;
+		while (next != nullptr)
+		{
+			//優先度を比較
+			if (next->mpriority< task->mpriority)
+			{
+				break;
+			}
+			prev = next;
+			next = next->mpnext; //次のタスクへ
+		}
 
-	//addTaskの次をtask
-	addTask->mpNext = task;
-	//addTaskの前をtaskの前に
-	addTask->mpPrev = task->mpPrev;
-	//addTaskの前の次をaddTaskに
-	addTask->mpPrev->mpNext = addTask;
-	//taskの前をaddTaskに
-	task->mpPrev = addTask;
-}
-//更新
-void CTaskManager::Update()
-{
-	//先頭から最後まで繰り返し
-	CTask* task = mHead.mpNext;
-	while (task->mpNext)
-	{
-		//更新処理を呼ぶ
-		task->Update();
-		//次へ
-		task = task->mpNext;
-	}
-}
-//描画
-void CTaskManager::Render()
-{
-	CTask* task = mTail.mpPrev;
-	while (task != nullptr)
-	{
-		task->Render();
-		task = task->mpPrev;
+		task->mpprev = prev;
+		task->mpnext = next;
+		if (prev != nullptr)
+		{
+			/*追加するタスクより優先度が高いタスクの
+			mpnextに追加するタスクを設定*/
+			prev->mpnext = task;
+		}
+		else
+		{
+			mhead = task;
+		}
+		if (next != nullptr)
+		{
+			next->mpprev = task;
+		}
 	}
 }
 
-void CTaskManager::Remove(CTask *task)
+//リストから削除
+void CTaskManager::Remove(CTask* task)//task(取り除くタスク)
 {
-	//タスクの前の次を、タスクの次にする
-	task->mpPrev->mpNext = task->mpNext;
-	//タスクの次の前を、タスクの前にする
-	task->mpNext->mpPrev = task->mpPrev;
+	//取り除くタスクが先頭の場合
+	if (mhead == task)
+	{
+		mhead = task->mpnext;
+	}
+	//取り除くタスクの前後を接続する
+	CTask* prev = task->mpprev;
+	CTask* next = task->mpnext;
+	if (prev != nullptr)
+	{
+		prev->mpnext = task->mpnext;
+	}
+	if (next != nullptr)
+	{
+		next->mpprev = task->mpprev;
+	}
+
+	//取り除くタスクの接続先は空にする
+	task->mpprev = nullptr;
+	task->mpnext = nullptr;
 }
 
+//タスクを削除
+void CTaskManager::Delete(CTask* task)
+{
+	delete task;
+}
+
+//有効フラグがfalseのタスクを削除
 void CTaskManager::Delete()
 {
-	//先頭～最後まで繰り返し
-	CTask* task = mHead.mpNext;
-	while (task->mpNext)
+	CTask* task = mhead;
+	while (task != nullptr)
 	{
 		CTask* del = task;
-		//次へ
-		task = task->mpNext;
-		//mEnabledがfalseなら削除
+		task = task->mpnext;
 		if (del->mEnabled == false)
 		{
 			delete del;
@@ -80,31 +130,61 @@ void CTaskManager::Delete()
 	}
 }
 
-//タスクマネージャのインスタンス
-CTaskManager* CTaskManager::mpInstance = nullptr;
-
-//インスタンスの取得
-CTaskManager* CTaskManager::Instance()
+//すべてのタスクを削除
+void CTaskManager::AllDelete()
 {
-	//インスタンスがなければ
-	if (mpInstance == nullptr)
+	CTask* next = mhead;
+	CTask* gomi;
+	while (next != nullptr)
 	{
-		//インスタンスを生成する
-		mpInstance = new CTaskManager();
+		gomi = next->mpnext;
+		next->Delete();
+		next = gomi;
 	}
-	return mpInstance;
 }
 
-//衝突処理
+//描画処理
+void CTaskManager::Render()
+{
+	CTask* next = mhead;
+	while (next != nullptr)
+	{
+		next->Render();
+		next = next->mpnext;
+	}
+}
+
+//更新処理
+void CTaskManager::Update()
+{
+	CTask* next = mhead;
+	while (next != nullptr)
+	{
+		next->Update();
+		next = next->mpnext;
+	}
+}
+
+//衝突処理1
 void CTaskManager::Collision()
 {
-	//先頭から最後まで繰り返し
-	CTask* task = mHead.mpNext;
-	while (task->mpNext)
+	CTask* next = mhead;
+	CTask* tugi;
+	CTask* mae;
+	while (next != nullptr)
 	{
-		//衝突処理を呼ぶ
-		task->Collision();
-		//次へ
-		task = task->mpNext;
+		tugi = next->mpnext;
+		while (tugi != nullptr)
+		{
+			next->Collision(((CCharacter*)next),(CCharacter*)tugi);
+			tugi = tugi->mpnext;
+		}
+		mae = next->mpprev;
+		while (mae != nullptr)
+		{
+			next->Collision(((CCharacter*)next), (CCharacter*)mae);
+			mae = mae->mpprev;
+		}
+		next = next->mpnext;
 	}
 }

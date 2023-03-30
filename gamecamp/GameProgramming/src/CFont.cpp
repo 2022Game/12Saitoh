@@ -1,5 +1,15 @@
 #include "CFont.h"
 
+//コンストラクタ
+CFont::CFont()
+{
+}
+
+//デストラクタ
+CFont::~CFont()
+{
+}
+
 void CFont::Load(const char* file, int row, int col)
 {
 	mTexture.Load(file);
@@ -20,4 +30,9 @@ void CFont::Draw(float x, float y, float w, float h, char c[])
 		x += w * 2;
 	}
 	return;
+}
+
+//更新処理
+void CFont::Update()
+{
 }

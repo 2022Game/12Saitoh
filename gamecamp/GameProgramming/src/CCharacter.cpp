@@ -1,16 +1,27 @@
 #include "CCharacter.h"
-#include"CApplication.h"
+#include "CApplication.h"
+#include "CTaskManager.h"
 
-CCharacter::CCharacter()
-	: mpTexture(nullptr)
-	, mLeft(0)
-	, mRight(0)
-	, mBottom(0)
-	, mTop(0)
-	, mTag(ETag::EZERO)
+//コンストラクタ
+CCharacter::CCharacter(int priority)
+	: CTask(priority)
+	, mpTexture(nullptr), mLeft(0), mRight(0), mBottom(0), mTop(0)
+	/*, mEnabled(true)*/
+	, mState(EState::ENULL)
+	, mVx(0.0f)
+	, mVy(0.0f)
 {
-	//タスクリストに追加
-	CTaskManager::Instance()->Add(this);
+}
+
+//デストラクタ
+CCharacter::~CCharacter()
+{
+}
+
+//状態を取得
+CCharacter::EState CCharacter::State()
+{
+	return mState;
 }
 
 void CCharacter::Texture(CTexture* pTexture,
@@ -22,6 +33,12 @@ void CCharacter::Texture(CTexture* pTexture,
 	mBottom = bottom;
 	mTop = top;
 }
+
+CTexture* CCharacter::Texture()
+{
+	return mpTexture;
+}
+
 //描画処理
 void CCharacter::Render()
 {
@@ -33,29 +50,15 @@ void CCharacter::Render()
 		mLeft, mRight, mBottom, mTop);
 }
 
-CCharacter::~CCharacter()
-{
-	//タスクリストから削除
-	CTaskManager::Instance()->Remove(this);
-}
-
-CCharacter::CCharacter(int priority)
-{
-	mPriority = priority;
-	CTaskManager::Instance()->Add(this);
-}
-
-CCharacter::ETag CCharacter::Tag()
-{
-	return mTag;
-}
-
-CTexture* CCharacter::Texture()
-{
-	return mpTexture;
-}
-
 bool CCharacter::Enabled()
 {
 	return mEnabled;
+}
+
+void CCharacter::Update()
+{
+	if (mState != EState::EJUMP)
+	{
+		CTask::Setpriority(Z());
+	}
 }

@@ -1,100 +1,164 @@
 #include "CGame.h"
 #include "CApplication.h"
 #include "CCamera.h"
+#include "CTaskManager.h"
 #include "main.h"
 
+//コンストラクタ
 CGame::CGame()
-	: mpUi(nullptr)
+	: mpUi(nullptr)    
 	, mTime(0)
 	, mCdx(0)
 	, mCdy(0)
-{	
-	//テクスチャの入力
-	CApplication::Texture()->Load(TEXTURE);
-	//背景テクスチャの入力
-	CApplication::Texture2()->Load(BACKTEXTURE);
+	, mH(0)
+	, mCt(0)
+	, mEs(0)
+{
 	mpUi = new CUi();
-	//背景をキャラクタマネージャに追加する
-	CApplication::CharacterManager()->Add(
-		new CBack(640, 400, 1200, 400, CApplication::Texture2()));
-	//プレイヤーをキャラクタマネージャに追加する
-	CApplication::CharacterManager()->Add(
-		new CPlayer(TIPSIZE * 10, TIPSIZE * 5, TIPSIZE, TIPSIZE, CApplication::Texture()));
-	//敵をキャラクタマネージャに追加する
-	CApplication::CharacterManager()->Add(
-		mpEnemy = new CEnemy(TIPSIZE * 15, TIPSIZE * 4.5, TIPSIZE, TIPSIZE, CApplication::Texture()));
-	CApplication::CharacterManager()->Add(
-		mpEnemy2 = new CEnemy(TIPSIZE * 20, TIPSIZE * 7, TIPSIZE, TIPSIZE, CApplication::Texture()));
 }
 
-void CGame::Start()
-{
-	//ゲームの描画
-	CApplication::CharacterManager()->Render();
-	//UI処理
-	mpUi->Render();
-	mpUi->Start();
-}
-
-//bool CGame::IsOver()
-//{
-//
-//}
-
-void CGame::Over()
-{
-	CameraSet();
-	//ゲームの描画
-	CApplication::CharacterManager()->Render();
-	CCamera::End();
-	//UI処理
-	mpUi->Render();
-	mpUi->Over();
-}
-
+//デストラクタ
+//デストラクタ
 CGame::~CGame()
 {
 	//全てのインスタンス削除
-	CApplication::CharacterManager()->AllDelete();
-	//UIを生成している時
+	CTaskManager::Instance()->AllDelete();
 	if (mpUi != nullptr)
 	{	//UIを削除し、初期化
 		delete mpUi;
-		mpUi = nullptr;
+		mpUi = 0;
 	}
 }
 
-//bool CGame::IsClear()
-//{
-//
-//}
-
+//ゲームクリア処理
 void CGame::Clear()
 {
-	CameraSet();
-	//ゲームの描画
-	CApplication::CharacterManager()->Render();
-	CCamera::End();
-	//UI処理
-	mpUi->Render();
-	mpUi->Clear();
+	CTaskManager::Instance()->Update();
+	CTaskManager::Instance()->Render();
+	if (mH == 1)
+	{
+		mpBackGround4 = new CBackGround4(640.0f, 400.0f, 640.0f, 400.0f, 0, 1281, 801, 0, CApplication::Texture5());
+		mH = 0;
+	}
+	mpUi->DrawResult();
 }
 
+//ゲームオーバー処理
+void CGame::Over()
+{
+	CTaskManager::Instance()->Update();
+	CTaskManager::Instance()->Render();
+	if (mH == 1)
+	{
+		mpBackGround4 = new CBackGround4(640.0f, 400.0f, 640.0f, 400.0f, 0, 1281, 801, 0, CApplication::Texture4());
+		mH = 0;
+	}
+}
+
+//スタート処理
+void CGame::Start()
+{
+	CTaskManager::Instance()->Update();
+	CTaskManager::Instance()-> Render();
+	if (mH == 0)
+	{
+		mpBackGround4 = new CBackGround4(640.0f, 400.0f, 640.0f, 400.0f, 0, 1281, 801, 0, CApplication::Texture3());
+		mH = 1;
+	}
+}
+
+void CGame::Stage1()
+{
+	mId = 0;
+	mH = 1;
+	mpBlock = new CBlock(640.0f, 460.0f, 1000.0f, 10.0f, CApplication::Texture9());
+	mpBlock = new CBlock(640.0f, -10.0f, 1000.0f, 10.0f, CApplication::Texture9());
+	mpBlock = new CBlock(-10.0f, 400.0f, 10.0f, 800.0f, CApplication::Texture9());
+	mpBlock = new CBlock(1290.0f, 400.0f, 10.0f, 800.0f, CApplication::Texture9());
+	mpPlayer = new CPlayer(400.0f, 250.0f, 110.0f, 110.0f, CApplication::Texture());
+	/*mpSlime = new CSlime(1000.0f, 300.0f, 80.0f, 60.0f, CSlime::Texture6());
+	mpSlime = new CSlime(1000.0f, 100.0f, 80.0f, 60.0f, CSlime::Texture6());*/
+	/*mpSlime = new CSlime(800.0f, 300.0f, 80.0f, 60.0f, CSlime::Texture6());*/
+	/*mpSlime = new CSlime(800.0f, 200.0f, 80.0f, 60.0f, CSlime::Texture6());*/
+	mpSlime = new CSlime(800.0f, 100.0f, 80.0f, 60.0f, CSlime::Texture6());
+	mpSlime = new CSlime(600.0f, 300.0f, 80.0f, 60.0f, CSlime::Texture6());
+	/*mpSlime = new CSlime(600.0f, 100.0f, 80.0f, 60.0f, CSlime::Texture6());*/
+	mpBackGround = new CBackGround(640.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture6());
+	mpBackGround2 = new CBackGround2(640.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture7());
+	mpBackGround3 = new CBackGround3(640.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture8());
+	mpBackGround = new CBackGround(1920.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture6());
+	mpBackGround2 = new CBackGround2(1920.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture7());
+	mpBackGround3 = new CBackGround3(1920.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture8());
+	mpBackGround = new CBackGround(3200.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture6());
+	mpBackGround2 = new CBackGround2(3200.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture7());
+	mpBackGround3 = new CBackGround3(3200.0f, 400.0f, 640.0f, 400.0f, 0, 1279, 799, 0, CApplication::Texture8());
+}
+
+void CGame::Stage2()
+{
+	/*mpWolf = new CWolf(1000.0f, 100.0f, 80.0f, 60.0f, CWolf::Texture7());
+	mpWolf = new CWolf(1000.0f, 300.0f, 80.0f, 60.0f, CWolf::Texture7());*/
+	mpWolf = new CWolf(800.0f, 200.0f, 80.0f, 60.0f, CWolf::Texture7());
+	mpWolf = new CWolf(600.0f, 300.0f, 80.0f, 60.0f, CWolf::Texture7());
+	/*mpWolf = new CWolf(600.0f, 200.0f, 80.0f, 60.0f, CWolf::Texture7());*/
+	mpWolf = new CWolf(600.0f, 100.0f, 80.0f, 60.0f, CWolf::Texture7());
+}
+
+void CGame::Boss()
+{
+	mpBoss = new CBoss(900.0f, 300.0f, 240.0f, 240.0f, CBoss::Texture8());
+}
+
+//更新処理
 void CGame::Update()
 {
-	//更新、衝突、削除、描画
-	CApplication::CharacterManager()->Update();
-	CApplication::CharacterManager()->Collision();
-	CApplication::CharacterManager()->Delete();
+	mNum = CWolf::Num() + CSlime::Num();
+	//更新、衝突、描画
+	CTaskManager::Instance()->Update();
+	CTaskManager::Instance()->Collision();
+	CTaskManager::Instance()->Delete();
+	CTaskManager::Instance()->Render();
+	
+	if (CApplication::Di() == 1)
+	{
+		mNum = 0;
+	}
+	if (mId == 0)
+	{
+		if (CApplication::Si() == 1)
+		{
+			if (CPlayer::HP() > 0)
+			{
+				mpItem = new CItem(400.0f, 200.0f, 30.0f, 30.0f, CApplication::Texture9());
+				mId = 1;
+			}
+		}
+	}
 	CameraSet();
-	CApplication::CharacterManager()->Render();
 	CCamera::End();
 	//UI
-	mpUi->Time(mTime++);
+	mCt++;
+	if (mCt == 60)
+	{
+		mpUi->Time(mTime++);
+		mCt = 0;
+	}
+	mpUi->Hp(CPlayer::HP());
+	mpUi->Stamina(CPlayer::Stamina());
+	mpUi->Enemy(CEnemy2::Num());
 	mpUi->Render();
 }
 
 void CGame::CameraSet()
 {
-
+}
+int CGame::mNum = 0;
+int CGame::Num()
+{
+	return mNum;
+}
+int CGame::mId = 0;
+int CGame::Id()
+{
+	return mId;
 }

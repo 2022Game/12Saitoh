@@ -1,46 +1,62 @@
-#ifndef CCHARACTER_H
-#define CCHARACTER_H
+#pragma once
 #include"CTask.h"
 #include"CRectangle.h"
 #include"CTexture.h"
+
+#define VELOCITY 4.0f	//移動速度
 /*
 キャラクタークラス
 ゲームキャラクタの基本的な機能を定義する
 */
-//コライダクラスの宣言
-class CCharacter : public CTask, public CRectangle
+class CCharacterManager;
+
+class CCharacter : public CRectangle, public CTask
 {
+	friend CTask;
+	friend CCharacterManager;
+
 public:
-	enum ETag
+	enum class EState	//状態
 	{
-		EZERO,          //初期値
-		EPLAYER,        //プレイヤー
-		EENEMY,         //敵
-		EBOSS,          //ボス
+		ENULL,     //空
+		EMOVE,	   //移動
+		EMOVE2,    //移動2
+		EJUMP,	   //ジャンプ
+		EIDLING,   //アイドリング
+		EATTACK,   //攻撃
+		EATTACK2,  //攻撃2
+		EDAMAGE,   //ダメージ時
+		EDEATH,    //死亡
 	};
-protected:
-	ETag mTag; //タグ
+
 private:
 	CTexture* mpTexture;
-	int mLeft, mRight, mBottom, mTop;
+	int mLeft,	mRight,mBottom,mTop;
+protected:
+	EState mState;
+	float mVx;  //X軸速度
+	float mVy;  //Y軸速度
+	/*bool mEnabled;*/
+
 public:
-	//タグの取得
-	ETag Tag();
 	//コンストラクタ
 	CCharacter(int priority);
-	//衝突処理
-	virtual void Collision(CCharacter* m, CCharacter* o) {}
-	//衝突処理2
-	virtual void Collision() {};
-	//コンストラクタ
-	CCharacter();
 	//デストラクタ
 	~CCharacter();
+	//状態を取得する
+	EState State();
+
 	//描画処理
 	void Render();
 	CTexture* Texture();
 	void Texture(CTexture* pTexture,
 		int left, int right, int bottom, int top);
+
+	//衝突処理
+	virtual void Collision(CCharacter* m, CCharacter* o) {}
+	//衝突処理2
+	virtual void Collision() {};
+
 	bool Enabled();
+	virtual void Update() = 0;
 };
-#endif

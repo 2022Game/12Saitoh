@@ -1,32 +1,65 @@
-#ifndef CTASK_H
-#define CTASK_H
+#pragma once
+#include<string>
+
 class CTaskManager;
-class CCollisionManager;
-/*
-タスククラス
-タスクリストの要素
-*/
-class CTask
+class CCharacter;
+
+enum class ETaskPriority
 {
-	friend CCollisionManager;
-	friend CTaskManager;
-public:
-	//衝突処理
-	virtual void Collision() {}
-	//デフォルトコンストラクタ
-	CTask() :mpNext(nullptr), mpPrev(nullptr), mPriority(0), mEnabled(true) {}
-	//デストラクタvirtualにしないと子クラスのデストラクタが呼ばれない
-	virtual ~CTask() {}
-	//更新
-	virtual void Update() {}
-	//描画
-	virtual void Render() {}
-protected:
-	int mPriority;  //優先度
-	bool mEnabled;  //有効フラグ
-private:
-	CTask* mpNext;  //次のポインタ
-	CTask* mpPrev;  //前のポインタ
+	EUI,                //UI
+	ETITLE,             //タイトル画面
+	ECharacter,         //キャラクター
+	ECharacterManager,  //キャラクターマネージャー
+	EBackGround = 1003, //背景
+	EBackGround2 = 1003,
+	EBackGround3 = 1003,
+	EBackGround4 = 1003,
+	EBLOCK = 0,
 };
 
-#endif
+class CTask
+{
+	friend CTaskManager;
+public:
+	enum class ETag
+	{
+		EZERO,
+		EPLAYER,    //プレイヤー
+		EENEMY,     //敵
+		EBULLET,    //プレイヤーの攻撃
+		EATTACK,    //敵の攻撃(回避可能)
+		EATTACK2,   //敵の攻撃(当たると確定ダメージ)
+		EITEM,
+		EBLOCK,
+	};
+private:
+	CTask* mpprev;   //前のタスクへのポインタ
+	CTask* mpnext;   //次のタスクへのポインタ
+	int mpriority;   //優先度
+
+protected:
+	ETag mTag;
+	bool mEnabled;  //有効フラグ
+
+public:
+	ETag Tag();
+	//コンストラクタ
+	CTask(int priority);
+	//~デストラクタ
+	~CTask();
+
+	bool Enabled();
+	//優先度を設定
+	void Setpriority(int priority);
+	//優先度を取得
+	int GetPriority() const;
+	//タスクを削除
+	void Delete();
+
+	//描画処理
+	virtual void Render() {};
+	//更新処理
+	virtual void Update() {};
+	//衝突処理
+	virtual void Collision(CCharacter* m, CCharacter* o) {}
+};

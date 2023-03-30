@@ -1,41 +1,42 @@
-#ifndef CTASKMANAGER_H
-#define CTASKMANAGER_H
-//タスククラスのインクルード
+#pragma once
 #include "CTask.h"
+#include <vector>
+#include "CCharacter.h"
 
-/*
-タスクマネージャ
-タスクリストの管理
-*/
 class CTaskManager
 {
+private:
+	static CTaskManager* spinstance;  //CTaskManagerのインスタンス
+	CTask* mhead;                     //先頭タスクのポインタ
+	std::vector<CTask*> mpTasks;      //キャラクターの数
+	std::vector<CCharacter*> mpCharacters;
+
 public:
+	//コンストラクタ
+	CTaskManager();
+	//デストラクタ
+	~CTaskManager();
+
+	//インスタンスを取得
+	static CTaskManager* Instance();
+	//インスタンスを破棄
+	static void ClearInstance();
+
+	//リストに追加
+	void Add(CTask* task);
+	//リストから削除
+	void Remove(CTask* task);
+	//タスクを削除
+	void Delete(CTask* task);
+	void Delete();
+	//すべてのタスクを削除
+	void AllDelete();
+
+	//描画処理
+	void Render();
+	//更新処理
+	void Update();
+
 	//衝突処理
 	void Collision();
-	//インスタンスの取得
-	static CTaskManager* Instance();
-	//タスクの削除
-	void Delete();
-	//リストから削除
-	//Remove(タスクのポインタ)
-	void Remove(CTask* task);
-	//デストラクタ
-	virtual ~CTaskManager();
-	//リストに追加
-	//Add(タスクのポインタ)
-	void Add(CTask* addTask);
-	//更新
-	void Update();
-	//描画
-	void Render();
-	//デフォルトコンストラクタ
-	CTaskManager();
-protected:
-	CTask mHead;  //先頭タスク
-	CTask mTail;  //最終タスク
-private:
-	//タスクマネージャのインスタンス
-	static CTaskManager* mpInstance;
 };
-
-#endif
