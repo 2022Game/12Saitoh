@@ -22,6 +22,7 @@ void CModelX::Load(char* file)
 		printf("fopen error:%s\n", file);
 		return;
 	}
+	printf("%s\n", file);
 	//ファイルの最後へ移動
 	fseek(fp, 0L, SEEK_END);
 	//ファイルサイズの取得
@@ -35,6 +36,7 @@ void CModelX::Load(char* file)
 	fread(buf, size, 1, fp);
 	//最後に\0を設定する(文字列の終端)
 	buf[size] = '\0';
+	printf("%s\n", buf); //Xファイルの文字列データを出力
 	fclose(fp); //ファイルをクローズする
 
 	SAFE_DELETE_ARRA(buf); //確保した領域を解放する
