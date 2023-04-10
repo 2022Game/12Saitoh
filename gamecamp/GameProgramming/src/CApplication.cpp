@@ -1,19 +1,26 @@
 #include "CApplication.h"
 #include "CRectangle.h"
 
+#define BGM "res\\BGM.wav"
+#define BOSSBGM "res\\BossBGM.wav"
+#define CLEAR "res\\Clear.wav"
+#define OVER "res\\Over.wav"
+#define SE "res\\Sytem_SE.wav"
+
+bool CApplication::sDelete = false;
+int CApplication::sStageCount = 0;
 CTexture CApplication::mTexture;
 
 CApplication::CApplication()
-	: mRb(0)
-	, mMc(0)
-	, mEs(0)
-	, mNc(0)
-	, mIg(0)
-	, mPe(0)
-	, mP(0)
-	, mDic(0)
-	, mScc(0)
-	, mSccc(0)
+	: mpGame(nullptr)
+	, mState()
+	, mInput()
+	, mFont()
+	, mSoundBGM()
+	, mSoundBossBGM()
+	, mSoundClear()
+	, mSoundOver()
+	, mSoundSE()
 {
 }
 
@@ -22,8 +29,19 @@ CTexture* CApplication::Texture()
 	return &mTexture;
 }
 
+bool CApplication::Delete()
+{
+	return sDelete;
+}
+
+int CApplication::StageCount()
+{
+	return sStageCount;
+}
+
 void CApplication::Start()
 {
+	//テクスチャ
 	mTexture.Load("PlayerImage.png");
 	mTexture2.Load("背景(仮) .png");
 	mTexture3.Load("タイトル画面 .png");
@@ -36,32 +54,38 @@ void CApplication::Start()
 	mTexture100.Load("プレイヤーHP.png");
 	mTexture101.Load("MPゲージ.png");
 	mTexture102.Load("プレイヤーMP.png");
+	//フォント
 	mFont.Load("FontWhite.png", 1, 64);
+	//サウンド
+	mSoundBGM.Load(BGM);
+	mSoundBossBGM.Load(BOSSBGM);
+	mSoundClear.Load(CLEAR);
+	mSoundOver.Load(OVER);
+	mSoundSE.Load(SE);
+
 	mState = EState::ESTART;
 	mpGame = new CGame();
 }
 
 void CApplication::Update()
 {
-	if (CGame::Id() == 1)
-	{
-		mDi = 0;
-	}
-	mMm--;
-	mRb--;
 	switch (mState)
 	{
 	case EState::ESTART:	//状態がスタート
 		mpGame->Start();	//スタート画面表示
-		if (mRb < 0)
+		if (mInput.Key(VK_RETURN))
 		{
-			if (mInput.Key(VK_RETURN))
-			{	//状態をプレイ中にする
-				mState = EState::ESTAGE1;
-			}
+			mSoundSE.Play();
+			//状態をプレイ中にする
+			mState = EState::ESTAGE1;
+			sDelete = false;
+			sStageCount = 0;
+			mSoundBGM.Repeat();
 		}
 		break;
 	case EState::ESTAGE1:
+		sDelete = false;
+		sStageCount = 0;
 		mpGame->Stage1();
 		mState = EState::EPLAY;
 	break;
@@ -72,194 +96,89 @@ void CApplication::Update()
 	case EState::EBOSS:
 		mpGame->Boss();
 		mState = EState::EPLAY;
+		sStageCount = 432;
+		mSoundBossBGM.Repeat();
 		break;
 	case EState::EPLAY:
 		mpGame->Update();
-		mScc--;
-		if (mPe == 0)
+		if (CGame::Num() == 0)
 		{
-			if (CPlayer::HP() <= 0)
+			sStageCount++;
+		}
+		if (sStageCount == 200)
+		{
+			mState = EState::ESTAGE2;
+			sStageCount = 201;
+		}
+		else if (sStageCount == 430)
+		{
+			mSoundBGM.Stop();
+			mState = EState::EBOSS;
+			sStageCount = 431;
+		}
+		if (sStageCount >= 470)
+		{
+			//ボスの死亡フラグが立った時
+			if (CBoss::Instance4()->Death() == true)
 			{
-				mPe = 1;
-				mDi = 1;
-				mBd = 2;
-				mScc = 70;
+				mSoundBGM.Stop();
+				mSoundBossBGM.Stop();
+				mSoundClear.Play();
+				mState = EState::ECLEAR;
+				sDelete = true;
 			}
 		}
-		if (mScc == 5)
+		//プレイヤーが死亡したらゲームオーバー処理に移行
+		if (CPlayer::Instance()->BoolDeath() == true)
 		{
-			mPd = 1;
-		}
-		if (mScc == 0)
-		{
+			mSoundBGM.Stop();
+			mSoundBossBGM.Stop();
+			mSoundOver.Play();
 			mState = EState::EOVER;
-		}
-		if (CPlayer::HP() > 0)
-		{
-			if (CItem::Ih() == 1)
-			{
-				if (mMc == 1)
-				{
-					mMc = 2;
-				}
-
-			}
-			if (mMc == 2)
-			{
-				CApplication::mMm = 200;
-				CApplication::mMu = 0;
-				mMc = 3;
-				mEs = 2;
-			}
-			if (mEs == 2)
-			{
-				if (CApplication::mMm < 0)
-				{
-					mState = EState::EBOSS;
-					mNc = 2;
-					mEs = 3;
-				}
-			}
-			if (mMu == 1)
-			{
-				if (CGame::Num() == 0)
-				{
-					mSi = 1;
-				}
-			}
-			if (CGame::Id() == 1)
-			{
-				mSi = 2;
-			}
-			if (CGame::Num() > 0)
-			{
-				mP = 1;
-			}
-			if (mP == 1)
-			{
-				if (CGame::Num() == 0)
-				{
-					if (mMc == 0)
-					{
-						CApplication::mMm = 200;
-						mEs = 1;
-						mMc = 1;
-					}
-					if (mEs == 1)
-					{
-						if (CApplication::mMm == 0)
-						{
-							CApplication::mMu = 1;
-
-							mState = EState::ESTAGE2;
-						}
-					}
-				}
-			}
-			if (mBd == 1)
-			{
-				if (CPlayer::HP() > 0)
-				{
-					if (CBoss::Num() == 0)
-					{
-						if (mSccc == 0)
-						{
-							mPd = 1;
-							mDi = 1;
-							mScc = 5;
-							mSccc = 1;
-						}
-
-					}
-				}
-				if (mScc == 0)
-				{
-					mpGame->Clear();
-					mState = EState::ECLEAR;
-				}
-			}
-			if (mMc == 3)
-			{
-				if (CBoss::Num() == 1)
-				{
-					mBd = 1;
-				}
-			}
+			sDelete = true;
 		}
 		break;
 
 	case EState::EOVER:
 		//ゲームオーバー処理
 		mpGame->Over();
-		if (mDic == 0)
-		{
-			mDi = 1;
-		}
-		if (mDi == 1)
-		{
-			mDi = 0;
-			mDic = 1;
-		}
 		//エンターキー入力時
 		if (mInput.Key('N'))
-		{	//ゲームのインスタンス削除
+		{	
+			mSoundSE.Play();
+			mSoundOver.Stop();
+			//ゲームのインスタンス削除
 			delete mpGame;
+			mpGame = nullptr;
 			//ゲームのインスタンス生成
 			mpGame = new CGame();
 			//状態をスタートにする
 			mState = EState::ESTART;
-			mRb = 10;
-			mMc = 0;
-			mNc = 0;
-			mEs = 0;
-			mMu = 0;
-			mBd = 0;
-			mPe = 0;
-			mP = 0;
-			mScc = 0;
-			mMm = -1;
-			mSccc = 0;
 		}
 		else if (mInput.Key('Y'))
 		{
+			mSoundSE.Play();
+			mSoundOver.Stop();
 			//ゲームのインスタンス削除
 			delete mpGame;
+			mpGame = nullptr;
 			//ゲームのインスタンス生成
 			mpGame = new CGame();
 			//状態をスタートにする
 			mState = EState::ESTAGE1;
-			mRb = 10;
-			mMc = 0;
-			mNc = 0;
-			mEs = 0;
-			mMu = 0;
-			mBd = 0;
-			mPe = 0;
-			mP = 0;
-			mMm = -1;
-			mSccc = 0;
-			mPd = 0;
+			mSoundBGM.Repeat();
 		}
 		break;
 	case EState::ECLEAR:
 		//ゲームクリア処理
 		mpGame->Clear();
-		mDi = 1;
 		if (mInput.Key(VK_RETURN))
 		{
+			mSoundSE.Play();
+			mSoundClear.Stop();
 			delete mpGame;
 			mpGame = new CGame();
 			mState = EState::ESTART;
-			mRb = 10;
-			mMc = 0;
-			mNc = 0;
-			mEs = 0;
-			mMu = 0;
-			mBd = 0;
-			mPe = 0;
-			mP = 0;
-			mDi = 0;
-			mPd = 0;
 		}
 		break;
 	}
@@ -318,34 +237,4 @@ CTexture CApplication::mTexture102;
 CTexture* CApplication::Texture102()
 {
 	return &mTexture102;
-}
-int CApplication::mMm = 0;
-int CApplication::Mm()
-{
-	return mMm;
-}
-int CApplication::mMu = 0;
-int CApplication::Mu()
-{
-	return mMu;
-}
-int CApplication::mSi = 0;
-int CApplication::Si()
-{
-	return mSi;
-}
-int CApplication::mDi = 0;
-int CApplication::Di()
-{
-	return mDi;
-}
-int CApplication::mPd = 0;
-int CApplication::Pd()
-{
-	return mPd;
-}
-int CApplication::mBd = 0;
-int CApplication::Bd()
-{
-	return mBd;
 }

@@ -2,10 +2,13 @@
 #include "CApplication.h"
 void CBackGround2::Update()
 {
-	if (CApplication::Mm() > 0)
+	if (CGame::Num() == 0)
 	{
-		float x = X() - 1.5f;
-		X(x);
+		if (CApplication::StageCount() <= 430)
+		{
+			float x = X() - 1.5f;
+			X(x);
+		}
 	}
 }
 CBackGround2::CBackGround2(float x, float y, float w, float h, float l, float r, float b, float t, CTexture* pt)

@@ -2,6 +2,7 @@
 #include "CCharacter.h"
 #include "CInput.h"
 #include "CMagicBullet.h"
+#include "CSound.h"
 /*
 プレイヤークラス
 キャラクタスを継承
@@ -16,10 +17,11 @@ private:
 	static int sCoolTime;        //スタミナのクールタイム
 
 	int mInvincible;             //無敵カウンタ
-	int mAnimationCount;         //アニメーションカウンタ
 
 	float mJumpY;                //プレイヤーのジャンプ時のY座標
+	bool mDeath;                 //死亡判定
 	CInput mInput;               //キー入力判定
+	CSound mSoundRan;            //走る音
 	CMagicBullet* mpMagicBullet;
 
 public:
@@ -54,4 +56,6 @@ public:
 	void Damage();
 	//死亡処理
 	void Death();
+	//死亡判定を取得
+	bool BoolDeath();
 };

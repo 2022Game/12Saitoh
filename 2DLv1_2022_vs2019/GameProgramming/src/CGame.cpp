@@ -25,9 +25,12 @@ CGame::CGame()
 	, mCdy(0)
 	, mpPlayer(0)
 {
-	mpUi = new CUi();  //UIクラスのインスタンスの生成
+	mpUi = new CUi(); //UIクラスのインスタンスの生成
 	//テクスチャの入力
 	CApplication::Texture()->Load(TEXTURE);
+	//空のテクスチャの入力
+	CApplication::Texture2()->Load(SKYTEXTURE);
+	CApplication::Texture2()->SetParts(1, 1);
 	//定数の定義
 	const int ROWS = 23; //行数
 	const int COLS =162; //列数
@@ -225,16 +228,6 @@ CGame::CGame()
 			{
 				CApplication::CharacterManager()->Add(
 					new CBlackBlock(
-						TIPSIZE + TIPSIZE * 2 * col,
-						TIPSIZE + TIPSIZE * 2 * row,
-						TIPSIZE, TIPSIZE,
-						CApplication::Texture()));
-			}
-			//16の時、黒背景を追加して、キャラクタマネージャに追加
-			if (map[row][col] == 16)
-			{
-				CApplication::CharacterManager()->Add(
-					new CSky(
 						TIPSIZE + TIPSIZE * 2 * col,
 						TIPSIZE + TIPSIZE * 2 * row,
 						TIPSIZE, TIPSIZE,

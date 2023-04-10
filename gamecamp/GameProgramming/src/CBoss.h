@@ -17,8 +17,8 @@ class CBoss : public CCharacter
 {
 	friend CBossAttackBox;
 	friend CBossAttackBox2;
-protected:
 public:
+	bool Death(); //死亡フラグを取得
 	EState State();	//状態を取得する
 	bool Enabled(); //消す
 	static CBoss* Instance4();
@@ -60,5 +60,6 @@ private:
 	float mBVx;	//X軸速度
 	float mBVy;	//Y軸速度
 	float mBLR;
+	bool mDeath; //死亡時のフラグ
 	CInput mInput;
 };

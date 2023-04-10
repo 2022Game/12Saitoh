@@ -31,12 +31,13 @@ public:
 
 private:
 	CTexture* mpTexture;
-	int mLeft,	mRight,mBottom,mTop;
+	int mLeft,mRight,mBottom,mTop;
 protected:
 	EState mState;
-	float mVx;  //X軸速度
-	float mVy;  //Y軸速度
-	/*bool mEnabled;*/
+	float mVx;             //X軸速度
+	float mVy;             //Y軸速度
+	int mAnimationCount;   //アニメーションカウンタ
+	int mSoundCount;       //音声カウンタ
 
 public:
 	//コンストラクタ

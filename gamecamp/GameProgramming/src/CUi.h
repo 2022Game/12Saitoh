@@ -57,4 +57,5 @@ public:
 	//ƒŠƒUƒ‹ƒg
 	void DrawResult();
 	void Render();
+	void BossRender();
 };

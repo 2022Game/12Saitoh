@@ -70,7 +70,7 @@ public:
 	*/
 	bool Load(char* filename)
 	{
-		return Load(filename, 1.0f);
+		return Load(filename, 0.35f);
 	}
 
 	bool Load(char	*filename, float volume)

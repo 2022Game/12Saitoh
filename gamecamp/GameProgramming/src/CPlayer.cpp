@@ -1,13 +1,14 @@
 #include "CPlayer.h"
 #include "CApplication.h"
+#include "CBoss.h"
 
 #define DEFAULT  0, 200, 400, 200   //アイドリングテクスチャ(右向き)
-
 #define JUMPV0 30               	//ジャンプの初速
 #define GRAVITY 2.0f	            //重力加速度
-
 #define PLAYERHP 10                 //プレイヤーのHP
 #define STAMINA 100                 //プレイヤーのスタミナ
+#define RAN "res\\Ran.wav"
+
 
 //初期化
 CPlayer* CPlayer::spinstance = nullptr;
@@ -19,9 +20,10 @@ int CPlayer::sCoolTime = 0;
 CPlayer::CPlayer(float x, float y, float w, float h, CTexture* pt)
 	: CCharacter((int)ETaskPriority::ECharacter)
 	, mInvincible(0)
-	, mAnimationCount(0)
 	, mJumpY(0.0f)
+	, mDeath(false)
 	, mpMagicBullet(nullptr)
+	, mSoundRan()
 {
 	Set(x, y, w, h );
 	Texture(pt, DEFAULT);
@@ -29,6 +31,7 @@ CPlayer::CPlayer(float x, float y, float w, float h, CTexture* pt)
 	mState = EState::EIDLING;
 	sHp = PLAYERHP;
 	sStamina = STAMINA;
+	mSoundRan.Load(RAN);
 	spinstance = this; 
 }
 
@@ -66,7 +69,9 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 		if (CRectangle::Collision(o, &x, &y))
 		{
 			//無敵状態以外の時
-			if (mState != EState::EJUMP && mState != EState::EDAMAGE)
+			if (mState != EState::EJUMP &&
+				mState != EState::EDAMAGE &&
+				mState != EState::EDEATH)
 			{
 				sHp--;
 				mState = EState::EDAMAGE;
@@ -76,7 +81,9 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EATTACK2:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-			if (mState != EState::EJUMP && mState != EState::EDAMAGE)
+			if (mState != EState::EJUMP &&
+				mState != EState::EDAMAGE &&
+				mState != EState::EDEATH)
 			{
 				sHp = sHp - 2;
 				mState = EState::EDAMAGE;
@@ -88,7 +95,6 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 		{
 			if (mState != EState::EJUMP)
 			{
-				X(X() + x);
 				Y(Y() + y);
 			}
 		}
@@ -102,7 +108,7 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EITEM:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-				sHp = 10;
+			sHp = sHp + 3;
 		}
 		break;
 	case ETag::EZERO:
@@ -113,6 +119,8 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 //更新処理
 void CPlayer::Update()
 {
+	if (CApplication::Delete() == true)
+		mEnabled = false;
 	switch (State())
 	{
 		//移動状態
@@ -147,22 +155,6 @@ void CPlayer::Update()
 		break;
 	}
 
-//デバッグ用
-if (mInput.Key('L') == true)
-{
-   	mVx = -VELOCITY - 1;
-	X(X() + mVx);
-}
-//デバッグ用
-if (mInput.Key('M'))
-{
-	if (mState != EState::EJUMP && mState != EState::EDAMAGE)
-	{
-		sHp = 0;
-		mState = EState::EDAMAGE;
-	}
-}
-
 	//HPが0になると死亡状態にする
 	if (sHp <= 0)
 	{
@@ -181,10 +173,7 @@ if (mInput.Key('M'))
 	{
 		sStamina = 0;
 	}
-	if (CApplication::Pd() == 1)
-	{
-		mEnabled = false;
-	}
+
 	CCharacter::Update();
 }
 
@@ -197,6 +186,10 @@ void CPlayer::Move()
 	left = (mAnimationCount / 8) * 200;
 	right = left + 200;
 	mAnimationCount++;
+	mSoundCount %= 35;
+	mSoundCount++;
+	if (mSoundCount == 10)
+		mSoundRan.Play();
 	//右向き
 	if (mVx >= 0)
 	{
@@ -206,35 +199,27 @@ void CPlayer::Move()
 	{
 		Texture(Texture(), right, left, 200, 0);
 	}
-	if (CApplication::Mm() < 0)
+	//X軸方向移動
+	if (mInput.Key('A'))
 	{
-		//X軸方向移動
-		if (mInput.Key('A'))
-		{
-			mVx = -VELOCITY - 1;
-			X(X() + mVx);
-		}
-		if (mInput.Key('D'))
-		{
-			mVx = VELOCITY + 1;
-			X(X() + mVx);
-		}
-		//Y軸方向移動
-		if (mInput.Key('W'))
-		{
-			mVy = VELOCITY + 1;
-			Y(Y() + mVy);
-		}
-		if (mInput.Key('S'))
-		{
-			mVy = VELOCITY - 1;
-			Y(Y() - mVy);
-		}
-	}
-	if (CApplication::Mm() > 0)
-	{
-		mVx =  + 000000000.1;
+		mVx = -VELOCITY - 1;
 		X(X() + mVx);
+	}
+	if (mInput.Key('D'))
+	{
+		mVx = VELOCITY + 1;
+		X(X() + mVx);
+	}
+	//Y軸方向移動
+	if (mInput.Key('W'))
+	{
+		mVy = VELOCITY + 1;
+		Y(Y() + mVy);
+	}
+	if (mInput.Key('S'))
+	{
+		mVy = VELOCITY - 1;
+		Y(Y() - mVy);	
 	}
 	//攻撃
 	if (mInput.Key('K'))
@@ -243,6 +228,7 @@ void CPlayer::Move()
 		{
 			mState = EState::EATTACK;
 			mAnimationCount = 0;
+			mSoundCount = 0;
 		}
 	}
 	//ジャンプ
@@ -254,19 +240,18 @@ void CPlayer::Move()
 			mVy = JUMPV0;
 			mState = EState::EJUMP;
 			mAnimationCount = 0;
+			mSoundCount = 0;
 			sStamina = sStamina - 5;
 		}
 	}
-	if (CApplication::Mm() < 0)
+	//何も入力されていない時アイドリング状態にする
+	if (mInput.Key('W') == false && mInput.Key('A') == false &&
+		mInput.Key('S') == false && mInput.Key('D') == false &&
+		mInput.Key('J') == false && mInput.Key('K') == false)
 	{
-		//何も入力されていない時アイドリング状態にする
-		if (mInput.Key('W') == false && mInput.Key('A') == false &&
-			mInput.Key('S') == false && mInput.Key('D') == false &&
-			mInput.Key('J') == false && mInput.Key('K') == false)
-		{
-			mState = EState::EIDLING;
-			mAnimationCount = 0;
-		}
+		mState = EState::EIDLING;
+		mAnimationCount = 0;
+		mSoundCount = 0;
 	}
 }
 
@@ -331,8 +316,7 @@ void CPlayer::Idling()
 
 	//キー入力で各状態に移行する
 	if (mInput.Key('W') || mInput.Key('A') ||
-		mInput.Key('S') || mInput.Key('D') ||
-		CApplication::Mm() > 0)
+		mInput.Key('S') || mInput.Key('D'))
 	{
 		mState = EState::EMOVE;
 		mAnimationCount = 0;
@@ -453,11 +437,21 @@ void CPlayer::Death()
 {
 	float left;
 	float right;
-	if (mAnimationCount <= 60)
+	if (mAnimationCount <= 89)
 	{
 		mAnimationCount++;
+	}
+	else
+	{
+		mDeath = true;
 	}
 	left = (mAnimationCount / 60) * 200;
 	right = left + 200;
 	Texture(Texture(), left, right, 1200, 1000);
+}
+
+//死亡判定を取得
+bool CPlayer::BoolDeath()
+{
+	return mDeath;
 }

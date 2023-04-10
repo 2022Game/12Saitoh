@@ -24,10 +24,6 @@ CBossAttackBox2::~CBossAttackBox2()
 //XVˆ—
 void CBossAttackBox2::Update()
 {
-	if (CApplication::Di() == 1)
-	{
-		mEnabled = false;
-	}
 	if (CBoss::Instance4()->mVx >= 0)
 	{
 		Texture(Texture(), BOSSALL);

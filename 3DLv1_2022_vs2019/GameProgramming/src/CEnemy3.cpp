@@ -75,6 +75,7 @@ void CEnemy3::Update()
 					bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
 					bullet->Rotation(mRotation);
 					bullet->Update();
+
 				}
 			}
 		}
@@ -164,9 +165,9 @@ void CEnemy3::Collision(CCollider* m, CCollider* o)
 		}
 		break;
 	}
-}
+};
 
-void CEnemy3:: Collision()
+void CEnemy3::Collision()
 {
 	//コライダの優先度変更
 	mCollider.ChangePriority();

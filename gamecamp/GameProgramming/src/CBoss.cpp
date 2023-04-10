@@ -65,35 +65,6 @@ void CBoss::Collision(CCharacter* m, CCharacter* o)
 	float x, y;
 	switch (o->Tag())
 	{
-		//case ETag::EPLAYER:
-		//	//ê‹ÇËï‘ÇµÇ…ìñÇΩÇ¡ÇΩéû
-		//	if (mState != EState::EDEATH)
-		//	{
-		//		if (CRectangle::Collision(o, &x, &y))
-		//		{
-		//			if (mBossInvincible <= 0)
-		//			{
-		//				mBossInvincible = 60;
-		//				if (mState != EState::EDAMAGE)
-		//				{
-		//					mBossTime2 = 60;
-		//					if (mBVx < 0) { Texture(Texture(), MU); }
-		//					if (mBVx > 0) { Texture(Texture(), MU); }
-		//					sBEhp = sBEhp - 100;
-		//					if (sBEhp <= 0)
-		//					{
-		//						mBossTime3 = 40;
-		//						mState = EState::EDEATH;
-		//					}
-		//					if (mState != EState::EATTACK && mState != EState::EATTACK2)
-		//					{
-		//						mState = EState::EDAMAGE;
-		//					}
-		//				}
-		//			}
-		//		}
-		break;
-		//}
 	case ETag::EBULLET:
 		if (mState != EState::EDEATH && mState != EState::EATTACK2)
 		{
@@ -148,6 +119,7 @@ CBoss::CBoss(float x, float y, float w, float h, CTexture* pt)
 	, mBossTime2(0)
 	, mBossTime3(0)
 	, mBossTime4(0)
+	, mDeath(false)
 {
 	mTexture8.Load("É{ÉX3.png");
 	Set(x, y, w, h);
@@ -164,14 +136,15 @@ CBoss::CBoss(float x, float y, float w, float h, CTexture* pt)
 	mFlg4 = 0;
 	spInstance4 = this;
 	sNum++;
+	mDeath = false;
 }
 
 void CBoss::Update()
 {
-	if (CApplication::Bd() == 2)
+	if (CApplication::Delete() == true)
 	{
-		mEnabled = false;
 		sNum = 0;
+		mEnabled = false;
 	}
 	if (mBossInvincible > 0)
 	{
@@ -219,10 +192,6 @@ void CBoss::Update()
 	switch (mState)
 	{
 	case EState::EDEATH://éÄñSéû
-		/*if (mBossTime3 >= 0)
-		{
-			mBossTime3--;
-		}*/
 		if (mBossTime3 == 39)
 		{
 			if (mBVx < 0) { Texture(Texture(), BOSSDTL); }
@@ -230,17 +199,12 @@ void CBoss::Update()
 		}
 		if (mBossTime3 == 0)
 		{
-			/*Y(Y() + 1000);*/
-			mEnabled = false;
-			Texture(Texture(), 0, 0, 0, 0);//âº
+			//Texture(Texture(), 0, 0, 0, 0);//âº
 			sNum--;
+			mDeath = true;
 		}
 		break;
 	case EState::EATTACK: //çUåÇéû
-		/*if (mBossTime >= 0)
-		{
-			mBossTime--;
-		}*/
 		if (mBossTime == 59)
 		{
 			if (mBVx < 0)
@@ -395,10 +359,6 @@ void CBoss::Update()
 			mBossTime3 = 40;
 			mState = EState::EDEATH;
 		}
-		/*if (mBossTime2 >= 0)
-		{
-			mBossTime2--;
-		}*/
 		if (mBossTime2 == 29)
 		{
 			if (mBVx < 0) { Texture(Texture(), BOSSDAL); }
@@ -461,7 +421,7 @@ void CBoss::Update()
 			if (CPlayer::Instance()->State() != EState::EJUMP)
 			{
 				Y(Y() + mBVy);
-				if (Z() < CPlayer::Instance()->Z() + 100)
+				if (Z() < CPlayer::Instance()->Z()-20)
 				{
 					if (mBVy < 0)
 						mBVy = -mBVy;
@@ -473,23 +433,6 @@ void CBoss::Update()
 				}
 			}
 		}
-		//if (Y() != CPlayer::Instance()->Y())
-		//{
-		//	if (CPlayer::Instance()->State() != EState::EJUMP)
-		//	{
-		//		/*Y(Y() + mBVy);*/
-		//		/*if (Z() < CPlayer::Instance()->Z())
-		//		{
-		//			if (mBVy < 0)
-		//				mBVy = -mBVy;
-		//		}
-		//		else
-		//		{
-		//			if (mBVy > 0)
-		//				mBVy = -mBVy;
-		//		}*/
-		//	}
-		//}
 		const int PITCH = 64;//âÊëúÇêÿÇËë÷Ç¶ÇÈä‘äu
 		if ((int)X() % PITCH < PITCH / 2)
 		{
@@ -514,6 +457,12 @@ void CBoss::Update()
 			}
 		}
 	}
+}
+
+//éÄñSÉtÉâÉOÇéÊìæ
+bool CBoss::Death()
+{
+	return mDeath;
 }
 
 CTexture* CBoss::Texture8()

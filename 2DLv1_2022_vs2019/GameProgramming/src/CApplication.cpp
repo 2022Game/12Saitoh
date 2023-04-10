@@ -3,26 +3,17 @@
 
 //クラスのstatic変数
 CTexture CApplication::mTexture;
+CTexture CApplication::mTexture2;
 CCharacterManager CApplication::mCharacterManager;
 
-#define SOUND_BGM /*"res\\mario.wav"*/"res\\zyopurin.wav" //BGM音声ファイル
+#define SOUND_BGM "res\\BGM.wav"//"res\\zyopurin.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
-#define SOUND_CLEAR "res\\mclear.wav" //ゲームクリア音声ファイル
-#define CLEAR 20
-
-CCharacterManager* CApplication::CharacterManager()
-{
-	return &mCharacterManager;
-}
-
-CTexture* CApplication::Texture()
-{
-	return &mTexture;
-}
+#define SOUND_CLEAR "res\\Clear.wav" //ゲームクリア音声ファイル
+#define CLEAR 
 
 void CApplication::Start()
 {
-	clear = CLEAR;
+	clear = CLEAR
 	mSoundBgm.Load(SOUND_BGM);
 	mSoundOver.Load(SOUND_OVER);
 	mSoundClear.Load(SOUND_CLEAR);
@@ -90,4 +81,18 @@ void CApplication::Update()
 		}
 		break;
 	}
+}
+
+CCharacterManager* CApplication::CharacterManager()
+{
+	return &mCharacterManager;
+}
+
+CTexture* CApplication::Texture()
+{
+	return &mTexture;
+}
+CTexture* CApplication::Texture2()
+{
+	return &mTexture2;
 }

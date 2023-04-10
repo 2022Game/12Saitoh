@@ -7,7 +7,7 @@
 CBlock::CBlock(float x, float y, float w, float h, CTexture* pt)
 	:CCharacter((int)ETaskPriority::EBLOCK)
 {
-	Set(x, y, w, h);
+	Set(x, y, w, h*9);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EBLOCK;
 }

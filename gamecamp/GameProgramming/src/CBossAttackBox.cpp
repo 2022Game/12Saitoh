@@ -21,9 +21,5 @@ CBossAttackBox::~CBossAttackBox()
 //XVˆ—
 void CBossAttackBox::Update()
 {
-	if (CApplication::Di() == 1)
-	{
-		mEnabled = false;
-	}
 	CCharacter::Update();
 }

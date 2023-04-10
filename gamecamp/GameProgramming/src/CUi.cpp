@@ -85,8 +85,6 @@ void CUi::DrawResult()
 
 void CUi::Render()
 {
-	if (CApplication::Di() == 0)
-	{
 		char str[32];
 		sprintf(str, "%03d", mTime);
 		mFont.Draw(1200, 770, 16, 28, str);
@@ -798,264 +796,261 @@ void CUi::Render()
 			mGage.Set(209, 700, 198, 30);
 			mGage.Render();
 		}
-		//ボスHP
-		if (CApplication::Bd() == 1)
-		{
-			if (CBoss::BEhp() == 1300)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(690, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(750, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(810, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(870, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(930, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(990, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 1200)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(690, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(750, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(810, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(870, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(930, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 1100)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(690, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(750, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(810, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(870, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 1000)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(690, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(750, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(810, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 900)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(690, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(750, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 800)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(690, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 700)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(630, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 600)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(570, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 500)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(510, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 400)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(450, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 300)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(390, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 200)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-				mBossHp.Set(330, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CBoss::BEhp() == 100)
-			{
-				mBossHpGage.Set(630, 30, 415, 30);
-				mBossHpGage.Render();
-				mBossHp.Set(270, 30, 30, 18);
-				mBossHp.Render();
-			}
-			if (CApplication::Bd() == 1)
-			{
-				if (CBoss::BEhp() == 0)
-				{
-					mBossHpGage.Set(630, 30, 415, 30);
-					mBossHpGage.Render();
-				}
-			}
-		}
+}
+
+void CUi::BossRender()
+{
+	//ボスHP
+	if (CBoss::BEhp() == 1300)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(690, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(750, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(810, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(870, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(930, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(990, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 1200)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(690, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(750, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(810, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(870, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(930, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 1100)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(690, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(750, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(810, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(870, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 1000)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(690, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(750, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(810, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 900)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(690, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(750, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 800)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(690, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 700)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(630, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 600)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(570, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 500)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(510, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 400)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(450, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 300)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(390, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 200)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+		mBossHp.Set(330, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 100)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
+		mBossHp.Set(270, 30, 30, 18);
+		mBossHp.Render();
+	}
+	if (CBoss::BEhp() == 0)
+	{
+		mBossHpGage.Set(630, 30, 415, 30);
+		mBossHpGage.Render();
 	}
 }

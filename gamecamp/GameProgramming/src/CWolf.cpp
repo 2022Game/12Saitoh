@@ -67,36 +67,10 @@ void CWolf::Collision(CCharacter* m, CCharacter* o)
 	switch (o->Tag())
 	{
 		case ETag::EPLAYER:
-			/*if (mState != EState::EDEATH)
-			{
-				if (CRectangle::Collision(o, &x, &y))
-				{
-					if (mWolfInvincible <= 0)
-					{
-						mWolfInvincible = 60;
-						if (mState != EState::EDAMAGE)
-						{
-							if (mWVx < 0) { Texture(Texture(), MU); }
-							if (mWVx > 0) { Texture(Texture(), MU); }
-							mWolfTime = 60;
-							sWEhp = sWEhp - 100;
-							if (sWEhp <= 0)
-							{
-								mWolfTime3 = 20;
-								mState = EState::EDEATH;
-							}
-							if (mState != EState::EATTACK)
-							{
-								mState = EState::EDAMAGE;
-							}
-						}
-					}
-				}
-			}*/
 				break;
 	case ETag::EBULLET: //‰¼‚Ì–‚–@
 		if (CRectangle::Collision(o, &x, &y))
-			{
+		{
 			if (mState != EState::EDEATH)
 			{
 				if (mWolfInvincible <= 0)
@@ -120,50 +94,20 @@ void CWolf::Collision(CCharacter* m, CCharacter* o)
 					}
 				}
 			}
+		}
 			break;
 	case ETag::EENEMY:
-		/*if (mState != EState::EATTACK)
-		{*/
-			if (CRectangle::Collision(o, &x, &y))
-			{
-				X(X() + x);
-				Y(Y() + y);
-			}
-		/*}*/
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+		}
 		break;
 	case ETag::EBLOCK:
 		if (CRectangle::Collision(o, &x, &y))
 		{
 			X(X() + x);
 			Y(Y() + y);
-		}
-			//case ETag::EDAGEKI: //‰¼‚Ì‘ÅŒ‚
-			// // if (mState != EState::EDEATH)
-			//{
-		//	if (CRectangle::Collision(o, &x, &y))
-		//	{
-		//		if (mWolfInvincible <= 0)
-		//		{
-		//			mWolfInvincible = 60;
-		//			if (mState != EState::EDAMAGE)
-		//			{
-		// //	//     if (mWVx < 0) { Texture(Texture(), MU); }
-			//	//	   if (mWVx > 0) { Texture(Texture(), MU); }
-		//				mWolfTime = 60;
-		//				sWEhp = sWEhp - 25;
-		//  if (sWEhp <= 0)
-			//	/*{
-			//		mWolfTime3 = 20;
-			//		mState = EState::EDEATH;
-			//	}*/
-		//				if (mState != EState::EATTACK)
-		//				{
-		//					mState = EState::EDAMAGE;
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
 		}
 	}
 }
@@ -191,11 +135,12 @@ CWolf::CWolf(float x, float y, float w, float h, CTexture* pt)
 
 void CWolf::Update()
 {
-	if (CApplication::Di() == 1)
+	if (CApplication::Delete() == true)
 	{
-		mEnabled = false;
 		sNum = 0;
+		mEnabled = false;
 	}
+
 	if (mWolfTime2 >= 0)
 	{
 		mWolfTime2--;

@@ -11,13 +11,10 @@
 class CSlime : public CCharacter
 {
 	friend CSlimeAttackBox;
-protected:
 public:
 	/*EState State();*/	//ó‘Ô‚ğæ“¾‚·‚é
 	static CSlime* Instance2();
 	int SEhp();
-	//“G‚Ì”‚ğİ’è
-	static void Num(int num);
 	//“G‚Ì”‚ğæ“¾
 	static int Num();
 	//Õ“Ëˆ—2

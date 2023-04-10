@@ -21,9 +21,5 @@ CWolfAttackBox::~CWolfAttackBox()
 //XVˆ—
 void CWolfAttackBox::Update()
 {
-	if (CApplication::Di() == 1)
-	{
-		mEnabled = false;
-	}
 	CCharacter::Update();
 }

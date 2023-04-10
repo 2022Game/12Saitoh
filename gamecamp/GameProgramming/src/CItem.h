@@ -5,12 +5,14 @@ class CItem : public CCharacter
 {
 private:
 	static int mIh;
+	static int sNum; //アイテム数
 public:
 	//コンストラクタ
 	CItem(float x, float y, float w, float h, CTexture* pt);
 	static int Ih();
-	//衝突処理2
-	void Collision();
+	//アイテム数を取得
+	static int Num();
+
 	//衝突処理4
 	void Collision(CCharacter* m, CCharacter* o);
 

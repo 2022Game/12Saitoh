@@ -82,7 +82,7 @@ void CPlayer2::Update()
 	}
 	else
 	{
-		const int PITCH = 100;  //‰æ‘œ‚ğØ‚è‘Ö‚¦‚éŠÔŠu
+		const int PITCH = 150;  //‰æ‘œ‚ğØ‚è‘Ö‚¦‚éŠÔŠu
 		if ((int)X() % PITCH < PITCH / 2)
 			if (mVx < 0.0f)  //¶‚ÖˆÚ“®
 			{
@@ -289,7 +289,7 @@ void CPlayer2::Jump()
 		{
 			mVy = JUMPV0;
 			mSoundJump.Play();
-			interval = 30;
+			interval = 10;
 		}
 	}
 }

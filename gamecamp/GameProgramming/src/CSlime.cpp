@@ -53,11 +53,6 @@ int CSlime::SEhp()
 	return sSEhp;
 }
 
-void CSlime::Num(int num)
-{
-	sNum = num;
-}
-
 int CSlime::Num()
 {
 	return sNum;
@@ -75,31 +70,6 @@ void CSlime::Collision(CCharacter* m, CCharacter* o)
 	switch (o->Tag())
 	{
 	case ETag::EPLAYER:
-		/*if (mState != EState::EDEATH)
-		{
-			if (CRectangle::Collision(o, &x, &y))
-			{
-				if (mSlimeInvincible <= 0)
-				{
-					mSlimeInvincible = 60;
-					if (mState != EState::EDAMAGE)
-					{
-						mSlimeTime = 60;
-						if (mSVx < 0) { Texture(Texture(), MU); }
-						if (mSVx > 0) { Texture(Texture(), MU); }
-						sSEhp = sSEhp - 100;
-						if (sSEhp <= 0)
-						{
-							mSlimeTime4 = 40;
-							mState = EState::EDEATH;
-						}
-						if (mState != EState::EATTACK)
-						{
-							mState = EState::EDAMAGE;
-						}
-					}
-				}
-			}*/
 		break;
 	case ETag::EBULLET: //–‚–@
 		if (mState != EState::EDEATH)
@@ -146,34 +116,6 @@ void CSlime::Collision(CCharacter* m, CCharacter* o)
 			Y(Y() + y);
 		}
 		break;
-			//break;
-			//case ETag::EDAGEKI: //‰¼‚Ì‘ÅŒ‚
-			// /*if (mState != EState::EDEATH)
-			//{
-		//	if (CRectangle::Collision(o, &x, &y))
-		//	{
-		//		if (mSlimeInvincible <= 0)
-		//		{
-		//			mSlimeInvincible = 60;
-		//			if (mState != EState::EDAMAGE)
-		//			{
-		// if (mSVx < 0) { Texture(Texture(), MU); }
-				//if (mSVx > 0) { Texture(Texture(), MU); }
-		//				mSlimeTime = 60;
-		//				sSEhp = sSEhp - 25;
-		// if (sSEhp <= 0)
-				/*{
-					mSlimeTime4 = 40;
-					mState = EState::EDEATH;
-				}*/
-				//				if (mState != EState::EATTACK)
-				//				{
-				//					mState = EState::EDAMAGE;
-				//				}
-				//			}
-				//		}
-				//	}
-					//}
 	}
 }
 
@@ -200,11 +142,12 @@ CSlime::CSlime(float x, float y, float w, float h, CTexture* pt)
 
 void CSlime::Update()
 {
-	if (CApplication::Di() == 1)
+	if (CApplication::Delete() == true)
 	{
 		sNum = 0;
 		mEnabled = false;
 	}
+
 	if (mSlimeTime > 0)
 	{
 		mSlimeTime--;
@@ -409,8 +352,7 @@ void CSlime::Update()
 				Texture(Texture(), SLIMEDWL);
 			}
 		}
-		/*if (Y() + 40 < CPlayer::Instance ()->Y())
-			{*/Y(Y() + mSVy);
+		Y(Y() + mSVy);
 			if (Y() < CPlayer::Instance()->Y())
 			{
 				if (mSVy < 0)

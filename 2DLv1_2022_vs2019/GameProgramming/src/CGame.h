@@ -4,6 +4,7 @@
 
 //定数の定義
 #define TEXTURE "image.png" //テクスチャのファイル名
+#define SKYTEXTURE "sky.png" //空のテクスチャファイル名
 #define TIPSIZE 30.0f //マップ要素のサイズ
 /*
 * CGameクラス

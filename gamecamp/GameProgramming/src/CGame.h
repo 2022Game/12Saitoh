@@ -35,20 +35,19 @@ private:
 	CBackGround4* mpBackGround4;
 	CHeart* mpHeart;
 	CInput mInput;
+	CUi* mpUi;
 
-	int mCdx, mCdy;    //カメラとプレイヤーの座標の差分
-	void CameraSet();  //カメラ設定
-	int mTime; //経過時間
-	int mH;
-	int mCt;
-	int mEs;
-	static int mId;
-	static int mNum;
-	CUi* mpUi;         //UIクラスのポインタ
+	int mCdx, mCdy;      //カメラとプレイヤーの座標の差分
+	int mTime;           //経過時間
+	static int sNum;     //敵の数
+	static int sItemNum; //アイテムの数
 
 public:
-	static int Id();
+	//アイテムの数を取得
+	static int ItemuNum();
+	//敵の数を取得
 	static int Num();
+
 	//コンストラクタ
 	CGame();
 	//デストラクタ
@@ -62,11 +61,11 @@ public:
 
 	//スタート処理
 	void Start();
-	//Stage1
+	//ステージ
 	void Stage1();
 	void Stage2();
 	void Boss();
-
+	void SetItem();
 	//更新処理
 	void Update();
 };

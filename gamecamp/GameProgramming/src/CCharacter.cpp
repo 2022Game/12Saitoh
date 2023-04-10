@@ -6,10 +6,11 @@
 CCharacter::CCharacter(int priority)
 	: CTask(priority)
 	, mpTexture(nullptr), mLeft(0), mRight(0), mBottom(0), mTop(0)
-	/*, mEnabled(true)*/
 	, mState(EState::ENULL)
 	, mVx(0.0f)
 	, mVy(0.0f)
+	, mAnimationCount(0)
+	, mSoundCount(0)
 {
 }
 

@@ -21,10 +21,5 @@ CSlimeAttackBox::CSlimeAttackBox(float x, float y, float w, float h, CTexture* p
 //XVˆ—
 void CSlimeAttackBox::Update()
 {
-	if (CApplication::Di() == 1)
-	{
-		mEnabled = false;
-	}
-	/*if()*/
 	CCharacter::Update();
 }

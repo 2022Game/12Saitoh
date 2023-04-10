@@ -3,6 +3,9 @@
 
 #define TEXCOORD 4, 47, 49, 0
 
+int CItem::mIh = 0;
+int CItem::sNum = 0;
+
 //コンストラクタ
 CItem::CItem(float x, float y, float w, float h, CTexture* pt)
 	:CCharacter((int)ETaskPriority::ETITLE)
@@ -10,12 +13,7 @@ CItem::CItem(float x, float y, float w, float h, CTexture* pt)
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EITEM;
-}
-
-//衝突判定2
-void CItem::Collision()
-{
-	//CApplication::CharacterManager()->Collision(this);
+	sNum++;
 }
 
 //衝突判定4
@@ -36,20 +34,22 @@ void CItem::Collision(CCharacter* m, CCharacter* o)
 //更新処理
 void CItem::Update()
 {
-	/*if (CApplication::Di() == 1)
-	{
-		mEnabled = false;
-	}*/
 	if (mIh == 1)
 	{
 		float y = Y() + 1000000000000000000.0f;
 		Y(y);
 		mIh = 0;
+		sNum--;
 	}
 	CCharacter::Update();
 }
-int CItem::mIh = 0;
+
 int CItem::Ih()
 {
 	return mIh;
+}
+
+int CItem::Num()
+{
+	return sNum;
 }

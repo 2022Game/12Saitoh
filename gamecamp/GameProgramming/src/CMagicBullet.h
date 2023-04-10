@@ -3,8 +3,6 @@
 
 class CMagicBullet : public CCharacter
 {
-private:
-	int mDc;
 public:
 	//コンストラクタ
 	CMagicBullet(float x, float y, float w, float h, CTexture* pt);
