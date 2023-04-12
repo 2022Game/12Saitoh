@@ -58,7 +58,7 @@ void CApplication::Start()
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.5f, 0.5f, 0.5f));
 	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
 	//ビルボードの作成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
@@ -114,7 +114,6 @@ void CApplication::Update()
 	CVector e, c, u; //視点、注視点、上方向
 	//視点を求める
 	e = mPlayer.Position() + CVector(-0.2f, 1.0f, -3.0f) * mPlayer.MatrixRotate();
-	//e = mPlayer.Position() + CVector(0.0f, 1.0f, -3.0f) * mPlayer.MatrixRotate();
 	//注視点を求める
 	c = mPlayer.Position();
 	//上方向を求める
