@@ -11,6 +11,14 @@ CModelX::CModelX()
 	memset(mToken, 0, sizeof(mToken));
 }
 
+CModelX::~CModelX()
+{
+	if (mFrame.size() > 0)
+	{
+		delete mFrame[0];
+	}
+}
+
 void CModelX::Load(char* file)
 {
 	//ファイルサイズを取得する
@@ -44,15 +52,8 @@ void CModelX::Load(char* file)
 		//単語がFrameの場合
 		if (strcmp(mToken, "Frame") == 0)
 		{
-			printf("%s" , mToken); //Frame名出力
-			GetToken(); //Frame名を取得
-			printf("%s\n", mToken); //Frame名出力
-		}
-		else if (strcmp(mToken, "AnimationSet") == 0)
-		{
-			printf("%s", mToken); //Animation名出力
-			GetToken(); //animation名取得
-			printf("%s\n", mToken); //animation名出力)
+			//フレームを生成する
+			new CModelXFrame(this);
 		}
 	}
 	fclose(fp); //ファイルをクローズする
@@ -121,4 +122,84 @@ bool CModelX::IsDelimiter(char c)
 		return true;
 	//区切り文字ではない
 	return false;
+}
+
+/*
+CModelXFrame
+model:CModelXインスタンスへのポインタ
+プレームを作成する
+読み込み中にFrameが見つかれば、フレームを作成し、
+子フレームに追加する
+*/
+CModelXFrame::CModelXFrame(CModelX* model)
+	: mpName(nullptr)
+	, mIndex(0)
+{
+	//現在のフレーム配列に要素数を取得し設定する
+	mIndex = model->mFrame.size();
+	//CModelXフレーム配列に追加する
+	model->mFrame.push_back(this);
+	//変換行列を単位行列にする
+	mTransformMatrix.Identity();
+	//次の単語(フレーム名の予定)を取得する
+	model->GetToken();  //Frae name
+	//フレーム名分エリアを確保する
+	mpName = new char[strlen(model->mToken) + 1];
+	//フレーム名コピーする
+	strcpy(mpName, model->mToken);
+	//次の単語({の予定)を取得する
+	model->GetToken();//{
+	//文字がなくなったら終わり
+	while (*model->mpPointer != '\0')
+	{
+		//次の単語取得
+		model->GetToken(); //Frame
+	    //}の場合は終了
+		if (strchr(model->mToken, '}'))break;
+		//新たなフレームの場合は、子フレームに追加
+		if (strcmp(model->mToken,"Frame") == 0)
+		{
+			//フレームを生成し、子フレームに追加
+			mChild.push_back(new CModelXFrame(model));
+		}
+		else
+		{
+			//上記以外の要素は読み飛ばす
+			model->SlipNode();
+		}
+	}
+//デバッグバージョンのみ有効
+#ifdef _DEBUG
+	printf("%s\n", mpName);
+#endif
+}
+
+CModelXFrame::~CModelXFrame()
+{
+
+}
+
+/*
+SkipNode
+ノードを読み飛ばす
+*/
+void CModelX::SlipNode()
+{
+	//文字が終わったら終了
+	while (*mpPointer != '\0')
+	{
+		GetToken(); //次の単語取得
+		//{が見つかったらループ終了
+		if (strchr(mToken, '{')) break;
+	}
+	int count = 1;
+	//文字が終わるか、カウントが0になったら終了
+	while (*mpPointer != '\0' && count > 0)
+	{
+		GetToken();  //次の単語取得
+		//{を見つけるとカウントアップ
+		if (strchr(mToken, '{')) count++;
+		//}を見つけるとカウントダウン
+		else if (strchr(mToken, '}')) count--;
+	}
 }
