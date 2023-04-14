@@ -162,6 +162,15 @@ CModelXFrame::CModelXFrame(CModelX* model)
 			//フレームを生成し、子フレームに追加
 			mChild.push_back(new CModelXFrame(model));
 		}
+		else if (strcmp(model->mToken, "FrameTransformMatrix") == 0)
+		{
+			model->GetToken();  //{
+			for (int i = 0; i < mTransformMatrix.Size(); i++)
+			{
+				mTransformMatrix.M()[i] = atof(model->GetToken());
+			}
+			model->GetToken();
+		}
 		else
 		{
 			//上記以外の要素は読み飛ばす
@@ -171,6 +180,16 @@ CModelXFrame::CModelXFrame(CModelX* model)
 //デバッグバージョンのみ有効
 #ifdef _DEBUG
 	printf("%s\n", mpName);
+	int i = 0;
+	int j = 0;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			printf(" %f  ", mTransformMatrix.M(i, j));
+		}
+		printf("\n");
+	}
 #endif
 }
 

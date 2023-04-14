@@ -166,3 +166,7 @@ float CMatrix::M(int r, int c) const
 	return mM[r][c];
 }
 
+int CMatrix::Size()
+{
+	return sizeof(mM) / sizeof(float);
+}

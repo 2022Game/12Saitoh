@@ -48,6 +48,8 @@ public:
 	const CMatrix operator*(const CMatrix& m) const;
 	//
 	float* M() const;
+	//要素数の取得
+	int Size();
 private:
 	//4×4の行列データを設定
 	float mM[4][4];
