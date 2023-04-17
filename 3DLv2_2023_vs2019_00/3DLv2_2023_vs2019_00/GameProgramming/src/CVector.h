@@ -7,6 +7,11 @@
  ベクトルデータを扱います
 */
 class CVector {
+private:
+	//3D各軸での値を設定
+	float mX, mY, mZ;
+
+
 public:
 	//正規化
 	//大きさ1のベクトルを返す
@@ -33,6 +38,9 @@ public:
 	float Y() const;
 	//Zの値を得る
 	float Z() const;
+	void X(float f);
+	void Y(float f);
+	void Z(float f);
 	//デフォルトコンストラクタ
 	CVector();
 	//コンストラクタ
@@ -47,8 +55,5 @@ public:
 	//CVector * CMatrixの結果をCVectorで返す
 	CVector operator*(const CMatrix& m);
 
-private:
-	//3D各軸での値を設定
-	float mX, mY, mZ;
 };
 #endif

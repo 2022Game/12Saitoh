@@ -132,7 +132,8 @@ model:CModelXインスタンスへのポインタ
 子フレームに追加する
 */
 CModelXFrame::CModelXFrame(CModelX* model)
-	: mpName(nullptr)
+	: mpMesh(nullptr)
+	, mpName(nullptr)
 	, mIndex(0)
 {
 	//現在のフレーム配列に要素数を取得し設定する
@@ -167,26 +168,32 @@ CModelXFrame::CModelXFrame(CModelX* model)
 			model->GetToken();  //{
 			for (int i = 0; i < mTransformMatrix.Size(); i++)
 			{
+				//atof->文字列のデータをfloat型に変換する
 				mTransformMatrix.M()[i] = atof(model->GetToken());
 			}
 			model->GetToken();
 		}
+		else if (strcmp(model->mToken, "Mesh") == 0)
+		{
+		mpMesh = new CMesh;
+		mpMesh->Init(model);
+		}
 		else
 		{
-			//上記以外の要素は読み飛ばす
-			model->SlipNode();
+		//上記以外の要素は読み飛ばす
+		model->SlipNode();
 		}
 	}
-//デバッグバージョンのみ有効
+	//デバッグバージョンのみ有効
 #ifdef _DEBUG
 	printf("%s\n", mpName);
-	int i = 0;
-	int j = 0;
+	int i;
+	int j;
 	for (i = 0; i < 4; i++)
 	{
 		for (j = 0; j < 4; j++)
 		{
-			printf(" %f  ", mTransformMatrix.M(i, j));
+			printf(" %f ", mTransformMatrix.M(i, j));
 		}
 		printf("\n");
 	}
@@ -195,7 +202,8 @@ CModelXFrame::CModelXFrame(CModelX* model)
 
 CModelXFrame::~CModelXFrame()
 {
-
+	if (mpMesh != nullptr)
+		delete mpMesh;
 }
 
 /*
@@ -221,4 +229,51 @@ void CModelX::SlipNode()
 		//}を見つけるとカウントダウン
 		else if (strchr(mToken, '}')) count--;
 	}
+}
+
+//コンストラクタ
+CMesh::CMesh()
+	: mVertexNum(0)
+	, mpVertex(nullptr)
+{
+
+}
+
+//デストラクタ
+CMesh::~CMesh()
+{
+	SAFE_DELETE_ARRA(mpVertex);
+}
+
+/*
+Init
+Meshのデータを読み込む
+*/
+void CMesh::Init(CModelX* model)
+{
+	model->GetToken();	//{ or 名前
+	if (!strchr(model->mToken, '{'))
+	{
+		//名前がの場合、次が{
+		model->GetToken();	// {
+	}
+	//頂点数の取得
+	mVertexNum = atoi(model->GetToken());
+	//頂点数分エリア確保
+	mpVertex = new CVector[mVertexNum];
+	//頂点数分データを取り込む
+	for (int i = 0; i < mVertexNum; i++)
+	{
+		mpVertex[i].X(atof(model->GetToken()));
+		mpVertex[i].Y(atof(model->GetToken()));
+		mpVertex[i].Z(atof(model->GetToken()));
+	}
+	//デバッグバージョンの追加
+#ifdef _DEBUG
+	printf("VertexNum:%d\n", mVertexNum);
+	for (int i = 0; i < mVertexNum; i++)
+	{
+	printf("  %f  %f  %f  \n", mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
+	}
+#endif
 }
