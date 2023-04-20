@@ -21,7 +21,6 @@ class CModelX {
 	friend CMesh;
 private:
 	std::vector<CModelXFrame*> mFrame;  //フレームの配列
-	char* GetToken();  //単語の取り出し
 	char* mpPointer;   //読み込み位置
 	char mToken[1024]; //取り出した単語の領域
 
@@ -32,6 +31,10 @@ public:
 	CModelX();
 	//デストラクタ
 	~CModelX();
+
+	//単語の取り出し
+	char* GetToken();
+	char* Token();
 
 	//ノードの読み飛ばし
 	void SlipNode();

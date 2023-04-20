@@ -19,6 +19,75 @@ CModelX::~CModelX()
 	}
 }
 
+/*
+GetToken
+文字列データから、単語を1つ取得する
+*/
+char* CModelX::GetToken()
+{
+	char* p = mpPointer;
+	char* q = mToken;
+	//タブ(\t)空白()改行(\r)(\n),;"の区切り文字以外になるまで読み飛ばす
+	while (*p != '\0' && IsDelimiter(*p))p++;
+	if (*p == '{' || *p == '}')
+		*q++ = *p++;
+	else
+	{
+		while (*p != '\0' && !IsDelimiter(*p) && *p != '}')
+			*q++ = *p++;
+	}
+
+	*q = '\0';    //mTokenの最後に\0を代入
+	mpPointer = p; //次の読み込むポイントを更新する
+
+	//もしTokenが//の場合は、コメントなので改行まで読み飛ばす
+	/*
+	strcmp(文字列1,文字列2)
+	文字列１と文字列2が等しい場合、0を返します。
+	文字列1と文字列2が等しくない場合、0以外を返します。
+	*/
+	if (!strcmp("//", mToken))
+	{
+		//改行まで読み飛ばす
+		while (*p != '\0' && !strchr("\r\n", *p))p++;
+		//読み込み位置の更新
+		mpPointer = p;
+		//単語を取得する(再帰呼び出し)
+		return GetToken();
+	}
+	return mToken;
+}
+
+char* CModelX::Token()
+{
+	return mToken;
+}
+
+/*
+SkipNode
+ノードを読み飛ばす
+*/
+void CModelX::SlipNode()
+{
+	//文字が終わったら終了
+	while (*mpPointer != '\0')
+	{
+		GetToken(); //次の単語取得
+		//{が見つかったらループ終了
+		if (strchr(mToken, '{')) break;
+	}
+	int count = 1;
+	//文字が終わるか、カウントが0になったら終了
+	while (*mpPointer != '\0' && count > 0)
+	{
+		GetToken();  //次の単語取得
+		//{を見つけるとカウントアップ
+		if (strchr(mToken, '{')) count++;
+		//}を見つけるとカウントダウン
+		else if (strchr(mToken, '}')) count--;
+	}
+}
+
 void CModelX::Load(char* file)
 {
 	//ファイルサイズを取得する
@@ -59,45 +128,6 @@ void CModelX::Load(char* file)
 	fclose(fp); //ファイルをクローズする
 
 	SAFE_DELETE_ARRA(buf); //確保した領域を解放する
-}
-
-/*
-GetToken
-文字列データから、単語を1つ取得する
-*/
-char* CModelX::GetToken()
-{
-	char* p = mpPointer;
-	char* q = mToken;
-	//タブ(\t)空白()改行(\r)(\n),;"の区切り文字以外になるまで読み飛ばす
-	while (*p != '\0' && IsDelimiter(*p))p++;
-	if (*p == '{' || *p == '}')
-		*q++ = *p++;
-	else
-	{
-		while (*p != '\0' && !IsDelimiter(*p) && *p != '}')
-			*q++ = *p++;
-	}
-
-	*q = '\0';    //mTokenの最後に\0を代入
-	mpPointer = p; //次の読み込むポイントを更新する
-
-	//もしTokenが//の場合は、コメントなので改行まで読み飛ばす
-	/*
-	strcmp(文字列1,文字列2)
-	文字列１と文字列2が等しい場合、0を返します。
-	文字列1と文字列2が等しくない場合、0以外を返します。
-	*/
-	if (!strcmp("//", mToken)) 
-	{
-		//改行まで読み飛ばす
-		while (*p != '\0' && !strchr("\r\n", *p))p++;
-		//読み込み位置の更新
-		mpPointer = p;
-		//単語を取得する(再帰呼び出し)
-		return GetToken();
-	}
-	return mToken;
 }
 
 /*
@@ -193,7 +223,7 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	{
 		for (j = 0; j < 4; j++)
 		{
-			printf(" %f ", mTransformMatrix.M(i, j));
+			printf("%f	", mTransformMatrix.M(i, j));
 		}
 		printf("\n");
 	}
@@ -204,31 +234,6 @@ CModelXFrame::~CModelXFrame()
 {
 	if (mpMesh != nullptr)
 		delete mpMesh;
-}
-
-/*
-SkipNode
-ノードを読み飛ばす
-*/
-void CModelX::SlipNode()
-{
-	//文字が終わったら終了
-	while (*mpPointer != '\0')
-	{
-		GetToken(); //次の単語取得
-		//{が見つかったらループ終了
-		if (strchr(mToken, '{')) break;
-	}
-	int count = 1;
-	//文字が終わるか、カウントが0になったら終了
-	while (*mpPointer != '\0' && count > 0)
-	{
-		GetToken();  //次の単語取得
-		//{を見つけるとカウントアップ
-		if (strchr(mToken, '{')) count++;
-		//}を見つけるとカウントダウン
-		else if (strchr(mToken, '}')) count--;
-	}
 }
 
 //コンストラクタ
@@ -273,7 +278,7 @@ void CMesh::Init(CModelX* model)
 	printf("VertexNum:%d\n", mVertexNum);
 	for (int i = 0; i < mVertexNum; i++)
 	{
-	printf("  %f  %f  %f  \n", mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
+	printf(" %f	%f	%f	\n", mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
 	}
 #endif
 }
