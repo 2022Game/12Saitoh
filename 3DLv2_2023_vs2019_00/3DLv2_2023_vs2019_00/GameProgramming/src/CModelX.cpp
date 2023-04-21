@@ -217,11 +217,9 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	//デバッグバージョンのみ有効
 #ifdef _DEBUG
 	printf("%s\n", mpName);
-	int i;
-	int j;
-	for (i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		for (j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			printf("%f	", mTransformMatrix.M(i, j));
 		}
@@ -240,8 +238,10 @@ CModelXFrame::~CModelXFrame()
 CMesh::CMesh()
 	: mFaceNum(0)
 	, mVertexNum(0)
+	, mNormalNum(0)
 	, mpVertexIndex(nullptr)
 	, mpVertex(nullptr)
+	, mpNormal(nullptr)
 {
 
 }
@@ -251,6 +251,7 @@ CMesh::~CMesh()
 {
 	SAFE_DELETE_ARRA(mpVertex);
 	SAFE_DELETE_ARRA(mpVertexIndex);
+	SAFE_DELETE_ARRA(mpNormal);
 }
 
 /*
@@ -288,18 +289,63 @@ void CMesh::Init(CModelX* model)
 		mpVertexIndex[i + 2] = atoi(model->GetToken());
 	}
 
+	model->GetToken(); //MeshNormals
+	if (strcmp(model->Token(), "MeshNormals") == 0)
+	{
+		model->GetToken(); // {
+		//法線データを取得
+		mNormalNum = atoi(model->GetToken());
+		//法線データを配列に取り込む
+		CVector* pNormal = new CVector[mNormalNum];
+		for (int i = 0; i < mNormalNum; i++)
+		{
+			pNormal[i].X(atof(model->GetToken()));
+			pNormal[i].Y(atof(model->GetToken()));
+			pNormal[i].Z(atof(model->GetToken()));
+		}
+		//法線数 = 面積 ×　3
+		mNormalNum = atoi(model->GetToken()) * 3; //FaceNum
+		int ni;
+		//頂点毎に法線データを設定する
+		mpNormal = new CVector[mNormalNum];
+		for (int i = 0; i < mNormalNum; i += 3)
+		{
+			model->GetToken(); //3
+			ni = atoi(model->GetToken());
+			mpNormal[i] = pNormal[ni];
+
+			ni = atoi(model->GetToken());
+			mpNormal[i + 1] = pNormal[ni];
+
+			ni = atoi(model->GetToken());
+			mpNormal[i + 2] = pNormal[ni];
+
+		}
+		delete[] pNormal;
+		model->GetToken(); // }
+	} //End of MeshNormal
+
 	//デバッグバージョンの追加
 #ifdef _DEBUG
+	//頂点データの出力
 	printf("VertexNum:%d\n", mVertexNum);
 	for (int i = 0; i < mVertexNum; i++)
 	{
-	printf(" %f	%f	%f	\n", mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
+	printf("%f	%f	%f	\n", mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
 	}
+	//面のデータの出力
 	printf("FaceNum:%d\n", mFaceNum);
 	for (int i = 0; i < mFaceNum * 3; i += 3)
 	{
-		printf(" %d	%d	%d	\n",
+		printf("%d	%d	%d	\n",
 			mpVertexIndex[i], mpVertexIndex[i + 1], mpVertexIndex[i + 2]);
+	}
+	//法線データの出力
+	printf("NormalNum:%d\n", mNormalNum);
+	for (int i = 0; i < mNormalNum; i++)
+	{
+		printf("%f	%f	%f	\n",
+			mpNormal[i].X(), mpNormal[i].Y(), mpNormal[i].Z());
 	}
 #endif
 }

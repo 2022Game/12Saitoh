@@ -65,8 +65,10 @@ class CMesh {
 private:
 	int mFaceNum;       //面数
 	int mVertexNum;		//頂点数
+	int mNormalNum;     //法線数
 	int* mpVertexIndex; //面を構成する頂点インデックス
 	CVector* mpVertex;	//頂点データ
+	CVector* mpNormal;  //法線ベクトル
 
 public:
 	//コンストラクタ
