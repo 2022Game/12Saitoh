@@ -16,6 +16,7 @@
 #include "CUi.h"
 #include "CCamera.h"
 #include "CModelX.h"
+#include "CInput.h"
 
 class CApplication
 {
@@ -24,15 +25,17 @@ private:
 	static CTexture mTexture;
 	static CUi* spUi;	//UIクラスのポインタ
 
+	CInput mInput;
+	CMatrix mMatrix;
 	CModelX mModelX;
 	CColliderMesh mColliderMesh;	//モデルからコライダを生成
-	CModel mModelC5;	//C5モデル
+	CModel mModelC5;	            //C5モデル
 	CPlayer mPlayer;
-	CModel mBackGround; //背景モデル
+	CModel mBackGround;             //背景モデル
 	CModel mModel;
 	CVector mEye;
-	CSound mSoundBgm;	//BGM
-	CSound mSoundOver;	//ゲームオーバー
+	CSound mSoundBgm;	            //BGM
+	CSound mSoundOver;	            //ゲームオーバー
 
 	enum class EState
 	{
@@ -44,7 +47,6 @@ private:
 	EState mState;
 	CPlayer* mpPlayer;
 	CEnemy* mpEnemy;
-	CInput mInput;
 	CFont mFont;
 public:
 	~CApplication();

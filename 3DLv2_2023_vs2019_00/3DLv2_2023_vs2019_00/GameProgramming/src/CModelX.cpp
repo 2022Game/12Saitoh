@@ -4,6 +4,30 @@
 #include "CModelX.h"
 #include "glut.h"
 
+/*
+IsDelimiter(c)
+cが\t \r \n スペースなどの空白文字
+または、;　" などの文字であれば
+区切り文字としてtrueを返す
+*/
+bool CModelX::IsDelimiter(char c)
+{
+	//isspace(c)
+	//cが空白文字ばら0以外を返す
+	if (isspace(c) != 0)
+		return true;
+	/*
+	turchr(文字列,文字)
+	文字列に文字が含まれていれば、
+	見つかった文字へポインタを返す
+	見つからなかったらNULLを返す
+	*/
+	if (strchr(",;\"", c) != NULL)
+		return true;
+	//区切り文字ではない
+	return false;
+}
+
 CModelX::CModelX()
 	:mpPointer(nullptr)
 {
@@ -131,27 +155,15 @@ void CModelX::Load(char* file)
 }
 
 /*
-IsDelimiter(c)
-cが\t \r \n スペースなどの空白文字
-または、;　" などの文字であれば
-区切り文字としてtrueを返す
+Render
+すべてのフレームの描画処理を呼び出す
 */
-bool CModelX::IsDelimiter(char c)
+void CModelX::Render()
 {
-	//isspace(c)
-	//cが空白文字ばら0以外を返す
-	if (isspace(c) != 0)
-		return true;
-	/*
-	turchr(文字列,文字)
-	文字列に文字が含まれていれば、
-	見つかった文字へポインタを返す
-	見つからなかったらNULLを返す
-	*/
-	if (strchr(",;\"", c) != NULL)
-		return true;
-	//区切り文字ではない
-	return false;
+	for (size_t i = 0; i < mFrame.size(); i++)
+	{
+		mFrame[i]->Render();
+	}
 }
 
 /*
@@ -232,6 +244,16 @@ CModelXFrame::~CModelXFrame()
 {
 	if (mpMesh != nullptr)
 		delete mpMesh;
+}
+
+/*
+Render
+メッシュが存在すれば描画する
+*/
+void CModelXFrame::Render()
+{
+	if (mpMesh != nullptr)
+		mpMesh->Render();
 }
 
 //コンストラクタ
@@ -348,4 +370,26 @@ void CMesh::Init(CModelX* model)
 			mpNormal[i].X(), mpNormal[i].Y(), mpNormal[i].Z());
 	}
 #endif
+}
+
+/*
+Render
+画面に描画する
+*/
+void CMesh::Render()
+{
+	/*頂点データ,法線データの配列を裕子にする*/
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	/*頂点データ,法線データの場所を指定する*/
+	glVertexPointer(3, GL_FLOAT, 0, mpVertex);
+	glNormalPointer(GL_FLOAT, 0, mpNormal);
+
+	/*頂点のインデックスの場所を指定して図形を描画する*/
+	glDrawElements(GL_TRIANGLES, 3 * mFaceNum,GL_UNSIGNED_INT, mpVertexIndex);
+
+	/*頂点データ,法線データの配列を無効にする*/
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 }

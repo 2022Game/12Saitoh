@@ -19,7 +19,7 @@ void CInput::GetMousePos(float* px, float* py)
 
 CInput::CInput()
 {
-	printf("入力インスタンスが生まれました\n");
+	//printf("入力インスタンスが生まれました\n");
 }
 
 bool CInput::Key(char key)

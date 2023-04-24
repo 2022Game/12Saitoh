@@ -40,6 +40,9 @@ public:
 	void SlipNode();
 	//ファイル読み込み
 	void Load(char* file);
+
+	//描画処理
+	void Render();
 };
 
 //CModelXFrameクラスの定義
@@ -56,6 +59,9 @@ public:
 	CModelXFrame(CModelX* model);
 	//デストラクタ
 	~CModelXFrame() ;
+
+	//描画処理
+	void Render();
 };
 
 //Meshクラスの定義
@@ -78,5 +84,8 @@ public:
 
 	//読み込み処理
 	void Init(CModelX* model);
+
+	//描画処理
+	void Render();
 };
 #endif
