@@ -11,6 +11,7 @@
 class CModelX;         //CModelクラスの宣言
 class CModelXFrame;    //CModelXFrameクラスの宣言
 class CMesh;           //CMeshクラスの定義を追加する
+class CMaterial;       //マテリアルの宣言
 
 /*
 CModel
@@ -35,6 +36,9 @@ public:
 	//単語の取り出し
 	char* GetToken();
 	char* Token();
+
+	//トークンがなくなったらtre
+	bool EOT();
 
 	//ノードの読み飛ばし
 	void SlipNode();
@@ -69,12 +73,17 @@ class CMesh {
 	friend CModelX;
 	friend CModelXFrame;
 private:
-	int mFaceNum;       //面数
-	int mVertexNum;		//頂点数
-	int mNormalNum;     //法線数
-	int* mpVertexIndex; //面を構成する頂点インデックス
-	CVector* mpVertex;	//頂点データ
-	CVector* mpNormal;  //法線ベクトル
+	int mFaceNum;          //面数
+	int mVertexNum;	   	   //頂点数
+	int mNormalNum;        //法線数
+	int mMaterialNum;      //マテリアル数
+	int mMaterialIndexNum; //マテリアル番号数(面数)
+	int* mpMaterialIndex;  //マテリアル番号
+	int* mpVertexIndex;    //面を構成する頂点インデックス
+
+	std::vector<CMaterial*> mMaterial; //マテリアルデータ
+	CVector* mpVertex;	   //頂点データ
+	CVector* mpNormal;     //法線ベクトル
 
 public:
 	//コンストラクタ
