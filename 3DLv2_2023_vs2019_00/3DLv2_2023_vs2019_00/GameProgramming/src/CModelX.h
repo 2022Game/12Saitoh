@@ -37,7 +37,7 @@ public:
 	char* GetToken();
 	char* Token();
 
-	//トークンがなくなったらtre
+	//トークンがなくなったらtrue
 	bool EOT();
 
 	//ノードの読み飛ばし
