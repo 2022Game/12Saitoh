@@ -257,12 +257,12 @@ CModelXFrame::~CModelXFrame()
 {
 	//子フレームを全て解放する
 	std::vector<CModelXFrame*>::iterator itr;
-	for (itr = mChild.begin(); itr != mChild.end(); itr++);
-	{
+	for (itr = mChild.begin(); itr != mChild.end(); itr++) {
 		delete* itr;
 	}
-	//名前エリアを解放する
+	//名前のエリアを解放する
 	SAFE_DELETE_ARRA(mpName);
+
 	if (mpMesh != nullptr)
 		delete mpMesh;
 }
