@@ -10,8 +10,9 @@
 
 class CModelX;         //CModelクラスの宣言
 class CModelXFrame;    //CModelXFrameクラスの宣言
-class CMesh;           //CMeshクラスの定義を追加する
+class CMesh;           //CMeshクラスの宣言
 class CMaterial;       //マテリアルの宣言
+class CSkinWeights;    //スキンウェイトクラスの宣言
 
 /*
 CModel
@@ -72,6 +73,7 @@ public:
 class CMesh {
 	friend CModelX;
 	friend CModelXFrame;
+	friend CSkinWeights;
 private:
 	int mFaceNum;          //面数
 	int mVertexNum;	   	   //頂点数
@@ -81,9 +83,11 @@ private:
 	int* mpMaterialIndex;  //マテリアル番号
 	int* mpVertexIndex;    //面を構成する頂点インデックス
 
+	std::vector<CSkinWeights*> mSkinWeights;	//スキンウェイト
 	std::vector<CMaterial*> mMaterial; //マテリアルデータ
 	CVector* mpVertex;	   //頂点データ
 	CVector* mpNormal;     //法線ベクトル
+	CSkinWeights* mpSkinWeghts;
 
 public:
 	//コンストラクタ
@@ -96,5 +100,28 @@ public:
 
 	//描画処理
 	void Render();
+};
+
+/*
+CSkinWeights
+スキンウェイトクラス
+*/
+class CSkinWeights
+{
+	friend CModelX;
+	friend CMesh;
+private:
+	char* mpFrameName;	//フレーム名
+	int mFrameIndex;	//フレーム番号
+	int mIndexNum;		//頂点番号数
+	int* mpIndex;		//頂点番号配列
+	float* mpWeight;	//頂点ウェイト配列
+	CMatrix mOffset;	//オフセットマトリックス
+
+public:
+	CSkinWeights(CModelX* model);
+	~CSkinWeights();
+	const int& FrameIndex();
+	const CMatrix& Offset();
 };
 #endif

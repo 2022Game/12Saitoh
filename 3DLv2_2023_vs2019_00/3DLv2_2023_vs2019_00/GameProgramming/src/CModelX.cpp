@@ -299,6 +299,11 @@ CMesh::~CMesh()
 	SAFE_DELETE_ARRA(mpVertexIndex);
 	SAFE_DELETE_ARRA(mpNormal);
 	SAFE_DELETE_ARRA(mpMaterialIndex);
+	//スキンウェイトの削除
+	for (size_t i = 0; i < mSkinWeights.size(); i++)
+	{
+		delete mSkinWeights[i];
+	}
 }
 
 /*
@@ -403,6 +408,17 @@ void CMesh::Init(CModelX* model)
 			}
 			model->GetToken();  // } End of MeshMaterialList
 		}// End of MaterialList
+		//SkinWeghtsのとき
+		else if (strcmp(model->Token(), "SkinWeights") == 0)
+		{
+			//CSkinWeghtsクラスのインスタンスを作成し、配列に追加
+			mSkinWeights.push_back(new CSkinWeights(model));
+		}
+		else
+		{
+			//以外のノードは読み飛ばし
+			model->SlipNode();
+		}
 	}
 
 	//デバッグバージョンの追加
@@ -456,4 +472,71 @@ void CMesh::Render()
 	/*頂点データ,法線データの配列を無効にする*/
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
+}
+
+/*
+CSkinWeights
+スキンウェイトの読み込み
+*/
+CSkinWeights::CSkinWeights(CModelX* model)
+	: mpFrameName(0)
+	, mFrameIndex(0)
+	, mIndexNum(0)
+	, mpIndex(nullptr)
+	, mpWeight(nullptr)
+{
+	model->GetToken();	// {
+	model->GetToken();	// Framename
+	//フレーム名エリア確保、設定
+	mpFrameName = new char[strlen(model->Token()) + 1];
+	strcpy(mpFrameName, model->Token());
+
+	//頂点番号数取得
+	mIndexNum = atoi(model->GetToken());
+	//頂点番号が0を超える
+	if (mIndexNum > 0)
+	{
+		//頂点番号と頂点ウェイトのエリア確保
+		mpIndex = new int[mIndexNum];
+
+		mpWeight = new float[mIndexNum];
+		//頂点番号取得
+		for (int i = 0; i < mIndexNum; i++)
+			mpIndex[i] = atoi(model->GetToken());
+		//頂点ウェイト取得
+		for (int i = 0; i < mIndexNum; i++)
+			mpWeight[i] = atof(model->GetToken());
+	}
+	//オフセット行列取得
+	for (int i = 0; i < 16; i++)
+	{
+		mOffset.M()[i] = atof(model->GetToken());
+	}
+	model->GetToken();	// }
+#ifdef _DEBUG
+	//SkinWeghts　フレーム名の出力
+	printf("SKinWeights %s\n",mpFrameName);
+	//頂点番号　頂点ウェイトの出力
+	for (int i = 0; i < mIndexNum; i++)
+	{
+		printf("%d  %f\n",mpIndex[i],mpWeight[i]);
+	}
+	//オフセット行列の出力
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			printf("%f	", mOffset.M(i,j));
+		}
+		printf("\n");
+	}
+#endif
+
+}
+
+CSkinWeights::~CSkinWeights()
+{
+	SAFE_DELETE_ARRA(mpFrameName);
+	SAFE_DELETE_ARRA(mpIndex);
+	SAFE_DELETE_ARRA(mpWeight);
 }
