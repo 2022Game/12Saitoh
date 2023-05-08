@@ -42,6 +42,10 @@ CModelX::~CModelX()
 	{
 		delete mFrame[0];
 	}
+	for (size_t i = 0; i < mAnimationSet.size(); i++)
+	{
+		delete mAnimationSet[i];
+	}
 }
 
 /*
@@ -160,6 +164,11 @@ void CModelX::Load(char* file)
 		{
 			//フレームを生成する
 			new CModelXFrame(this);
+		}
+		//単語がAnimationSetの場合
+		else if (strcmp(mToken, "AnimationSet") == 0)
+		{
+			new CAnimationSet(this);
 		}
 	}
 	fclose(fp); //ファイルをクローズする
@@ -514,24 +523,23 @@ CSkinWeights::CSkinWeights(CModelX* model)
 	}
 	model->GetToken();	// }
 #ifdef _DEBUG
-	//SkinWeghts　フレーム名の出力
-	printf("SKinWeights %s\n",mpFrameName);
-	//頂点番号　頂点ウェイトの出力
-	for (int i = 0; i < mIndexNum; i++)
-	{
-		printf("%d  %f\n",mpIndex[i],mpWeight[i]);
-	}
-	//オフセット行列の出力
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			printf("%f	", mOffset.M(i,j));
-		}
-		printf("\n");
-	}
+	////SkinWeghts　フレーム名の出力
+	//printf("SKinWeights %s\n",mpFrameName);
+	////頂点番号　頂点ウェイトの出力
+	//for (int i = 0; i < mIndexNum; i++)
+	//{
+	//	printf("%d  %f\n",mpIndex[i],mpWeight[i]);
+	//}
+	////オフセット行列の出力
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	for (int j = 0; j < 4; j++)
+	//	{
+	//		printf("%f	", mOffset.M(i,j));
+	//	}
+	//	printf("\n");
+	//}
 #endif
-
 }
 
 CSkinWeights::~CSkinWeights()
@@ -539,4 +547,36 @@ CSkinWeights::~CSkinWeights()
 	SAFE_DELETE_ARRA(mpFrameName);
 	SAFE_DELETE_ARRA(mpIndex);
 	SAFE_DELETE_ARRA(mpWeight);
+}
+
+/*
+CAnimationSet
+*/
+CAnimationSet::CAnimationSet(CModelX* model)
+	: mpName(nullptr)
+{
+	model->mAnimationSet.push_back(this);
+	model->GetToken();	//Animation Name
+	//アニメーションセット名を退避
+	mpName = new char[strlen(model->Token()) + 1];
+	strcpy(mpName, model->Token());
+	model->GetToken();	// {
+	while (!model->EOT())
+	{
+		model->GetToken();	// } or Animation
+		if (strchr(model->Token(), '}'))
+			break;
+		if (strcmp(model->Token(), "Animation") == 0)
+		{
+			//とりあえず読み飛ばし
+			model->SlipNode();
+		}
+	}
+#ifdef _DEBUG
+	printf("AnimationSet:%s\n", mpName);
+#endif
+}
+
+CAnimationSet::~CAnimationSet()
+{
 }
