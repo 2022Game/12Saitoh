@@ -1,2 +1,4 @@
 ﻿  CApplication.cpp
-  GameProgramming.vcxproj -> C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv1_2022_vs2019\Debug\GameProgramming.exe
+LINK : warning LNK4098: defaultlib 'MSVCRT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
+LINK : warning LNK4098: defaultlib 'LIBCMT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
+  GameProgramming.vcxproj -> C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\Debug\GameProgramming.exe
