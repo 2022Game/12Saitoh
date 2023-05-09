@@ -14,6 +14,7 @@ class CMesh;           //CMeshクラスの宣言
 class CMaterial;       //マテリアルの宣言
 class CSkinWeights;    //スキンウェイトクラスの宣言
 class CAnimationSet;   //アニメーションセットクラスの宣言
+class CAnimation;	   //アニメーションクラスの宣言
 
 /*
 CModel
@@ -23,6 +24,7 @@ class CModelX {
 	friend CModelXFrame;
 	friend CMesh;
 	friend CAnimationSet;
+	friend CAnimation;
 private:
 	std::vector<CModelXFrame*> mFrame;  //フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセット配列
@@ -32,6 +34,9 @@ private:
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
 public:
+	//フレーム名に該当するフレームのアドレスを返す
+	CModelXFrame* FinedFrame(char* name);
+
 	//コンストラクタ
 	CModelX();
 	//デストラクタ
@@ -56,6 +61,7 @@ public:
 //CModelXFrameクラスの定義
 class CModelXFrame {
 	friend CModelX;
+	friend CAnimation;
 private:
 	std::vector<CModelXFrame*> mChild; //子フレームの配列
 	CMesh* mpMesh;  //Meshデータ
@@ -66,7 +72,9 @@ public:
 	//コンストラクタ
 	CModelXFrame(CModelX* model);
 	//デストラクタ
-	~CModelXFrame() ;
+	~CModelXFrame();
+
+	int Index();
 
 	//描画処理
 	void Render();
@@ -136,9 +144,26 @@ class CAnimationSet
 {
 private:
 	char* mpName;	//アニメーションセット名
+	std::vector<CAnimation*> mAnimation;
 
 public:
 	CAnimationSet(CModelX* model);
 	~CAnimationSet();
+};
+
+/*
+CAnimation
+アニメーションクラス
+*/
+class CAnimation
+{
+	friend CAnimationSet;
+private:
+	char* mpFrameName;	//フレーム名
+	int mFrameIndex;	//フレーム番号
+
+public:
+	CAnimation(CModelX* model);
+	~CAnimation();
 };
 #endif
