@@ -7,7 +7,7 @@
 #include "CBillBoard.h"
 #include "CEnemy3.h"
 
-#define MODEL_OBJ "res\\RedFlag.obj","res\\RedFlag.mtl"//モデルデータの指定
+#define MODEL_OBJ "res\\SnowGolem.obj","res\\SnowGolem.mtl"//モデルデータの指定
 #define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
 
@@ -41,11 +41,11 @@ void CApplication::Start()
 	//C5モデルの読み込み
 	mModelC5.Load(MODEL_C5);
 	mBackGround.Load(MODEL_BACKGROUND);
-	matrix.Print();
+	mMatrix.Print();
 	mPlayer.Model(&mModel);
-	mPlayer.Scale(CVector(0.1f, 0.1f, 0.1f)*0.5);
+	mPlayer.Scale(CVector(0.1f, 0.1f, 0.1f)*0.2);
 	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
-	mPlayer.Rotation(CVector(0.0f, 90.0f, 0.0f));
+	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
 	new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f),
@@ -105,11 +105,11 @@ void CApplication::Update()
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
 	//視点を求める
-	e = mPlayer.Position() + CVector(-0.2f, 1.0f, -3.0f) * mPlayer.MatrixRotate();
+	e = mPlayer.Position() + CVector(0.0f, 1.3f, 0.0f) * mPlayer.MatrixRotate();
 	//注視点を求める
-	c = mPlayer.Position();
+	c = mPlayer.Position() + CVector(0.0f, 1.0f, 1.0f) * mPlayer.MatrixRotate();
 	//上方向を求める
-	u = CVector(0.0f, 1.0f, 0.0f) * mPlayer.MatrixRotate();
+	u = CVector(0.0f, 0.1f, 0.0f) * mPlayer.MatrixRotate();
 	//カメラの設定
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	//モデルビュー行列の取得

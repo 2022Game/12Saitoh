@@ -27,7 +27,7 @@ private:
 	CModel mModelC5;
 	//static CTaskManager mTaskManager;
 	CPlayer mPlayer;
-	CMatrix matrix;
+	CMatrix mMatrix;
 	CModel mBackGround; //背景モデル
 	//モデルクラスのインスタンス作成
 	CModel mModel;
