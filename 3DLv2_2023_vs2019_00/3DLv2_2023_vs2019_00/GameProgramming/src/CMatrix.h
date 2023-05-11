@@ -8,7 +8,13 @@ class CVector;
 4行4列の行列データを扱います
 */
 class CMatrix {
+private:
+	//4×4の行列データを設定
+	float mM[4][4];
+
 public:
+	//クオータニオンで回転行列を設定する
+	CMatrix Quaternion(float x, float y, float z, float w);
 	CVector VectorZ() const; //Z軸ベクトルの取得
 	CVector VectorX() const; //X軸ベクトルの取得
 	CVector VectorY() const; //Y軸ベクトルの取得
@@ -40,18 +46,14 @@ public:
 	//移動行列の作成
 	//Translate(移動量X, 移動量Y, 移動量Z)
 	CMatrix Translate(float mx, float my, float mz);
-	//行列値の代入
-	//M(行数, 列数, 値)
-	void M(int row, int col, float value);
 	//*演算子のオーバーロード
 	//CMatrix * CMatrix の演算結果を返す
 	const CMatrix operator*(const CMatrix& m) const;
-	//
+	//行列値の代入
+	//M(行数, 列数, 値)
+	void M(int row, int col, float value);
 	float* M() const;
 	//要素数の取得
 	int Size();
-private:
-	//4×4の行列データを設定
-	float mM[4][4];
 };
 #endif

@@ -15,6 +15,7 @@ class CMaterial;       //マテリアルの宣言
 class CSkinWeights;    //スキンウェイトクラスの宣言
 class CAnimationSet;   //アニメーションセットクラスの宣言
 class CAnimation;	   //アニメーションクラスの宣言
+class CAnimationKey;   //アニメーションキークラスの宣言
 
 /*
 CModel
@@ -159,11 +160,27 @@ class CAnimation
 {
 	friend CAnimationSet;
 private:
-	char* mpFrameName;	//フレーム名
-	int mFrameIndex;	//フレーム番号
+	char* mpFrameName;		//フレーム名
+	int mFrameIndex;		//フレーム番号
+	int mKeyNum;			//キー数(時間数)
+	CAnimationKey* mpKey;	//キー配列
 
 public:
 	CAnimation(CModelX* model);
 	~CAnimation();
+};
+
+/*
+CAnimationKey
+アニメーションキークラス
+*/
+class CAnimationKey
+{
+	friend CAnimation;
+	friend CAnimationSet;
+	friend CModelX;
+private:
+	float mTime;		//時間
+	CMatrix mMatrix;	//行列
 };
 #endif
