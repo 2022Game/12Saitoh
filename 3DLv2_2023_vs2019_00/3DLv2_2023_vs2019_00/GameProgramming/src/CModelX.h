@@ -178,7 +178,6 @@ class CAnimationKey
 {
 	friend CAnimation;
 	friend CAnimationSet;
-	friend CModelX;
 private:
 	float mTime;		//ŠÔ
 	CMatrix mMatrix;	//s—ñ
