@@ -751,7 +751,7 @@ CAnimation::CAnimation(CModelX* model)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			printf("%f	",mpKey[i].mMatrix.M(i,j));
+			printf("%f	",mpKey[0].mMatrix.M(i,j));
 		}
 		printf("\n");
 	}
