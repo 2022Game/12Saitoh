@@ -2,8 +2,8 @@
 #include"CApplication.h"
 
 CCharacter3::CCharacter3()
-	:mpModel(nullptr)
-	,mTag(EZERO)
+	: mpModel(nullptr)
+	, mTag(EZERO)
 {
 	//タスクリストに追加
 	CTaskManager::Instance()->Add(this);
@@ -26,7 +26,7 @@ CCharacter3::~CCharacter3()
 }
 
 CCharacter3::CCharacter3(int priority)
-	:mpModel(nullptr)
+	: mpModel(nullptr)
 {
 	mPriority = priority;
 	CTaskManager::Instance()->Add(this);

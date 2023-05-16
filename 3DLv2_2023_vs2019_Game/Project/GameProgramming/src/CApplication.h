@@ -46,6 +46,7 @@ private:
 	static CTexture mTexture;
 	CInput mInput;
 	CFont mFont;
+	bool CameraFlag = false; //デバッグ用
 public:
 	~CApplication();
 	static CUi* Ui(); //UIクラスのインスタンスを取得

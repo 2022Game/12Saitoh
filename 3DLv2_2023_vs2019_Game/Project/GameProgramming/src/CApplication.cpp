@@ -38,17 +38,16 @@ void CApplication::Start()
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 	//モデルファイルの入力
 	mModel.Load(MODEL_OBJ);
-	//C5モデルの読み込み
-	mModelC5.Load(MODEL_C5);
+	//C5モデルの読み込み;
 	mBackGround.Load(MODEL_BACKGROUND);
 	mMatrix.Print();
 	mPlayer.Model(&mModel);
 	mPlayer.Scale(CVector(0.1f, 0.1f, 0.1f)*0.2);
-	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
+	mPlayer.Position(CVector(0.0f, -1.0f, -3.0f));
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
-	new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
+	new CEnemy(&mModel, CVector(0.0f, 10.0f, -100.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f),
+	new CEnemy(&mModel, CVector(30.0f, 10.0f, -130.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.5f, 0.5f, 0.5f));
 	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
@@ -91,6 +90,18 @@ void CApplication::Update()
 		mEye = mEye - CVector(0.0f, 0.1f, 0.0f);
 	}
 
+	//デバッグ用(カメラの切り替え)
+	if (mInput.Key('C'))
+	{
+		if (CameraFlag == false)
+		{
+			CameraFlag = true;
+		}
+		else
+		{
+			CameraFlag = false;
+		}
+	}
 	//頂点1, 頂点2, 頂点3, 法線データの作成
 	CVector v0, v1, v2, n;
 	//法線を上向きで設定する
@@ -104,14 +115,28 @@ void CApplication::Update()
 	
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
-	//視点を求める
-	e = mPlayer.Position() + CVector(0.0f, 1.3f, 0.0f) * mPlayer.MatrixRotate();
-	//注視点を求める
-	c = mPlayer.Position() + CVector(0.0f, 1.0f, 1.0f) * mPlayer.MatrixRotate();
-	//上方向を求める
-	u = CVector(0.0f, 0.1f, 0.0f) * mPlayer.MatrixRotate();
-	//カメラの設定
-	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+	if (CameraFlag == false)
+	{
+		//視点を求める
+		e = mPlayer.Position() + CVector(0.0f, 1.5f, 0.0f) * mPlayer.MatrixRotate();
+		//注視点を求める
+		c = mPlayer.Position() + CVector(0.0f, 1.0f, 1.0f) * mPlayer.MatrixRotate();
+		//上方向を求める
+		u = CVector(0.0f, 0.1f, 0.0f) * mPlayer.MatrixRotate();
+		//カメラの設定
+		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+	}
+	else
+	{
+		//視点を求める
+		e = mPlayer.Position() + CVector(-0.9f, 2.0f, -12.0f) * mPlayer.MatrixRotate();
+		//注視点を求める
+		c = mPlayer.Position();
+		//上方向を求める
+		u = CVector(0.0f, 1.0f, 0.0f) * mPlayer.MatrixRotate();
+		//カメラの設定
+		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+	}
 	//モデルビュー行列の取得
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
 	//逆行列の取得

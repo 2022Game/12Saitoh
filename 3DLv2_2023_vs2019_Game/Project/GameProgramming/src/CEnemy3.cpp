@@ -5,8 +5,8 @@
 
 #define HP 3               //耐久値
 #define VELOCITY 0.1f      //速度
-#define OBJ "res\\f16.obj" //モデルのファイル
-#define MTL "res\\f16.mtl" //モデルのマテリアルファイル
+#define OBJ "res\\SnowGolem.obj" //モデルのファイル
+#define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
 
 CModel CEnemy3::sModel;    //モデルデータ作成
 

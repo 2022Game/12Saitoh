@@ -5,7 +5,8 @@
 
 #define ROTATION_XV CVector(1.0f,0.0f,0.0f) //回転速度
 #define ROTATION_YV CVector(0.0f,1.0f,0.0f) //回転速度
-#define VELOCITY CVector(0.0f, 0.0f, 0.1f) //移動速度
+#define VELOCITYZ CVector(0.0f, 0.0f, 0.1f) //Z軸移動速度
+#define VELOCITYX CVector(0.1f, 0.0f, 0.0f)	//X軸移動速度
 
 CPlayer::CPlayer()
 	:mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
@@ -33,34 +34,38 @@ void CPlayer::Update()
 		bullet->Rotation(mRotation);
 		bullet->Update();
 	}
-	//Sキー入力で上向き
-	if (mInput.Key('S'))
-	{
-		//X軸の回転値を減算
-		mRotation = mRotation - ROTATION_XV;
-	}
 	//Wキー入力で上向き
 	if (mInput.Key('W'))
 	{
-		//X軸の回転値を加算
-		mRotation = mRotation + ROTATION_XV;
+		//Z軸方向の値を回転させ移動させる
+		mPosition = mPosition + VELOCITYZ * mMatrixRotate;
+	}
+	if (mInput.Key('A'))
+	{
+		//X軸方向の値を回転させ移動させる
+		mPosition = mPosition + VELOCITYX * mMatrixRotate;
+	}
+	//Sキー入力で上向き
+	if (mInput.Key('S'))
+	{
+		//Z軸方向の値を回転させ移動させる
+		mPosition = mPosition - VELOCITYZ * mMatrixRotate;
 	}
 	//Dキー入力で回転
 	if (mInput.Key('D'))
 	{
-		//Y軸の回転値を減少
+		//X軸方向の値を回転させ移動させる
+		mPosition = mPosition - VELOCITYX * mMatrixRotate;
+	}
+	if (mInput.Key(VK_RIGHT))
+	{
+		//X軸の回転値を加算
 		mRotation = mRotation - ROTATION_YV;
 	}
-	if (mInput.Key('A'))
+	if (mInput.Key(VK_LEFT))
 	{
-		//Y軸の回転値を減少
+		//X軸の回転値を加算
 		mRotation = mRotation + ROTATION_YV;
-	}
-	//上キー入力で前進
-	if (mInput.Key(VK_UP))
-	{
-		//Z軸方向の値を回転させ移動させる
-		mPosition = mPosition + VELOCITY * mMatrixRotate;
 	}
 	//変換行列の更新
 	CTransform::Update();
