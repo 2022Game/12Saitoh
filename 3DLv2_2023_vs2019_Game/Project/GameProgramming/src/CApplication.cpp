@@ -91,7 +91,7 @@ void CApplication::Update()
 	}
 
 	//デバッグ用(カメラの切り替え)
-	if (mInput.Key('C'))
+	if (mInput.PullKey('C'))
 	{
 		if (CameraFlag == false)
 		{
@@ -102,6 +102,7 @@ void CApplication::Update()
 			CameraFlag = false;
 		}
 	}
+
 	//頂点1, 頂点2, 頂点3, 法線データの作成
 	CVector v0, v1, v2, n;
 	//法線を上向きで設定する
@@ -118,9 +119,9 @@ void CApplication::Update()
 	if (CameraFlag == false)
 	{
 		//視点を求める
-		e = mPlayer.Position() + CVector(0.0f, 1.5f, 0.0f) * mPlayer.MatrixRotate();
+		e = mPlayer.Position() + CVector(0.0f, 1.7f, 0.0f) * mPlayer.MatrixRotate();
 		//注視点を求める
-		c = mPlayer.Position() + CVector(0.0f, 1.0f, 1.0f) * mPlayer.MatrixRotate();
+		c = mPlayer.Position() + CVector(0.0f, 1.7f, 1.0f) * mPlayer.MatrixRotate();
 		//上方向を求める
 		u = CVector(0.0f, 0.1f, 0.0f) * mPlayer.MatrixRotate();
 		//カメラの設定

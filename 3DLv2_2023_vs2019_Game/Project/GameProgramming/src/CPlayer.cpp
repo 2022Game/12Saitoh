@@ -25,12 +25,13 @@ CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 //更新処理
 void CPlayer::Update()
 {
+	//mPosition = mPosition + Gravity * mMatrixRotate;
 	//スペースキー入力で弾発射
-	if (mInput.Key(VK_SPACE))
+	if (mInput.PushKey(VK_SPACE))
 	{
 		CBullet *bullet = new CBullet();
 		bullet->Set(0.1f, 1.5f);
-		bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+		bullet->Position(CVector(0.0f, 70.0f, 10.0f) * mMatrix);
 		bullet->Rotation(mRotation);
 		bullet->Update();
 	}

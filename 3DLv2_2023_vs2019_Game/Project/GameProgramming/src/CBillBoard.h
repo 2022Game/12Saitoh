@@ -22,6 +22,7 @@ public:
 	//•`‰æ
 	void Render();
 	void Render(CMaterial* mpMaterial);
+
 protected:
 	//ŽOŠpŒ`2‚Â
 	CTriangle mT[2];

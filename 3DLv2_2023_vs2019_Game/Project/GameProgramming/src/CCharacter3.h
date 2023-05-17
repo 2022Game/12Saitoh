@@ -25,21 +25,23 @@ public:
 	//タグの取得
 	ETag Tag();
 	//コンストラクタ
-	CCharacter3(int priority);
-	//衝突処理
-	virtual void Collision(CCollider* m, CCollider* o) {}
-	//コンストラクタ
 	CCharacter3();
 	//デストラクタ
 	~CCharacter3();
+	//コンストラクタ
+	CCharacter3(int priority);
+
+	//衝突処理
+	virtual void Collision(CCollider* m, CCollider* o) {}
 	//モデルの設定
 	//Model(モデルクラスのポインタ)
 	void Model(CModel* m);
 	//描画処理
 	void Render();
-protected:
-	ETag mTag; //タグ
-	CModel* mpModel; //モデルのポインタ
-};
 
+protected:
+	ETag mTag;			//タグ
+	CModel* mpModel;	//モデルのポインタ
+	CVector mGravity;	//重力
+};
 #endif

@@ -12,11 +12,12 @@
 */
 class CBullet : public CCharacter3
 {
+private:
+	CCollider mCollider;
+	CTriangle mT;	//三角形
+	int mTime;		//経過時間(フレーム)
+
 public:
-	void Collision();
-	//衝突処理
-	//Collision(コライダ1,コライダ2)
-	void Collision(CCollider* m, CCollider* o);
 	CBullet();
 	//幅と奥行きの設定
 	//Set(幅,奥行)
@@ -25,11 +26,9 @@ public:
 	void Update();
 	//描画
 	void Render();
-private:
-	CCollider mCollider;
-	//生存時間
-	int mLife;
-	//三角形
-	CTriangle mT;
+	void Collision();
+	//衝突処理
+	//Collision(コライダ1,コライダ2)
+	void Collision(CCollider* m, CCollider* o);
 };
 #endif;

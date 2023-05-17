@@ -1,10 +1,15 @@
 #include "CBullet.h"
 #include "CApplication.h"
 
+#define VELOCITYZ CVector(0.0f, 0.0f, 1.0f)	//Z軸移動
+
 CBullet::CBullet()
-	:mLife(50)
-	,mCollider(this, &mMatrix, CVector(), 0.1f)
-{}
+	: mTime(50)
+	, mCollider(this, &mMatrix, CVector(), 0.1f)
+{
+
+}
+
 //幅と奥行きの設定
 //Set(幅,奥行)
 void CBullet::Set(float w, float d)
@@ -20,18 +25,19 @@ void CBullet::Set(float w, float d)
 //更新
 void CBullet::Update()
 {
-	//生存時間の判定
-	if (mLife-- > 0)
-	{
-		CTransform::Update();
-		//位置更新
-		mPosition = mPosition + CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
-	}
-	else
-	{
-		//無効にする
-		mEnabled = false;
-	}
+	mPosition = mPosition + VELOCITYZ;
+	////生存時間の判定
+	//if (mTime-- > 0)
+	//{
+	//	CTransform::Update();
+	//	//位置更新
+	//	mPosition = mPosition + CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+	//}
+	//else
+	//{
+	//	//無効にする
+	//	mEnabled = false;
+	//}
 }
 
 //描画
@@ -44,6 +50,14 @@ void CBullet::Render()
 	mT.Render(mMatrix);
 }
 
+void CBullet::Collision()
+{
+	//コライダの優先度変更
+	mCollider.ChangePriority();
+	//衝突処理を実行
+	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);
+}
+
 //衝突処理
 //Collider(コライダ1,コライダ2)
 void CBullet::Collision(CCollider* m, CCollider* o)
@@ -54,12 +68,4 @@ void CBullet::Collision(CCollider* m, CCollider* o)
 		//衝突している時は無効にする
 		mEnabled = false;
 	}
-}
-
-void CBullet::Collision()
-{
-	//コライダの優先度変更
-	mCollider.ChangePriority();
-	//衝突処理を実行
-	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);
 }

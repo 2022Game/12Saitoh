@@ -1,12 +1,16 @@
 #include "CCharacter3.h"
 #include"CApplication.h"
 
+#define GRAVITY CVector(0.0f,0.5f,0.0f)
+
 CCharacter3::CCharacter3()
 	: mpModel(nullptr)
 	, mTag(EZERO)
+	, mGravity(0.0f,0.0f,0.0f)
 {
 	//タスクリストに追加
 	CTaskManager::Instance()->Add(this);
+	mGravity = GRAVITY;
 }
 void CCharacter3::Model(CModel* m)
 {
