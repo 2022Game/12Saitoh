@@ -34,7 +34,9 @@ private:
 
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
+
 public:
+	std::vector<CAnimationSet*>& CModelX::AnimaitonSet();
 	//フレーム名に該当するフレームのアドレスを返す
 	CModelXFrame* FinedFrame(char* name);
 
@@ -47,9 +49,9 @@ public:
 	char* GetToken();
 	char* Token();
 
+	void AnimateFrame();
 	//トークンがなくなったらtrue
 	bool EOT();
-
 	//ノードの読み飛ばし
 	void SlipNode();
 	//ファイル読み込み
@@ -63,6 +65,7 @@ public:
 class CModelXFrame {
 	friend CModelX;
 	friend CAnimation;
+	friend CAnimationSet;
 private:
 	std::vector<CModelXFrame*> mChild; //子フレームの配列
 	CMesh* mpMesh;  //Meshデータ
@@ -143,13 +146,22 @@ CAnimationSet
 */
 class CAnimationSet
 {
+	friend CModelX;
 private:
 	char* mpName;	//アニメーションセット名
+	float mTime;	//現在時間
+	float mWeight;	//重み
+	float mMaxTime;	//最大時間
 	std::vector<CAnimation*> mAnimation;
 
 public:
 	CAnimationSet(CModelX* model);
 	~CAnimationSet();
+
+	std::vector<CAnimation*>& Animation();
+	void AnimateMarix(CModelX* model);
+	void Time(float time);		//時間の設定
+	void Weight(float weight);	//重みの設定
 };
 
 /*
@@ -158,6 +170,7 @@ CAnimation
 */
 class CAnimation
 {
+	friend CModelX;
 	friend CAnimationSet;
 private:
 	char* mpFrameName;		//フレーム名
@@ -176,6 +189,7 @@ CAnimationKey
 */
 class CAnimationKey
 {
+	friend CModelX;
 	friend CAnimation;
 	friend CAnimationSet;
 private:
