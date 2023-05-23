@@ -31,7 +31,7 @@ CPlayer::CPlayer(float x, float y, float w, float h, CTexture* pt)
 	mState = EState::EIDLING;
 	sHp = PLAYERHP;
 	sStamina = STAMINA;
-	mSoundRan.Load(RAN);
+	mSoundRan.Load(RAN,0.3f);
 	spinstance = this; 
 }
 
@@ -95,6 +95,7 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 		{
 			if (mState != EState::EJUMP)
 			{
+				X(X() + x);
 				Y(Y() + y);
 			}
 		}

@@ -10,7 +10,7 @@
 //*演算子のオーバーロード
 CMatrix CMatrix::operator*(const float &x)
 {
-		CMatrix t;
+	CMatrix t;
 	for (int i = 0; i < 4; i++)
 	{
 		t.mM[i][0] = mM[i][0] * x;

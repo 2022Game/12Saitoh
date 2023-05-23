@@ -1,7 +1,12 @@
 #include "CBullet.h"
 #include "CApplication.h"
+#include "CVector.h"
+#include <iostream>
 
+#define M_PI 3.14159265358979323846
 #define VELOCITYZ CVector(0.0f, 0.0f, 1.0f)	//Z軸移動
+#define GRAVITY CVector(0.0f,-0.1f,0.0f) //重力
+
 
 CBullet::CBullet()
 	: mTime(50)
@@ -25,13 +30,12 @@ void CBullet::Set(float w, float d)
 //更新
 void CBullet::Update()
 {
-	mPosition = mPosition + VELOCITYZ;
 	////生存時間の判定
 	//if (mTime-- > 0)
 	//{
 	//	CTransform::Update();
 	//	//位置更新
-	//	mPosition = mPosition + CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+	//	mPosition = mPosition + VELOCITYZ * mMatrixRotate;
 	//}
 	//else
 	//{

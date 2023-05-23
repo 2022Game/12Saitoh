@@ -57,11 +57,11 @@ void CApplication::Start()
 	//フォント
 	mFont.Load("FontWhite.png", 1, 64);
 	//サウンド
-	mSoundBGM.Load(BGM);
-	mSoundBossBGM.Load(BOSSBGM);
-	mSoundClear.Load(CLEAR);
-	mSoundOver.Load(OVER);
-	mSoundSE.Load(SE);
+	mSoundBGM.Load(BGM,0.35f);
+	mSoundBossBGM.Load(BOSSBGM,0.35f);
+	mSoundClear.Load(CLEAR,0.35f);
+	mSoundOver.Load(OVER,0.35f);
+	mSoundSE.Load(SE,0.35f);
 
 	mState = EState::ESTART;
 	mpGame = new CGame();

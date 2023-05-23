@@ -37,7 +37,7 @@ private:
 
 public:
 	std::vector<CModelXFrame*>& Frames();
-	std::vector<CAnimationSet*>& CModelX::AnimaitonSet();
+	std::vector<CAnimationSet*>& CModelX::AnimationSet();
 	//フレーム名に該当するフレームのアドレスを返す
 	CModelXFrame* FinedFrame(char* name);
 
@@ -50,9 +50,15 @@ public:
 	char* GetToken();
 	char* Token();
 
-	void AnimateFrame();
 	//トークンがなくなったらtrue
 	bool EOT();
+
+	//頂点にアニメーションを設定
+	void AnimateVertex();
+	//スキンウェイトのフレーム番号設定
+	void SetSkinWeightFrameIndex();
+	//フレームの変換行列をアニメーションデータで更新する
+	void AnimateFrame();
 	//ノードの読み飛ばし
 	void SlipNode();
 	//ファイル読み込み
@@ -80,6 +86,8 @@ public:
 	//デストラクタ
 	~CModelXFrame();
 
+	const CMatrix& CombinedMatrix();
+
 	int Index();
 
 	//合成行列の作成
@@ -104,8 +112,10 @@ private:
 
 	std::vector<CSkinWeights*> mSkinWeights;	//スキンウェイト
 	std::vector<CMaterial*> mMaterial; //マテリアルデータ
-	CVector* mpVertex;	   //頂点データ
-	CVector* mpNormal;     //法線ベクトル
+	CVector* mpVertex;			//頂点データ
+	CVector* mpNormal;			//法線ベクトル
+	CVector* mpAnimateVertex;	//アニメーション用頂点
+	CVector* mpAnimateNomal;	//アニメーション用法線
 	CSkinWeights* mpSkinWeghts;
 
 public:
@@ -116,6 +126,10 @@ public:
 
 	//読み込み処理
 	void Init(CModelX* model);
+	//スキンウェイトにフレーム番号を設定する
+	void SetSkinWeightIndex(CModelX* model);
+	//頂点にアニメーション適用
+	void AnimateVertex(CModelX* model);
 
 	//描画処理
 	void Render();
@@ -166,6 +180,8 @@ public:
 	void AnimateMarix(CModelX* model);
 	void Time(float time);		//時間の設定
 	void Weight(float weight);	//重みの設定
+	float Time();
+	float MaxTime();
 };
 
 /*

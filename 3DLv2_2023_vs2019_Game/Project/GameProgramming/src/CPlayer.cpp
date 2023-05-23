@@ -68,6 +68,15 @@ void CPlayer::Update()
 		//X軸の回転値を加算
 		mRotation = mRotation + ROTATION_YV;
 	}
+	if (mInput.Key(VK_UP))
+	{
+		mRotation = mRotation - ROTATION_XV;
+	}
+	if (mInput.Key(VK_DOWN))
+	{
+		mRotation = mRotation + ROTATION_XV;
+	}
+
 	//変換行列の更新
 	CTransform::Update();
 	//Ui設定
