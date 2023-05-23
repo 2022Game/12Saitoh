@@ -32,6 +32,11 @@ bool CModelX::IsDelimiter(char c)
 	return false;
 }
 
+std::vector<CModelXFrame*>& CModelX::Frames()
+{
+	return mFrame;
+}
+
 std::vector<CAnimationSet*>& CModelX::AnimaitonSet()
 {
 	return mAnimationSet;
@@ -151,18 +156,18 @@ void CModelX::AnimateFrame()
 		animSet->AnimateMarix(this);
 	}
 #ifdef _DEBUG
-	for (int i = 1; i < 5; i++)
-	{
-		printf("Frame:%s\n", mFrame[i]->mpName);
-		for (int row = 0; row < 4; row++)
-		{
-			for (int col = 0; col < 4; col++)
-			{
-				printf("%f	", mFrame[i]->mTransformMatrix.M(row, col));
-			}
-			printf("\n");
-		}
-	}
+	//for (int i = 1; i < 5; i++)
+	//{
+	//	printf("Frame:%s\n", mFrame[i]->mpName);
+	//	for (int row = 0; row < 4; row++)
+	//	{
+	//		for (int col = 0; col < 4; col++)
+	//		{
+	//			printf("%f	", mFrame[i]->mTransformMatrix.M(row, col));
+	//		}
+	//		printf("\n");
+	//	}
+	//}
 #endif
 }
 
@@ -353,6 +358,32 @@ CModelXFrame::~CModelXFrame()
 int CModelXFrame::Index()
 {
 	return mIndex;
+}
+
+/*
+AnimateCombined
+合成行列の作成
+*/
+void CModelXFrame::AnimateCombined(CMatrix* parent)
+{
+	//自分の変換行列に、親から変換行列を掛ける
+	mCombinedMatrix = mTransformMatrix * (*parent);
+	//子フレームの合成行列を作成する
+	for (size_t i = 0; i < mChild.size(); i++)
+	{
+		mChild[i]->AnimateCombined(&mCombinedMatrix);
+	}
+#ifdef _DEBUG
+	printf("Frame:%s\n", mpName);
+	for (int row = 0; row < 4; row++)
+	{
+		for (int col = 0; col < 4; col++)
+		{
+			printf("%f	",mCombinedMatrix.M(row, col));
+		}
+		printf("\n");
+	}
+#endif
 }
 
 /*

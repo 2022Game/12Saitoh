@@ -36,6 +36,7 @@ private:
 	bool IsDelimiter(char c);
 
 public:
+	std::vector<CModelXFrame*>& Frames();
 	std::vector<CAnimationSet*>& CModelX::AnimaitonSet();
 	//フレーム名に該当するフレームのアドレスを返す
 	CModelXFrame* FinedFrame(char* name);
@@ -70,6 +71,7 @@ private:
 	std::vector<CModelXFrame*> mChild; //子フレームの配列
 	CMesh* mpMesh;  //Meshデータ
 	CMatrix mTransformMatrix;  //変換行列
+	CMatrix mCombinedMatrix;   //合成行列
 	char* mpName;  //フレーム名前
 	int mIndex;  //フレーム番号
 public:
@@ -80,6 +82,8 @@ public:
 
 	int Index();
 
+	//合成行列の作成
+	void AnimateCombined(CMatrix* parent);
 	//描画処理
 	void Render();
 };
