@@ -1,5 +1,5 @@
 #include "CInput.h"
-#include <stdio.h>
+#include <stdio.h> 
 
 GLFWwindow* CInput::spWindow = nullptr;	//ウィンドウのポインタ
 std::map<int, int> CInput::msInputBits;

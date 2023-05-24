@@ -10,12 +10,12 @@
 弾クラス
 三角形を飛ばす
 */
-class CBullet : public CCharacter3
+class CBullet : public CCharacter3 
 {
 private:
 	CCollider mCollider;
-	CTriangle mT;	//三角形
-	int mTime;		//経過時間(フレーム)
+	CVector mV;	//水平投射用
+	CModel mModelBall;
 
 public:
 	CBullet();

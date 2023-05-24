@@ -49,8 +49,8 @@ void CApplication::Start()
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModel, CVector(30.0f, 10.0f, -130.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.5f, 0.5f, 0.5f));
-	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.01f, 0.01f, 0.01f));
+	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.01f, 0.01f, 0.01f));
 	//ビルボードの作成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 	//背景モデルから三角コライダを生成
