@@ -140,37 +140,6 @@ bool CModelX::EOT()
 }
 
 /*
-AnimateVertex
-頂点アニメーションを適用する
-*/
-void CModelX::AnimateVertex()
-{
-	//フレーム数分繰り返し
-	for (size_t i = 0; i < mFrame.size(); i++)
-	{
-		//メッシュに面があれば
-		if (mFrame[i]->mpMesh != nullptr)
-		{
-			//頂点をアニメーションで更新する
-			mFrame[i]->mpMesh->AnimateVertex(this);
-		}
-	}
-}
-
-void CModelX::SetSkinWeightFrameIndex()
-{
-	//フレーム数分繰り返し
-	for (size_t i = 0; i < mFrame.size(); i++)
-	{
-		//メッシュがあれば
-		if (mFrame[i]->mpMesh != nullptr)
-		{
-			mFrame[i]->mpMesh->SetSkinWeightIndex(this);
-		}
-	}
-}
-
-/*
 AnimateFrame
 フレームの変換行列をアニメーションデータで更新する
 */
@@ -284,8 +253,6 @@ void CModelX::Load(char* file)
 	fclose(fp); //ファイルをクローズする
 
 	SAFE_DELETE_ARRA(buf); //確保した領域を解放する
-	//スキンウェイトのフレーム番号設定
-	SetSkinWeightFrameIndex();
 }
 
 /*
@@ -388,11 +355,6 @@ CModelXFrame::~CModelXFrame()
 		delete mpMesh;
 }
 
-const CMatrix& CModelXFrame::CombinedMatrix()
-{
-	return mCombinedMatrix;
-}
-
 int CModelXFrame::Index()
 {
 	return mIndex;
@@ -412,15 +374,15 @@ void CModelXFrame::AnimateCombined(CMatrix* parent)
 		mChild[i]->AnimateCombined(&mCombinedMatrix);
 	}
 #ifdef _DEBUG
-	//printf("Frame:%s\n", mpName);
-	//for (int row = 0; row < 4; row++)
-	//{
-	//	for (int col = 0; col < 4; col++)
-	//	{
-	//		printf("%f	",mCombinedMatrix.M(row, col));
-	//	}
-	//	printf("\n");
-	//}
+	printf("Frame:%s\n", mpName);
+	for (int row = 0; row < 4; row++)
+	{
+		for (int col = 0; col < 4; col++)
+		{
+			printf("%f	",mCombinedMatrix.M(row, col));
+		}
+		printf("\n");
+	}
 #endif
 }
 
@@ -445,8 +407,6 @@ CMesh::CMesh()
 	, mpVertexIndex(nullptr)
 	, mpVertex(nullptr)
 	, mpNormal(nullptr)
-	, mpAnimateVertex(nullptr)
-	, mpAnimateNomal(nullptr)
 {
 
 }
@@ -458,8 +418,6 @@ CMesh::~CMesh()
 	SAFE_DELETE_ARRA(mpVertexIndex);
 	SAFE_DELETE_ARRA(mpNormal);
 	SAFE_DELETE_ARRA(mpMaterialIndex);
-	SAFE_DELETE_ARRA(mpAnimateVertex);
-	SAFE_DELETE_ARRA(mpAnimateNomal);
 	//スキンウェイトの削除
 	for (size_t i = 0; i < mSkinWeights.size(); i++)
 	{
@@ -483,7 +441,6 @@ void CMesh::Init(CModelX* model)
 	mVertexNum = atoi(model->GetToken());
 	//頂点数分エリア確保
 	mpVertex = new CVector[mVertexNum];
-	mpAnimateVertex = new CVector[mVertexNum];
 	//頂点数分データを取り込む
 	for (int i = 0; i < mVertexNum; i++)
 	{
@@ -606,49 +563,6 @@ void CMesh::Init(CModelX* model)
 #endif
 }
 
-void CMesh::SetSkinWeightIndex(CModelX* model)
-{
-	//スキンウェイト分繰り返し
-	for (size_t i = 0; i < mSkinWeights.size(); i++)
-	{
-		//フレーム名のフレームを取得する
-		CModelXFrame* frame = model->FinedFrame(mSkinWeights[i]->mpFrameName);
-		//フレーム番号を設定する
-		mSkinWeights[i]->mFrameIndex = frame->Index();
-	}
-}
-
-void CMesh::AnimateVertex(CModelX* model)
-{
-	//アニメーション用の頂点エリアクリア
-	memset(mpAnimateVertex, 0, sizeof(CVector) * mVertexNum);
-	memset(mpAnimateNomal, 0, sizeof(CVector) * mNormalNum);
-	//スキンウェイト分繰り返し
-	for (size_t i = 0; i < mSkinWeights.size(); i++)
-	{
-		//フレーム番号取得
-		int frameIndex = mSkinWeights[i]->mFrameIndex;
-		//オフセット行列とフレーム行列を合成
-		CMatrix mSkinningMatrix = mSkinWeights[i]->mOffset * model->Frames()[frameIndex]->CombinedMatrix();
-		//頂点数文繰り返し
-		for (int j = 0; j < mSkinWeights[i]->mIndexNum; j++)
-		{
-			//頂点番号取得
-			int index = mSkinWeights[i]->mpIndex[i];
-			//重み取得
-			float weight = mSkinWeights[i]->mpWeight[j];
-			//頂点と法線を更新する
-			mpAnimateVertex[index] += mpVertex[index] * mSkinningMatrix * weight;
-			mpAnimateNomal[index] += mpNormal[index] * mSkinningMatrix * weight;
-		}
-	}
-	//法線を正規化する
-	for (int i = 0; i < mNormalNum; i++)
-	{
-		mpAnimateNomal[i] = mpAnimateNomal[i].Normalize();
-	}
-}
-
 /*
 Render
 画面に描画する
@@ -658,10 +572,6 @@ void CMesh::Render()
 	/*頂点データ,法線データの配列を裕子にする*/
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-
-	/*頂点データ,法線データの場所を指定する*/
-	glVertexPointer(3, GL_FLOAT, 0, mpAnimateVertex);
-	glNormalPointer(GL_FLOAT, 0, mpAnimateNomal);
 
 	/*頂点インデックスの場所を指定して図形を描画する*/
 	for (int i = 0; i < mFaceNum; i++)
@@ -770,7 +680,6 @@ CAnimationSet::CAnimationSet(CModelX* model)
 		}
 	}
 	//終了時間設定
-	mMaxTime = mAnimation[0]->mpKey[mAnimation[0]->mKeyNum - 1].mTime;
 #ifdef _DEBUG
 	//printf("AnimationSet:%s\n", mpName);
 #endif
@@ -846,16 +755,6 @@ void CAnimationSet::Time(float time)
 void CAnimationSet::Weight(float weight)
 {
 	mWeight = weight;
-}
-
-float CAnimationSet::Time()
-{
-	return mTime;
-}
-
-float CAnimationSet::MaxTime()
-{
-	return mMaxTime;
 }
 
 /*

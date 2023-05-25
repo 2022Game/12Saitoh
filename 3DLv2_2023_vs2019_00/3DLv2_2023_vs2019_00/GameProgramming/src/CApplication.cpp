@@ -55,13 +55,6 @@ void CApplication::Update()
 	mModelX.AnimateFrame();
 	//子フレームの合成行列を計算する
 	mModelX.Frames()[0]->AnimateCombined(&mMatrix);
-	mModelX.AnimationSet()[0]->Time(
-		mModelX.AnimationSet()[0]->Time() + 1.0f);
-	mModelX.AnimationSet()[0]->Time(
-		(int)mModelX.AnimationSet()[0]->Time() %
-		(int)mModelX.AnimationSet()[0]->MaxTime() + 1);
-	//頂点にアニメーションを追加する
-	mModelX.AnimateVertex();
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
 	//視点を求める
