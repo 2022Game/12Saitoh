@@ -54,5 +54,8 @@ public:
 	CVector operator-(const CVector& v) const;
 	//CVector * CMatrixの結果をCVectorで返す
 	CVector operator*(const CMatrix& m);
+	//+=演算子のオーバーロード
+	//CVector1 += CVector2の演算を行う
+	CVector operator+=(const CVector& v);
 };
 #endif

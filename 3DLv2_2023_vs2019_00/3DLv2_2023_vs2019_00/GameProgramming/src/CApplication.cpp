@@ -48,7 +48,13 @@ void CApplication::Start()
 void CApplication::Update()
 {
 	//最初のアニメーションの現在時間を0にする
-	mModelX.AnimationSet()[0]->Time(0);
+	mModelX.AnimationSet()[0]->Time(
+		mModelX.AnimationSet()[0]->Time() + 1.0f);
+	mModelX.AnimationSet()[0]->Time(
+		(int)mModelX.AnimationSet()[0]->Time() %
+		(int)(mModelX.AnimationSet()[0]->MaxTime() + 1));
+	//頂点にアニメーションを適用する
+	mModelX.AnimateVertex();
 	//最初のアニメーションの重みを1.0(100%)にする
 	mModelX.AnimationSet()[0]->Weight(1.0f);
 	//フレームの変換行列をアニメーションで更新する

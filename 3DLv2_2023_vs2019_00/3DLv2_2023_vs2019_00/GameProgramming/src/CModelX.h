@@ -53,6 +53,10 @@ public:
 	//トークンがなくなったらtrue
 	bool EOT();
 
+	//頂点にアニメーションを適用
+	void AnimateVertex();
+	//スキンウェイトのフレーム番号設定
+	void SetSkinWeightFrameIndex();
 	//フレームの変換行列をアニメーションデータで更新する
 	void AnimateFrame();
 	//ノードの読み飛ばし
@@ -76,6 +80,7 @@ private:
 	CMatrix mCombinedMatrix;   //合成行列
 	char* mpName;  //フレーム名前
 	int mIndex;  //フレーム番号
+
 public:
 	//コンストラクタ
 	CModelXFrame(CModelX* model);
@@ -84,6 +89,7 @@ public:
 
 	int Index();
 
+	const CMatrix& CombinedMatrix();
 	//合成行列の作成
 	void AnimateCombined(CMatrix* parent);
 	//描画処理
@@ -108,6 +114,8 @@ private:
 	std::vector<CMaterial*> mMaterial; //マテリアルデータ
 	CVector* mpVertex;			//頂点データ
 	CVector* mpNormal;			//法線ベクトル
+	CVector* mpAnimateVertex;	//アニメーション用頂点
+	CVector* mpAnimateNormal;	//アニメーション用法線
 	CSkinWeights* mpSkinWeghts;
 
 public:
@@ -116,6 +124,10 @@ public:
 	//デストラクタ
 	~CMesh();
 
+	//頂点にアニメーション適用
+	void AnimateVertex(CModelX* model);
+	//スキンウェイトにフレーム番号を設定する
+	void SetSkinWeightFrameIndex(CModelX* model);
 	//読み込み処理
 	void Init(CModelX* model);
 	//描画処理
@@ -163,6 +175,8 @@ public:
 	CAnimationSet(CModelX* model);
 	~CAnimationSet();
 
+	float Time();
+	float MaxTime();
 	std::vector<CAnimation*>& Animation();
 	void AnimateMarix(CModelX* model);
 	void Time(float time);		//時間の設定
