@@ -15,6 +15,7 @@
 #include "CColliderTriangle.h"
 #include "CColliderMesh.h"
 #include "CUi.h"
+#include "CWall.h"
 class CApplication
 {
 private:
@@ -25,7 +26,7 @@ private:
 	static CMatrix mModelViewInverse;
 	//C5ƒ‚ƒfƒ‹
 	CModel mModelC5;
-	//static CTaskManager mTaskManager;
+	CWall mWall;
 	CPlayer mPlayer;
 	CMatrix mMatrix;
 	CModel mBackGround; //”wŒiƒ‚ƒfƒ‹

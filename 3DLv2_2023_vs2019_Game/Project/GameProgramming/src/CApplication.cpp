@@ -45,6 +45,7 @@ void CApplication::Start()
 	mPlayer.Scale(CVector(0.1f, 0.1f, 0.1f)*0.2);
 	mPlayer.Position(CVector(0.0f, -1.0f, -3.0f));
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
+
 	new CEnemy(&mModel, CVector(0.0f, 10.0f, -100.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModel, CVector(30.0f, 10.0f, -130.0f),
