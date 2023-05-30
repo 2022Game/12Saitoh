@@ -4,7 +4,7 @@
 #include "CMatrix.h"   //マトリクスクラスのインクルード
 #include "CVector.h"   //Vectorクラスのインクルード
 
-#define MODEL_FILE "res\\sample.blend.x"
+#define MODEL_FILE "res\\ラグナ.x"
 //領域解放をマクロ化
 #define SAFE_DELETE_ARRA(a) {if(a) delete[] a; a = nullptr;}
 
@@ -27,6 +27,7 @@ class CModelX {
 	friend CAnimationSet;
 	friend CAnimation;
 private:
+	std::vector<CMaterial*> mMaterial;	//マテリアル配列
 	std::vector<CModelXFrame*> mFrame;  //フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセット配列
 	char* mpPointer;   //読み込み位置
@@ -36,10 +37,14 @@ private:
 	bool IsDelimiter(char c);
 
 public:
+	//マテリアル配列の取得
+	std::vector<CMaterial*>& Material();
 	std::vector<CModelXFrame*>& Frames();
 	std::vector<CAnimationSet*>& CModelX::AnimationSet();
 	//フレーム名に該当するフレームのアドレスを返す
 	CModelXFrame* FinedFrame(char* name);
+	//マテリアルの検索
+	CMaterial* FindMaterial(char* name);
 
 	//コンストラクタ
 	CModelX();
@@ -60,7 +65,7 @@ public:
 	//フレームの変換行列をアニメーションデータで更新する
 	void AnimateFrame();
 	//ノードの読み飛ばし
-	void SlipNode();
+	void SkipNode();
 	//ファイル読み込み
 	void Load(char* file);
 

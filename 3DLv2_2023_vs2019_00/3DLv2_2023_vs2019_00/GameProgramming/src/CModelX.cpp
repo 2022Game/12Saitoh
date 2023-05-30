@@ -16,8 +16,15 @@ cが\t \r \n スペースなどの空白文字
 */
 bool CModelX::IsDelimiter(char c)
 {
+	/*ascii以外の文字だとエラー
+	cが0より小さい時、falseを返す
+	*/
+	if (c <= 0)
+	{
+		return false;
+	}
 	//isspace(c)
-	//cが空白文字ばら0以外を返す
+	//cが空白文字なら0以外を返す
 	if (isspace(c) != 0)
 		return true;
 	/*
@@ -30,6 +37,11 @@ bool CModelX::IsDelimiter(char c)
 		return true;
 	//区切り文字ではない
 	return false;
+}
+
+std::vector<CMaterial*>& CModelX::Material()
+{
+	return mMaterial;
 }
 
 std::vector<CModelXFrame*>& CModelX::Frames()
@@ -64,11 +76,33 @@ CModelXFrame* CModelX::FinedFrame(char* name)
 	return nullptr;
 }
 
+CMaterial* CModelX::FindMaterial(char* name)
+{
+	//マテリアル配列のイテレータ作成
+	std::vector<CMaterial*>::iterator itr;
+	//マテリアル配列を先頭から順に検索
+	for (itr = mMaterial.begin(); itr != mMaterial.end(); itr++)
+	{
+		//名前が一致すればマテリアルのポインタを返却
+		if (strcmp(name, (*itr)->Name()) == 0)
+		{
+			return *itr;
+		}
+	}
+	//無い時はnullptrを返却
+	return nullptr;
+}
+
 CModelX::CModelX()
 	: mpPointer(nullptr)
 {
 	//mTokenを初期化
 	memset(mToken, 0, sizeof(mToken));
+	//マテリアルの解放
+	for (size_t i = 0; i < mMaterial.size(); i++)
+	{
+		delete mMaterial[i];
+	}
 }
 
 CModelX::~CModelX()
@@ -218,7 +252,7 @@ void CModelX::AnimateFrame()
 SkipNode
 ノードを読み飛ばす
 */
-void CModelX::SlipNode()
+void CModelX::SkipNode()
 {
 	//文字が終わったら終了
 	while (*mpPointer != '\0')
@@ -269,8 +303,18 @@ void CModelX::Load(char* file)
 	while (*mpPointer != '\0')
 	{
 		GetToken(); //単語の取得
+		//template 読み飛ばし
+		if (strcmp(mToken, "template") == 0)
+		{
+			SkipNode();
+		}
+		//Materialの時
+		else if (strcmp(mToken, "Material") == 0)
+		{
+			new CMaterial(this);
+		}
 		//単語がFrameの場合
-		if (strcmp(mToken, "Frame") == 0)
+		else if (strcmp(mToken, "Frame") == 0)
 		{
 			//フレームを生成する
 			new CModelXFrame(this);
@@ -357,7 +401,7 @@ CModelXFrame::CModelXFrame(CModelX* model)
 		else
 		{
 		//上記以外の要素は読み飛ばす
-		model->SlipNode();
+		model->SkipNode();
 		}
 	}
 	//デバッグバージョンのみ有効
@@ -611,6 +655,12 @@ void CMesh::Init(CModelX* model)
 				{
 					mMaterial.push_back(new CMaterial(model));
 				}
+				else
+				{//既出
+					model->GetToken();	//MaterialName
+					mMaterial.push_back(model->FindMaterial(model->Token()));
+					model->GetToken();	// }
+				}
 			}
 			model->GetToken();  // } End of MeshMaterialList
 		}// End of MaterialList
@@ -623,7 +673,7 @@ void CMesh::Init(CModelX* model)
 		else
 		{
 			//以外のノードは読み飛ばし
-			model->SlipNode();
+			model->SkipNode();
 		}
 	}
 #ifdef _DEBUG
@@ -966,7 +1016,7 @@ CAnimation::CAnimation(CModelX* model)
 		}
 		else
 		{
-			model->SlipNode();
+			model->SkipNode();
 		}
 	}
 	//行列のデータではない時
