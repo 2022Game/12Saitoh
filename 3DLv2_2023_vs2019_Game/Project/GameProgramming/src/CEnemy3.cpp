@@ -164,7 +164,7 @@ void CEnemy3::Collision(CCollider* m, CCollider* o)
 		}
 		break;
 	}
-};
+}
 
 void CEnemy3::Collision()
 {

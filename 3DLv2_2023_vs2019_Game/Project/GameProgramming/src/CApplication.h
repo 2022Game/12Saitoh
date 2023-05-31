@@ -15,7 +15,8 @@
 #include "CColliderTriangle.h"
 #include "CColliderMesh.h"
 #include "CUi.h"
-#include "CWall.h"
+#include "CWallManager.h"
+
 class CApplication
 {
 private:
@@ -26,7 +27,6 @@ private:
 	static CMatrix mModelViewInverse;
 	//C5モデル
 	CModel mModelC5;
-	CWall mWall;
 	CPlayer mPlayer;
 	CMatrix mMatrix;
 	CModel mBackGround; //背景モデル
@@ -35,6 +35,7 @@ private:
 	CVector mEye;
 	CSound mSoundBgm;	//BGM
 	CSound mSoundOver;	//ゲームオーバー
+	CWallManager* mpWallManager;
 	enum class EState
 	{
 		ESTART,	//ゲーム開始
@@ -48,6 +49,7 @@ private:
 	CInput mInput;
 	CFont mFont;
 	bool CameraFlag = false; //デバッグ用
+
 public:
 	~CApplication();
 	static CUi* Ui(); //UIクラスのインスタンスを取得

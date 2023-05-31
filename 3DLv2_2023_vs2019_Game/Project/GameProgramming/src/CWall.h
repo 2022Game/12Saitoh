@@ -1,27 +1,30 @@
-#ifndef CWALL
-#define CWALL
-#include "CCharacter3.h"
-#include "CTriangle.h"
-#include "CCollider.h"
+#ifndef CWALL_H
+#define CWALL_H
 
-class CWall : public CCharacter3
-{
+#include "CCharacter3.h"
+#include "CCollider.h"
+#include "CColliderMesh.h"
+#include "CColliderTriangle.h"
+#include "CColliderLine.h"
+
+class CWall : public CCharacter3 {
 private:
-	CCollider mCollider;
-	CModel mModelWall;
+	//コライダ
+	CCollider mCollider1;
+	CCollider mCollider2;
+	CCollider mCollider3;
+	CColliderMesh mColliderMesh1;
 
 public:
-	CWall();
-	//幅と奥行きの設定
-	//Set(幅,奥行)
-	void Set(float w, float d);
-	//更新
-	void Update();
-	//描画
-	void Render();
-	void Collision();
 	//衝突処理
-	//Collision(コライダ1,コライダ2)
+	//Collision(コライダ１、コライダ２）
 	void Collision(CCollider* m, CCollider* o);
+	void Collision();
+	//コンストラクタ
+	//CWall(モデル,位置,回転,拡縮）
+	CWall(CModel* model, const CVector& position,
+		const CVector& rotation, const CVector& scale);
+	//更新処理
+	void Update();
 };
-#endif;
+#endif
