@@ -42,23 +42,23 @@ void CApplication::Start()
 {
 	//3Dモデルファイルの読み込み
 	mModelX.Load(MODEL_FILE);
+	//キャラクターにモデルを設定
+	mCharacter.Init(&mModelX);
 	mFont.Load("FontG.png", 1, 4096 / 64);
 }
 
 void CApplication::Update()
 {
-	//最初のアニメーションの現在時間を0にする
-	mModelX.AnimationSet()[0]->Time(
-		mModelX.AnimationSet()[0]->Time() + 1.0f);
-	mModelX.AnimationSet()[0]->Time(
-		(int)mModelX.AnimationSet()[0]->Time() %
-		(int)(mModelX.AnimationSet()[0]->MaxTime() + 1));
-	//最初のアニメーションの重みを1.0(100%)にする
-	mModelX.AnimationSet()[0]->Weight(1.0f);
-	//フレームの変換行列をアニメーションで更新する
-	mModelX.AnimateFrame();
-	//子フレームの合成行列を計算する
-	mModelX.Frames()[0]->AnimateCombined(&mMatrix);
+	if (mCharacter.IsAnimationFinished() == true)
+	{
+		//アニメーションを切り替える
+		if (mCharacter.AnimationIndex() < mModelX.AnimationSet().size())
+		{
+			mCharacter.ChangeAnimation(mCharacter.AnimationIndex() + 1, false, 60);
+		}
+	}
+	//キャラクタークラスの更新
+	mCharacter.Update(CMatrix());
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
 	//視点を求める
@@ -104,7 +104,7 @@ void CApplication::Update()
 	//頂点にアニメーションを適用する
 	mModelX.AnimateVertex();
 	//モデル描画
-	mModelX.Render();
+	mCharacter.Render();
 
 	//2D描画開始
 	CCamera::Start(0, 800, 0, 600);

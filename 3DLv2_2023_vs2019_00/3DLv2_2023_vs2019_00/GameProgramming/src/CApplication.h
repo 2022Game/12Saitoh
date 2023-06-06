@@ -17,6 +17,7 @@
 #include "CCamera.h"
 #include "CModelX.h"
 #include "CInput.h"
+#include "CXCharacter.h"
 
 class CApplication
 {
@@ -36,6 +37,7 @@ private:
 	CVector mEye;
 	CSound mSoundBgm;	            //BGM
 	CSound mSoundOver;	            //ゲームオーバー
+	CXCharacter mCharacter;			//キャラクタクラスのインスタンス
 
 	enum class EState
 	{
