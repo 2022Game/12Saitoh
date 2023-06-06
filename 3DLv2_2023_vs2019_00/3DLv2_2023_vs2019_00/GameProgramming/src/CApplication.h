@@ -18,6 +18,7 @@
 #include "CModelX.h"
 #include "CInput.h"
 #include "CXCharacter.h"
+#include "CXPlayer.h"
 
 class CApplication
 {
@@ -38,6 +39,7 @@ private:
 	CSound mSoundBgm;	            //BGM
 	CSound mSoundOver;	            //ゲームオーバー
 	CXCharacter mCharacter;			//キャラクタクラスのインスタンス
+	CXPlayer mXPlayer;
 
 	enum class EState
 	{
