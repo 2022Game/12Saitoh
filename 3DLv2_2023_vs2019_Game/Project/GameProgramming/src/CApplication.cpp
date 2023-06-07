@@ -6,6 +6,7 @@
 #include "CEnemy.h"
 #include "CBillBoard.h"
 #include "CEnemy3.h"
+#include "CAlly.h"
 
 #define MODEL_OBJ "res\\SnowGolem.obj","res\\SnowGolem.mtl"//モデルデータの指定
 #define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
@@ -47,12 +48,11 @@ void CApplication::Start()
 	mPlayer.Rotation(CVector(0.0f, 0.0f, 0.0f));
 	mpWallManager = new CWallManager();
 
-	//new CEnemy(&mModel, CVector(0.0f, 10.0f, -100.0f),
-	//	CVector(), CVector(0.1f, 0.1f, 0.1f));
-	//new CEnemy(&mModel, CVector(30.0f, 10.0f, -130.0f),
-	//	CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.01f, 0.01f, 0.01f));
-	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.01f, 0.01f, 0.01f));
+	new CEnemy3(CVector(-5.0f, -1.0f, -10.0f), CVector(), CVector(0.02f, 0.02f, 0.02f));
+	new CEnemy3(CVector(5.0f, -1.0f, -10.0f), CVector(), CVector(0.02f, 0.02f, 0.02f));
+	new CAlly(CVector(5.0f, -1.0f, 10.0f), CVector(), CVector(0.02f, 0.02f, 0.02f));
+	new CAlly(CVector(-5.0f, -1.0f, 10.0f), CVector(), CVector(0.02f, 0.02f, 0.02f));
+
 	//ビルボードの作成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 	//背景モデルから三角コライダを生成

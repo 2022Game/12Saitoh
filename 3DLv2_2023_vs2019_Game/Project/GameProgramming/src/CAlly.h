@@ -1,14 +1,11 @@
-#ifndef CENEMY3_H
-#define CENEMY3_H
-//キャラクタクラスのインクルード
+#ifndef ALLY_H
+#define ALL_Y
 #include "CCharacter3.h"
-//コライダクラスのインクルード
 #include "CCollider.h"
 /*
-エネミークラス
-キャラクタクラスを継承
+味方クラス
 */
-class CEnemy3 : public CCharacter3
+class CAlly : public CCharacter3
 {
 private:
 	CVector mPoint;			//目標地点
@@ -20,9 +17,9 @@ private:
 
 public:
 	//コンストラクタ
-	CEnemy3();
+	CAlly();
 	//CEnemy3(位置,回転,拡縮)
-	CEnemy3(const CVector& position, const CVector& rotation,
+	CAlly(const CVector& position, const CVector& rotation,
 		const CVector& scale);
 
 	//更新処理
