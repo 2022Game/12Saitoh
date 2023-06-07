@@ -3,17 +3,17 @@
 #include "CApplication.h"
 #include "CPlayer.h"
 
-#define HP 3               //耐久値
-#define VELOCITY 0.1f      //速度
-#define OBJ "res\\SnowGolem.obj" //モデルのファイル
-#define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
+#define HP 3						//耐久値
+#define VELOCITY 0.1f				//速度
+#define OBJ "res\\SnowGolem.obj"	//モデルのファイル
+#define MTL "res\\SnowGolem.mtl"	//モデルのマテリアルファイル
 
-CModel CAlly::sModel;    //モデルデータ作成
+CModel CAlly::sModel;				//モデルデータ作成
 
 //デフォルトコンストラクタ
 CAlly::CAlly()
 	:CCharacter3(1)
-	, mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4f)
+	, mCollider(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f)
 	, mHp(HP)
 {
 	//モデルが無い時は読み込む
@@ -69,6 +69,8 @@ void CAlly::Update()
 				//エフェクト生成
 				new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
 			}
+			//降下させる
+			mPosition = mPosition - CVector(0.0f, 0.03f, 0.0f);
 			CTransform::Update();
 			return;
 		}

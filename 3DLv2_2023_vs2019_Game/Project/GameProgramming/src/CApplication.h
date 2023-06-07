@@ -15,7 +15,7 @@
 #include "CColliderTriangle.h"
 #include "CColliderMesh.h"
 #include "CUi.h"
-#include "CWallManager.h"
+#include "CMapManager.h"
 
 class CApplication
 {
@@ -32,10 +32,9 @@ private:
 	CModel mBackGround; //背景モデル
 	//モデルクラスのインスタンス作成
 	CModel mModel;
-	CVector mEye;
 	CSound mSoundBgm;	//BGM
 	CSound mSoundOver;	//ゲームオーバー
-	CWallManager* mpWallManager;
+	CMapManager* mpMapManager;
 	enum class EState
 	{
 		ESTART,	//ゲーム開始

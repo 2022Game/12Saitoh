@@ -13,7 +13,7 @@ CModel CEnemy3::sModel;    //モデルデータ作成
 //デフォルトコンストラクタ
 CEnemy3::CEnemy3()
 	:CCharacter3(1)
-	,mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4f)
+	,mCollider(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f)
 	,mHp(HP)
 {
 	//モデルが無い時は読み込む

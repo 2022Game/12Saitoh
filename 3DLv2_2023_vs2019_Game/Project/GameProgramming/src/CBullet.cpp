@@ -31,8 +31,7 @@ void CBullet::Update()
 {
 	CTransform::Update();
 	//à íuçXêV
-	mPosition = mPosition + VELOCITYZ * mMatrixRotate
-		+  mV * mMatrixRotate;
+	mPosition = mPosition + (VELOCITYZ * mMatrixRotate) + (mV * mMatrixRotate);
 	mV = mV + CVector(0.0f, -0.01f, 0.0f);
 }
 

@@ -9,10 +9,10 @@ CWall::CWall(CModel* model, const CVector& position,
 	const CVector& rotation, const CVector& scale)
 {
 	//モデル、位置、回転、拡縮を設定する
-	mpModel = model; //モデルの設定
-	mPosition = position; //位置の設定
-	mRotation = rotation; //回転の設定
-	mScale = scale; //拡縮の設定
+	mpModel = model;		//モデルの設定
+	mPosition = position;	//位置の設定
+	mRotation = rotation;	//回転の設定
+	mScale = scale;			//拡縮の設定
 	mColliderMesh1.Set(this, &mMatrix, mpModel);
 }
 

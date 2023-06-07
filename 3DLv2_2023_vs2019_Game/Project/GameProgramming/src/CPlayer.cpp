@@ -7,16 +7,17 @@
 #define ROTATION_YV CVector(0.0f,1.0f,0.0f) //回転速度
 #define VELOCITYZ CVector(0.0f, 0.0f, 0.1f) //Z軸移動速度
 #define VELOCITYX CVector(0.1f, 0.0f, 0.0f)	//X軸移動速度
-#define GRAVITY CVector(0.0f, 0.05f, 0.0f)	//重力
+#define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
 
 CPlayer::CPlayer()
-	:mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
-	,mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
-	,mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
+	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
+	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
+	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
 {
 	//インスタンスの設定
 	spInstance = this;
 }
+
 //CPlayer(位置,回転,スケール)
 CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 {
