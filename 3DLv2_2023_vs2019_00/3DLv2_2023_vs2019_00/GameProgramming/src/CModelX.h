@@ -16,6 +16,7 @@ class CSkinWeights;    //スキンウェイトクラスの宣言
 class CAnimationSet;   //アニメーションセットクラスの宣言
 class CAnimation;	   //アニメーションクラスの宣言
 class CAnimationKey;   //アニメーションキークラスの宣言
+class CXCharacter;
 
 /*
 CModel
@@ -58,6 +59,7 @@ public:
 	//トークンがなくなったらtrue
 	bool EOT();
 
+	void AnimateVertex(CMatrix* mat);
 	//頂点にアニメーションを適用
 	void AnimateVertex();
 	//スキンウェイトのフレーム番号設定
@@ -130,6 +132,7 @@ public:
 	//デストラクタ
 	~CMesh();
 
+	void AnimateVertex(CMatrix* mat);
 	//頂点にアニメーション適用
 	void AnimateVertex(CModelX* model);
 	//スキンウェイトにフレーム番号を設定する
@@ -170,6 +173,7 @@ CAnimationSet
 class CAnimationSet
 {
 	friend CModelX;
+	friend CXCharacter;
 private:
 	char* mpName;	//アニメーションセット名
 	float mTime;	//現在時間

@@ -19,6 +19,7 @@
 #include "CInput.h"
 #include "CXCharacter.h"
 #include "CXPlayer.h"
+#include "CXEnemy.h"
 
 class CApplication
 {
@@ -39,7 +40,8 @@ private:
 	CSound mSoundBgm;	            //BGM
 	CSound mSoundOver;	            //ゲームオーバー
 	CXCharacter mCharacter;			//キャラクタクラスのインスタンス
-	CXPlayer mXPlayer;
+	CXPlayer mXPlayer;				//プレイヤーのインスタンス
+	CXEnemy mXEnemy;				//敵のインスタンス
 
 	enum class EState
 	{

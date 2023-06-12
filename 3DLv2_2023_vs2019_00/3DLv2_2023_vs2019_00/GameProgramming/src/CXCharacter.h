@@ -7,19 +7,12 @@
 
 class CXCharacter : public CCharacter3
 {
-protected:
-	CModelX* mpModel;			//モデルデータ
-
-	bool mAnimationLoopFlg;		//true:アニメーションを繰り返す
-
-	int mAnimationIndex;		//アニメーション番号
-
-	float mAnimationFrame;		//アニメーションの再生フレーム
-	float mAnimationFrameSize;	//アニメーションの再生フレーム数
-
 public:
 	//コンストラクタ
 	CXCharacter();
+	virtual ~CXCharacter() { 
+		SAFE_DELETE_ARRA(mpConbinedMatrix)};
+
 	//初期化処理
 	void Init(CModelX* model);
 	//アニメーションの変更
@@ -32,6 +25,18 @@ public:
 	//アニメーションの再生終了判定
 	//true:終了 false:再生中
 	bool IsAnimationFinished();
+
 	int AnimationIndex();	//アニメーションの番号の取得
+
+protected:
+	CModelX* mpModel;			//モデルデータ
+	CMatrix* mpConbinedMatrix;	//合成行列退避
+
+	bool mAnimationLoopFlg;		//true:アニメーションを繰り返す
+
+	int mAnimationIndex;		//アニメーション番号
+
+	float mAnimationFrame;		//アニメーションの再生フレーム
+	float mAnimationFrameSize;	//アニメーションの再生フレーム数
 };
 #endif
