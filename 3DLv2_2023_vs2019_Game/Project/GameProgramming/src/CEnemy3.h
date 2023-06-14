@@ -12,7 +12,9 @@ class CEnemy3 : public CCharacter3
 {
 private:
 	CVector mPoint;			//目標地点
-	CCollider mCollider;	//コライダ
+	CCollider mCollider1;	//頭コライダ
+	CCollider mCollider2;	//胴体コライダ
+	CCollider mCollider3;	//下半身コライダ
 
 	int mHp;				//ヒットポイント
 

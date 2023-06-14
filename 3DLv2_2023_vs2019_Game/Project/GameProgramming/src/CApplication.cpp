@@ -11,9 +11,10 @@
 #include <time.h>
 
 #define MODEL_OBJ "res\\SnowGolem.obj","res\\SnowGolem.mtl"	//モデルデータの指定
-#define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"		//背景モデルデータの指定
+#define MODEL_BACKGROUND "res\\Graund.obj", "res\\Graund.mtl"		//背景モデルデータの指定
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
 
+int CApplication::mCameraFlag = 0;
 CUi* CApplication::spUi = nullptr;
 
 CUi* CApplication::Ui()
@@ -35,6 +36,11 @@ CTexture* CApplication::Texture()
 	return &mTexture;
 }
 
+int CApplication::CameraFlag()
+{
+	return mCameraFlag;
+}
+
 void CApplication::Start()
 {
 	//ランダム値の取得方法
@@ -48,25 +54,25 @@ void CApplication::Start()
 	spUi = new CUi(); //Uiクラスの生成
 	//モデルファイルの入力
 	mModel.Load(MODEL_OBJ);
-	//C5モデルの読み込み;
+	//背景モデルの読み込み;
 	mBackGround.Load(MODEL_BACKGROUND);
 	mMatrix.Print();
 	mPlayer.Model(&mModel);
 	mPlayer.Scale(CVector(0.03f, 0.03f, 0.03f));
-	mPlayer.Position(CVector(0.0f, -1.0f, -3.0f));
+	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
 	mPlayer.Rotation(CVector(0.0f, 0.0f, 0.0f));
 	mpMapManager = new CMapManager();
 
-	new CEnemy3(CVector(-5.0f, -1.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-	new CEnemy3(CVector(5.0f, -1.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-	new CAlly(CVector(5.0f, -1.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-	new CAlly(CVector(-5.0f, -1.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	new CEnemy3(CVector(-5.0f, 0.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	new CEnemy3(CVector(5.0f, 0.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	new CAlly(CVector(5.0f, 0.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	new CAlly(CVector(-5.0f, 0.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
 
 	//ビルボードの作成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 	//背景モデルから三角コライダを生成
 	// 親インスタンスと親行列はな
-	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
+	mColliderMesh.Set(nullptr, &mMatrix, &mBackGround);
 }
 
 void CApplication::Update()
@@ -79,13 +85,10 @@ void CApplication::Update()
 	//デバッグ用(カメラの切り替え)
 	if (mInput.PullKey('C'))
 	{
-		if (CameraFlag == false)
+		mCameraFlag++;
+		if (mCameraFlag >= 3)
 		{
-			CameraFlag = true;
-		}
-		else
-		{
-			CameraFlag = false;
+			mCameraFlag = 0;
 		}
 	}
 
@@ -102,7 +105,7 @@ void CApplication::Update()
 	
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
-	if (CameraFlag == false)
+	if (mCameraFlag == 0)
 	{
 		//視点を求める
 		e = mPlayer.Position() + CVector(0.0f, 2.0f, 0.0f) * mPlayer.MatrixRotate();
@@ -113,7 +116,7 @@ void CApplication::Update()
 		//カメラの設定
 		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	}
-	else
+	else if (mCameraFlag == 1)
 	{
 		//視点を求める
 		e = mPlayer.Position() + CVector(-0.9f, 3.0f, -12.0f) * mPlayer.MatrixRotate();
@@ -124,6 +127,18 @@ void CApplication::Update()
 		//カメラの設定
 		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	}
+	else
+	{
+		//視点を求める
+		e = mPlayer.Position() + CVector(0.5f, 3.0f, 12.0f) * mPlayer.MatrixRotate();
+		//注視点を求める
+		c = mPlayer.Position();
+		//上方向を求める
+		u = CVector(0.0f, 1.0f, 0.0f) * mPlayer.MatrixRotate();
+		//カメラの設定
+		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+
+	}
 
 	//モデルビュー行列の取得
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
@@ -133,11 +148,11 @@ void CApplication::Update()
 	mModelViewInverse.M(1, 3, 0);
 	mModelViewInverse.M(2, 3, 0);
 	mBackGround.Render();
-	spUi->Render(); //Uiの描画
 	//タスクリストの削除
 	CTaskManager::Instance()->Delete();
 	//タスクマネージャの描画
 	CTaskManager::Instance()->Render();
+	spUi->Render(); //Uiの描画
 	//コリジョンマネージャ描画
 	CCollisionManager::Instance()->Render();
 }

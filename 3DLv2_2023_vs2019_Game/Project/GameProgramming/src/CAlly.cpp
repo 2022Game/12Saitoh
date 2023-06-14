@@ -7,13 +7,17 @@
 #define VELOCITY 0.1f				//速度
 #define OBJ "res\\SnowGolem.obj"	//モデルのファイル
 #define MTL "res\\SnowGolem.mtl"	//モデルのマテリアルファイル
+#define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
+
 
 CModel CAlly::sModel;				//モデルデータ作成
 
 //デフォルトコンストラクタ
 CAlly::CAlly()
 	:CCharacter3(1)
-	, mCollider(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f)
+	, mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f,(int)EColliderTag::EALL)
+	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EALL)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EALL)
 	, mHp(HP)
 {
 	//モデルが無い時は読み込む
@@ -43,73 +47,21 @@ CAlly::CAlly(const CVector& position, const CVector& rotation,
 //更新処理
 void CAlly::Update()
 {
-	//プレイヤーのポインタが0以外の時
-	CPlayer* player = CPlayer::Instance();
-	if (player != nullptr)
-	{
-		//目標地点までのベクトルを求める
-		CVector vp = mPoint - mPosition;
-		//プレイヤーまでのベクトルを求める
-		//左ベクトルとの内積を求める
-		float dx = vp.Dot(mMatrixRotate.VectorX());
-		//上ベクトルとの内積を求める
-		float dy = vp.Dot(mMatrixRotate.VectorY());
-		//前方向ベクトルの内積を求める
-		float dz = vp.Dot(mMatrixRotate.VectorZ());
-
-		const float margin = 0.1f;
-
-		//HPが0以下の時、撃破
-		if (mHp <= 0)
-		{
-			mHp--;
-			//15フレーム毎にエフェクト
-			if (mHp % 15 == 0)
-			{
-				//エフェクト生成
-				new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
-			}
-			//降下させる
-			mPosition = mPosition - CVector(0.0f, 0.03f, 0.0f);
-			CTransform::Update();
-			return;
-		}
-		//およそ3秒毎に目標地点を更新
-		int r = rand() % 180; //rand()は整数の乱数を返す
-							  //% 180は180で割った余りを求める
-		if (r == 0)
-		{
-			if (player != nullptr)
-			{
-				mPoint = player->Position();
-			}
-			else
-			{
-				mPoint = mPoint * CMatrix().RotateY(45);
-			}
-		}
-		//左右方向へ回転
-		if (dx > margin)
-		{
-			mRotation = mRotation + CVector(0.0f, 1.0f, 0.0f); //左へ回転
-		}
-		else if (dx < -margin)
-		{
-			mRotation = mRotation + CVector(0.0f, -1.0f, 0.0f); //右へ回転
-		}
-		//機体前方へ移動する
-		mPosition = mPosition + mMatrixRotate.VectorZ() * VELOCITY;
-		CTransform::Update(); //行列更新
-	}
+	mPosition = mPosition - GRAVITY;
+	CTransform::Update();
 }
 
 
 void CAlly::Collision()
 {
 	//コライダの優先度変更
-	mCollider.ChangePriority();
+	mCollider1.ChangePriority();
+	mCollider2.ChangePriority();
+	mCollider3.ChangePriority();
 	//衝突処理を実行
-	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider1, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider2, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider3, COLLISIONRANGE);
 }
 
 //衝突処理
@@ -123,11 +75,13 @@ void CAlly::Collision(CCollider* m, CCollider* o)
 		//コライダのmとyが衝突しているか判定
 		if (CCollider::Collision(m, o))
 		{
-			mHp--; //ヒットポイントの減算
-			//エフェクト生成
-			new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
-			//衝突している時は無効にする
-			//mEnabled = false;
+			if (o->GetTag() != (int)EColliderTag::EALL &&
+				o->GetTag() != (int)EColliderTag::EENEMY)
+			{
+				mHp--; //ヒットポイントの減算
+				//エフェクト生成
+				new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			}
 		}
 		break;
 	case CCollider::ETRIANGLE: //三角コライダの時

@@ -3,16 +3,18 @@
 #include "CColliderLine.h"
 
 CCollider::CCollider()
-	:mpParent(nullptr)
+	: mpParent(nullptr)
 	, mpMatrix(&mMatrix)
 	, mType(ESPHERE)
 	, mRadius(0)
+	, mColliderTag(0)
 {
 	//コリジョンマネージャに追加
 	CCollisionManager::Instance()->Add(this);
 }
+
 CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
-	const CVector& position, float radius)
+	const CVector& position, float radius, int tag)
 	:CCollider()
 {
 	//親設定
@@ -23,6 +25,8 @@ CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	mPosition = position;  //位置
 	//半径設定
 	mRadius = radius;
+	//コライダータグの設定
+	mColliderTag = tag;
 }
 
 CCharacter3* CCollider::Parent()
@@ -183,4 +187,9 @@ void CCollider::ChangePriority()
 	CVector pos = mPosition * *mpMatrix;
 	//ベクトルの長さが優先度
 	CCollider::ChangePriority(pos.Lenght());
+}
+
+int CCollider::GetTag()const
+{
+	return mColliderTag;
 }

@@ -8,7 +8,7 @@
 
 
 CBullet::CBullet()
-	: mCollider(this, &mMatrix, CVector(), 0.3f)
+	: mCollider(this, &mMatrix, CVector(), 0.3f,(int)EColliderTag::EBULLET)
 	, mV(0.0f,0.0f,0.0f)
 {
 	mModelBall.Load(SnowBall);

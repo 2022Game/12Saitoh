@@ -9,11 +9,11 @@
 
 class CWall : public CCharacter3 {
 private:
-	//コライダ
+	////コライダ
 	CCollider mCollider1;
 	CCollider mCollider2;
 	CCollider mCollider3;
-	CColliderMesh mColliderMesh1;
+	CColliderMesh mColliderMesh;
 
 public:
 	//衝突処理

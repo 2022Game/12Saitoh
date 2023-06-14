@@ -64,16 +64,16 @@ void CMapManager::Init()
 	mpRedFlagModel->Load(MODEL_REDFLAG);
 
 	//ï«Çê∂ê¨
-	CreateWall(CVector(0.0f, 0.0f, 5.0f), CVector(0.0f,90.0f,0.0f), WALL_SIZE);
-	CreateWall(CVector(-5.0f, 0.0f, 10.0f), CVector(0.0f,90.0f,0.0f), WALL_SIZE);
-	CreateWall(CVector(7.0f, 0.0f, 15.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
-	CreateWall(CVector(0.0f, 0.0f, 20.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
-	CreateWall(CVector(-5.0f, 0.0f, 25.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
-	CreateWall(CVector(7.0f, 0.0f, 30.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
-	CreateWall(CVector(0.0f, 0.0f, 35.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
+	CreateWall(CVector(0.0f, 1.0f, 5.0f), CVector(0.0f,90.0f,0.0f), WALL_SIZE);
+	CreateWall(CVector(-5.0f, 1.0f, 10.0f), CVector(0.0f,90.0f,0.0f), WALL_SIZE);
+	CreateWall(CVector(7.0f, 1.0f, 15.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
+	CreateWall(CVector(0.0f, 1.0f, 20.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
+	CreateWall(CVector(-5.0f, 1.0f, 25.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
+	CreateWall(CVector(7.0f, 1.0f, 30.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
+	CreateWall(CVector(0.0f, 1.0f, 35.0f), CVector(0.0f, 90.0f, 0.0f), WALL_SIZE);
 	//ÉtÉâÉbÉOÇê∂ê¨
 	//CreateFlag(CVector(0.0f, -1.0f, 10.5f), CVector(), FLAG_SIZE, 1);
-	//CreateFlag(CVector(0.0f, -1.0f, 29.5f), CVector(0.0f,180.0f,0.0f), FLAG_SIZE, 0);
+	// CreateFlag(CVector(0.0f, -1.0f, 29.5f), CVector(0.0f, 180.0f, 0.0f), FLAG_SIZE, 0);
 }
 
 void CMapManager::CreateWall(CVector& pos, CVector& rot, CVector& scale)

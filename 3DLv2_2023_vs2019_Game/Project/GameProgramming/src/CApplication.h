@@ -47,7 +47,7 @@ private:
 	static CTexture mTexture;
 	CInput mInput;
 	CFont mFont;
-	bool CameraFlag = false; //デバッグ用
+	static int mCameraFlag; //デバッグ用
 
 public:
 	~CApplication();
@@ -56,6 +56,8 @@ public:
 	static const CMatrix& ModelViewInverse();
 	//static CTaskManager* TaskManager();
 	static CTexture* Texture();
+	//デバッグ用
+	static int CameraFlag();
 	//最初に一度だけ実行するプログラム
 	void Start();
 	//繰り返し実行するプログラム

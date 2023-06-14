@@ -7,14 +7,18 @@
 #define VELOCITY 0.1f      //速度
 #define OBJ "res\\SnowGolem.obj" //モデルのファイル
 #define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
+#define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
+
 
 CModel CEnemy3::sModel;    //モデルデータ作成
 
 //デフォルトコンストラクタ
 CEnemy3::CEnemy3()
-	:CCharacter3(1)
-	,mCollider(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f)
-	,mHp(HP)
+	: CCharacter3(1)
+	, mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f, (int)EColliderTag::EENEMY)
+	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EENEMY)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EENEMY)
+	, mHp(HP)
 {
 	//モデルが無い時は読み込む
 	if (sModel.Triangles().size() == 0)
@@ -43,6 +47,7 @@ CEnemy3::CEnemy3(const CVector& position, const CVector& rotation,
 //更新処理
 void CEnemy3::Update()
 {
+	mPosition = mPosition - GRAVITY;
 	//プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
 	if (player != nullptr)
@@ -126,9 +131,13 @@ void CEnemy3::Update()
 void CEnemy3::Collision()
 {
 	//コライダの優先度変更
-	mCollider.ChangePriority();
+	mCollider1.ChangePriority();
+	mCollider2.ChangePriority();
+	mCollider3.ChangePriority();
 	//衝突処理を実行
-	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider1, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider2, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider3, COLLISIONRANGE);
 }
 
 //衝突処理
@@ -142,11 +151,13 @@ void CEnemy3::Collision(CCollider* m, CCollider* o)
 		//コライダのmとyが衝突しているか判定
 		if (CCollider::Collision(m, o))
 		{
-			mHp--; //ヒットポイントの減算
-			//エフェクト生成
-			new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
-			//衝突している時は無効にする
-			//mEnabled = false;
+			if (o->GetTag() != (int)EColliderTag::EENEMY &&
+				o->GetTag() != (int)EColliderTag::EALL)
+			{
+				mHp--; //ヒットポイントの減算
+				//エフェクト生成
+				new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			}
 		}
 		break;
 	case CCollider::ETRIANGLE: //三角コライダの時

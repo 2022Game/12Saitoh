@@ -43,22 +43,39 @@ void CPlayer::Update()
 		//Z軸方向の値を回転させ移動させる
 		mPosition = mPosition + VELOCITYZ * mMatrixRotate;
 	}
-	if (mInput.Key('A'))
-	{
-		//X軸方向の値を回転させ移動させる
-		mPosition = mPosition + VELOCITYX * mMatrixRotate;
-	}
 	//Sキー入力で上向き
 	if (mInput.Key('S'))
 	{
 		//Z軸方向の値を回転させ移動させる
 		mPosition = mPosition - VELOCITYZ * mMatrixRotate;
 	}
-	//Dキー入力で回転
-	if (mInput.Key('D'))
+	if (CApplication::CameraFlag() != 2)
 	{
-		//X軸方向の値を回転させ移動させる
-		mPosition = mPosition - VELOCITYX * mMatrixRotate;
+		if (mInput.Key('A'))
+		{
+			//X軸方向の値を回転させ移動させる
+			mPosition = mPosition + VELOCITYX * mMatrixRotate;
+		}
+		//Dキー入力で回転
+		if (mInput.Key('D'))
+		{
+			//X軸方向の値を回転させ移動させる
+			mPosition = mPosition - VELOCITYX * mMatrixRotate;
+		}
+	}
+	else
+	{
+		if (mInput.Key('A'))
+		{
+			//X軸方向の値を回転させ移動させる
+			mPosition = mPosition - VELOCITYX * mMatrixRotate;
+		}
+		//Dキー入力で回転
+		if (mInput.Key('D'))
+		{
+			//X軸方向の値を回転させ移動させる
+			mPosition = mPosition + VELOCITYX * mMatrixRotate;
+		}
 	}
 	if (mInput.Key(VK_RIGHT))
 	{
@@ -109,6 +126,7 @@ void CPlayer::Collision(CCollider* m, CCollider* o)
 		break;
 	}
 }
+
 //衝突処理
 void CPlayer::Collision()
 {

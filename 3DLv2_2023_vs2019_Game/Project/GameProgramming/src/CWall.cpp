@@ -13,7 +13,7 @@ CWall::CWall(CModel* model, const CVector& position,
 	mPosition = position;	//位置の設定
 	mRotation = rotation;	//回転の設定
 	mScale = scale;			//拡縮の設定
-	mColliderMesh1.Set(this, &mMatrix, mpModel);
+	mColliderMesh.Set(this, &mMatrix, mpModel);
 }
 
 //更新処理
@@ -32,7 +32,6 @@ void CWall::Collision(CCollider* m, CCollider* o) {
 
 void CWall::Collision()
 {
-	//mColliderMesh1.ChangePriority();
 	//コライダの優先度変更
 	mCollider1.ChangePriority();
 	mCollider2.ChangePriority();
