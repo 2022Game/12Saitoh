@@ -2,7 +2,7 @@
 #include "CApplication.h"
 #include <cmath>
 
-#define VELOCITYZ CVector(0.0f, 0.0f, 1.0f)	//Z²ˆÚ“®
+#define VELOCITYZ CVector(0.0f, 0.0f, 1.5f)	//Z²ˆÚ“®
 #define GRAVITY CVector(0.0f,-0.1f,0.0f) //d—Í
 #define SnowBall "res\\SnowBall.obj","res\\SnowBall.mtl"
 

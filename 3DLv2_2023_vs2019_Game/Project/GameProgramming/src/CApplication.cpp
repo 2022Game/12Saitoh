@@ -7,6 +7,8 @@
 #include "CBillBoard.h"
 #include "CEnemy3.h"
 #include "CAlly.h"
+#include <stdlib.h>
+#include <time.h>
 
 #define MODEL_OBJ "res\\SnowGolem.obj","res\\SnowGolem.mtl"	//モデルデータの指定
 #define MODEL_BACKGROUND "res\\sky.obj", "res\\sky.mtl"		//背景モデルデータの指定
@@ -35,6 +37,14 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
+	//ランダム値の取得方法
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < 10; i++)
+	{
+		//最小値0 ,取得範囲3 
+		printf("%d\n", 0 + rand() % 3);
+	}
+
 	spUi = new CUi(); //Uiクラスの生成
 	//モデルファイルの入力
 	mModel.Load(MODEL_OBJ);
