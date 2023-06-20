@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル\ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="ソースファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ソースファイル\Lib">
+      <UniqueIdentifier>{71337753-7d4e-4fb3-a565-77caf26ac0fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Character">
+      <UniqueIdentifier>{c8e23cf9-f00a-4700-ab72-24e565ba3216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\UI">
+      <UniqueIdentifier>{260b72c8-0f9c-4e6e-9b78-03da3903f4ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Game">
+      <UniqueIdentifier>{b789a2a0-caf7-4627-a1d8-1989410e8853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Collider">
+      <UniqueIdentifier>{729926a8-cd13-4ea3-9be9-e511b5fe75b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Model">
+      <UniqueIdentifier>{c912b313-a215-444e-937d-b7e00c847200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Math">
+      <UniqueIdentifier>{5fe528c7-de01-4fa5-9965-76bca3be03b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Task">
+      <UniqueIdentifier>{25cc74b1-64cb-4db7-86de-c300d21b8fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Map">
+      <UniqueIdentifier>{162aad37-f8be-4d02-a0bc-a9e4677c80fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Character\Enemy">
+      <UniqueIdentifier>{14697a51-8c80-4480-ad4b-7966c1dcde24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Character\Ally">
+      <UniqueIdentifier>{00dc015f-2695-46a2-b0ed-72206b4236f3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSound.cpp">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CTexture.cpp">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCharacter3.cpp">
+      <Filter>ソースファイル\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CBillBoard.cpp">
+      <Filter>ソースファイル\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CBullet.cpp">
+      <Filter>ソースファイル\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CEffect.cpp">
+      <Filter>ソースファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPlayer.cpp">
+      <Filter>ソースファイル\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CTransform.cpp">
+      <Filter>ソースファイル\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CApplication.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCamera.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFont.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CInput.cpp">
+      <Filter>ソースファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CUi.cpp">
+      <Filter>ソースファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCollider.cpp">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CColliderLine.cpp">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CColliderMesh.cpp">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CColliderTriangle.cpp">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CMaterial.cpp">
+      <Filter>ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CModel.cpp">
+      <Filter>ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CTriangle.cpp">
+      <Filter>ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CMatrix.cpp">
+      <Filter>ソースファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CVector.cpp">
+      <Filter>ソースファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CTaskManager.cpp">
+      <Filter>ソースファイル\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCollisionManager.cpp">
+      <Filter>ソースファイル\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CWall.cpp">
+      <Filter>ソースファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CMapManager.cpp">
+      <Filter>ソースファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlag.cpp">
+      <Filter>ソースファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CEnemy.cpp">
+      <Filter>ソースファイル\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CEnemy3.cpp">
+      <Filter>ソースファイル\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAlly.cpp">
+      <Filter>ソースファイル\Character\Ally</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\CSound.h">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CTexture.h">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main.h">
+      <Filter>ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CCharacter3.h">
+      <Filter>ソースファイル\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CBillBoard.h">
+      <Filter>ソースファイル\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CBullet.h">
+      <Filter>ソースファイル\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CEffect.h">
+      <Filter>ソースファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPlayer.h">
+      <Filter>ソースファイル\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CTransform.h">
+      <Filter>ソースファイル\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CApplication.h">
+      <Filter>ソースファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CCamera.h">
+      <Filter>ソースファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFont.h">
+      <Filter>ソースファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CInput.h">
+      <Filter>ソースファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CUi.h">
+      <Filter>ソースファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CCollider.h">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CColliderLine.h">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CColliderMesh.h">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CColliderTriangle.h">
+      <Filter>ソースファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CMaterial.h">
+      <Filter>ソースファイル\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CModel.h">
+      <Filter>ソースファイル\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CTriangle.h">
+      <Filter>ソースファイル\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CVertex.h">
+      <Filter>ソースファイル\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CMatrix.h">
+      <Filter>ソースファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CVector.h">
+      <Filter>ソースファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CTask.h">
+      <Filter>ソースファイル\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CTaskManager.h">
+      <Filter>ソースファイル\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CCollisionManager.h">
+      <Filter>ソースファイル\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CWall.h">
+      <Filter>ソースファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CMapManager.h">
+      <Filter>ソースファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlag.h">
+      <Filter>ソースファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CEnemy.h">
+      <Filter>ソースファイル\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CEnemy3.h">
+      <Filter>ソースファイル\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAlly.h">
+      <Filter>ソースファイル\Character\Ally</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
