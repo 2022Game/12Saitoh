@@ -60,5 +60,5 @@ void CColliderTriangle::ChangePriority()
 	CVector pos = (mV[0] * *mpMatrix + mV[1] * *mpMatrix
 		+ mV[2] * *mpMatrix) * (1.0f / 3.0f);
 	//ベクトルの長さが優先度
-	CCollider::ChangePriority(pos.Lenght());
+	CCollider::ChangePriority(pos.Length());
 }

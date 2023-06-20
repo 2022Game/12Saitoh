@@ -62,7 +62,7 @@ CVector CVector::operator* (const CMatrix &m)
 	);
 }
 //ベクトルの長さを返す
-float CVector::Lenght() const
+float CVector::Length() const
 {
 	//sqrt関数で平方根を返す
 	return sqrtf(mX * mX + mY * mY + mZ * mZ);
@@ -77,7 +77,7 @@ float CVector::Dot(const CVector &v) const
 CVector CVector::Normalize() const
 {
 	//ベクトルの大きさで割ったベクトルを返す(長さ1のベクトル)
-	return *this * (1.0f / Lenght());
+	return *this * (1.0f / Length());
 }
 
 //外積

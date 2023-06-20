@@ -67,7 +67,7 @@ bool CCollider::Collision(CCollider* m, CCollider* o)
 	//中心から中心へベクトルを求める
 	mpos = mpos - opos;
 	//中心の距離が半径の合計より小さいと衝突
-	if (m->mRadius + o->mRadius > mpos.Lenght())
+	if (m->mRadius + o->mRadius > mpos.Length())
 	{
 		//衝突している
 		return true;
@@ -186,7 +186,7 @@ void CCollider::ChangePriority()
 	//自分の座標×親の変換行列を掛けてワールド座標を求める
 	CVector pos = mPosition * *mpMatrix;
 	//ベクトルの長さが優先度
-	CCollider::ChangePriority(pos.Lenght());
+	CCollider::ChangePriority(pos.Length());
 }
 
 int CCollider::GetTag()const

@@ -2,15 +2,46 @@
 #include "CEffect.h"
 #include "CApplication.h"
 #include "CPlayer.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #define HP 3               //耐久値
 #define VELOCITY 0.1f      //速度
 #define OBJ "res\\SnowGolem.obj" //モデルのファイル
 #define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
+#define FOV_ANGLE 45.0f	//視野の角度 (-角度～+角度まで)
+#define FOV_LENGTH 20.0f	//視野の距離
 
 
 CModel CEnemy3::sModel;    //モデルデータ作成
+
+//プレイヤーを見つけたかどうか
+bool CEnemy3::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	//視野の角度の判定
+	//自身からプレイヤーまでのベクトルを取得(要正規化)
+	CVector EP = (playerPos - enemyPos).Normalize();
+	//自身の正面方向のベクトルを取得(要正規化)
+	CVector forward = MatrixRotate().VectorZ().Normalize();
+	//正面方向のベクトルとプレイヤーまでのベクトルの
+	//内積から角度を求める
+	float dotZ = forward.Dot(EP);
+	//求めた角度が視野角度外で有れば、falseを返す
+	if (dotZ <= cosf(FOV_ANGLE * M_PI / 180.0f)) return false;
+
+	//視野距離の判定
+	//自身からプレイヤーまでの距離を求める
+	float distance = (playerPos - enemyPos).Length();
+	//求めた距離が視野距離より遠いならば、falseを返す
+	if (distance > FOV_LENGTH)return false;
+
+	//視野角度と視野距離を通ったのでtrueを返す
+	return true;
+}
 
 //デフォルトコンストラクタ
 CEnemy3::CEnemy3()
@@ -47,84 +78,90 @@ CEnemy3::CEnemy3(const CVector& position, const CVector& rotation,
 //更新処理
 void CEnemy3::Update()
 {
+	//重力
 	mPosition = mPosition - GRAVITY;
-	//プレイヤーのポインタが0以外の時
-	CPlayer* player = CPlayer::Instance();
-	if (player != nullptr)
-	{
-		//目標地点までのベクトルを求める
-		CVector vp = mPoint - mPosition;
-		//プレイヤーまでのベクトルを求める
-		//CVector vp = player->Position() - mPosition;
-		//左ベクトルとの内積を求める
-		float dx = vp.Dot(mMatrixRotate.VectorX());
-		//上ベクトルとの内積を求める
-		float dy = vp.Dot(mMatrixRotate.VectorY());
-		//前方向ベクトルの内積を求める
-		float dz = vp.Dot(mMatrixRotate.VectorZ());
 
-		const float margin = 0.1f;
-
-		//X軸のズレが2.0以下
-		if (-2.0f < dx && dx < 2.0f)
-		{
-			//Y軸のズレ2.0以下
-			if (-2.0f < dy && dy < 2.0f)
-			{
-				//プレイヤーが前方かつ距離が30以内
-				if (0.0f < dz && dz < 30.0f)
-				{
-					//弾を発射します
-					//CBullet* bullet = new CBullet();
-					//bullet->Set(0.1f, 1.5f);
-					//bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
-					//bullet->Rotation(mRotation);
-					//bullet->Update();
-				}
-			}
-		}
-		//HPが0以下の時、撃破
-		if (mHp <= 0)
-		{
-			mHp--;
-			//15フレーム毎にエフェクト
-			if (mHp % 15 == 0)
-			{
-				//エフェクト生成
-				new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
-			}
-			//降下させる
-			mPosition = mPosition - CVector(0.0f, 0.03f, 0.0f);
-			CTransform::Update();
-			return;
-		}
-		//およそ3秒毎に目標地点を更新
-		int r = rand() % 180; //rand()は整数の乱数を返す
-		                      //% 180は180で割った余りを求める
-		if (r == 0)
-		{
-			if (player != nullptr)
-			{
-				mPoint = player->Position();
-			}
-			else
-			{
-				mPoint = mPoint * CMatrix().RotateY(45);
-			}
-		}
-		//左右方向へ回転
-		if (dx > margin)
-		{
-			mRotation = mRotation + CVector(0.0f, 1.0f, 0.0f); //左へ回転
-		}
-		else if (dx < -margin)
-		{
-			mRotation = mRotation + CVector(0.0f, -1.0f, 0.0f); //右へ回転
-		}
-		//機体前方へ移動する
+	//機体前方へ移動する
+	if (IsFoundPlayer()) {
 		mPosition = mPosition + mMatrixRotate.VectorZ() * VELOCITY;
-		CTransform::Update(); //行列更新
 	}
+
+	//HPが0以下の時、撃破
+	if (mHp <= 0)
+	{
+		mHp--;
+		//15フレーム毎にエフェクト
+		if (mHp % 15 == 0)
+		{
+			//エフェクト生成
+			new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+		}
+		//降下させる
+		mPosition = mPosition - CVector(0.0f, 0.03f, 0.0f);
+		CTransform::Update();
+		return;
+	}
+
+	CTransform::Update(); //行列更新
+	//CPlayer* player = CPlayer::Instance();
+	//if (player != nullptr)
+	//{
+	//	//目標地点までのベクトルを求める
+	//	CVector vp = mPoint - mPosition;
+	//	//プレイヤーまでのベクトルを求める
+	//	//CVector vp = player->Position() - mPosition;
+	//	//左ベクトルとの内積を求める
+	//	float dx = vp.Dot(mMatrixRotate.VectorX());
+	//	//上ベクトルとの内積を求める
+	//	float dy = vp.Dot(mMatrixRotate.VectorY());
+	//	//前方向ベクトルの内積を求める
+	//	float dz = vp.Dot(mMatrixRotate.VectorZ());
+
+	//	const float margin = 0.1f;
+
+	//	//X軸のズレが2.0以下
+	//	if (-2.0f < dx && dx < 2.0f)
+	//	{
+	//		//Y軸のズレ2.0以下
+	//		if (-2.0f < dy && dy < 2.0f)
+	//		{
+	//			//プレイヤーが前方かつ距離が30以内
+	//			if (0.0f < dz && dz < 30.0f)
+	//			{
+	//				//弾を発射します
+	//				//CBullet* bullet = new CBullet();
+	//				//bullet->Set(0.1f, 1.5f);
+	//				//bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+	//				//bullet->Rotation(mRotation);
+	//				//bullet->Update();
+	//			}
+	//		}
+	//	}
+
+	//	//およそ3秒毎に目標地点を更新
+	//	int r = rand() % 180; //rand()は整数の乱数を返す
+	//	                      //% 180は180で割った余りを求める
+	//	if (r == 0)
+	//	{
+	//		if (player != nullptr)
+	//		{
+	//			mPoint = player->Position();
+	//		}
+	//		else
+	//		{
+	//			mPoint = mPoint * CMatrix().RotateY(45);
+	//		}
+	//	}
+	//	//左右方向へ回転
+	//	if (dx > margin)
+	//	{
+	//		mRotation = mRotation + CVector(0.0f, 1.0f, 0.0f); //左へ回転
+	//	}
+	//	else if (dx < -margin)
+	//	{
+	//		mRotation = mRotation + CVector(0.0f, -1.0f, 0.0f); //右へ回転
+	//	}
+	//}
 }
 
 

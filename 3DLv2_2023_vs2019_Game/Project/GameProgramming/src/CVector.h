@@ -21,7 +21,7 @@ public:
 	// Dot(ベクトル)
 	float Dot(const CVector& v) const;
 	//ベクトルの長さを返す
-	float Lenght() const;
+	float Length() const;
 	//CVector * CMatrixの結果をCVectorで返す
 	CVector operator*(const CMatrix &m);
 	//+演算子のオーバーロード

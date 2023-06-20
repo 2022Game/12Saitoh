@@ -14,9 +14,9 @@ class CPlayer : public CCharacter3
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
-	CColliderLine mLine; //親分コライダ
-	CColliderLine mLine2; //親分コライダ
-	CColliderLine mLine3; //親分コライダ
+	CCollider mCollider1;	//頭コライダ
+	CCollider mCollider2;	//胴体コライダ
+	CCollider mCollider3;	//下半身コライダ
 	CInput mInput;
 
 public:

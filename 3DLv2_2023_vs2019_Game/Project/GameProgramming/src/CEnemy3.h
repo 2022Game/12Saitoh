@@ -20,6 +20,9 @@ private:
 
 	static CModel sModel;	//モデルデータ
 
+	//プレイヤーを見つけたかどうか
+	bool IsFoundPlayer() const;
+
 public:
 	//コンストラクタ
 	CEnemy3();

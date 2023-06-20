@@ -10,9 +10,10 @@
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
 
 CPlayer::CPlayer()
-	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
-	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
-	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
+	: mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f, (int)EColliderTag::EENEMY)
+	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EENEMY)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EENEMY)
+
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -106,22 +107,24 @@ void CPlayer::Update()
 
 void CPlayer::Collision(CCollider* m, CCollider* o)
 {
-	//自身のコライダタイプの判定
-	switch (m->Type())
+	CVector adjust; //調整値
+	//相手のコライダタイプの判定
+	switch (o->Type())
 	{
-	case CCollider::ELINE://線分コライダ
-		//相手のコライダが三角コライダの時
-		if (o->Type() == CCollider::ETRIANGLE)
+	case CCollider::ESPHERE: //球コライダの時
+		//コライダのmとyが衝突しているか判定
+		if (CCollider::Collision(m, o))
 		{
-			CVector adjust; //調整用ベクトル
-			//三角形と線分の衝突判定
-			if (CCollider::CollisionTriangleLine(o, m, &adjust))
-			{
-				//位置の更新(mPosition + adjust)
-				mPosition = mPosition + adjust;
-				//行列の更新
-				CTransform::Update();
-			}
+
+		}
+		break;
+	case CCollider::ETRIANGLE: //三角コライダの時
+
+		//三角コライダと球コライダの衝突判定
+		if (CCollider::CollisionTriangleSphere(o, m, &adjust))
+		{
+			//衝突していない位置まで戻す
+			mPosition = mPosition + adjust;
 		}
 		break;
 	}
@@ -131,13 +134,21 @@ void CPlayer::Collision(CCollider* m, CCollider* o)
 void CPlayer::Collision()
 {
 	//コライダの優先度変更
-	mLine.ChangePriority();
-	mLine2.ChangePriority();
-	mLine3.ChangePriority();
+	mCollider1.ChangePriority();
+	mCollider2.ChangePriority();
+	mCollider3.ChangePriority();
 	//衝突処理を実行
-	CCollisionManager::Instance()->Collision(&mLine, COLLISIONRANGE);
-	CCollisionManager::Instance()->Collision(&mLine2, COLLISIONRANGE);
-	CCollisionManager::Instance()->Collision(&mLine3, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider1, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider2, COLLISIONRANGE);
+	CCollisionManager::Instance()->Collision(&mCollider3, COLLISIONRANGE);
+	////コライダの優先度変更
+	//mLine.ChangePriority();
+	//mLine2.ChangePriority();
+	//mLine3.ChangePriority();
+	////衝突処理を実行
+	//CCollisionManager::Instance()->Collision(&mLine, COLLISIONRANGE);
+	//CCollisionManager::Instance()->Collision(&mLine2, COLLISIONRANGE);
+	//CCollisionManager::Instance()->Collision(&mLine3, COLLISIONRANGE);
 }
 
 CPlayer* CPlayer::spInstance = nullptr;
