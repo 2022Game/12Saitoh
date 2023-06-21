@@ -111,7 +111,7 @@ void CEnemy3::Update()
 		}
 		//UŒ‚ˆ—
         //á‹Ê‚ğ”­Ë‚µ‚Ä‚¢‚È‚¯‚ê‚Î
-		if (mFlag != true)
+		if (mDistance <= 8 && mFlag != true)
 		{
 			//’e‚ğ”­Ë
 			CBullet* bullet = new CBullet();

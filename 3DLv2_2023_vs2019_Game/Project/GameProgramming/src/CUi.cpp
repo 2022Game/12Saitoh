@@ -51,6 +51,7 @@ void CUi::Render()
 	//文字列編集エリアの作成
 	char buf[64];
 
+	mFont.Draw(30, 550, 8, 16, "C : CHANGE CAMERA");
 	//Y座標の表示
 	//文字列の設定
 	sprintf(buf, "PY:%7.2f", mPosY);
