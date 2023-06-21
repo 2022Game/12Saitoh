@@ -11,9 +11,10 @@
 #define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
 #define FOV_ANGLE 45.0f	//視野の角度 (-角度～+角度まで)
-#define FOV_LENGTH 20.0f	//視野の距離
+#define FOV_LENGTH 30.0f	//視野の距離
 
-
+float CEnemy3::mDotX = 0.0f;
+float CEnemy3::mDistance = 0.0f;
 CModel CEnemy3::sModel;    //モデルデータ作成
 
 //プレイヤーを見つけたかどうか
@@ -27,15 +28,21 @@ bool CEnemy3::IsFoundPlayer() const
 	CVector EP = (playerPos - enemyPos).Normalize();
 	//自身の正面方向のベクトルを取得(要正規化)
 	CVector forward = MatrixRotate().VectorZ().Normalize();
+	//自身の横方向のベクトルを取得
+	CVector side = MatrixRotate().VectorX().Normalize();
 	//正面方向のベクトルとプレイヤーまでのベクトルの
 	//内積から角度を求める
 	float dotZ = forward.Dot(EP);
+	//横方向のベクトルの内積から角度を求める
+	float dotX = side.Dot(EP);
+	mDotX = dotX;
 	//求めた角度が視野角度外で有れば、falseを返す
 	if (dotZ <= cosf(FOV_ANGLE * M_PI / 180.0f)) return false;
 
 	//視野距離の判定
 	//自身からプレイヤーまでの距離を求める
 	float distance = (playerPos - enemyPos).Length();
+	mDistance = distance;
 	//求めた距離が視野距離より遠いならば、falseを返す
 	if (distance > FOV_LENGTH)return false;
 
@@ -50,6 +57,8 @@ CEnemy3::CEnemy3()
 	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EENEMY)
 	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EENEMY)
 	, mHp(HP)
+	, mBulletTime(0)
+	, mFlag(false)
 {
 	//モデルが無い時は読み込む
 	if (sModel.Triangles().size() == 0)
@@ -71,8 +80,6 @@ CEnemy3::CEnemy3(const CVector& position, const CVector& rotation,
 	mRotation = rotation; //回転の設定
 	mScale = scale;       //拡縮の設定
 	CTransform::Update(); //行列の更新
-	//目標地点の設定
-	mPoint = mPosition + CVector(0.0f, 0.0f, 100.0f) * mMatrixRotate;
 }
 
 //更新処理
@@ -82,8 +89,48 @@ void CEnemy3::Update()
 	mPosition = mPosition - GRAVITY;
 
 	//機体前方へ移動する
-	if (IsFoundPlayer()) {
-		mPosition = mPosition + mMatrixRotate.VectorZ() * VELOCITY;
+	if (IsFoundPlayer())
+	{
+		if (mDistance >= 5.0f)
+		{
+			mPosition = mPosition + mMatrixRotate.VectorZ() * VELOCITY;
+		}
+		else if (mDistance <= 3)
+		{
+			mPosition = mPosition - mMatrixRotate.VectorZ() * VELOCITY;
+
+		}
+		//左右方向へ回転
+		if (mDotX >= 0.0f)
+		{
+			mRotation = mRotation + CVector(0.0f, 1.5f, 0.0f); //左へ回転
+		}
+		else
+		{
+			mRotation = mRotation + CVector(0.0f, -1.5f, 0.0f); //右へ回転
+		}
+		//攻撃処理
+        //雪玉を発射していなければ
+		if (mFlag != true)
+		{
+			//弾を発射
+			CBullet* bullet = new CBullet();
+			bullet->Set(0.1f, 1.5f);
+			bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+			bullet->Rotation(mRotation);
+			bullet->Update();
+			mFlag = true;
+			printf("弾生成\n");
+		}
+	}
+	mBulletTime++;
+	if (mBulletTime >= 100)
+	{
+		if (mFlag == true)
+		{
+			mFlag = false;
+			mBulletTime = 0;
+		}
 	}
 
 	//HPが0以下の時、撃破
@@ -107,11 +154,11 @@ void CEnemy3::Update()
 	//if (player != nullptr)
 	//{
 	//	//目標地点までのベクトルを求める
-	//	CVector vp = mPoint - mPosition;
+	//    CVector vp = mPoint - mPosition;
 	//	//プレイヤーまでのベクトルを求める
 	//	//CVector vp = player->Position() - mPosition;
 	//	//左ベクトルとの内積を求める
-	//	float dx = vp.Dot(mMatrixRotate.VectorX());
+	//    float dx = vp.Dot(mMatrixRotate.VectorX());
 	//	//上ベクトルとの内積を求める
 	//	float dy = vp.Dot(mMatrixRotate.VectorY());
 	//	//前方向ベクトルの内積を求める
@@ -128,12 +175,12 @@ void CEnemy3::Update()
 	//			//プレイヤーが前方かつ距離が30以内
 	//			if (0.0f < dz && dz < 30.0f)
 	//			{
-	//				//弾を発射します
-	//				//CBullet* bullet = new CBullet();
-	//				//bullet->Set(0.1f, 1.5f);
-	//				//bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
-	//				//bullet->Rotation(mRotation);
-	//				//bullet->Update();
+					//弾を発射します
+					//CBullet* bullet = new CBullet();
+					//bullet->Set(0.1f, 1.5f);
+					//bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+					//bullet->Rotation(mRotation);
+					//bullet->Update();
 	//			}
 	//		}
 	//	}
@@ -151,15 +198,6 @@ void CEnemy3::Update()
 	//		{
 	//			mPoint = mPoint * CMatrix().RotateY(45);
 	//		}
-	//	}
-	//	//左右方向へ回転
-	//	if (dx > margin)
-	//	{
-	//		mRotation = mRotation + CVector(0.0f, 1.0f, 0.0f); //左へ回転
-	//	}
-	//	else if (dx < -margin)
-	//	{
-	//		mRotation = mRotation + CVector(0.0f, -1.0f, 0.0f); //右へ回転
 	//	}
 	//}
 }

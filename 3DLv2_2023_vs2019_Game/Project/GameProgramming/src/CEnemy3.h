@@ -11,17 +11,20 @@
 class CEnemy3 : public CCharacter3
 {
 private:
-	CVector mPoint;			//目標地点
 	CCollider mCollider1;	//頭コライダ
 	CCollider mCollider2;	//胴体コライダ
 	CCollider mCollider3;	//下半身コライダ
 
 	int mHp;				//ヒットポイント
+	int mBulletTime;		//射撃間隔(α版)
 
+	static float mDistance;	//プレイヤーまでの距離
+	static float mDotX;		//横方向の角度
 	static CModel sModel;	//モデルデータ
 
 	//プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
+	bool mFlag;				//雪玉を飛ばしているかの判定フラグ
 
 public:
 	//コンストラクタ

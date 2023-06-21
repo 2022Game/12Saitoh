@@ -6,12 +6,15 @@
 #define GRAVITY CVector(0.0f,-0.1f,0.0f) //èdóÕ
 #define SnowBall "res\\SnowBall.obj","res\\SnowBall.mtl"
 
+CBullet* CBullet::spinstence;
 
 CBullet::CBullet()
 	: mCollider(this, &mMatrix, CVector(), 0.3f,(int)EColliderTag::EBULLET)
 	, mV(0.0f,0.0f,0.0f)
+
 {
 	mModelBall.Load(SnowBall);
+	spinstence = this;
 }
 
 //ïùÇ∆âúçsÇ´ÇÃê›íË
@@ -65,4 +68,9 @@ void CBullet::Collision(CCollider* m, CCollider* o)
 		}
 		break;
 	}
+}
+
+CBullet* CBullet::Instance()
+{
+	return spinstence;
 }
