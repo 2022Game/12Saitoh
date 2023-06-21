@@ -111,6 +111,8 @@ void CApplication::Update()
 	mModelX.AnimateVertex();
 	//ƒvƒŒƒCƒ„[•`‰æ
 	mXPlayer.Render();
+	//ƒRƒ‰ƒCƒ_‚Ì•`‰æ
+	CCollisionManager::Instance()->Render();
 	//“G•`‰æ
 	mXEnemy.Render();
 

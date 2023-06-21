@@ -34,6 +34,9 @@
     <Filter Include="ソース ファイル\Task">
       <UniqueIdentifier>{453161b1-eb5b-40dc-a61f-fb4c9e91356b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Character\CXファイル">
+      <UniqueIdentifier>{f985167d-58ad-458c-a63a-40c04971f54e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -121,13 +124,13 @@
       <Filter>ソース ファイル\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\CXCharacter.cpp">
-      <Filter>ソース ファイル\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CXPlayer.cpp">
-      <Filter>ソース ファイル\Character</Filter>
+      <Filter>ソース ファイル\Character\CXファイル</Filter>
     </ClCompile>
     <ClCompile Include="src\CXEnemy.cpp">
-      <Filter>ソース ファイル\Character</Filter>
+      <Filter>ソース ファイル\Character\CXファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CXPlayer.cpp">
+      <Filter>ソース ファイル\Character\CXファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,13 +225,13 @@
       <Filter>ソース ファイル\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\CXCharacter.h">
-      <Filter>ソース ファイル\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CXPlayer.h">
-      <Filter>ソース ファイル\Character</Filter>
+      <Filter>ソース ファイル\Character\CXファイル</Filter>
     </ClInclude>
     <ClInclude Include="src\CXEnemy.h">
-      <Filter>ソース ファイル\Character</Filter>
+      <Filter>ソース ファイル\Character\CXファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CXPlayer.h">
+      <Filter>ソース ファイル\Character\CXファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

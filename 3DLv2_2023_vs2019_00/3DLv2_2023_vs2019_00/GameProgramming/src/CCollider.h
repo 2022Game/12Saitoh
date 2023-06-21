@@ -7,7 +7,7 @@ class CCollisionManager;
 コライダクラス
 衝突判定データ
 */
-class CCollider : public CTransform,public CTask {
+class CCollider : public CTransform, public CTask {
 	friend CCollisionManager;
 public:
 	//優先度の変更
@@ -48,6 +48,7 @@ public:
 	CCharacter3* Parent();
 	//描画
 	void Render();
+	void Matrix(CMatrix* m);
 protected:
 	EType mType;//コライダタイプ
 	//頂点

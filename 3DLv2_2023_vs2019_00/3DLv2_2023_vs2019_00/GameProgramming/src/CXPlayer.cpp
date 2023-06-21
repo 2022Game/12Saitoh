@@ -1,5 +1,18 @@
 #include "CXPlayer.h"
 
+CXPlayer::CXPlayer()
+	: mColSpherBody(this, nullptr, CVector(), 0.5f)
+{
+
+}
+
+void CXPlayer::Init(CModelX* model)
+{
+	CXCharacter::Init(model);
+	//‡¬s—ñ‚Ìİ’è
+	mColSpherBody.Matrix(&mpConbinedMatrix[8]);
+}
+
 void CXPlayer::Update()
 {
 	//ˆÚ“®ˆ—

@@ -6,7 +6,7 @@ CTexture CApplication::mTexture;
 CTexture CApplication::mTexture2;
 CCharacterManager CApplication::mCharacterManager;
 
-#define SOUND_BGM "res\\BGM.wav"//"res\\zyopurin.wav" //BGM音声ファイル
+#define SOUND_BGM "res\\zyopurin.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
 #define SOUND_CLEAR "res\\Clear.wav" //ゲームクリア音声ファイル
 #define CLEAR 
