@@ -14,7 +14,6 @@
 #define FOV_LENGTH 30.0f	//視野の距離
 
 float CEnemy3::mDotX = 0.0f;
-float CEnemy3::mDistance = 0.0f;
 CModel CEnemy3::sModel;    //モデルデータ作成
 
 //プレイヤーを見つけたかどうか
@@ -42,7 +41,6 @@ bool CEnemy3::IsFoundPlayer() const
 	//視野距離の判定
 	//自身からプレイヤーまでの距離を求める
 	float distance = (playerPos - enemyPos).Length();
-	mDistance = distance;
 	//求めた距離が視野距離より遠いならば、falseを返す
 	if (distance > FOV_LENGTH)return false;
 
@@ -59,6 +57,7 @@ CEnemy3::CEnemy3()
 	, mHp(HP)
 	, mBulletTime(0)
 	, mFlag(false)
+	, mState(EState::EIDLE)
 {
 	//モデルが無い時は読み込む
 	if (sModel.Triangles().size() == 0)
@@ -82,56 +81,111 @@ CEnemy3::CEnemy3(const CVector& position, const CVector& rotation,
 	CTransform::Update(); //行列の更新
 }
 
+//待機状態の更新処理
+void CEnemy3::UpdateIdle()
+{
+	//プレイヤーを見つけたら、追跡状態げ移行
+	if (IsFoundPlayer())
+	{
+		mState = EState::ECHASE;
+	}
+}
+
+//追跡状態の更新処理
+void CEnemy3::UpdateChase()
+{
+	//プレイヤーを見失ったら、待機状態へ移行
+	if (!IsFoundPlayer())
+	{
+		mState = EState::EIDLE;
+	}
+	//プレイヤーを見失っていなければ、移動処理
+	else
+	{
+		CVector forward = mMatrixRotate.VectorZ().Normalize();
+		CVector playerPos = CPlayer::Instance()->Position();
+		float distance = (playerPos - Position()).Length();
+		if (distance >= 5.0f)
+		{
+			mPosition += forward * VELOCITY;
+		}
+		else if (distance <= 3.0f)
+		{
+			mPosition -= forward * VELOCITY;
+		}
+		//距離が3～5の間であれば、攻撃状態へ移行
+		else
+		{
+			mState = EState::EATTACK;
+		}
+		//左右方向へ回転
+		if (mDotX >= 0.0f)
+		{
+			mRotation += CVector(0.0f, 1.5f, 0.0f); //左へ回転
+		}
+		else
+		{
+			mRotation -= CVector(0.0f, -1.5f, 0.0f); //右へ回転
+		}
+	}
+}
+
+//攻撃状態の更新処理
+void CEnemy3::UpdateAttack()
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	float distance = (playerPos - Position()).Length();
+
+	//攻撃処理
+	//雪玉を発射していなければ
+	if (mFlag == false)
+	{
+		//弾を発射
+		CBullet* bullet = new CBullet();
+		bullet->Set(0.1f, 1.5f);
+		bullet->Position(CVector(0.0f, 70.0f, 10.0f) * mMatrix);
+		bullet->Rotation(mRotation);
+		bullet->Update();
+		mFlag = true;
+		printf("弾生成\n");
+	}
+	//雪弾発射済み
+	else
+	{
+		mBulletTime++;
+		if (mBulletTime >= 100)
+		{
+			if (mFlag == true)
+			{
+				mFlag = false;
+				mBulletTime = 0;
+				//攻撃が終わったら追跡状態に戻す
+				mState = EState::ECHASE;
+			}
+		}
+	}
+
+}
+
 //更新処理
 void CEnemy3::Update()
 {
 	//重力
 	mPosition = mPosition - GRAVITY;
 
-	//機体前方へ移動する
-	if (IsFoundPlayer())
+	switch (mState)
 	{
-		if (mDistance >= 5.0f)
-		{
-			mPosition = mPosition + mMatrixRotate.VectorZ() * VELOCITY;
-		}
-		else if (mDistance <= 3)
-		{
-			mPosition = mPosition - mMatrixRotate.VectorZ() * VELOCITY;
+	case EState::EIDLE:
+		UpdateIdle();
+		break;
+	case EState::ECHASE:
+		UpdateChase();
+		break;
+	case EState::EATTACK:
+		UpdateAttack();
+		break;
+	}
 
-		}
-		//左右方向へ回転
-		if (mDotX >= 0.0f)
-		{
-			mRotation = mRotation + CVector(0.0f, 1.5f, 0.0f); //左へ回転
-		}
-		else
-		{
-			mRotation = mRotation + CVector(0.0f, -1.5f, 0.0f); //右へ回転
-		}
-		//攻撃処理
-        //雪玉を発射していなければ
-		if (mDistance <= 8 && mFlag != true)
-		{
-			//弾を発射
-			CBullet* bullet = new CBullet();
-			bullet->Set(0.1f, 1.5f);
-			bullet->Position(CVector(0.0f, 70.0f, 10.0f) * mMatrix);
-			bullet->Rotation(mRotation);
-			bullet->Update();
-			mFlag = true;
-			printf("弾生成\n");
-		}
-	}
-	mBulletTime++;
-	if (mBulletTime >= 100)
-	{
-		if (mFlag == true)
-		{
-			mFlag = false;
-			mBulletTime = 0;
-		}
-	}
 
 	//HPが0以下の時、撃破
 	if (mHp <= 0)
@@ -150,56 +204,6 @@ void CEnemy3::Update()
 	}
 
 	CTransform::Update(); //行列更新
-	//CPlayer* player = CPlayer::Instance();
-	//if (player != nullptr)
-	//{
-	//	//目標地点までのベクトルを求める
-	//    CVector vp = mPoint - mPosition;
-	//	//プレイヤーまでのベクトルを求める
-	//	//CVector vp = player->Position() - mPosition;
-	//	//左ベクトルとの内積を求める
-	//    float dx = vp.Dot(mMatrixRotate.VectorX());
-	//	//上ベクトルとの内積を求める
-	//	float dy = vp.Dot(mMatrixRotate.VectorY());
-	//	//前方向ベクトルの内積を求める
-	//	float dz = vp.Dot(mMatrixRotate.VectorZ());
-
-	//	const float margin = 0.1f;
-
-	//	//X軸のズレが2.0以下
-	//	if (-2.0f < dx && dx < 2.0f)
-	//	{
-	//		//Y軸のズレ2.0以下
-	//		if (-2.0f < dy && dy < 2.0f)
-	//		{
-	//			//プレイヤーが前方かつ距離が30以内
-	//			if (0.0f < dz && dz < 30.0f)
-	//			{
-					//弾を発射します
-					//CBullet* bullet = new CBullet();
-					//bullet->Set(0.1f, 1.5f);
-					//bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
-					//bullet->Rotation(mRotation);
-					//bullet->Update();
-	//			}
-	//		}
-	//	}
-
-	//	//およそ3秒毎に目標地点を更新
-	//	int r = rand() % 180; //rand()は整数の乱数を返す
-	//	                      //% 180は180で割った余りを求める
-	//	if (r == 0)
-	//	{
-	//		if (player != nullptr)
-	//		{
-	//			mPoint = player->Position();
-	//		}
-	//		else
-	//		{
-	//			mPoint = mPoint * CMatrix().RotateY(45);
-	//		}
-	//	}
-	//}
 }
 
 

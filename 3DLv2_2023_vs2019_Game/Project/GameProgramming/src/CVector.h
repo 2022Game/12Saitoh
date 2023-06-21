@@ -17,6 +17,9 @@ public:
 	//*演算子のオーバーロード
 	// CVector * float の演算結果を返す
 	CVector operator*(const float& f)const;
+	//*=演算子のオーバーロード
+	//CVector *= CVector の演算結果を返す
+	void operator*=(const float& f);
 	//内積
 	// Dot(ベクトル)
 	float Dot(const CVector& v) const;
@@ -27,9 +30,15 @@ public:
 	//+演算子のオーバーロード
 	//CVector + CVector の演算結果を返す
 	CVector operator+(const CVector& v) const;
+	//+=演算子のオーバーロード
+	//CVector += CVector の演算結果を返す
+	void operator+=(const CVector& v);
 	//-演算子のオーバーロード
 	//CVector - CVector の演算結果を返す
 	CVector operator-(const CVector& v) const;
+	//-=演算子のオーバーロード
+	//CVector -= CVector の演算結果を返す
+	void operator-=(const CVector& v);
 	//各軸での値の設定
 	//Set(X座標,Y座標,Z座標)
 	void Set(float x, float y, float z);

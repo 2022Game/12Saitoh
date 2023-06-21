@@ -18,13 +18,28 @@ private:
 	int mHp;				//ヒットポイント
 	int mBulletTime;		//射撃間隔(α版)
 
-	static float mDistance;	//プレイヤーまでの距離
 	static float mDotX;		//横方向の角度
 	static CModel sModel;	//モデルデータ
 
 	//プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
 	bool mFlag;				//雪玉を飛ばしているかの判定フラグ
+
+	//敵の状態
+	enum class EState
+	{
+		EIDLE,		//待機
+		ECHASE,		//プレイヤーを追跡
+		EATTACK		//プレイヤーを攻撃
+	};
+	//敵の状態
+	EState mState;
+	//待機状態の更新処理
+	void UpdateIdle();
+	//追跡状態の更新処理
+	void UpdateChase();
+	//攻撃状態の更新処理
+	void UpdateAttack();
 
 public:
 	//コンストラクタ
