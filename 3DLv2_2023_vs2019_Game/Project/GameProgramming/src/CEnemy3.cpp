@@ -116,7 +116,7 @@ void CEnemy3::Update()
 			//’e‚ð”­ŽË
 			CBullet* bullet = new CBullet();
 			bullet->Set(0.1f, 1.5f);
-			bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+			bullet->Position(CVector(0.0f, 70.0f, 10.0f) * mMatrix);
 			bullet->Rotation(mRotation);
 			bullet->Update();
 			mFlag = true;

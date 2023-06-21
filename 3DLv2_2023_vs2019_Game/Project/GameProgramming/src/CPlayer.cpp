@@ -5,8 +5,8 @@
 
 #define ROTATION_XV CVector(1.0f,0.0f,0.0f) //回転速度
 #define ROTATION_YV CVector(0.0f,1.0f,0.0f) //回転速度
-#define VELOCITYZ CVector(0.0f, 0.0f, 0.1f) //Z軸移動速度
-#define VELOCITYX CVector(0.1f, 0.0f, 0.0f)	//X軸移動速度
+#define VELOCITYZ CVector(0.0f, 0.0f, 0.2f) //Z軸移動速度
+#define VELOCITYX CVector(0.2f, 0.0f, 0.0f)	//X軸移動速度
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
 
 CPlayer::CPlayer()
