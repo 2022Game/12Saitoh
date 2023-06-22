@@ -33,7 +33,6 @@ private:
 	CModelX mModelX;
 	CColliderMesh mColliderMesh;	//モデルからコライダを生成
 	CModel mModelC5;	            //C5モデル
-	CPlayer mPlayer;
 	CModel mBackGround;             //背景モデル
 	CModel mModel;
 	CVector mEye;

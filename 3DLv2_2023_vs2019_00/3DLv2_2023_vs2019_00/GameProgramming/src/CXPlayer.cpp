@@ -1,7 +1,9 @@
 #include "CXPlayer.h"
 
 CXPlayer::CXPlayer()
-	: mColSpherBody(this, nullptr, CVector(), 0.5f)
+	: mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
+	, mColSpherBody(this, nullptr, CVector(), 0.5f)
+	,mColSpherSword(this, nullptr, CVector(-10.0f, 10.0f, 50.0f), 0.3f)
 {
 
 }
@@ -10,7 +12,12 @@ void CXPlayer::Init(CModelX* model)
 {
 	CXCharacter::Init(model);
 	//çáê¨çsóÒÇÃê›íË
-	mColSpherBody.Matrix(&mpConbinedMatrix[8]);
+	//ì™
+	mColSpherHead.Matrix(&mpCombinedMatrix[11]);
+	//ëÃ
+	mColSpherBody.Matrix(&mpCombinedMatrix[8]);
+	//åï
+	mColSpherSword.Matrix(&mpCombinedMatrix[21]);
 }
 
 void CXPlayer::Update()

@@ -180,5 +180,5 @@ void CCollider::ChangePriority()
 
 void CCollider::Matrix(CMatrix* m)
 {
-
+	mpMatrix = m;
 }

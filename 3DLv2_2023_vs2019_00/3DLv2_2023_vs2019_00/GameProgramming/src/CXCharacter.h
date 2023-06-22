@@ -11,7 +11,7 @@ public:
 	//コンストラクタ
 	CXCharacter();
 	virtual ~CXCharacter() { 
-		SAFE_DELETE_ARRA(mpConbinedMatrix)};
+		SAFE_DELETE_ARRA(mpCombinedMatrix)};
 
 	//初期化処理
 	void Init(CModelX* model);
@@ -30,7 +30,7 @@ public:
 
 protected:
 	CModelX* mpModel;			//モデルデータ
-	CMatrix* mpConbinedMatrix;	//合成行列退避
+	CMatrix* mpCombinedMatrix;	//合成行列退避
 
 	bool mAnimationLoopFlg;		//true:アニメーションを繰り返す
 
