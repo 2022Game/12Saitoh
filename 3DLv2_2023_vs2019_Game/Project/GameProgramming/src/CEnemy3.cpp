@@ -10,7 +10,7 @@
 #define OBJ "res\\SnowGolem.obj" //ƒ‚ƒfƒ‹‚Ìƒtƒ@ƒCƒ‹
 #define MTL "res\\SnowGolem.mtl" //ƒ‚ƒfƒ‹‚Ìƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//d—Í
-#define FOV_ANGLE 45.0f	//Ž‹–ì‚ÌŠp“x (-Šp“x`+Šp“x‚Ü‚Å)
+#define FOV_ANGLE 60.0f	//Ž‹–ì‚ÌŠp“x (-Šp“x`+Šp“x‚Ü‚Å)
 #define FOV_LENGTH 30.0f	//Ž‹–ì‚Ì‹——£
 
 float CEnemy3::mDotX = 0.0f;
@@ -105,11 +105,12 @@ void CEnemy3::UpdateChase()
 		CVector forward = mMatrixRotate.VectorZ().Normalize();
 		CVector playerPos = CPlayer::Instance()->Position();
 		float distance = (playerPos - Position()).Length();
+
 		if (distance >= 5.0f)
 		{
 			mPosition += forward * VELOCITY;
 		}
-		else if (distance <= 3.0f)
+		else if (distance <= 3.0f) 
 		{
 			mPosition -= forward * VELOCITY;
 		}
@@ -125,7 +126,7 @@ void CEnemy3::UpdateChase()
 		}
 		else
 		{
-			mRotation -= CVector(0.0f, -1.5f, 0.0f); //‰E‚Ö‰ñ“]
+			mRotation -= CVector(0.0f, 1.5f, 0.0f); //‰E‚Ö‰ñ“]
 		}
 	}
 }
