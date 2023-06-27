@@ -10,7 +10,7 @@
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//èdóÕ
 
 CPlayer::CPlayer()
-	: mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f, (int)EColliderTag::EENEMY)
+	: mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.7f, (int)EColliderTag::EENEMY)
 	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EENEMY)
 	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EENEMY)
 

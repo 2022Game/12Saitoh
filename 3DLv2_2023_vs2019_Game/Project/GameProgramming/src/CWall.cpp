@@ -13,7 +13,7 @@ CWall::CWall(CModel* model, const CVector& position,
 	mPosition = position;	//ˆÊ’u‚Ìİ’è
 	mRotation = rotation;	//‰ñ“]‚Ìİ’è
 	mScale = scale;			//Šgk‚Ìİ’è
-	//mColliderMesh.Set(this, &mMatrix, mpModel);
+	mColliderMesh.Set(this, &mMatrix, mpModel);
 }
 
 //XVˆ—

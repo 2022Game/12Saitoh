@@ -19,6 +19,7 @@ private:
 	CCollider mCollider3;	//下半身コライダ
 	CInput mInput;
 
+
 public:
 	//インスタンスのポインタの取得
 	static CPlayer* Instance();
