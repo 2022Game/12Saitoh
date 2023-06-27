@@ -109,8 +109,6 @@ void CApplication::Update()
 
 	//衝突処理
 	CCollisionManager::Instance()->Collision();
-	//頂点にアニメーションを適用する
-	mModelX.AnimateVertex();
 	//プレイヤー描画
 	mXPlayer.Render();
 	//コライダの描画
