@@ -9,8 +9,9 @@ enum class EColliderTag
 	EPLAYER,	//プレイヤー
 	EENEMY,		//敵
 	EALL,		//味方
-	EBULLET		//弾
-};
+	EBULLET,	//弾
+	EFLAG,		//フラッグ
+};   
 
 /*
 コライダクラス

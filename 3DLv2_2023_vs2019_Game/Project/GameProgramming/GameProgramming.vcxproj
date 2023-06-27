@@ -23,7 +23,6 @@
     <ClCompile Include="src\CColliderTriangle.cpp" />
     <ClCompile Include="src\CCollisionManager.cpp" />
     <ClCompile Include="src\CEffect.cpp" />
-    <ClCompile Include="src\CEnemy.cpp" />
     <ClCompile Include="src\CEnemy3.cpp" />
     <ClCompile Include="src\CFlag.cpp" />
     <ClCompile Include="src\CFont.cpp" />
@@ -56,7 +55,6 @@
     <ClInclude Include="src\CColliderTriangle.h" />
     <ClInclude Include="src\CCollisionManager.h" />
     <ClInclude Include="src\CEffect.h" />
-    <ClInclude Include="src\CEnemy.h" />
     <ClInclude Include="src\CEnemy3.h" />
     <ClInclude Include="src\CFlag.h" />
     <ClInclude Include="src\CFont.h" />

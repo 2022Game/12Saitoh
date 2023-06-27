@@ -7,13 +7,13 @@
 //CFlag(ƒ‚ƒfƒ‹AˆÊ’uA‰ñ“]AŠgkj
 CFlag::CFlag(CModel* model, const CVector& position,
 	const CVector& rotation, const CVector& scale)
+	: mCollider(this, &mMatrix, CVector(0.0f, 10.0f, 0.0f), 1.0f, (int)EColliderTag::EFLAG)
 {
 	//ƒ‚ƒfƒ‹AˆÊ’uA‰ñ“]AŠgk‚ðÝ’è‚·‚é
 	mpModel = model; //ƒ‚ƒfƒ‹‚ÌÝ’è
 	mPosition = position; //ˆÊ’u‚ÌÝ’è
 	mRotation = rotation; //‰ñ“]‚ÌÝ’è
 	mScale = scale; //Šgk‚ÌÝ’è
-	mColliderMesh1.Set(this, &mMatrix, mpModel);
 }
 
 //XVˆ—
@@ -33,13 +33,7 @@ void CFlag::Collision(CCollider* m, CCollider* o)
 
 void CFlag::Collision()
 {
-	//mColliderMesh1.ChangePriority();
 	//ƒRƒ‰ƒCƒ_‚Ì—Dæ“x•ÏX
-	mCollider1.ChangePriority();
-	mCollider2.ChangePriority();
-	mCollider3.ChangePriority();
+	mCollider.ChangePriority();
 	//Õ“Ëˆ—‚ðŽÀs
-	CCollisionManager::Instance()->Collision(&mCollider1, COLLISIONRANGE);
-	CCollisionManager::Instance()->Collision(&mCollider2, COLLISIONRANGE);
-	CCollisionManager::Instance()->Collision(&mCollider3, COLLISIONRANGE);
-}
+	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);}

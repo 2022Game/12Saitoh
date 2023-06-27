@@ -10,8 +10,8 @@
 #define OBJ "res\\SnowGolem.obj" //モデルのファイル
 #define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
-#define FOV_ANGLE 60.0f	//視野の角度 (-角度～+角度まで)
-#define FOV_LENGTH 30.0f	//視野の距離
+#define FOV_ANGLE 80.0f	//視野の角度 (-角度～+角度まで)
+#define FOV_LENGTH 30.0f//視野の距離
 
 float CEnemy3::mDotX = 0.0f;
 CModel CEnemy3::sModel;    //モデルデータ作成
@@ -84,7 +84,7 @@ CEnemy3::CEnemy3(const CVector& position, const CVector& rotation,
 //待機状態の更新処理
 void CEnemy3::UpdateIdle()
 {
-	//プレイヤーを見つけたら、追跡状態げ移行
+	//プレイヤーを見つけたら、追跡状態に移行
 	if (IsFoundPlayer())
 	{
 		mState = EState::ECHASE;

@@ -132,9 +132,6 @@
     <ClCompile Include="src\CFlag.cpp">
       <Filter>ソースファイル\Map</Filter>
     </ClCompile>
-    <ClCompile Include="src\CEnemy.cpp">
-      <Filter>ソースファイル\Character\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="src\CEnemy3.cpp">
       <Filter>ソースファイル\Character\Enemy</Filter>
     </ClCompile>
@@ -232,9 +229,6 @@
     </ClInclude>
     <ClInclude Include="src\CFlag.h">
       <Filter>ソースファイル\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CEnemy.h">
-      <Filter>ソースファイル\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="src\CEnemy3.h">
       <Filter>ソースファイル\Character\Enemy</Filter>
