@@ -61,9 +61,11 @@ CCollider::~CCollider() {
 }
 
 CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
-	const CVector& position, float radius) 
+	const CVector& position, float radius, ETag tag) 
 	: CCollider() 
 {
+	//タグの設定
+	mTag = tag;
 	//親設定
 	mpParent = parent;
 	//親行列設定
@@ -72,7 +74,7 @@ CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	mPosition = position; //位置
 	//半径設定
 	mRadius = radius;
-	//コリジョンマネージャyに追加
+	//コリジョンマネージャに追加
 	//CCollisionManager::Instance()->Add(this);
 }
 
@@ -99,6 +101,11 @@ void CCollider::Render() {
 CCollider::EType CCollider::Type()
 {
 	return mType;
+}
+
+CCollider::ETag CCollider::Tag()
+{
+	return mTag;
 }
 
 bool CCollider::CollisionTriangleLine(CCollider* t, CCollider* l, CVector* a) {

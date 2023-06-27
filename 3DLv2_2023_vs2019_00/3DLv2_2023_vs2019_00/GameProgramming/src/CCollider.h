@@ -2,6 +2,7 @@
 #define CCOLLIDER_H
 //キャラクタクラスのインクルード
 #include "CCharacter3.h"
+
 class CCollisionManager;
 /*
 コライダクラス
@@ -20,8 +21,12 @@ public:
 		ETRIANGLE,//三角コライダ
 		ELINE, //線分コライダ
 	};
-
 	EType Type();
+	enum class ETag {
+		EBODY,	//体
+		ESWORD,	//剣
+	};
+	ETag Tag();	//タグの取得
 	//CollisionTriangleLine(三角コライダ, 線分コライダ, 調整値)
 	//retrun:true（衝突している）false(衝突していない)
 	//調整値:衝突しない位置まで戻す値
@@ -43,7 +48,8 @@ public:
 	//コンストラクタ
 	//CCollider(親, 親行列, 位置, 半径)
 	CCollider(CCharacter3* parent, CMatrix* matrix,
-		const CVector& position, float radius);
+		const CVector& position, float radius,
+		ETag tag = ETag::EBODY);
 	//親ポインタの取得
 	CCharacter3* Parent();
 	//描画
@@ -51,6 +57,7 @@ public:
 	void Matrix(CMatrix* m);
 protected:
 	EType mType;//コライダタイプ
+	ETag mTag;	//タグ
 	//頂点
 	CVector mV[3];
 

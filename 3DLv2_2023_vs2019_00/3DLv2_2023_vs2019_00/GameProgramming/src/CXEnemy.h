@@ -20,5 +20,8 @@ public:
 	void Init(CModelX* model);
 	//XVˆ—
 	void Update();
+
+	//Õ“Ëˆ—
+	void Collision(CCollider* m, CCollider* o);
 };
 #endif

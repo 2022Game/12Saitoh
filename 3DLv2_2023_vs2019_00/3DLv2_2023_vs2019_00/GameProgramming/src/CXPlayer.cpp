@@ -3,9 +3,9 @@
 CXPlayer::CXPlayer()
 	: mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
 	, mColSpherBody(this, nullptr, CVector(), 0.5f)
-	,mColSpherSword(this, nullptr, CVector(-10.0f, 10.0f, 50.0f), 0.3f)
+	, mColSpherSword(this, nullptr, CVector(-10.0f, 10.0f, 50.0f), 0.3f, CCollider::ETag::ESWORD)
 {
-
+	mTag = ETag::EPLAYER;
 }
 
 void CXPlayer::Init(CModelX* model)

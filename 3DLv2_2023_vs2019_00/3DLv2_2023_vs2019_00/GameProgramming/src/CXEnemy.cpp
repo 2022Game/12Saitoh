@@ -25,3 +25,31 @@ void CXEnemy::Update()
 {
 	CXCharacter::Update();
 }
+
+void CXEnemy::Collision(CCollider* m, CCollider* o)
+{
+	//自分のコライダタイプ
+	switch (m->Type())
+	{
+	case CCollider::ESPHERE:	//球コライダ
+		/*
+		条件
+		相手のコライダーが球コライダ
+		コライダーの親がプレイヤー
+		コライダーが剣先
+		自分のコライダが体
+		*/
+		if (o->Type() == CCollider::ESPHERE &&
+			o->Parent()->Tag() == ETag::EPLAYER &&
+			o->Tag() == CCollider::ETag::ESWORD &&
+			m->Tag() == CCollider::ETag::EBODY)
+		{
+			//衝突処理
+			if (CCollider::Collision(m, o))
+			{
+				//倒れ込むアニメーション
+				CXCharacter::ChangeAnimation(11, false, 60);
+			}
+		}
+	}
+}
