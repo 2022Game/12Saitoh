@@ -89,6 +89,8 @@ private:
 	int mIndex;  //フレーム番号
 
 public:
+	//デフォルトコンストラクタ
+	CModelXFrame();
 	//コンストラクタ
 	CModelXFrame(CModelX* model);
 	//デストラクタ

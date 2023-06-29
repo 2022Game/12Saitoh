@@ -41,6 +41,7 @@ private:
 	CXCharacter mCharacter;			//キャラクタクラスのインスタンス
 	CXPlayer mXPlayer;				//プレイヤーのインスタンス
 	CXEnemy mXEnemy;				//敵のインスタンス
+	CModelX mKnight;				//敵(兵士)のインスタンス
 
 	enum class EState
 	{

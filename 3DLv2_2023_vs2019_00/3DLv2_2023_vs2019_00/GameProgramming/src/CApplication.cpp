@@ -14,6 +14,7 @@
 #define MODEL_OBJ "res\\f14.obj", "res\\f14.mtl"//モデルデータの指定
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl" //敵輸送機モデル
 #define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
+#define MODEL_KNIGHT "res\\knight\\knight_low.X"
 
 CUi* CApplication::spUi = nullptr;
 CTexture CApplication::mTexture;
@@ -42,11 +43,13 @@ void CApplication::Start()
 {
 	//3Dモデルファイルの読み込み
 	mModelX.Load(MODEL_FILE);
+	//敵モデルの読み込み
+	mKnight.Load(MODEL_KNIGHT);
 	//キャラクターにモデルを設定
 	mXPlayer.Init(&mModelX);
 	mFont.Load("FontG.png", 1, 4096 / 64);
 	//敵の初期設定
-	mXEnemy.Init(&mModelX);
+	mXEnemy.Init(&mKnight);
 	//敵の配置
 	mXEnemy.Position(CVector(7.0f, 0.0f, 0.0f));
 }

@@ -313,6 +313,15 @@ void CModelX::Load(char* file)
 	fread(buf, size, 1, fp);
 	//最後に\0を設定する(文字列の終端)
 	buf[size] = '\0';
+
+	//ダミールートフレームの作成
+	CModelXFrame* p = new CModelXFrame();
+	//名前なし
+	p->mpName = new char[1];
+	p->mpName[0] = '\0';
+	//フレーム配列に追加
+	mFrame.push_back(p);
+
 	//文字列の最後まで繰り返し
 	while (*mpPointer != '\0')
 	{
@@ -330,8 +339,23 @@ void CModelX::Load(char* file)
 		//単語がFrameの場合
 		else if (strcmp(mToken, "Frame") == 0)
 		{
-			//フレームを生成する
-			new CModelXFrame(this);
+			//フレーム名取得
+			GetToken();
+			if (strchr(mToken, '{'))
+			{
+				//フレーム名なし : スキップ
+				SkipNode();
+				GetToken();	// }
+			}
+			else
+			{
+				//フレーム名が無ければ
+				if (FinedFrame(mToken) == 0)
+				{
+					//フレームを作成する
+					p->mChild.push_back(new CModelXFrame(this));
+				}
+			}
 		}
 		//単語がAnimationSetの場合
 		else if (strcmp(mToken, "AnimationSet") == 0)
@@ -358,6 +382,15 @@ void CModelX::Render()
 	}
 }
 
+//デフォルトコンストラクタ
+CModelXFrame::CModelXFrame()
+	: mpMesh(nullptr)
+	, mpName(nullptr)
+	, mIndex(0)
+{
+
+}
+
 /*
 CModelXFrame
 model:CModelXインスタンスへのポインタ
@@ -376,8 +409,6 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	model->mFrame.push_back(this);
 	//変換行列を単位行列にする
 	mTransformMatrix.Identity();
-	//次の単語(フレーム名の予定)を取得する
-	model->GetToken();  //Frae name
 	//フレーム名分エリアを確保する
 	mpName = new char[strlen(model->mToken) + 1];
 	//フレーム名コピーする
@@ -394,8 +425,23 @@ CModelXFrame::CModelXFrame(CModelX* model)
 		//新たなフレームの場合は、子フレームに追加
 		if (strcmp(model->mToken,"Frame") == 0)
 		{
-			//フレームを生成し、子フレームに追加
-			mChild.push_back(new CModelXFrame(model));
+			//フレーム名取得
+			model->GetToken();
+			if (strchr(model->mToken, '{'))
+			{
+				//フレーム名なし : スキップ
+				model->SkipNode();
+				model->GetToken();	// }
+			}
+			else
+			{
+				//フレームが無ければ
+				if (model->FinedFrame(model->mToken) == 0)
+				{
+					//フレームを作成し、子フレームの配列に追加
+					mChild.push_back(new CModelXFrame(model));
+				}
+			}
 		}
 		else if (strcmp(model->mToken, "FrameTransformMatrix") == 0)
 		{
