@@ -173,6 +173,55 @@ bool CModelX::EOT()
 	}
 }
 
+/*
+SeparateAnimationSet
+アニメーションを抜き出す
+idx:分割したいアニメーションセットの番号
+start:分割したいアニメーションの開始時間
+end:分割死体アニメーションの終了時間
+name:追加するアニメーションセットの名前
+*/
+void CModelX::SeparateAnimationSet(int idx, int start, int end, char* name)
+{
+	//分割するアニメーションセットを確定
+	CAnimationSet* anim = mAnimationSet[idx];
+	//アニメーションセットの生成
+	CAnimationSet* as = new CAnimationSet();
+	as->mpName = new char[strlen(name) + 1];
+	strcpy(as->mpName, name);
+	as->mMaxTime = end - start;
+	//既存のアニメーション分繰り返し
+	for (size_t i = 0; i < anim->mAnimation.size(); i++)
+	{
+		//アニメーションの生成
+		CAnimation* animation = new CAnimation();
+		animation->mpFrameName = new char[strlen(anim->mAnimation[i]->mpFrameName) + 1];
+		strcpy(animation->mpFrameName, anim->mAnimation[i]->mpFrameName);
+		animation->mFrameIndex = anim->mAnimation[i]->mFrameIndex;
+		animation->mKeyNum = end - start + 1;
+		//アニメーションキーの生成
+		animation->mpKey = new CAnimationKey[animation->mKeyNum];
+		animation->mKeyNum = 0;
+		for (int j = start; j <= end && anim->mAnimation[i]->mKeyNum; j++)
+		{
+			if (j < anim->mAnimation[i]->mKeyNum)
+			{
+				animation->mpKey[animation->mKeyNum] = anim->mAnimation[i]->mpKey[j];
+			}
+			else
+			{
+				animation->mpKey[animation->mKeyNum] =
+					anim->mAnimation[i]->mpKey[anim->mAnimation[i]->mKeyNum - 1];
+			}
+			animation->mpKey[animation->mKeyNum].mTime = animation->mKeyNum++;
+		} //アニメーションキーのコピー
+		//アニメーションの追加
+		as->mAnimation.push_back(animation);
+	}
+	//アニメーションセットの追加
+	mAnimationSet.push_back(as);
+}
+
 void CModelX::AnimateVertex(CMatrix* mat)
 {
 	//フレーム数分繰り返し
@@ -905,6 +954,12 @@ CSkinWeights::~CSkinWeights()
 	SAFE_DELETE_ARRA(mpWeight);
 }
 
+//コンストラクタ
+CAnimationSet::CAnimationSet()
+{
+
+}
+
 /*
 CAnimationSet
 */
@@ -938,6 +993,7 @@ CAnimationSet::CAnimationSet(CModelX* model)
 #endif
 }
 
+//デストラクタ
 CAnimationSet::~CAnimationSet()
 {
 	//アニメーション要素の削除
@@ -1018,6 +1074,12 @@ void CAnimationSet::Time(float time)
 void CAnimationSet::Weight(float weight)
 {
 	mWeight = weight;
+}
+
+//コンストラクタ
+CAnimation::CAnimation()
+{
+
 }
 
 /*
@@ -1162,6 +1224,7 @@ CAnimation::CAnimation(CModelX* model)
 #endif
 }
 
+//デストラクタ
 CAnimation::~CAnimation()
 {
 	SAFE_DELETE_ARRA(mpFrameName);

@@ -59,6 +59,8 @@ public:
 	//トークンがなくなったらtrue
 	bool EOT();
 
+	//アニメーションを抜き出す
+	void SeparateAnimationSet(int idx, int start, int end, char* name);
 	void AnimateVertex(CMatrix* mat);
 	//頂点にアニメーションを適用
 	void AnimateVertex();
@@ -184,7 +186,10 @@ private:
 	std::vector<CAnimation*> mAnimation;
 
 public:
+	//コンストラクタ
+	CAnimationSet();
 	CAnimationSet(CModelX* model);
+	//デストラクタ
 	~CAnimationSet();
 
 	float Time();
@@ -210,7 +215,10 @@ private:
 	CAnimationKey* mpKey;	//キー配列
 
 public:
+	//コンストラクタ
+	CAnimation();
 	CAnimation(CModelX* model);
+	//デストラクタ
 	~CAnimation();
 };
 

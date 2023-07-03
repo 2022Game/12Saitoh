@@ -2,9 +2,11 @@
 
 //コンストラクタ
 CXEnemy::CXEnemy()
-	: mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
-	, mColSpherBody(this, nullptr, CVector(), 0.5f)
-	, mColSpherSword(this, nullptr, CVector(-10.0f, 10.0f, 50.0f), 0.3f)
+	: mColSpherHead(this, nullptr, CVector(0.0f, 1.0f, 0.0f), 1.5f)
+	, mColSpherBody(this, nullptr, CVector(0.5f, -1.0f, 0.0f), 1.0f)
+	, mColSpherSword0(this, nullptr, CVector(0.7f, 3.5f, -0.2f), 0.5f)
+	, mColSpherSword1(this, nullptr, CVector(0.5f, 2.5f, -0.2f), 0.5f)
+	, mColSpherSword2(this, nullptr, CVector(0.3f, 1.5f, -0.2f), 0.5f)
 {
 
 }
@@ -14,11 +16,14 @@ void CXEnemy::Init(CModelX* model)
 	CXCharacter::Init(model);
 	//合成行列の設定
 	//頭
-	mColSpherHead.Matrix(&mpCombinedMatrix[11]);
+	mColSpherHead.Matrix(&mpCombinedMatrix[1]);
 	//体
-	mColSpherBody.Matrix(&mpCombinedMatrix[8]);
+	mColSpherBody.Matrix(&mpCombinedMatrix[1]);
 	//剣
-	mColSpherSword.Matrix(&mpCombinedMatrix[21]);
+	mColSpherSword0.Matrix(&mpCombinedMatrix[26]);
+	mColSpherSword1.Matrix(&mpCombinedMatrix[26]);
+	mColSpherSword2.Matrix(&mpCombinedMatrix[26]);
+
 }
 
 void CXEnemy::Update()
