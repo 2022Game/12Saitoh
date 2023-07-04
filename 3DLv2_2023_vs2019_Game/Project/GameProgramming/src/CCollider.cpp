@@ -7,14 +7,14 @@ CCollider::CCollider()
 	, mpMatrix(&mMatrix)
 	, mType(ESPHERE)
 	, mRadius(0)
-	, mColliderTag(0)
+	, mColliderTag(EColliderTag::ENULL)
 {
 	//コリジョンマネージャに追加
 	CCollisionManager::Instance()->Add(this);
 }
 
 CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
-	const CVector& position, float radius, int tag)
+	const CVector& position, float radius, EColliderTag tag)
 	:CCollider()
 {
 	//親設定
@@ -189,7 +189,7 @@ void CCollider::ChangePriority()
 	CCollider::ChangePriority(pos.Length());
 }
 
-int CCollider::GetTag()const
+CCollider::EColliderTag CCollider::ColliderTag()
 {
 	return mColliderTag;
 }

@@ -41,6 +41,8 @@
     <ClCompile Include="src\CWall.cpp" />
     <ClCompile Include="src\CMapManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\Primitive.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CAlly.h" />
@@ -75,6 +77,8 @@
     <ClInclude Include="src\CWall.h" />
     <ClInclude Include="src\CMapManager.h" />
     <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\Math.h" />
+    <ClInclude Include="src\Primitive.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8802AF2F-2920-4700-89F2-CA6778727283}</ProjectGuid>

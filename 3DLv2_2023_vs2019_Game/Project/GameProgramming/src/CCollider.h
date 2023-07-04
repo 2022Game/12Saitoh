@@ -3,16 +3,6 @@
 //キャラクタクラスのインクルード
 #include "CCharacter3.h"
 
-//コライダータグ
-enum class EColliderTag
-{
-	EPLAYER,	//プレイヤー
-	EENEMY,		//敵
-	EALL,		//味方
-	EBULLET,	//弾
-	EFLAG,		//フラッグ
-};   
-
 /*
 コライダクラス
 衝突判定データ
@@ -22,7 +12,6 @@ class CCollider : public CTransform, public CTask
 {
 	friend CCollisionManager;
 public:
-	int GetTag() const;
 	//優先度の変更
 	virtual void ChangePriority();
 	//優先度の変更
@@ -43,6 +32,18 @@ public:
 		ETRIANGLE,	//三角コライダ
 		ELINE,		//線分コライダ
 	};
+	EType Type();
+	//コライダータグ
+	enum class EColliderTag
+	{
+		ENULL,		//初期
+		EPLAYER,	//プレイヤー
+		EENEMY,		//敵
+		EALL,		//味方
+		EBULLET,	//弾
+		EFLAG,		//フラッグ
+	};
+	EColliderTag ColliderTag();
 	//デフォルトコンストラクタ
 	CCollider();
 	//衝突判定
@@ -53,21 +54,18 @@ public:
 	//コンストラクタ
 	//CCollider(親、親行列、位置、半径)
 	CCollider(CCharacter3* parent, CMatrix* matrix,
-		const CVector& position, float radius, int tag);
+		const CVector& position, float radius, EColliderTag tag);
 	//親ポインタの取得
 	CCharacter3* Parent();
 	//描画
 	void Render();
-private:
-	int mColliderTag;	//コライダタグ
 protected:
 	EType mType; //コライダタイプ
+	EColliderTag mColliderTag;
 	//頂点
 	CVector mV[3];
 	CCharacter3* mpParent;//親
 	CMatrix* mpMatrix;//親行列
 	float mRadius;//半径
-public:
-	EType Type();
 };
 #endif

@@ -65,6 +65,8 @@ void CApplication::Start()
 	//敵の配置
 	mXEnemy.Position(CVector(7.0f, 0.0f, 0.0f));
 	mXEnemy.ChangeAnimation(2, true, 200);
+	mpPaladin = new CPaladin();
+	mpPaladin->Position(CVector(-1.0f, 0.0f, 5.0f));
 }
 
 void CApplication::Update()
@@ -81,6 +83,7 @@ void CApplication::Update()
 	mXPlayer.Update();
 	//敵クラスの更新
 	mXEnemy.Update();
+	mpPaladin->Update();
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
 	//視点を求める
@@ -131,6 +134,7 @@ void CApplication::Update()
 	CCollisionManager::Instance()->Render();
 	//敵描画
 	mXEnemy.Render();
+	mpPaladin->Render();
 
 	//2D描画開始
 	CCamera::Start(0, 800, 0, 600);

@@ -4,6 +4,8 @@
 #include "CPlayer.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Math.h"
+#include "Primitive.h"
 
 #define HP 3               //耐久値
 #define VELOCITY 0.1f      //速度
@@ -11,7 +13,7 @@
 #define MTL "res\\SnowGolem.mtl" //モデルのマテリアルファイル
 #define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
 #define FOV_ANGLE 80.0f	//視野の角度 (-角度～+角度まで)
-#define FOV_LENGTH 30.0f//視野の距離
+#define FOV_LENGTH 10.0f//視野の距離
 
 float CEnemy3::mDotX = 0.0f;
 CModel CEnemy3::sModel;    //モデルデータ作成
@@ -51,9 +53,9 @@ bool CEnemy3::IsFoundPlayer() const
 //デフォルトコンストラクタ
 CEnemy3::CEnemy3()
 	: CCharacter3(1)
-	, mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.7f, (int)EColliderTag::EENEMY)
-	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EENEMY)
-	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EENEMY)
+	, mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.7f, CCollider::EColliderTag::EENEMY)
+	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, CCollider::EColliderTag::EENEMY)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, CCollider::EColliderTag::EENEMY)
 	, mHp(HP)
 	, mBulletTime(0)
 	, mFlag(false)
@@ -207,6 +209,23 @@ void CEnemy3::Update()
 	CTransform::Update(); //行列更新
 }
 
+//描画処理
+void CEnemy3::Render()
+{
+	CCharacter3::Render();
+
+	Primitive::DrawSector
+	(
+		mPosition,
+		mRotation,
+		-FOV_ANGLE,
+		FOV_ANGLE,
+		FOV_LENGTH,
+		CVector4(1.0f, 1.0f, 0.0f, 1.0f),
+		45
+	);
+}
+
 
 void CEnemy3::Collision()
 {
@@ -231,8 +250,7 @@ void CEnemy3::Collision(CCollider* m, CCollider* o)
 		//コライダのmとyが衝突しているか判定
 		if (CCollider::Collision(m, o))
 		{
-			if (o->GetTag() != (int)EColliderTag::EENEMY &&
-				o->GetTag() != (int)EColliderTag::EALL)
+			if (o->ColliderTag() == CCollider::EColliderTag::EBULLET)
 			{
 				mHp--; //ヒットポイントの減算
 				//エフェクト生成

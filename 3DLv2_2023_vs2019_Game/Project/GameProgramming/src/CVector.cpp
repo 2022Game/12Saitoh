@@ -6,6 +6,12 @@
 // CVector
 //------------------------------
 
+
+CVector CVector::Lerp(const CVector& start, const CVector& end, float t)
+{
+	return start + (end - start) * t;
+}
+
 float CVector::Dot(const CVector& v) const
 {
 	return mX * v.mX + mY * v.mY + mZ * v.mZ;

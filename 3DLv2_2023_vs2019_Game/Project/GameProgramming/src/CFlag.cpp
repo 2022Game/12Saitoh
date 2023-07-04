@@ -7,7 +7,7 @@
 //CFlag(ƒ‚ƒfƒ‹AˆÊ’uA‰ñ“]AŠgkj
 CFlag::CFlag(CModel* model, const CVector& position,
 	const CVector& rotation, const CVector& scale)
-	: mCollider(this, &mMatrix, CVector(0.0f, 10.0f, 0.0f), 1.0f, (int)EColliderTag::EFLAG)
+	: mCollider(this, &mMatrix, CVector(0.0f, 10.0f, 0.0f), 1.0f, CCollider::EColliderTag::EFLAG)
 {
 	//ƒ‚ƒfƒ‹AˆÊ’uA‰ñ“]AŠgk‚ðÝ’è‚·‚é
 	mpModel = model; //ƒ‚ƒfƒ‹‚ÌÝ’è
@@ -27,7 +27,10 @@ void CFlag::Update()
 void CFlag::Collision(CCollider* m, CCollider* o)
 {
 	if (CCollider::Collision(m, o)) {
-		mEnabled = false;
+		if (o->ColliderTag() == CCollider::EColliderTag::EPLAYER)
+		{
+			mEnabled = false;
+		}
 	}
 }
 

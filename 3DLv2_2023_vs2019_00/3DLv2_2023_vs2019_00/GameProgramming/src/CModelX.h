@@ -36,6 +36,8 @@ private:
 
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
+	//読み込み済みフラグ
+	bool mLoaded;
 
 public:
 	//マテリアル配列の取得
@@ -58,7 +60,11 @@ public:
 
 	//トークンがなくなったらtrue
 	bool EOT();
+	//読み込み済みか判定
+	bool IsLoaded();
 
+	//アニメーションセットの追加
+	void AddAnimationSet(const char* file);
 	//アニメーションを抜き出す
 	void SeparateAnimationSet(int idx, int start, int end, char* name);
 	void AnimateVertex(CMatrix* mat);

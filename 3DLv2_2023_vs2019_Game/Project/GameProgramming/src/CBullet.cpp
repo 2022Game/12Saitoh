@@ -9,7 +9,7 @@
 CBullet* CBullet::spinstence;
 
 CBullet::CBullet()
-	: mCollider(this, &mMatrix, CVector(), 0.3f,(int)EColliderTag::EBULLET)
+	: mCollider(this, &mMatrix, CVector(), 0.3f,CCollider::EColliderTag::EBULLET)
 	, mV(0.0f,0.0f,0.0f)
 
 {

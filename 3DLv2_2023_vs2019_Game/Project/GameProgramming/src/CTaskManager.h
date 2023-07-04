@@ -16,6 +16,8 @@ public:
 	static CTaskManager* Instance();
 	//タスクの削除
 	void Delete();
+	//すべてのタスクの削除
+	void AllDelete();
 	//リストから削除
 	//Remove(タスクのポインタ)
 	void Remove(CTask* task);

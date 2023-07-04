@@ -80,6 +80,19 @@ void CTaskManager::Delete()
 	}
 }
 
+void CTaskManager::AllDelete()
+{
+	//先頭から最後まで繰り返す
+	CTask* task = mHead.mpNext;
+	while (task != nullptr)
+	{
+		CTask* del = task;
+		//次へ
+		task = task->mpNext;
+		delete del;
+	}
+}
+
 //タスクマネージャのインスタンス
 CTaskManager* CTaskManager::mpInstance = nullptr;
 

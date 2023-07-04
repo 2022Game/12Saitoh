@@ -19,13 +19,16 @@ void CUi::Clear()
 
 void CUi::Over()
 {
-	mFont.Draw(36, 300, 18, 36, "GAME OVER!!");
-	mFont.Draw(36, 200, 18, 36, "PUSH ENTER KEY!");
+	CCamera::Start(0, 800, 0, 600); //2D描画開始
+	mFont.Draw(250, 300, 18, 36, "GAME OVER!!");
+	CCamera::End();  //2D描画終了
 }
 
 void CUi::Start()
 {
+	CCamera::Start(0, 800, 0, 600); //2D描画開始
 	mFont.Draw(36, 300, 18, 36, "START PUSH ENTER KEY!");
+	CCamera::End();  //2D描画終了
 }
 
 void CUi::Enemy(int enemy)
