@@ -95,6 +95,7 @@ CMaterial* CModelX::FindMaterial(char* name)
 
 CModelX::CModelX()
 	: mpPointer(nullptr)
+	, mLoaded(false)
 {
 	//mTokenを初期化
 	memset(mToken, 0, sizeof(mToken));
@@ -171,6 +172,106 @@ bool CModelX::EOT()
 	{
 		return false;
 	}
+}
+
+bool CModelX::IsLoaded()
+{
+	return mLoaded;
+}
+
+void CModelX::AddAnimationSet(const char* file)
+{
+	//ファイルサイズを取得する
+	FILE* fp;	//ファイルポインタ変数の作成
+	fp = fopen(file, "rb");	//ファイルをオープンする
+	//エラーチェック
+	if (fp == NULL)
+	{
+		printf("fopen error:%s\n", file);
+		return;
+	}
+	//ファイルの最後へ移動
+	fseek(fp, 0L, SEEK_END);
+	//ファイルサイズの取得
+	int size = ftell(fp);
+
+	//ファイルサイズ+1バイト分の領域を確保
+	char* buf = mpPointer = new char[size + 1];
+
+	//ファイルから3Dモデルのデータを読み込む
+	//ファイルの先頭へ移動
+	fseek(fp, 0L, SEEK_SET);
+	//確保した領域にファイルサイズ分でデータを読み込む
+	fread(buf, size, 1, fp);
+	//最後に\0を設定する(文字列の終端)
+	buf[size] = '\0';
+	fclose(fp);	//ファイルクローズ
+
+	//文字列の最後まで繰り返し
+	while (*mpPointer != '\0')
+	{
+		GetToken();	//単語の取得
+		//template読み飛ばし
+		if (strcmp(mToken, "template") == 0)
+		{
+			SkipNode();
+		}
+		//単語がAnimationSetの場合
+		else if (strcmp(mToken, "AnimationSet") == 0)
+		{
+			new CAnimationSet(this);
+		}
+	}
+	SAFE_DELETE_ARRA(buf);	//確保した領域を解放する
+}
+
+/*
+SeparateAnimationSet
+アニメーションを抜き出す
+idx:分割したいアニメーションセットの番号
+start:分割したいアニメーションの開始時間
+end:分割死体アニメーションの終了時間
+name:追加するアニメーションセットの名前
+*/
+void CModelX::SeparateAnimationSet(int idx, int start, int end, char* name)
+{
+	//分割するアニメーションセットを確定
+	CAnimationSet* anim = mAnimationSet[idx];
+	//アニメーションセットの生成
+	CAnimationSet* as = new CAnimationSet();
+	as->mpName = new char[strlen(name) + 1];
+	strcpy(as->mpName, name);
+	as->mMaxTime = end - start;
+	//既存のアニメーション分繰り返し
+	for (size_t i = 0; i < anim->mAnimation.size(); i++)
+	{
+		//アニメーションの生成
+		CAnimation* animation = new CAnimation();
+		animation->mpFrameName = new char[strlen(anim->mAnimation[i]->mpFrameName) + 1];
+		strcpy(animation->mpFrameName, anim->mAnimation[i]->mpFrameName);
+		animation->mFrameIndex = anim->mAnimation[i]->mFrameIndex;
+		animation->mKeyNum = end - start + 1;
+		//アニメーションキーの生成
+		animation->mpKey = new CAnimationKey[animation->mKeyNum];
+		animation->mKeyNum = 0;
+		for (int j = start; j <= end && anim->mAnimation[i]->mKeyNum; j++)
+		{
+			if (j < anim->mAnimation[i]->mKeyNum)
+			{
+				animation->mpKey[animation->mKeyNum] = anim->mAnimation[i]->mpKey[j];
+			}
+			else
+			{
+				animation->mpKey[animation->mKeyNum] =
+					anim->mAnimation[i]->mpKey[anim->mAnimation[i]->mKeyNum - 1];
+			}
+			animation->mpKey[animation->mKeyNum].mTime = animation->mKeyNum++;
+		} //アニメーションキーのコピー
+		//アニメーションの追加
+		as->mAnimation.push_back(animation);
+	}
+	//アニメーションセットの追加
+	mAnimationSet.push_back(as);
 }
 
 void CModelX::AnimateVertex(CMatrix* mat)
@@ -313,6 +414,15 @@ void CModelX::Load(char* file)
 	fread(buf, size, 1, fp);
 	//最後に\0を設定する(文字列の終端)
 	buf[size] = '\0';
+
+	//ダミールートフレームの作成
+	CModelXFrame* p = new CModelXFrame();
+	//名前なし
+	p->mpName = new char[1];
+	p->mpName[0] = '\0';
+	//フレーム配列に追加
+	mFrame.push_back(p);
+
 	//文字列の最後まで繰り返し
 	while (*mpPointer != '\0')
 	{
@@ -330,8 +440,23 @@ void CModelX::Load(char* file)
 		//単語がFrameの場合
 		else if (strcmp(mToken, "Frame") == 0)
 		{
-			//フレームを生成する
-			new CModelXFrame(this);
+			//フレーム名取得
+			GetToken();
+			if (strchr(mToken, '{'))
+			{
+				//フレーム名なし : スキップ
+				SkipNode();
+				GetToken();	// }
+			}
+			else
+			{
+				//フレーム名が無ければ
+				if (FinedFrame(mToken) == 0)
+				{
+					//フレームを作成する
+					p->mChild.push_back(new CModelXFrame(this));
+				}
+			}
 		}
 		//単語がAnimationSetの場合
 		else if (strcmp(mToken, "AnimationSet") == 0)
@@ -344,6 +469,7 @@ void CModelX::Load(char* file)
 	SAFE_DELETE_ARRA(buf); //確保した領域を解放する
 	//スキンウェイトのフレーム番号設定
 	SetSkinWeightFrameIndex();
+	mLoaded = true;	//読み込み済み
 }
 
 /*
@@ -356,6 +482,15 @@ void CModelX::Render()
 	{
 		mFrame[i]->Render();
 	}
+}
+
+//デフォルトコンストラクタ
+CModelXFrame::CModelXFrame()
+	: mpMesh(nullptr)
+	, mpName(nullptr)
+	, mIndex(0)
+{
+
 }
 
 /*
@@ -376,8 +511,6 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	model->mFrame.push_back(this);
 	//変換行列を単位行列にする
 	mTransformMatrix.Identity();
-	//次の単語(フレーム名の予定)を取得する
-	model->GetToken();  //Frae name
 	//フレーム名分エリアを確保する
 	mpName = new char[strlen(model->mToken) + 1];
 	//フレーム名コピーする
@@ -394,8 +527,23 @@ CModelXFrame::CModelXFrame(CModelX* model)
 		//新たなフレームの場合は、子フレームに追加
 		if (strcmp(model->mToken,"Frame") == 0)
 		{
-			//フレームを生成し、子フレームに追加
-			mChild.push_back(new CModelXFrame(model));
+			//フレーム名取得
+			model->GetToken();
+			if (strchr(model->mToken, '{'))
+			{
+				//フレーム名なし : スキップ
+				model->SkipNode();
+				model->GetToken();	// }
+			}
+			else
+			{
+				//フレームが無ければ
+				if (model->FinedFrame(model->mToken) == 0)
+				{
+					//フレームを作成し、子フレームの配列に追加
+					mChild.push_back(new CModelXFrame(model));
+				}
+			}
 		}
 		else if (strcmp(model->mToken, "FrameTransformMatrix") == 0)
 		{
@@ -859,6 +1007,12 @@ CSkinWeights::~CSkinWeights()
 	SAFE_DELETE_ARRA(mpWeight);
 }
 
+//コンストラクタ
+CAnimationSet::CAnimationSet()
+{
+
+}
+
 /*
 CAnimationSet
 */
@@ -892,6 +1046,7 @@ CAnimationSet::CAnimationSet(CModelX* model)
 #endif
 }
 
+//デストラクタ
 CAnimationSet::~CAnimationSet()
 {
 	//アニメーション要素の削除
@@ -972,6 +1127,12 @@ void CAnimationSet::Time(float time)
 void CAnimationSet::Weight(float weight)
 {
 	mWeight = weight;
+}
+
+//コンストラクタ
+CAnimation::CAnimation()
+{
+
 }
 
 /*
@@ -1116,6 +1277,7 @@ CAnimation::CAnimation(CModelX* model)
 #endif
 }
 
+//デストラクタ
 CAnimation::~CAnimation()
 {
 	SAFE_DELETE_ARRA(mpFrameName);

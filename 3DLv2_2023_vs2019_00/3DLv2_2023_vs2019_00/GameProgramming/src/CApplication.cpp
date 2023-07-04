@@ -14,6 +14,7 @@
 #define MODEL_OBJ "res\\f14.obj", "res\\f14.mtl"//モデルデータの指定
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl" //敵輸送機モデル
 #define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"//背景モデルデータの指定
+#define MODEL_KNIGHT "res\\knight\\knight_low.X"
 
 CUi* CApplication::spUi = nullptr;
 CTexture CApplication::mTexture;
@@ -42,13 +43,30 @@ void CApplication::Start()
 {
 	//3Dモデルファイルの読み込み
 	mModelX.Load(MODEL_FILE);
+	//敵モデルの読み込み
+	mKnight.Load(MODEL_KNIGHT);
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//1:移動
+	mKnight.SeparateAnimationSet(0, 1530, 1830, "idle1");	//2:待機
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//3:ダミー
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//4:ダミー
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//5:ダミー
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//6:ダミー
+	mKnight.SeparateAnimationSet(0, 440, 520, "attack1");	//7:攻撃1
+	mKnight.SeparateAnimationSet(0, 520, 615, "attack2");	//8:攻撃2
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//9:ダミー
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//10:ダミー
+	mKnight.SeparateAnimationSet(0, 1160, 1260, "death1");	//11:ダウン
+
 	//キャラクターにモデルを設定
 	mXPlayer.Init(&mModelX);
 	mFont.Load("FontG.png", 1, 4096 / 64);
 	//敵の初期設定
-	mXEnemy.Init(&mModelX);
+	mXEnemy.Init(&mKnight);
 	//敵の配置
 	mXEnemy.Position(CVector(7.0f, 0.0f, 0.0f));
+	mXEnemy.ChangeAnimation(2, true, 200);
+	mpPaladin = new CPaladin();
+	mpPaladin->Position(CVector(-1.0f, 0.0f, 5.0f));
 }
 
 void CApplication::Update()
@@ -65,6 +83,7 @@ void CApplication::Update()
 	mXPlayer.Update();
 	//敵クラスの更新
 	mXEnemy.Update();
+	mpPaladin->Update();
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
 	//視点を求める
@@ -115,6 +134,7 @@ void CApplication::Update()
 	CCollisionManager::Instance()->Render();
 	//敵描画
 	mXEnemy.Render();
+	mpPaladin->Render();
 
 	//2D描画開始
 	CCamera::Start(0, 800, 0, 600);

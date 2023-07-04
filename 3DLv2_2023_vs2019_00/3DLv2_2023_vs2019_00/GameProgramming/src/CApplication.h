@@ -20,6 +20,7 @@
 #include "CXCharacter.h"
 #include "CXPlayer.h"
 #include "CXEnemy.h"
+#include "CPaladin.h"
 
 class CApplication
 {
@@ -41,6 +42,8 @@ private:
 	CXCharacter mCharacter;			//キャラクタクラスのインスタンス
 	CXPlayer mXPlayer;				//プレイヤーのインスタンス
 	CXEnemy mXEnemy;				//敵のインスタンス
+	CModelX mKnight;				//敵(兵士)のインスタンス
+	CPaladin* mpPaladin;
 
 	enum class EState
 	{

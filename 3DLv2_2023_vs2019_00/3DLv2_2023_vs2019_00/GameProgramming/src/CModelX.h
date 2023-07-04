@@ -36,6 +36,8 @@ private:
 
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
+	//読み込み済みフラグ
+	bool mLoaded;
 
 public:
 	//マテリアル配列の取得
@@ -58,7 +60,13 @@ public:
 
 	//トークンがなくなったらtrue
 	bool EOT();
+	//読み込み済みか判定
+	bool IsLoaded();
 
+	//アニメーションセットの追加
+	void AddAnimationSet(const char* file);
+	//アニメーションを抜き出す
+	void SeparateAnimationSet(int idx, int start, int end, char* name);
 	void AnimateVertex(CMatrix* mat);
 	//頂点にアニメーションを適用
 	void AnimateVertex();
@@ -89,6 +97,8 @@ private:
 	int mIndex;  //フレーム番号
 
 public:
+	//デフォルトコンストラクタ
+	CModelXFrame();
 	//コンストラクタ
 	CModelXFrame(CModelX* model);
 	//デストラクタ
@@ -182,7 +192,10 @@ private:
 	std::vector<CAnimation*> mAnimation;
 
 public:
+	//コンストラクタ
+	CAnimationSet();
 	CAnimationSet(CModelX* model);
+	//デストラクタ
 	~CAnimationSet();
 
 	float Time();
@@ -208,7 +221,10 @@ private:
 	CAnimationKey* mpKey;	//キー配列
 
 public:
+	//コンストラクタ
+	CAnimation();
 	CAnimation(CModelX* model);
+	//デストラクタ
 	~CAnimation();
 };
 
