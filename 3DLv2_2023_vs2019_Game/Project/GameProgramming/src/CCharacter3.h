@@ -19,8 +19,6 @@ public:
 		EZERO,          //初期値
 		EPLAYER,        //プレイヤー
 		EENEMY,         //敵
-		EBULLETPLAYER,  //プレイヤー弾
-		EBULLETENEMY,   //敵弾
 	};
 	//タグの取得
 	ETag Tag();
@@ -37,7 +35,7 @@ public:
 	//Model(モデルクラスのポインタ)
 	void Model(CModel* m);
 	//描画処理
-	void Render();
+	virtual void Render();
 
 protected:
 	ETag mTag;			//タグ

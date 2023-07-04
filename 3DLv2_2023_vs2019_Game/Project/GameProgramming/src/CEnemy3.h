@@ -50,10 +50,13 @@ public:
 
 	//更新処理
 	void Update();
+	//描画処理
+	void Render();
 
 	void Collision();
 	//衝突処理
 	//Collision(コライダ1,コライダ2)
 	void Collision(CCollider* m, CCollider* o);
+
 };
 #endif

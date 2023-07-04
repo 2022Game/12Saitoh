@@ -15,9 +15,9 @@ CModel CAlly::sModel;				//モデルデータ作成
 //デフォルトコンストラクタ
 CAlly::CAlly()
 	:CCharacter3(1)
-	, mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f,(int)EColliderTag::EALL)
-	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, (int)EColliderTag::EALL)
-	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, (int)EColliderTag::EALL)
+	, mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.4f, CCollider::EColliderTag::EALL)
+	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, CCollider::EColliderTag::EALL)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, CCollider::EColliderTag::EALL)
 	, mHp(HP)
 {
 	//モデルが無い時は読み込む
@@ -75,8 +75,7 @@ void CAlly::Collision(CCollider* m, CCollider* o)
 		//コライダのmとyが衝突しているか判定
 		if (CCollider::Collision(m, o))
 		{
-			if (o->GetTag() != (int)EColliderTag::EALL &&
-				o->GetTag() != (int)EColliderTag::EENEMY)
+			if (o->ColliderTag() == CCollider::EColliderTag::EBULLET)
 			{
 				mHp--; //ヒットポイントの減算
 				//エフェクト生成

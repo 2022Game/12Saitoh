@@ -19,10 +19,9 @@ private:
 	CCollider mCollider3;	//下半身コライダ
 	CInput mInput;
 
+	static int sHp;			//プレイヤーのHP
 
 public:
-	//インスタンスのポインタの取得
-	static CPlayer* Instance();
 
 	CPlayer();
 	//CPlayer(位置,回転,スケール)
@@ -33,5 +32,10 @@ public:
 	void Collision();
 	//衝突処理
 	void Collision(CCollider* o, CCollider* m);
+
+	//インスタンスのポインタの取得
+	static CPlayer* Instance();
+	//プレイヤーのHPを取得
+	static int HP();
 };
 #endif

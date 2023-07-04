@@ -138,6 +138,12 @@
     <ClCompile Include="src\CAlly.cpp">
       <Filter>ソースファイル\Character\Ally</Filter>
     </ClCompile>
+    <ClCompile Include="src\Math.cpp">
+      <Filter>ソースファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primitive.cpp">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSound.h">
@@ -235,6 +241,12 @@
     </ClInclude>
     <ClInclude Include="src\CAlly.h">
       <Filter>ソースファイル\Character\Ally</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math.h">
+      <Filter>ソースファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primitive.h">
+      <Filter>ソースファイル\Lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

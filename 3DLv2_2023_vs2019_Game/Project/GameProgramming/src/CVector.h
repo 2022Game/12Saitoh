@@ -10,6 +10,8 @@ class CMatrix;
 */
 class CVector {
 public:
+	//2つの座標の間を線形補間
+	static CVector Lerp(const CVector& start, const CVector& end, float t);
 	//正規化
 	//大きさ1のベクトルを返す
 	CVector Normalize() const;

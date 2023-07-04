@@ -15,72 +15,12 @@
 
 int CApplication::mCameraFlag = 0;
 CUi* CApplication::spUi = nullptr;
-
-CUi* CApplication::Ui()
-{
-	return spUi; //インスタンスのポインタを返す
-}
-
 CMatrix CApplication::mModelViewInverse;
-
-const CMatrix& CApplication::ModelViewInverse()
-{
-	return mModelViewInverse;
-}
-//クラスのstatic変数
 CTexture CApplication::mTexture;
 
-CTexture* CApplication::Texture()
+//カメラの設定
+void CApplication::Camera()
 {
-	return &mTexture;
-}
-
-int CApplication::CameraFlag()
-{
-	return mCameraFlag;
-}
-
-void CApplication::Start()
-{
-	//ランダム値の取得方法
-	srand((unsigned int)time(NULL));
-	for (int i = 0; i < 10; i++)
-	{
-		//最小値0 ,取得範囲3 
-		printf("%d\n", 0 + rand() % 3);
-	}
-
-	spUi = new CUi(); //Uiクラスの生成
-	//モデルファイルの入力
-	mModel.Load(MODEL_OBJ);
-	//背景モデルの読み込み;
-	mBackGround.Load(MODEL_BACKGROUND);
-	mMatrix.Print();
-	mPlayer.Model(&mModel);
-	mPlayer.Scale(CVector(0.03f, 0.03f, 0.03f));
-	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
-	mPlayer.Rotation(CVector(0.0f, 0.0f, 0.0f));
-	mpMapManager = new CMapManager();
-
-	new CEnemy3(CVector(-5.0f, 0.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-	//new CEnemy3(CVector(5.0f, 0.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-	//new CAlly(CVector(5.0f, 0.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-	//new CAlly(CVector(-5.0f, 0.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
-
-	//ビルボードの作成
-	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
-	//背景モデルから三角コライダを生成
-	// 親インスタンスと親行列はな
-	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
-}
-
-void CApplication::Update()
-{
-	//タスクマネージャの更新
-	CTaskManager::Instance()->Update();
-	//タスクマネージャの衝突処理
-	CTaskManager::Instance()->Collision();
-
 	//デバッグ用(カメラの切り替え)
 	if (mInput.PullKey('C'))
 	{
@@ -90,18 +30,6 @@ void CApplication::Update()
 			mCameraFlag = 0;
 		}
 	}
-
-	//頂点1, 頂点2, 頂点3, 法線データの作成
-	CVector v0, v1, v2, n;
-	//法線を上向きで設定する
-	n.Set(0.0f, 1.0f, 0.0f);
-	//頂点1の座標を設定する
-	v0.Set(0.0f, 0.0f, 0.5f);
-	//頂点2の座標を設定する
-	v1.Set(1.0f, 0.0f, 0.0f);
-	//頂点3の座標を設定する
-	v2.Set(0.0f, 0.0f, -0.5f);
-	
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
 	if (mCameraFlag == 0)
@@ -138,25 +66,120 @@ void CApplication::Update()
 		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 
 	}
+}
 
-	//モデルビュー行列の取得
-	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
-	//逆行列の取得
-	mModelViewInverse = mModelViewInverse.Transpose();
-	mModelViewInverse.M(0, 3, 0);
-	mModelViewInverse.M(1, 3, 0);
-	mModelViewInverse.M(2, 3, 0);
-	mBackGround.Render();
-	//タスクリストの削除
-	CTaskManager::Instance()->Delete();
-	//タスクマネージャの描画
-	CTaskManager::Instance()->Render();
-	spUi->Render(); //Uiの描画
-	//コリジョンマネージャ描画
-	CCollisionManager::Instance()->Render();
+void CApplication::CreateModel()
+{
+	//モデルファイルの入力
+	mModel.Load(MODEL_OBJ);
+	//背景モデルの読み込み;
+	mBackGround.Load(MODEL_BACKGROUND);
+	mMatrix.Print();
+	mpMapManager = new CMapManager();
+	mPlayer.Scale(CVector(0.03f, 0.03f, 0.03f));
+	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
+	mPlayer.Rotation(CVector(0.0f, 0.0f, 0.0f));
+
+	new CEnemy3(CVector(-5.0f, 0.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	//new CEnemy3(CVector(5.0f, 0.0f, -10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	//new CAlly(CVector(5.0f, 0.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+	//new CAlly(CVector(-5.0f, 0.0f, 10.0f), CVector(), CVector(0.03f, 0.03f, 0.03f));
+
+	//ビルボードの作成
+	//new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
+	//背景モデルから三角コライダを生成
+	// 親インスタンスと親行列はな
+	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
 }
 
 CApplication::~CApplication()
 {
 	delete spUi; //インスタンスUiの削除
+}
+
+CUi* CApplication::Ui()
+{
+	return spUi; //インスタンスのポインタを返す
+}
+
+const CMatrix& CApplication::ModelViewInverse()
+{
+	return mModelViewInverse;
+}
+
+CTexture* CApplication::Texture()
+{
+	return &mTexture;
+}
+
+int CApplication::CameraFlag()
+{
+	return mCameraFlag;
+}
+
+void CApplication::Start()
+{
+	//ランダム値の取得方法
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < 10; i++)
+	{
+		//最小値0 ,取得範囲3 
+		printf("%d\n", 0 + rand() % 3);
+	}
+	spUi = new CUi(); //Uiクラスの生成
+	mState = EState::ESTART;
+}
+
+void CApplication::Update()
+{
+
+	switch (mState)
+	{
+	case EState::ESTART:
+		mPlayer.Model(&mModel);
+		spUi->Start();
+		//タスクマネージャの更新
+		CTaskManager::Instance()->Update();
+		//タスクマネージャの描画
+		CTaskManager::Instance()->Render();
+		if (mInput.PushKey(VK_RETURN))
+		{
+			mState = EState::EPLAY;
+			//モデルを生成
+			CApplication::CreateModel();
+		}
+		break;
+	case EState::EPLAY:
+		CTaskManager::Instance()->Update();
+		CApplication::Camera();
+		if (CPlayer::HP() == 0)
+		{
+			mState = EState::EOVER;
+		}
+		//モデルビュー行列の取得
+		glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
+		//逆行列の取得
+		mModelViewInverse = mModelViewInverse.Transpose();
+		mModelViewInverse.M(0, 3, 0);
+		mModelViewInverse.M(1, 3, 0);
+		mModelViewInverse.M(2, 3, 0);
+		mBackGround.Render();
+		//タスクリストの削除
+		CTaskManager::Instance()->Delete();
+		//タスクマネージャの衝突処理
+		CTaskManager::Instance()->Collision();
+		//タスクマネージャの描画
+		CTaskManager::Instance()->Render();
+		//コリジョンマネージャ描画
+		CCollisionManager::Instance()->Render();
+		break;
+	case EState::ECLEAR:
+		break;
+	case EState::EOVER:
+		spUi->Over();
+		CTaskManager::Instance()->Update();
+		//タスクマネージャの描画
+		CTaskManager::Instance()->Render();
+		break;
+	}
 }
