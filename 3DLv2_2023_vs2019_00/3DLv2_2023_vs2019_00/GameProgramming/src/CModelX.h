@@ -1,22 +1,23 @@
 #ifndef CMODELX_H
 #define CMODELX_H
-#include <vector>      //vectorクラスのインクルード
-#include "CMatrix.h"   //マトリクスクラスのインクルード
-#include "CVector.h"   //Vectorクラスのインクルード
+#include <vector>		//vectorクラスのインクルード
+#include "CMatrix.h"	//マトリクスクラスのインクルード
+#include "CVector.h"	//Vectorクラスのインクルード
+#include "CMyShader.h"	//シェーダークラスのインクルード
 
 #define MODEL_FILE "res\\ラグナ.x"
 //領域解放をマクロ化
 #define SAFE_DELETE_ARRA(a) {if(a) delete[] a; a = nullptr;}
 
-class CModelX;         //CModelクラスの宣言
-class CModelXFrame;    //CModelXFrameクラスの宣言
-class CMesh;           //CMeshクラスの宣言
-class CMaterial;       //マテリアルの宣言
-class CSkinWeights;    //スキンウェイトクラスの宣言
-class CAnimationSet;   //アニメーションセットクラスの宣言
-class CAnimation;	   //アニメーションクラスの宣言
-class CAnimationKey;   //アニメーションキークラスの宣言
-class CXCharacter;
+class CModelX;			//CModelクラスの宣言
+class CModelXFrame;		//CModelXFrameクラスの宣言
+class CMesh;			//CMeshクラスの宣言
+class CMaterial;		//マテリアルの宣言
+class CSkinWeights;		//スキンウェイトクラスの宣言
+class CAnimationSet;	//アニメーションセットクラスの宣言
+class CAnimation;		//アニメーションクラスの宣言
+class CAnimationKey;	//アニメーションキークラスの宣言
+class CXCharacter;		//CXCharacterクラスの宣言
 
 /*
 CModel
@@ -27,12 +28,18 @@ class CModelX {
 	friend CMesh;
 	friend CAnimationSet;
 	friend CAnimation;
+	friend CModelX;
+	friend CMyShader;
 private:
 	std::vector<CMaterial*> mMaterial;	//マテリアル配列
 	std::vector<CModelXFrame*> mFrame;  //フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセット配列
-	char* mpPointer;   //読み込み位置
-	char mToken[1024]; //取り出した単語の領域
+
+	CMatrix* mpSkinningMatrix;	//シェーダー用スキンマトリックス
+	CMyShader mShader;	//シェーダーのインスタンス
+
+	char* mpPointer;	//読み込み位置
+	char mToken[1024];	//取り出した単語の領域
 
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
@@ -63,6 +70,8 @@ public:
 	//読み込み済みか判定
 	bool IsLoaded();
 
+	//シェーダーを使った描画
+	void RenderShader(CMatrix* m);
 	//アニメーションセットの追加
 	void AddAnimationSet(const char* file);
 	//アニメーションを抜き出す
@@ -88,6 +97,7 @@ class CModelXFrame {
 	friend CModelX;
 	friend CAnimation;
 	friend CAnimationSet;
+	friend CMyShader;
 private:
 	std::vector<CModelXFrame*> mChild; //子フレームの配列
 	CMesh* mpMesh;  //Meshデータ
@@ -118,6 +128,7 @@ class CMesh {
 	friend CModelX;
 	friend CModelXFrame;
 	friend CSkinWeights;
+	friend CMyShader;
 private:
 	int mFaceNum;          //面数
 	int mVertexNum;	   	   //頂点数
@@ -128,6 +139,7 @@ private:
 	int* mpVertexIndex;    //面を構成する頂点インデックス
 	float* mpTextureCoords; //テクスチャ座標データ
 
+	std::vector<int> mMaterialVertexCount;		//マテリアル毎の面数
 	std::vector<CSkinWeights*> mSkinWeights;	//スキンウェイト
 	std::vector<CMaterial*> mMaterial; //マテリアルデータ
 	CVector* mpVertex;			//頂点データ
@@ -136,12 +148,15 @@ private:
 	CVector* mpAnimateNormal;	//アニメーション用法線
 	CSkinWeights* mpSkinWeghts;
 
+	GLuint mMyVertexBufferId;	//頂点バッファ識別子
+
 public:
 	//コンストラクタ
 	CMesh();
 	//デストラクタ
 	~CMesh();
 
+	void CreateVertexBuffer();
 	void AnimateVertex(CMatrix* mat);
 	//頂点にアニメーション適用
 	void AnimateVertex(CModelX* model);
@@ -161,6 +176,7 @@ class CSkinWeights
 {
 	friend CModelX;
 	friend CMesh;
+	friend CMyShader;
 private:
 	char* mpFrameName;	//フレーム名
 	int mFrameIndex;	//フレーム番号

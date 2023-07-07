@@ -4,11 +4,13 @@
 #include "CModelX.h"
 #define MATERIAL_NAME_LEN 64 //名前の長さ
 
+class CMyShader;
 /*
 マテリアルクラス
 マテリアルのデータを扱う
 */
 class CMaterial {
+	friend CMyShader;
 private:
 	//マテリアル毎の頂点数
 	int mVertexNum;

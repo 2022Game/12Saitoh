@@ -135,6 +135,12 @@
     <ClCompile Include="src\CPaladin.cpp">
       <Filter>ソース ファイル\Character\CXファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\CShader.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CMyShader.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSound.h">
@@ -238,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="src\CPaladin.h">
       <Filter>ソース ファイル\Character\CXファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CShader.h">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CMyShader.h">
+      <Filter>ソース ファイル\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
