@@ -4,6 +4,7 @@
 #include "CXCharacter.h"
 #include "CInput.h"
 #include "CCollider.h"
+#include "CActionCamera.h"
 
 class CXPlayer : public CXCharacter
 {
@@ -13,6 +14,8 @@ private:
 	CCollider mColSpherHead;	//頭
 	CCollider mColSpherBody;	//体
 	CCollider mColSpherSword;	//剣
+	//カメラ更新処理
+	void UpdateCamera();
 
 public:
 	//コンストラクタ

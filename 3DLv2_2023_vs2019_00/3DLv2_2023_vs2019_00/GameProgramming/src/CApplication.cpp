@@ -1,4 +1,4 @@
-#include "CApplication.h"
+ï»¿#include "CApplication.h"
 //OpenGL
 #include "glut.h"
 #include "CVector.h"
@@ -9,11 +9,11 @@
 #include "CBillBoard.h"
 #include "CEnemy3.h"
 
-#define SOUND_BGM "res\\mario.wav" //BGM‰¹ºƒtƒ@ƒCƒ‹
-#define SOUND_OVER "res\\mdai.wav" //ƒQ[ƒ€ƒI[ƒo[‰¹ºƒtƒ@ƒCƒ‹
-#define MODEL_OBJ "res\\f14.obj", "res\\f14.mtl"//ƒ‚ƒfƒ‹ƒf[ƒ^‚Ìw’è
-#define MODEL_C5 "res\\c5.obj", "res\\c5.mtl" //“G—A‘—‹@ƒ‚ƒfƒ‹
-#define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"//”wŒiƒ‚ƒfƒ‹ƒf[ƒ^‚Ìw’è
+#define SOUND_BGM "res\\mario.wav" //BGMéŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«
+#define SOUND_OVER "res\\mdai.wav" //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼éŸ³å£°ãƒ•ã‚¡ã‚¤ãƒ«
+#define MODEL_OBJ "res\\f14.obj", "res\\f14.mtl"//ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®æŒ‡å®š
+#define MODEL_C5 "res\\c5.obj", "res\\c5.mtl" //æ•µè¼¸é€æ©Ÿãƒ¢ãƒ‡ãƒ«
+#define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"//èƒŒæ™¯ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®æŒ‡å®š
 #define MODEL_KNIGHT "res\\knight\\knight_low.X"
 
 CUi* CApplication::spUi = nullptr;
@@ -22,7 +22,7 @@ CMatrix CApplication::mModelViewInverse;
 
 CApplication::~CApplication()
 {
-	delete spUi;	//ƒCƒ“ƒXƒ^ƒ“ƒXUi‚Ìíœ
+	delete spUi;	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹Uiã®å‰Šé™¤
 }
 CUi* CApplication::Ui()
 {
@@ -41,106 +41,80 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
-	//3Dƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+	//3Dãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	mModelX.Load(MODEL_FILE);
-	//“Gƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
+	//æ•µãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	mKnight.Load(MODEL_KNIGHT);
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//1:ˆÚ“®
-	mKnight.SeparateAnimationSet(0, 1530, 1830, "idle1");	//2:‘Ò‹@
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//3:ƒ_ƒ~[
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//4:ƒ_ƒ~[
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//5:ƒ_ƒ~[
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//6:ƒ_ƒ~[
-	mKnight.SeparateAnimationSet(0, 440, 520, "attack1");	//7:UŒ‚1
-	mKnight.SeparateAnimationSet(0, 520, 615, "attack2");	//8:UŒ‚2
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//9:ƒ_ƒ~[
-	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//10:ƒ_ƒ~[
-	mKnight.SeparateAnimationSet(0, 1160, 1260, "death1");	//11:ƒ_ƒEƒ“
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//1:ç§»å‹•
+	mKnight.SeparateAnimationSet(0, 1530, 1830, "idle1");	//2:å¾…æ©Ÿ
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//3:ãƒ€ãƒŸãƒ¼
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//4:ãƒ€ãƒŸãƒ¼
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//5:ãƒ€ãƒŸãƒ¼
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//6:ãƒ€ãƒŸãƒ¼
+	mKnight.SeparateAnimationSet(0, 440, 520, "attack1");	//7:æ”»æ’ƒ1
+	mKnight.SeparateAnimationSet(0, 520, 615, "attack2");	//8:æ”»æ’ƒ2
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//9:ãƒ€ãƒŸãƒ¼
+	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//10:ãƒ€ãƒŸãƒ¼
+	mKnight.SeparateAnimationSet(0, 1160, 1260, "death1");	//11:ãƒ€ã‚¦ãƒ³
 
-	//ƒLƒƒƒ‰ƒNƒ^[‚Éƒ‚ƒfƒ‹‚ğİ’è
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã«ãƒ¢ãƒ‡ãƒ«ã‚’è¨­å®š
 	mXPlayer.Init(&mModelX);
 	mFont.Load("FontG.png", 1, 4096 / 64);
-	//“G‚Ì‰Šúİ’è
+	//æ•µã®åˆæœŸè¨­å®š
 	mXEnemy.Init(&mKnight);
-	//“G‚Ì”z’u
+	//æ•µã®é…ç½®
 	mXEnemy.Position(CVector(7.0f, 0.0f, 0.0f));
 	mXEnemy.ChangeAnimation(2, true, 200);
 	mpPaladin = new CPaladin();
 	mpPaladin->Position(CVector(-1.0f, 0.0f, 5.0f));
+	//ã‚«ãƒ¡ãƒ©ä›¾è¨­å®š
+	mActionCamera.Set(5.0f, -15.0f, 180.0f);
 }
 
 void CApplication::Update()
 {
 	//if (mCharacter.IsAnimationFinished() == true)
 	//{
-	//	//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğØ‚è‘Ö‚¦‚é
+	//	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 	//	if (mCharacter.AnimationIndex() < mModelX.AnimationSet().size())
 	//	{
 	//		mCharacter.ChangeAnimation(mCharacter.AnimationIndex() + 1, false, 60);
 	//	}
 	//}
-	//ƒLƒƒƒ‰ƒNƒ^[ƒNƒ‰ƒX‚ÌXV
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚¯ãƒ©ã‚¹ã®æ›´æ–°
 	mXPlayer.Update();
-	//“GƒNƒ‰ƒX‚ÌXV
+	//æ•µã‚¯ãƒ©ã‚¹ã®æ›´æ–°
 	mXEnemy.Update();
 	mpPaladin->Update();
-	//ƒJƒƒ‰‚Ìƒpƒ‰ƒ[ƒ^‚ğì¬‚·‚é
-	CVector e, c, u; //‹“_A’‹“_Aã•ûŒü
-	//‹“_‚ğ‹‚ß‚é
-	e = CVector(1.0f, 2.0f, 10.0f);
-	//’‹“_‚ğ‹‚ß‚é
-	c = CVector();
-	//ã•ûŒü‚ğ‹‚ß‚é
-	u = CVector(0.0f, 1.0f, 0.0f);
-	//ƒJƒƒ‰‚Ìİ’è
-	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
-	//ƒ‚ƒfƒ‹ƒrƒ…[s—ñ‚Ìæ“¾
+
+	// ã‚«ãƒ¡ãƒ©è¨­å®š
+	mActionCamera.Position(mXPlayer.Position()+ CVector(0.0f, 2.0f, 0.0f));
+
+	mActionCamera.Update();
+	mActionCamera.Render();
+	//ãƒ¢ãƒ‡ãƒ«ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®å–å¾—
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
-	//‹ts—ñ‚Ìæ“¾
+	//é€†è¡Œåˆ—ã®å–å¾—
 	mModelViewInverse = mModelViewInverse.Transpose();
 	mModelViewInverse.M(0, 3, 0);
 	mModelViewInverse.M(1, 3, 0);
 	mModelViewInverse.M(2, 3, 0);
 
-	//X²+‰ñ“]
-	if (mInput.Key('K'))
-	{
-		mMatrix = mMatrix * CMatrix().RotateX(1);
-	}
-	//X²-‰ñ“]
-	if (mInput.Key('I'))
-	{
-		mMatrix = mMatrix * CMatrix().RotateX(-1);
-	}
-	//Y²+‰ñ“]
-	if (mInput.Key('L'))
-	{
-		mMatrix = mMatrix * CMatrix().RotateY(1);
-	}
-	//Y²-‰ñ“]
-	if (mInput.Key('J'))
-	{
-		mMatrix = mMatrix * CMatrix().RotateY(-1);
-	}
-
-	//s—ñİ’è
-	glMultMatrixf(mMatrix.M());
-
-	//Õ“Ëˆ—
+	//è¡çªå‡¦ç†
 	CCollisionManager::Instance()->Collision();
-	//ƒvƒŒƒCƒ„[•`‰æ
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»
 	mXPlayer.Render();
-	//ƒRƒ‰ƒCƒ_‚Ì•`‰æ
+	//ã‚³ãƒ©ã‚¤ãƒ€ã®æç”»
 	CCollisionManager::Instance()->Render();
-	//“G•`‰æ
+	//æ•µæç”»
 	mXEnemy.Render();
 	mpPaladin->Render();
 
-	//2D•`‰æŠJn
+	//2Dæç”»é–‹å§‹
 	CCamera::Start(0, 800, 0, 600);
 
 	mFont.Draw(20, 20, 10, 12, "3D PROGRAMMING");
 
-	//2D•`‰æI—¹
+	//2Dæç”»çµ‚äº†
 	CCamera::End();
 }

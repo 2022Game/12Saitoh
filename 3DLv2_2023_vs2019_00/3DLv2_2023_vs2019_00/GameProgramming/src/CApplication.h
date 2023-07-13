@@ -21,6 +21,7 @@
 #include "CXPlayer.h"
 #include "CXEnemy.h"
 #include "CPaladin.h"
+#include "CActionCamera.h"
 
 class CApplication
 {
@@ -32,17 +33,18 @@ private:
 	CInput mInput;
 	CMatrix mMatrix;
 	CModelX mModelX;
-	CColliderMesh mColliderMesh;	//モデルからコライダを生成
-	CModel mModelC5;	            //C5モデル
-	CModel mBackGround;             //背景モデル
+	CColliderMesh mColliderMesh; //モデルからコライダを生成
+	CModel mModelC5;	         //C5モデル
+	CModel mBackGround;          //背景モデル
 	CModel mModel;
 	CVector mEye;
-	CSound mSoundBgm;	            //BGM
-	CSound mSoundOver;	            //ゲームオーバー
-	CXCharacter mCharacter;			//キャラクタクラスのインスタンス
-	CXPlayer mXPlayer;				//プレイヤーのインスタンス
-	CXEnemy mXEnemy;				//敵のインスタンス
-	CModelX mKnight;				//敵(兵士)のインスタンス
+	CSound mSoundBgm;	        //BGM
+	CSound mSoundOver;	        //ゲームオーバー
+	CXCharacter mCharacter;		//キャラクタクラスのインスタンス
+	CXPlayer mXPlayer;			//プレイヤーのインスタンス
+	CXEnemy mXEnemy;			//敵のインスタンス
+	CModelX mKnight;			//敵(兵士)のインスタンス
+	CActionCamera mActionCamera;//アクションカメラ
 	CPaladin* mpPaladin;
 
 	enum class EState

@@ -37,6 +37,9 @@
     <Filter Include="ソース ファイル\Character\CXファイル">
       <UniqueIdentifier>{f985167d-58ad-458c-a63a-40c04971f54e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\UI">
+      <UniqueIdentifier>{93383a33-a196-413e-a7c6-2dfe09ecd721}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -73,18 +76,6 @@
       <Filter>ソース ファイル\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\CApplication.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CCamera.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFont.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CInput.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CUi.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\CCollider.cpp">
@@ -141,6 +132,21 @@
     <ClCompile Include="src\CMyShader.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\CUi.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFont.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCamera.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CInput.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CActionCamera.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSound.h">
@@ -177,18 +183,6 @@
       <Filter>ソース ファイル\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\CApplication.h">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CCamera.h">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CFont.h">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CInput.h">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CUi.h">
       <Filter>ソース ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\CCollider.h">
@@ -250,6 +244,21 @@
     </ClInclude>
     <ClInclude Include="src\CMyShader.h">
       <Filter>ソース ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CUi.h">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFont.h">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CCamera.h">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CInput.h">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CActionCamera.h">
+      <Filter>ソース ファイル\Lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

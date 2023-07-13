@@ -18,6 +18,6 @@ CPaladin::CPaladin()
 
 void CPaladin::Update()
 {
-	CXCharacter::ChangeAnimation(1, false, 60);
+	CXCharacter::ChangeAnimation(1, true, 60);
 	CXCharacter::Update();
 }

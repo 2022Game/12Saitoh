@@ -1,4 +1,32 @@
-#include "CXPlayer.h"
+ï»¿#include "CXPlayer.h"
+
+void CXPlayer::UpdateCamera()
+{
+	//ã‚«ãƒ¡ãƒ©ä›¾å‰æ–¹
+	CVector cameraZ = CActionCamera::Instance()->VectorZ();
+	//ã‚«ãƒ¡ãƒ©ä›¾å·¦æ–¹å‘
+	CVector cameraX = CActionCamera::Instance()->VectorX();
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ä›¾å‰æ–¹
+	CVector charZ = mMatrixRotate.VectorZ();
+	//XZå¹³é¢ã«ã—ã¦æ­£è¦åŒ–
+	cameraZ.Y(0.0f); cameraZ = cameraZ.Normalize();
+	cameraX.Y(0.0f); cameraX = cameraX.Normalize();
+	charZ.Y(0.0f); charZ = charZ.Normalize();
+	//ç§»å‹•æ–¹å‘ä›¾è¨­å®š
+	CVector move;
+	if (mInput.Key('A')) {
+		move = move + cameraX;
+	}
+	if (mInput.Key('D')) {
+		move = move - cameraX;
+	}
+	if (mInput.Key('W')) {
+		move = move + cameraZ;
+	}
+	if (mInput.Key('S')) {
+		move = move - cameraZ;
+	}
+}
 
 CXPlayer::CXPlayer()
 	: mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
@@ -11,19 +39,19 @@ CXPlayer::CXPlayer()
 void CXPlayer::Init(CModelX* model)
 {
 	CXCharacter::Init(model);
-	//‡¬s—ñ‚Ìİ’è
-	//“ª
+	//åˆæˆè¡Œåˆ—ã®è¨­å®š
+	//é ­
 	mColSpherHead.Matrix(&mpCombinedMatrix[12]);
-	//‘Ì
+	//ä½“
 	mColSpherBody.Matrix(&mpCombinedMatrix[9]);
-	//Œ•
+	//å‰£
 	mColSpherSword.Matrix(&mpCombinedMatrix[22]);
 }
 
 void CXPlayer::Update()
 {
-	//ˆÚ“®ˆ—
-	//UŒ‚ƒ‚[ƒVƒ‡ƒ“’†‚ÍˆÚ“®‚â‰ñ“]‚ª‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+	//ç§»å‹•å‡¦ç†
+	//æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã¯ç§»å‹•ã‚„å›è»¢ãŒã§ããªã„ã‚ˆã†ã«ã™ã‚‹
 	if (mInput.Key('W') &&
 		CXCharacter::AnimationIndex() != 3 &&
 		CXCharacter::AnimationIndex() != 4)
@@ -31,7 +59,7 @@ void CXPlayer::Update()
 		CXCharacter::ChangeAnimation(1, true, 60);
 		mPosition = mPosition + CVector(0.0f, 0.0f, 0.1f) * mMatrixRotate;
 	}
-	//‘Ò‹@ƒ‚[ƒVƒ‡ƒ“
+	//å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³
 	else if (CXCharacter::AnimationIndex() != 3 && 
 		CXCharacter::AnimationIndex() != 4)
 	{
@@ -49,7 +77,7 @@ void CXPlayer::Update()
 	{
 		mRotation = mRotation - CVector(0.0f, 2.0f, 0.0f);
 	}
-	//UŒ‚ˆ—
+	//æ”»æ’ƒå‡¦ç†
 	if (mInput.Key(VK_SPACE) &&
 		CXCharacter::AnimationIndex() != 3 &&
 		CXCharacter::AnimationIndex() != 4)
@@ -61,12 +89,12 @@ void CXPlayer::Update()
 	{
 		CXCharacter::ChangeAnimation(4, false, 30);
 	}
-	//UŒ‚ƒ‚[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½‚ç‘Ò‹@ƒ‚[ƒVƒ‡ƒ“‚É‚·‚é
+	//æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ã‚ã£ãŸã‚‰å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«ã™ã‚‹
 	if (CXCharacter::AnimationIndex() == 4 &&
 		CXCharacter::IsAnimationFinished() == true)
 	{
 		CXCharacter::ChangeAnimation(0, true, 60);
 	}
-
+	UpdateCamera();
 	CXCharacter::Update();
 }
