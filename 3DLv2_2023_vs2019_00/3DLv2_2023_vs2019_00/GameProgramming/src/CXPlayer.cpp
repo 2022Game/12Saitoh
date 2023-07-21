@@ -1,33 +1,5 @@
 ﻿#include "CXPlayer.h"
 
-void CXPlayer::UpdateCamera()
-{
-	//カメラ䛾前方
-	CVector cameraZ = CActionCamera::Instance()->VectorZ();
-	//カメラ䛾左方向
-	CVector cameraX = CActionCamera::Instance()->VectorX();
-	//キャラクタ䛾前方
-	CVector charZ = mMatrixRotate.VectorZ();
-	//XZ平面にして正規化
-	cameraZ.Y(0.0f); cameraZ = cameraZ.Normalize();
-	cameraX.Y(0.0f); cameraX = cameraX.Normalize();
-	charZ.Y(0.0f); charZ = charZ.Normalize();
-	//移動方向䛾設定
-	CVector move;
-	if (mInput.Key('A')) {
-		move = move + cameraX;
-	}
-	if (mInput.Key('D')) {
-		move = move - cameraX;
-	}
-	if (mInput.Key('W')) {
-		move = move + cameraZ;
-	}
-	if (mInput.Key('S')) {
-		move = move - cameraZ;
-	}
-}
-
 CXPlayer::CXPlayer()
 	: mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
 	, mColSpherBody(this, nullptr, CVector(), 0.5f)
@@ -50,32 +22,66 @@ void CXPlayer::Init(CModelX* model)
 
 void CXPlayer::Update()
 {
-	//移動処理
-	//攻撃モーション中は移動や回転ができないようにする
-	if (mInput.Key('W') &&
-		CXCharacter::AnimationIndex() != 3 &&
+	//カメラの前方
+	CVector cameraZ = CActionCamera::Instance()->VectorZ();
+	//カメラの左方向
+	CVector cameraX = CActionCamera::Instance()->VectorX();
+	//キャラクタの前方
+	CVector charZ = mMatrixRotate.VectorZ();
+	//XZ平面にして正規化
+	cameraZ.Y(0.0f); cameraZ = cameraZ.Normalize();
+	cameraX.Y(0.0f); cameraX = cameraX.Normalize();
+	charZ.Y(0.0f); charZ = charZ.Normalize();
+	//移動方向の設定
+	//攻撃中は移動できない
+	if (CXCharacter::AnimationIndex() != 3 &&
 		CXCharacter::AnimationIndex() != 4)
 	{
-		CXCharacter::ChangeAnimation(1, true, 60);
-		mPosition = mPosition + CVector(0.0f, 0.0f, 0.1f) * mMatrixRotate;
-	}
-	//待機モーション
-	else if (CXCharacter::AnimationIndex() != 3 && 
-		CXCharacter::AnimationIndex() != 4)
-	{
-		CXCharacter::ChangeAnimation(0, true, 60);
-	}
-	if (mInput.Key('A') &&
-		CXCharacter::AnimationIndex() != 3 &&
-		CXCharacter::AnimationIndex() != 4)
-	{
-		mRotation = mRotation + CVector(0.0f, 2.0f, 0.0f);
-	}
-	if (mInput.Key('D') &&
-		CXCharacter::AnimationIndex() != 3 &&
-		CXCharacter::AnimationIndex() != 4)
-	{
-		mRotation = mRotation - CVector(0.0f, 2.0f, 0.0f);
+		CVector move;
+		if (mInput.Key('A')) {
+			move = move + cameraX;
+		}
+		if (mInput.Key('D')) {
+			move = move - cameraX;
+		}
+		if (mInput.Key('W')) {
+			move = move + cameraZ;
+		}
+		if (mInput.Key('S')) {
+			move = move - cameraZ;
+		}
+		//移動あり
+		if (move.Length() > 0.0f)
+		{
+			//遊び
+			const float MARGIN = 0.06f;
+			//正規化
+			move = move.Normalize();
+			//自分の向きと向かせたい向きで外積
+			float cross = charZ.Cross(move).Y();
+			//自分の向きと向かせたい向きで内積
+			float dot = charZ.Dot(move);
+			//外積がプラスは左回転
+			if (cross > MARGIN) {
+				mRotation.Y(mRotation.Y() + 5.0f);
+			}
+			//外積がマイナスは右回転
+			else if (cross < -MARGIN) {
+				mRotation.Y(mRotation.Y() - 5.0f);
+			}
+			//前後の向きが同じとき内積は 1.0
+			else if (dot < 1.0f - MARGIN) {
+				mRotation.Y(mRotation.Y() - 5.0f);
+			}
+			//移動方向へ移動
+			mPosition = mPosition + move * 0.1f;
+			ChangeAnimation(1, true, 60);
+		}
+		//待機モーション
+		else
+		{
+			CXCharacter::ChangeAnimation(0, true, 60);
+		}
 	}
 	//攻撃処理
 	if (mInput.Key(VK_SPACE) &&
@@ -95,6 +101,5 @@ void CXPlayer::Update()
 	{
 		CXCharacter::ChangeAnimation(0, true, 60);
 	}
-	UpdateCamera();
 	CXCharacter::Update();
 }

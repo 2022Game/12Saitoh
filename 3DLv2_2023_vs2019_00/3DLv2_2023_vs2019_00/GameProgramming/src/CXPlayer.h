@@ -14,8 +14,6 @@ private:
 	CCollider mColSpherHead;	//頭
 	CCollider mColSpherBody;	//体
 	CCollider mColSpherSword;	//剣
-	//カメラ更新処理
-	void UpdateCamera();
 
 public:
 	//コンストラクタ
