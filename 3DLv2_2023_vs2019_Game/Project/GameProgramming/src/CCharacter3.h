@@ -4,13 +4,16 @@
 #include "CTransform.h"
 //モデルクラスのインクルード
 #include "CModel.h"
-#include"CTask.h"
+#include "CTaskManager.h"
+#include "CTask.h"
+//コライダクラスの宣言
+class CCollider;
+class NavNode;
+
 /*
 キャラクタークラス
 ゲームキャラクタの基本的な機能を定義する
 */
-//コライダクラスの宣言
-class CCollider;
 class CCharacter3 : public CTransform, public CTask
 {
 public:
@@ -24,22 +27,34 @@ public:
 	ETag Tag();
 	//コンストラクタ
 	CCharacter3();
-	//デストラクタ
-	~CCharacter3();
 	//コンストラクタ
 	CCharacter3(int priority);
+	//デストラクタ
+	~CCharacter3();
 
-	//衝突処理
-	virtual void Collision(CCollider* m, CCollider* o) {}
 	//モデルの設定
 	//Model(モデルクラスのポインタ)
 	void Model(CModel* m);
+	//衝突処理
+	virtual void Collision(CCollider* m, CCollider* o) {}
+	//更新処理
+	virtual void Update();
 	//描画処理
 	virtual void Render();
 
+	NavNode* GetNavNode() const;
+
+	//キャラクターが死んでいるかどうか
+	bool IsDeath();
+
+	//HPを取得
+	int HP() const;
 protected:
+	int mHp;			//HP
+
 	ETag mTag;			//タグ
-	CModel* mpModel;	//モデルのポインタ
 	CVector mGravity;	//重力
+	CModel* mpModel;	//モデルのポインタ
+	NavNode* mpNode;	//自身の座標のノード
 };
 #endif

@@ -1,33 +1,48 @@
 //プレイヤークラスのインクルード
 #include "CPlayer.h"
-#include"CApplication.h"
-#include"CTaskManager.h"
+#include "CApplication.h"
+#include "CTaskManager.h"
+#include "NavNode.h"
+#include "NavManager.h"
+#include "CCollisionManager.h"
 
 #define ROTATION_XV CVector(1.0f,0.0f,0.0f) //回転速度
 #define ROTATION_YV CVector(0.0f,1.0f,0.0f) //回転速度
 #define VELOCITYZ CVector(0.0f, 0.0f, 0.2f) //Z軸移動速度
 #define VELOCITYX CVector(0.2f, 0.0f, 0.0f)	//X軸移動速度
-#define GRAVITY CVector(0.0f, 0.1f, 0.0f)	//重力
+#define GRAVITY CVector(0.0f, 0.5f, 0.0f)	//重力
 
 CPlayer* CPlayer::spInstance = nullptr;
-int CPlayer::sHp = 0;
 
 CPlayer::CPlayer()
-	: mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 0.7f, CCollider::EColliderTag::EPLAYER)
-	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.36f, CCollider::EColliderTag::EPLAYER)
-	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.45f, CCollider::EColliderTag::EPLAYER)
-
+	: mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 1.05f, CCollider::EColliderTag::EPLAYER)
+	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.54f, CCollider::EColliderTag::EPLAYER)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.675f, CCollider::EColliderTag::EPLAYER)
 {
 	//インスタンスの設定
 	spInstance = this;
 	//プレイヤーHPの設定
-	sHp = 5;
+	mHp = 5;
+	mpModel = new CModel();
+	mpModel->Load("res\\SnowGolem.obj", "res\\SnowGolem.mtl");
+	mpNode = new NavNode(Position());
 }
 
 //CPlayer(位置,回転,スケール)
 CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
+	: mpBullet(nullptr)
 {
 	CTransform::Update(pos, rot, scale); //行列の更新
+}
+
+//デストラクタ
+CPlayer::~CPlayer()
+{
+	if (mpNode != nullptr)
+	{
+		delete mpNode;
+		mpNode = nullptr;
+	}
 }
 
 //更新処理
@@ -37,11 +52,11 @@ void CPlayer::Update()
 	//スペースキー入力で弾発射
 	if (mInput.PushKey(VK_SPACE))
 	{
-		CBullet *bullet = new CBullet();
-		bullet->Set(0.1f, 1.5f);
-		bullet->Position(CVector(0.0f, 70.0f, 10.0f) * mMatrix);
-		bullet->Rotation(mRotation);
-		bullet->Update();
+		mpBullet = new CPlayerBullet(CCollider::EColliderTag::EPLAYERBULLET);
+		mpBullet->Set(0.1f, 1.5f);
+		mpBullet->Position(CVector(0.0f, 70.0f, 10.0f) * mMatrix);
+		mpBullet->Rotation(mRotation);
+		mpBullet->Update();
 	}
 	//Wキー入力で上向き
 	if (mInput.Key('W'))
@@ -55,34 +70,16 @@ void CPlayer::Update()
 		//Z軸方向の値を回転させ移動させる
 		mPosition = mPosition - VELOCITYZ * mMatrixRotate;
 	}
-	//カメラが正面に来た時
-	if (CApplication::CameraFlag() != 2)
+	if (mInput.Key('A'))
 	{
-		if (mInput.Key('A'))
-		{
-			//X軸方向の値を回転させ移動させる
-			mPosition = mPosition + VELOCITYX * mMatrixRotate;
-		}
-		//Dキー入力で回転
-		if (mInput.Key('D'))
-		{
-			//X軸方向の値を回転させ移動させる
-			mPosition = mPosition - VELOCITYX * mMatrixRotate;
-		}
+		//X軸方向の値を回転させ移動させる
+		mPosition = mPosition + VELOCITYX * mMatrixRotate;
 	}
-	else
+	//Dキー入力で回転
+	if (mInput.Key('D'))
 	{
-		if (mInput.Key('A'))
-		{
-			//X軸方向の値を回転させ移動させる
-			mPosition = mPosition - VELOCITYX * mMatrixRotate;
-		}
-		//Dキー入力で回転
-		if (mInput.Key('D'))
-		{
-			//X軸方向の値を回転させ移動させる
-			mPosition = mPosition + VELOCITYX * mMatrixRotate;
-		}
+		//X軸方向の値を回転させ移動させる
+		mPosition = mPosition - VELOCITYX * mMatrixRotate;
 	}
 	if (mInput.Key(VK_RIGHT))
 	{
@@ -105,6 +102,7 @@ void CPlayer::Update()
 
 	//変換行列の更新
 	CTransform::Update();
+	CCharacter3::Update();
 }
 
 void CPlayer::Collision(CCollider* m, CCollider* o)
@@ -114,13 +112,13 @@ void CPlayer::Collision(CCollider* m, CCollider* o)
 	switch (o->Type())
 	{
 	case CCollider::ESPHERE: //球コライダの時
-		//コライダが雪玉か判定
-		if (o->ColliderTag() == CCollider::EColliderTag::EBULLET)
+		//敵の弾だった時
+		if (o->ColliderTag() == CCollider::EColliderTag::EENEMYBULLET)
 		{
 			//衝突処理
 			if (CCollider::Collision(m, o))
 			{
-				sHp--;
+				mHp--;
 				printf("Hit\n");
 			}
 		}
@@ -153,9 +151,4 @@ void CPlayer::Collision()
 CPlayer* CPlayer::Instance()
 {
 	return spInstance;
-}
-
-int CPlayer::HP()
-{
-	return sHp;
 }

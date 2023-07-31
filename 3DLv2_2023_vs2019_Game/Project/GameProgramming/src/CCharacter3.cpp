@@ -1,26 +1,38 @@
 #include "CCharacter3.h"
-#include"CApplication.h"
+#include "NavNode.h"
+#include "NavManager.h"
 
 #define GRAVITY CVector(0.0f,0.5f,0.0f)
+
+CCharacter3::ETag CCharacter3::Tag()
+{
+	return mTag;
+}
 
 CCharacter3::CCharacter3()
 	: mpModel(nullptr)
 	, mTag(EZERO)
-	, mGravity(0.0f,0.0f,0.0f)
+	, mGravity(0.0f, 0.0f, 0.0f)
+	, mpNode(nullptr)
+	, mHp(0)
 {
+	mGravity = GRAVITY;
+	SetPauseType(TaskPauseType::eGame);
 	//タスクリストに追加
 	CTaskManager::Instance()->Add(this);
-	mGravity = GRAVITY;
-}
-void CCharacter3::Model(CModel* m)
-{
-	mpModel = m;
 }
 
-//描画処理
-void CCharacter3::Render()
+CCharacter3::CCharacter3(int priority)
+	: mHp(0)
+	, mGravity(CVector(0.0f, 0.0f, 0.0f))
+	, mpModel(nullptr)
+	, mpNode(nullptr)
+	, mTag(ETag::EZERO)
 {
-	mpModel->Render(mMatrix);
+
+	mPriority = priority;
+	SetPauseType(TaskPauseType::eGame);
+	CTaskManager::Instance()->Add(this);
 }
 
 CCharacter3::~CCharacter3()
@@ -29,14 +41,38 @@ CCharacter3::~CCharacter3()
 	CTaskManager::Instance()->Remove(this);
 }
 
-CCharacter3::CCharacter3(int priority)
-	: mpModel(nullptr)
+void CCharacter3::Model(CModel* m)
 {
-	mPriority = priority;
-	CTaskManager::Instance()->Add(this);
+	mpModel = m;
 }
 
-CCharacter3::ETag CCharacter3::Tag()
+//更新処理
+void CCharacter3::Update()
 {
-	return mTag;
+	if (mpNode != nullptr)
+	{
+		mpNode->SetPos(Position());
+	}
+}
+
+//描画処理
+void CCharacter3::Render()
+{
+	mpModel->Render(mMatrix);
+}
+
+NavNode* CCharacter3::GetNavNode()const
+{
+	return mpNode;
+}
+
+//キャラクターが死んでいるかどうか
+bool CCharacter3::IsDeath()
+{
+	return mHp <= 0;
+}
+
+int CCharacter3::HP()const
+{
+	return mHp;
 }

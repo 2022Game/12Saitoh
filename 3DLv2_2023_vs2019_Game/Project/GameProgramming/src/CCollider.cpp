@@ -76,73 +76,74 @@ bool CCollider::Collision(CCollider* m, CCollider* o)
 	return false;
 }
 
-bool CCollider::CollisionTriangleLine(CCollider* t, CCollider* l, CVector* a)
+bool CCollider::CollisionTriangleLine(CCollider* t, CCollider* l, CVector* a, CVector* cross)
 {
-	CVector v[3], sv, ev;
+	CVector tv[3], lv[2];
 	//各コライダの頂点をワールド座標へ変換
-	v[0] = t->mV[0] * *t->mpMatrix;
-	v[1] = t->mV[1] * *t->mpMatrix;
-	v[2] = t->mV[2] * *t->mpMatrix;
-	sv = l->mV[0] * *l->mpMatrix;
-	ev = l->mV[1] * *l->mpMatrix;
+	tv[0] = t->mV[0] * *t->mpMatrix;
+	tv[1] = t->mV[1] * *t->mpMatrix;
+	tv[2] = t->mV[2] * *t->mpMatrix;
+	lv[0] = l->mV[0] * *l->mpMatrix;
+	lv[1] = l->mV[1] * *l->mpMatrix;
+	return CollisionTriangleLine(tv, lv, a, cross);
+}
+
+bool CCollider::CollisionTriangleLine(CVector(&tv)[3], CVector(&lv)[2], CVector* adjust, CVector* cross)
+{
 	//面の法線を、外積を正規化して求める
-	CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();
-	//三角の頂点から線分始点へベクトルを求める
-	CVector v0sv = sv - v[0];
-	//三角の頂点から線分終点へベクトルを求める
-	CVector v0ev = ev - v[0];
+	CVector normal = (tv[1] - tv[0]).Cross(tv[2] - tv[0]).Normalize();
+	//三角の頂点から線分始点へのベクトルを求める
+	CVector v0sv = lv[0] - tv[0];
+	//三角の頂点から線分終点へのベクトルを求める
+	CVector v0ev = lv[1] - tv[0];
 	//線分が面と交差しているか内積で確認する
 	float dots = v0sv.Dot(normal);
 	float dote = v0ev.Dot(normal);
-	//プラスは交差していない
-	if (dots * dote >= 0.0f)
-	{
-		//衝突していない(調整不要)
-		*a = CVector(0.0f, 0.0f, 0.0f);
+	//プラスは交差してない
+	if (dots * dote >= 0.0f) {
+		//衝突してない（調整不要）
+		*adjust = CVector(0.0f, 0.0f, 0.0f);
 		return false;
 	}
 
 	//線分は面と交差している
-	
 	//面と線分の交点を求める
-	// 交点の計算
-	CVector cross = sv + (ev - sv) * (abs(dots) / (abs(dots) + abs(dote)));
+	//交点の計算
+	CVector c = lv[0] + (lv[1] - lv[0]) * (abs(dots) / (abs(dots) + abs(dote)));
+	if (cross != nullptr) *cross = c;
 
-	//交点が三角内なら衝突している
+	//交点が三角形内なら衝突している
 	//頂点1頂点2ベクトルと頂点1交点ベクトルとの外積を求め、
-	// 法線と内積がマイナスなら、三角形の外
-	if ((v[1] - v[0]).Cross(cross - v[0]).Dot(normal) < 0.0f)
-	{
-		//衝突していない
-		*a = CVector(0.0f, 0.0f, 0.0f);
+	//法線との内積がマイナスなら、三角形の外
+	if ((tv[1] - tv[0]).Cross(c - tv[0]).Dot(normal) < 0.0f) {
+		//衝突してない
+		*adjust = CVector(0.0f, 0.0f, 0.0f);
 		return false;
 	}
 	//頂点2頂点3ベクトルと頂点2交点ベクトルとの外積を求め、
-	// 法線との内積がマイナスなら、三角形の外
-	if ((v[2] - v[1]).Cross(cross - v[1]).Dot(normal) < 0.0f)
-	{
-		//衝突していない
-		*a = CVector(0.0f, 0.0f, 0.0f);
+	//法線との内積がマイナスなら、三角形の外
+	if ((tv[2] - tv[1]).Cross(c - tv[1]).Dot(normal) < 0.0f) {
+		//衝突してない
+		*adjust = CVector(0.0f, 0.0f, 0.0f);
 		return false;
 	}
-	//頂点3と頂点1ベクトルと頂点3交点ベクトルとの外積を求め、
-	// 法線と内積がマイナスなら、三角形の外
-	if ((v[0] - v[2]).Cross(cross - v[2]).Dot(normal) < 0.0f)
-	{
-		//衝突していない
-		*a = CVector(0.0f, 0.0f, 0.0f);
+	//課題３２
+	//頂点3頂点1ベクトルと頂点3交点ベクトルとの外積を求め、
+	//法線との内積がマイナスなら、三角形の外
+	if ((tv[0] - tv[2]).Cross(c - tv[2]).Dot(normal) < 0.0f) {
+		//衝突してない
+		*adjust = CVector(0.0f, 0.0f, 0.0f);
 		return false;
 	}
-	//調整値計算(衝突していない位置まで戻す)
-	if (dots < 0.0f)
-	{
+
+	//調整値計算（衝突しない位置まで戻す）
+	if (dots < 0.0f) {
 		//始点が裏面
-		*a = normal * -dots;
+		*adjust = normal * -dots;
 	}
-	else 
-	{
+	else {
 		//終点が裏面
-		*a = normal * -dote;
+		*adjust = normal * -dote;
 	}
 	return true;
 }

@@ -2,6 +2,7 @@
 #include "CEffect.h"
 #include "CApplication.h"
 #include "CPlayer.h"
+#include "CCollisionManager.h"
 
 #define HP 3						//耐久値
 #define VELOCITY 0.1f				//速度
@@ -75,7 +76,7 @@ void CAlly::Collision(CCollider* m, CCollider* o)
 		//コライダのmとyが衝突しているか判定
 		if (CCollider::Collision(m, o))
 		{
-			if (o->ColliderTag() == CCollider::EColliderTag::EBULLET)
+			if (o->ColliderTag() == CCollider::EColliderTag::EENEMYBULLET)
 			{
 				mHp--; //ヒットポイントの減算
 				//エフェクト生成

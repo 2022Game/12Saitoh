@@ -1,34 +1,36 @@
 #pragma once
 #include "CFont.h"
+#include "CTask.h"
+#include "CSceneManager.h"
 /*
 * CUi
 * ユーザーインタフェースクラス
 */
-class CUi
+class CUi : public CTask
 {
-public:
-	void PosY(float f); //高度の設定
-	void RotX(float f); //ピッチの設定
-	void RotY(float f); //ピッチの設定
-	//ゲームクリア表示
-	void Clear();
-	//ゲームオーバー表示
-	void Over();
-	//スタート表示
-	void Start();
-	//Enemy(敵の数)
-	void Enemy(int enemy);
-	CUi();
-	void Hp(int hp);
-	//Time(時間)
-	void Time(int time);
-	void Render();
 private:
-	float mRotY; //ピッチ　Y回転地
-	float mPosY; //高度　Y座標
-	float mRotX; //ピッチ　X回転値
-	int mEnemy;	//敵の数
-	int mHp;
+	int Scene();//ゲームシーンの取得
+	int mScene;	//シーン
 	int mTime;	//経過時間
 	CFont mFont;
+
+public:
+	//コンストラクタ
+	CUi();
+	//デストラクタ
+	~CUi();
+
+	//スタート表示
+	void Title();
+	//ゲーム画面
+	void Game();
+	//ゲームオーバー表示
+	void Over();
+	//ゲームクリア表示
+	void Clear();
+	//描画処理
+	void Render();
+
+	//経過時間の取得
+	void Time(int time);
 };

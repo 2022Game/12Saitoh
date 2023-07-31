@@ -12,7 +12,7 @@ CTexture::CTexture()
 {
 }
 
-CTexture::CTexture(char *file)
+CTexture::CTexture(char* file)
 	: CTexture()
 {
 	Load(file);
@@ -36,7 +36,7 @@ void CTexture::Destory() {
 }
 
 #include <string>
-void CTexture::Load(const char* filename)
+bool CTexture::Load(const char* filename)
 {
 	//ファイルオープン
 	std::string file(filename);
@@ -52,7 +52,7 @@ void CTexture::Load(const char* filename)
 	if (!data)
 	{
 		printf("CTexture::Load Error:%s\n", file.data());
-		return;
+		return false;
 	}
 	//テクスチャの作成
 	mId = SOIL_create_OGL_texture(data,
@@ -69,7 +69,7 @@ void CTexture::Load(const char* filename)
 	//データの解放
 	SOIL_free_image_data(data);
 	mHeader.depth *= 8;
-	return;
+	return true;
 }
 
 //	//if (mTexFile.count(filename)) {
@@ -172,10 +172,10 @@ void CTexture::DrawImage(float left, float right, float bottom, float top, float
 	float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	//色の設定
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-	//glColor4fv(diffuse);
+	//	glColor4fv(diffuse);
 
 	glBegin(GL_TRIANGLES);
-	glTexCoord2f(tleft,  ttop);
+	glTexCoord2f(tleft, ttop);
 	glVertex2d(left, top);
 	glTexCoord2f(tleft, tbottom);
 	glVertex2d(left, bottom);
@@ -211,43 +211,43 @@ void CTexture::DrawImage(float left, float right, float bottom, float top, int t
 		(float)(mHeader.height - ttop) / mHeader.height);
 
 	return;
-/*
-	//テクスチャを有効にする
-	glEnable(GL_TEXTURE_2D);
-	//アルファブレンドを有効にする
-	glEnable(GL_BLEND);
-	//ブレンド方法を指定
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//テクスチャを指定
-	glBindTexture(GL_TEXTURE_2D, mId);
+	/*
+		//テクスチャを有効にする
+		glEnable(GL_TEXTURE_2D);
+		//アルファブレンドを有効にする
+		glEnable(GL_BLEND);
+		//ブレンド方法を指定
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//テクスチャを指定
+		glBindTexture(GL_TEXTURE_2D, mId);
 
-	float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//色の設定
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-	glColor4fv(diffuse);
+		float diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		//色の設定
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+		glColor4fv(diffuse);
 
-	glBegin(GL_TRIANGLES);
-	glTexCoord2f(tleft / mHeader.width, (mHeader.height - ttop) / mHeader.height);
-	glVertex2d(left, top);
-	glTexCoord2f(tleft / mHeader.width, (mHeader.height - tbottom) / mHeader.height);
-	glVertex2d(left, bottom);
-	glTexCoord2f(tright / mHeader.width, (mHeader.height - tbottom) / mHeader.height);
-	glVertex2d(right, bottom);
-	glTexCoord2f(tleft / mHeader.width, (mHeader.height - ttop) / mHeader.height);
-	glVertex2d(left, top);
-	glTexCoord2f(tright / mHeader.width, (mHeader.height - tbottom) / mHeader.height);
-	glVertex2d(right, bottom);
-	glTexCoord2f(tright / mHeader.width, (mHeader.height - ttop) / mHeader.height);
-	glVertex2d(right, top);
-	glEnd();
+		glBegin(GL_TRIANGLES);
+		glTexCoord2f(tleft / mHeader.width, (mHeader.height - ttop) / mHeader.height);
+		glVertex2d(left, top);
+		glTexCoord2f(tleft / mHeader.width, (mHeader.height - tbottom) / mHeader.height);
+		glVertex2d(left, bottom);
+		glTexCoord2f(tright / mHeader.width, (mHeader.height - tbottom) / mHeader.height);
+		glVertex2d(right, bottom);
+		glTexCoord2f(tleft / mHeader.width, (mHeader.height - ttop) / mHeader.height);
+		glVertex2d(left, top);
+		glTexCoord2f(tright / mHeader.width, (mHeader.height - tbottom) / mHeader.height);
+		glVertex2d(right, bottom);
+		glTexCoord2f(tright / mHeader.width, (mHeader.height - ttop) / mHeader.height);
+		glVertex2d(right, top);
+		glEnd();
 
-	//テクスチャを解放
-	glBindTexture(GL_TEXTURE_2D, 0);
-	//アルファブレンドを無効
-	glDisable(GL_BLEND);
-	//テクスチャを無効
-	glDisable(GL_TEXTURE_2D);
-*/
+		//テクスチャを解放
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//アルファブレンドを無効
+		glDisable(GL_BLEND);
+		//テクスチャを無効
+		glDisable(GL_TEXTURE_2D);
+	*/
 }
 
 void CTexture::SetParts(int row, int col) {
@@ -287,7 +287,7 @@ const GLuint& CTexture::Id() const
 
 //行数列数の設定
 //SetRowCol(行数, 列数)
-void CTexture::SetRowCol(int row , int col) {
+void CTexture::SetRowCol(int row, int col) {
 	mRow = row;
 	mCol = col;
 }

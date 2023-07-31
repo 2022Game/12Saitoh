@@ -70,7 +70,7 @@ public:
 	//CVector *= float ‚Å‰‰ZŒ‹‰Ê‚ğ©g‚É‘ã“ü
 	void operator*=(const float& f);
 	//CVector * CMatrix‚ÌŒ‹‰Ê‚ğCVector‚Å•Ô‚·
-	CVector operator*(const CMatrix& m);
+	CVector operator*(const CMatrix& m)const;
 
 private:
 	//3DŠe²‚Å‚Ì’l‚ğİ’è

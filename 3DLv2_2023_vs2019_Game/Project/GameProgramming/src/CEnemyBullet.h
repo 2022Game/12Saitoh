@@ -1,27 +1,28 @@
-#ifndef CBULLET_H
-#define CBULLET_H
+#ifndef CENEMYBULLET_H
+#define CENEMYBULLET_H
 //キャラクタクラスのインクルード
 #include "CCharacter3.h"
 //三角形クラスのインクルード
 #include "CTriangle.h"
 //コライダクラスのインクルード
 #include "CCollider.h"
-#include "CEnemy3.h"
+#include "CEnemy.h"
 /*
 弾クラス
 三角形を飛ばす
 */
-class CBullet : public CCharacter3 
+class CEnemyBullet : public CCharacter3
 {
-	friend CEnemy3;
+	friend CEnemy;
 private:
 	CCollider mCollider;
 	CVector mV;	//水平投射用
 	CModel mModelBall;
-	static CBullet* spinstence;
+	static CEnemyBullet* spinstence;
 
 public:
-	CBullet();
+	//コンストラクタ
+	CEnemyBullet(CCollider::EColliderTag tag);
 	//幅と奥行きの設定
 	//Set(幅,奥行)
 	void Set(float w, float d);
@@ -33,6 +34,6 @@ public:
 	//衝突処理
 	//Collision(コライダ1,コライダ2)
 	void Collision(CCollider* m, CCollider* o);
-	static CBullet* Instance();
+	static CEnemyBullet* Instance();
 };
 #endif;

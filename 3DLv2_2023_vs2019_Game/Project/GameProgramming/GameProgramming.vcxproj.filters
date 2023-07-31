@@ -22,9 +22,6 @@
     <Filter Include="ソースファイル\UI">
       <UniqueIdentifier>{260b72c8-0f9c-4e6e-9b78-03da3903f4ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソースファイル\Game">
-      <UniqueIdentifier>{b789a2a0-caf7-4627-a1d8-1989410e8853}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソースファイル\Collider">
       <UniqueIdentifier>{729926a8-cd13-4ea3-9be9-e511b5fe75b4}</UniqueIdentifier>
     </Filter>
@@ -46,6 +43,18 @@
     <Filter Include="ソースファイル\Character\Ally">
       <UniqueIdentifier>{00dc015f-2695-46a2-b0ed-72206b4236f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソースファイル\System">
+      <UniqueIdentifier>{b789a2a0-caf7-4627-a1d8-1989410e8853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\System\Navigation">
+      <UniqueIdentifier>{567d6d24-5da9-40d4-87dd-00209081da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Scene">
+      <UniqueIdentifier>{7bc7c02a-35ab-40c7-90ec-6c68dcfc2f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Character\Bullet">
+      <UniqueIdentifier>{044e3c85-24d8-432a-8c9e-4eebc8437c0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -63,29 +72,17 @@
     <ClCompile Include="src\CBillBoard.cpp">
       <Filter>ソースファイル\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\CBullet.cpp">
-      <Filter>ソースファイル\Character</Filter>
-    </ClCompile>
     <ClCompile Include="src\CEffect.cpp">
       <Filter>ソースファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPlayer.cpp">
-      <Filter>ソースファイル\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\CTransform.cpp">
       <Filter>ソースファイル\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\CApplication.cpp">
-      <Filter>ソースファイル\Game</Filter>
+      <Filter>ソースファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="src\CCamera.cpp">
-      <Filter>ソースファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFont.cpp">
-      <Filter>ソースファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CInput.cpp">
-      <Filter>ソースファイル\Game</Filter>
+      <Filter>ソースファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="src\CUi.cpp">
       <Filter>ソースファイル\UI</Filter>
@@ -132,7 +129,7 @@
     <ClCompile Include="src\CFlag.cpp">
       <Filter>ソースファイル\Map</Filter>
     </ClCompile>
-    <ClCompile Include="src\CEnemy3.cpp">
+    <ClCompile Include="src\CEnemy.cpp">
       <Filter>ソースファイル\Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="src\CAlly.cpp">
@@ -143,6 +140,57 @@
     </ClCompile>
     <ClCompile Include="src\Primitive.cpp">
       <Filter>ソースファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CInput.cpp">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFont.cpp">
+      <Filter>ソースファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavManager.cpp">
+      <Filter>ソースファイル\System\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavNode.cpp">
+      <Filter>ソースファイル\System\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CTask.cpp">
+      <Filter>ソースファイル\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GamePause.cpp">
+      <Filter>ソースファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CImage.cpp">
+      <Filter>ソースファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSceneBase.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSeneManager.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CTitleScene.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CGameScene.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CField.cpp">
+      <Filter>ソースファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\COverScene.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CClearScene.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPlayer.cpp">
+      <Filter>ソースファイル\Character\Ally</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPlayerBullet.cpp">
+      <Filter>ソースファイル\Character\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CEnemyBullet.cpp">
+      <Filter>ソースファイル\Character\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,29 +209,17 @@
     <ClInclude Include="src\CBillBoard.h">
       <Filter>ソースファイル\Character</Filter>
     </ClInclude>
-    <ClInclude Include="src\CBullet.h">
-      <Filter>ソースファイル\Character</Filter>
-    </ClInclude>
     <ClInclude Include="src\CEffect.h">
       <Filter>ソースファイル\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CPlayer.h">
-      <Filter>ソースファイル\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\CTransform.h">
       <Filter>ソースファイル\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\CApplication.h">
-      <Filter>ソースファイル\Game</Filter>
+      <Filter>ソースファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="src\CCamera.h">
-      <Filter>ソースファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CFont.h">
-      <Filter>ソースファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CInput.h">
-      <Filter>ソースファイル\Game</Filter>
+      <Filter>ソースファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="src\CUi.h">
       <Filter>ソースファイル\UI</Filter>
@@ -236,7 +272,7 @@
     <ClInclude Include="src\CFlag.h">
       <Filter>ソースファイル\Map</Filter>
     </ClInclude>
-    <ClInclude Include="src\CEnemy3.h">
+    <ClInclude Include="src\CEnemy.h">
       <Filter>ソースファイル\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="src\CAlly.h">
@@ -247,6 +283,66 @@
     </ClInclude>
     <ClInclude Include="src\Primitive.h">
       <Filter>ソースファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CInput.h">
+      <Filter>ソースファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFont.h">
+      <Filter>ソースファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavManager.h">
+      <Filter>ソースファイル\System\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NavNode.h">
+      <Filter>ソースファイル\System\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Global.h">
+      <Filter>ソースファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TaskPauseType.h">
+      <Filter>ソースファイル\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TaskPriority.h">
+      <Filter>ソースファイル\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GamePause.h">
+      <Filter>ソースファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CImage.h">
+      <Filter>ソースファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSceneBase.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSceneManager.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneType.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CTitleScene.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CGameScene.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CField.h">
+      <Filter>ソースファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\COverScene.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CClearScene.h">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPlayer.h">
+      <Filter>ソースファイル\Character\Ally</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPlayerBullet.h">
+      <Filter>ソースファイル\Character\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CEnemyBullet.h">
+      <Filter>ソースファイル\Character\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

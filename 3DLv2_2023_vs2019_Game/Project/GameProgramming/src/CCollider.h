@@ -16,15 +16,20 @@ public:
 	virtual void ChangePriority();
 	//優先度の変更
 	void ChangePriority(int priorty);
+	//CollisionTriangleLine(三角コライダ, 線分コライダ, 調整値)
+	//retrun:true（衝突している）false(衝突していない)
+	//調整値:衝突しない位置まで戻す値
+	static bool CollisionTriangleLine(CCollider* triangle, CCollider* line, CVector* adjust, CVector* cross = nullptr);
+	//CollisionTriangleLine(三角形頂点, 線分頂点, 調整値)
+	//retrun:true（衝突している）false(衝突していない)
+    //調整値:衝突しない位置まで戻す値
+	static bool CollisionTriangleLine(CVector(&tv)[3], CVector(&lv)[2], CVector* adjust, CVector* cross = nullptr);
+
 	//CollisionTriangleSphere(三角コライダ,球コライダ,調整値)
 	// return:true(衝突している)false(衝突していない)
 	//調整値:衝突していない位置まで戻す値
 	static bool CollisionTriangleSphere(CCollider* triangle, CCollider* sphere,
 		CVector* ajust);
-	//CollisionTriangleLine(三角コライダ,線分コライダ,調整値)
-	//retrun:true(衝突している)false(衝突していない)
-	// 調整値:衝突しない位置まで戻す値
-	static bool CollisionTriangleLine(CCollider* triangle, CCollider* line, CVector* adjust);
 	//コライダタイプ
 	enum EType
 	{
@@ -36,12 +41,13 @@ public:
 	//コライダータグ
 	enum class EColliderTag
 	{
-		ENULL,		//初期
-		EPLAYER,	//プレイヤー
-		EENEMY,		//敵
-		EALL,		//味方
-		EBULLET,	//弾
-		EFLAG,		//フラッグ
+		ENULL,			//初期
+		EPLAYER,		//プレイヤー
+		EENEMY,			//敵
+		EALL,			//味方
+		EPLAYERBULLET,	//プレイヤーの弾
+		EENEMYBULLET,	//敵の弾
+		EFLAG,			//フラッグ
 	};
 	EColliderTag ColliderTag();
 	//デフォルトコンストラクタ

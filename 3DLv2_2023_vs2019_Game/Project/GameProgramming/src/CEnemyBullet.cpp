@@ -1,16 +1,19 @@
-#include "CBullet.h"
+#include "CEnemyBullet.h"
 #include "CApplication.h"
 #include <cmath>
+#include "CCollisionManager.h"
+
 
 #define VELOCITYZ CVector(0.0f, 0.0f, 1.5f)	//Z軸移動
 #define GRAVITY CVector(0.0f,-0.1f,0.0f) //重力
 #define SnowBall "res\\SnowBall.obj","res\\SnowBall.mtl"
 
-CBullet* CBullet::spinstence;
+CEnemyBullet* CEnemyBullet::spinstence = nullptr;
 
-CBullet::CBullet()
-	: mCollider(this, &mMatrix, CVector(), 0.3f,CCollider::EColliderTag::EBULLET)
-	, mV(0.0f,0.0f,0.0f)
+//コンストラクタ
+CEnemyBullet::CEnemyBullet(CCollider::EColliderTag tag)
+	: mCollider(this, &mMatrix, CVector(), 0.3f, tag)
+	, mV(0.0f, 0.0f, 0.0f)
 
 {
 	mModelBall.Load(SnowBall);
@@ -19,7 +22,7 @@ CBullet::CBullet()
 
 //幅と奥行きの設定
 //Set(幅,奥行)
-void CBullet::Set(float w, float d)
+void CEnemyBullet::Set(float w, float d)
 {
 	//スケール設定
 	mScale = CVector(0.3f, 0.3f, 0.3f);
@@ -30,7 +33,7 @@ void CBullet::Set(float w, float d)
 }
 
 //更新
-void CBullet::Update()
+void CEnemyBullet::Update()
 {
 	CTransform::Update();
 	//位置更新
@@ -39,12 +42,12 @@ void CBullet::Update()
 }
 
 //描画
-void CBullet::Render()
+void CEnemyBullet::Render()
 {
 	mModelBall.Render(mMatrix);
 }
 
-void CBullet::Collision()
+void CEnemyBullet::Collision()
 {
 	//コライダの優先度変更
 	mCollider.ChangePriority();
@@ -54,23 +57,35 @@ void CBullet::Collision()
 
 //衝突処理
 //Collider(コライダ1,コライダ2)
-void CBullet::Collision(CCollider* m, CCollider* o)
+void CEnemyBullet::Collision(CCollider* m, CCollider* o)
 {
 	//相手のコライダタイプの判定
 	switch (o->Type())
 	{
 	case CCollider::ETRIANGLE: //三角コライダの時
+	{
 		CVector adjust; //調整値
 		//三角コライダと球コライダの衝突判定
 		if (CCollider::CollisionTriangleSphere(o, m, &adjust))
 		{
 			mEnabled = false;
 		}
+	}
+	break;
+	case CCollider::ESPHERE: //球コライダの時
+		//相手が敵の時
+		if (o->ColliderTag() == CCollider::EColliderTag::EPLAYER)
+		{
+			if (CCollider::Collision(m, o))
+			{
+				mEnabled = false;
+			}
+		}
 		break;
 	}
 }
 
-CBullet* CBullet::Instance()
+CEnemyBullet* CEnemyBullet::Instance()
 {
 	return spinstence;
 }

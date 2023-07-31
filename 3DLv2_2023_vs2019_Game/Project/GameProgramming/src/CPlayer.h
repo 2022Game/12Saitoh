@@ -1,9 +1,9 @@
-#ifndef CPLAYER_H
-#define CPLAYER_H
+#ifndef PLAYER_H
+#define PLAYER_H
 //キャラクタスクラスのインクルード
 #include "CCharacter3.h"
 #include "CInput.h"
-#include "CBullet.h"
+#include "CPlayerBullet.h"
 #include "CColliderLine.h"
 /*
 プレイヤークラス
@@ -14,18 +14,21 @@ class CPlayer : public CCharacter3
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
+
+	CPlayerBullet* mpBullet;
 	CCollider mCollider1;	//頭コライダ
 	CCollider mCollider2;	//胴体コライダ
 	CCollider mCollider3;	//下半身コライダ
 	CInput mInput;
 
-	static int sHp;			//プレイヤーのHP
-
 public:
-
+	//コンストラクタ
 	CPlayer();
 	//CPlayer(位置,回転,スケール)
 	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale);
+	//デストラクタ
+	~CPlayer();
+
 	//更新処理
 	void Update();
 
@@ -35,7 +38,5 @@ public:
 
 	//インスタンスのポインタの取得
 	static CPlayer* Instance();
-	//プレイヤーのHPを取得
-	static int HP();
 };
 #endif

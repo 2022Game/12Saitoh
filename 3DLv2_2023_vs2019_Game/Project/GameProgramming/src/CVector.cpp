@@ -25,6 +25,8 @@ float CVector::Length() const
 
 CVector CVector::Normalize() const {
 	//ベクトルの大きさで割ったベクトルを返す（長さ1のベクトル）
+	float length = Length();
+	if (length == 0.0f) return CVector(0.0f, 0.0f, 0.0f);
 	return *this * (1.0f / Length());
 }
 
@@ -127,7 +129,7 @@ void CVector::operator*=(const float& f)
 	mZ *= f;
 }
 
-CVector CVector::operator*(const CMatrix& m)
+CVector CVector::operator*(const CMatrix& m)const
 {
 	//掛け算の結果をCVector型の値で返す
 	return CVector(

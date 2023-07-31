@@ -7,17 +7,15 @@
 タスクマネージャ
 タスクリストの管理
 */
-class CTaskManager
-{
+class CTaskManager {
 public:
-	//衝突処理
 	void Collision();
 	//インスタンスの取得
 	static CTaskManager* Instance();
 	//タスクの削除
 	void Delete();
-	//すべてのタスクの削除
-	void AllDelete();
+	//シーン内のタスクを全て削除
+	void DeleteInScene(EScene scene);
 	//リストから削除
 	//Remove(タスクのポインタ)
 	void Remove(CTask* task);
@@ -30,14 +28,23 @@ public:
 	void Update();
 	//描画
 	void Render();
+
+	//ポーズする
+	void Pause(int pauseBit);
+	//ポーズを解除する
+	void UnPause(int pauseBit);
+	//ポーズ中かどうか
+	bool IsPaused(int pauseBit = 0) const;
+protected:
 	//デフォルトコンストラクタ
 	CTaskManager();
-protected:
-	CTask mHead;  //先頭タスク
-	CTask mTail;  //最終タスク
+	CTask mHead;//先頭タスク
+	CTask mTail;//最終タスク
 private:
 	//タスクマネージャのインスタンス
 	static CTaskManager* mpInstance;
+	//ポーズのビットフラグ
+	int mPauseBit;
 };
 
 #endif

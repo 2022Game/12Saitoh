@@ -1,10 +1,9 @@
 #include "CEffect.h"
-#define PRIORITY 100 //優先度
-CMaterial CEffect::sMaterial;//マテリアルテクスチャ
+CMaterial CEffect::sMaterial; //マテリアル.テクスチャ
 
-CEffect::CEffect(const CVector& pos, float w, float h, char *texture,
-	int row, int col, int fps)
-:CBillBoard(pos, w, h , PRIORITY),mRows(row),mCols(col),mFps(fps),mFrame(0)
+CEffect::CEffect(const CVector& pos, float w, float h, char* texture
+	, int row, int col, int fps)
+	: CBillBoard(pos, w, h, (int)TaskPriority::eEffect), mRows(row), mCols(col), mFps(fps), mFrame(0)
 {
 	//テクスチャを読んでない場合は読む
 	if (sMaterial.Texture()->Id() == 0)
@@ -17,8 +16,7 @@ CEffect::CEffect(const CVector& pos, float w, float h, char *texture,
 	}
 }
 
-void CEffect::Update()
-{
+void CEffect::Update() {
 	//コマ数の計算
 	int frame = mFrame++ / mFps;
 	frame %= (mRows * mCols);
@@ -37,7 +35,8 @@ void CEffect::Update()
 		CVector(right, top, 0.0f));
 	//ビルボード更新
 	CBillBoard::Update();
-	if (mFrame == (mRows * mCols) * mFps)
+
+	if (mFrame >= mRows * mCols * mFps)
 	{
 		mEnabled = false;
 	}

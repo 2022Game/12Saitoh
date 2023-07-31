@@ -1,22 +1,61 @@
 #include <stdio.h>
 #include "CUi.h"
 #include "CCamera.h"
+#include "CEnemy.h"
+#include "CPlayer.h"
+
+//ゲームシーンの取得
+int CUi::Scene()
+{
+	return mScene = CSceneManager::Instance()->Scene();
+}
+
 CUi::CUi()
-	: mHp(0)
+    : mScene(0)
 	, mTime(0)
-	, mEnemy(0)
-	, mPosY(0.0f)
-	, mRotX(0.0f)
 {
+	//ポーズの種類を設定
+	SetPauseType(TaskPauseType::eGame);
 	mFont.Load("FontWhite.png", 1, 64);
+	mPriority = (int)TaskPriority::eUI;
+	//タスクマネージャに自信を追加
+	CTaskManager::Instance()->Add(this);
 }
 
-void CUi::Clear()
+//デストラクタ
+CUi::~CUi()
 {
-	mFont.Draw(36, 300, 18, 36, "GAME CLEAR!!");
-	mFont.Draw(36, 200, 18, 36, "PUSH ENTER KEY!");
+	CTaskManager::Instance()->Remove(this);
 }
 
+//スタート画面
+void CUi::Title()
+{
+	CCamera::Start(0, 800, 0, 600); //2D描画開始
+	mFont.Draw(36, 300, 18, 36, "START PUSH ENTER KEY!");
+	CCamera::End();  //2D描画終了
+}
+
+//ゲーム画面
+void CUi::Game()
+{
+	CCamera::Start(0, 800, 0, 600);
+	//2D描画開始
+	//描画色の設定(緑色の半透明)
+	glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
+	//文字列編集エリアの作成
+	char num[16];
+	char hp[8];
+	//文字列の設定
+	sprintf(num, "NUM:%d", CEnemy::Instance()->Num());
+	sprintf(hp, "HP:%d", CPlayer::Instance()->HP());
+	//文字の描画
+	mFont.Draw(700, 550, 10, 20, num);
+	mFont.Draw(700, 500, 10, 20, hp);
+	CCamera::End();  //2D描画終了
+}
+
+//ゲームオーバー表示
 void CUi::Over()
 {
 	CCamera::Start(0, 800, 0, 600); //2D描画開始
@@ -24,68 +63,38 @@ void CUi::Over()
 	CCamera::End();  //2D描画終了
 }
 
-void CUi::Start()
+//ゲームクリア表示
+void CUi::Clear()
 {
-	CCamera::Start(0, 800, 0, 600); //2D描画開始
-	mFont.Draw(36, 300, 18, 36, "START PUSH ENTER KEY!");
-	CCamera::End();  //2D描画終了
+	CCamera::Start(0, 800, 0, 600);
+	mFont.Draw(250, 300, 18, 36, "GAME CLEAR!!");
+	CCamera::End();
 }
 
-void CUi::Enemy(int enemy)
+//描画処理
+void CUi::Render()
 {
-	mEnemy = enemy;
+	switch (Scene())
+	{
+	case 1:	//タイトルシーン
+		Title();
+		break;
+	case 2:	//ゲームシーン
+		Game();
+		break;
+	case 3:	//ゲームオーバーシーン
+		Over();
+		break;
+	case 4:	//ゲームクリアシーン
+		Clear();
+		break;
+	default://どのシーンにも所属しない
+		break;
+	}
 }
 
-void CUi::Hp(int hp)
-{
-	mHp = hp;
-}
-
+//経過時間の取得
 void CUi::Time(int time)
 {
 	mTime = time;
-}
-
-void CUi::Render()
-{
-	CCamera::Start(0, 800, 0, 600); //2D描画開始
-	//描画色の設定(緑色の半透明)
-	glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
-	//文字列編集エリアの作成
-	char buf[64];
-
-	mFont.Draw(30, 550, 8, 16, "C : CHANGE CAMERA");
-	//Y座標の表示
-	//文字列の設定
-	sprintf(buf, "PY:%7.2f", mPosY);
-	//文字の描画
-	mFont.Draw(500, 330, 8, 16, buf);
-
-	//Y軸回転値の補油時
-	//文字列の設定
-	sprintf(buf, "RY:%7.2f", mRotY);
-	//文字の描画
-	mFont.Draw(500, 200, 8, 16, buf);
-
-	//X軸回転値の表示
-	//文字列の設定
-	sprintf(buf, "RX:%7.2f", mRotX);
-	//文字列の描画
-	mFont.Draw(500, 300, 8, 16, buf);
-	CCamera::End();  //2D描画終了
-}
-
-void CUi::PosY(float f)
-{
-	mPosY = f;
-}
-
-void CUi::RotX(float f)
-{
-	mRotX = f;
-}
-
-void CUi::RotY(float f)
-{
-	mRotY = f;
 }

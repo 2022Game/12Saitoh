@@ -35,7 +35,7 @@ public:
 	デフォルトコンストラクタ
 	*/
 	CTexture();
-	CTexture(char *file);
+	CTexture(char* file);
 	/*
 	デストラクタ（このインスタンスが破棄されるときに実行される）
 	*/
@@ -44,10 +44,10 @@ public:
 	Load(ファイル名)
 	画像ファイルの読み込み（テクスチャファイルの読み込み）
 	*/
-	void Load(const char* file);
+	bool Load(const char* file);
 	/*
 	DrawImage(四角形左座標, 四角形右座標, 四角形下座標, 四角形上座標,
-	    画像左座標, 画像右座標, 画像下座標, 画像上座標)
+		画像左座標, 画像右座標, 画像下座標, 画像上座標)
 	画像の描画
 	*/
 	void DrawImage(float left, float right, float bottom, float top, int tleft, int tright, int tbottom, int ttop) const;
@@ -56,7 +56,7 @@ public:
 	void Destory();
 	void SetParts(int row, int col);
 	void Draw(float left, float right, float bottom, float top, float tleft, float tright, float tbottom, float ttop);
-	void Draw(float left, float right, float bottom, float top, int tleft, int tright, int tbottom, int ttop) const ;
+	void Draw(float left, float right, float bottom, float top, int tleft, int tright, int tbottom, int ttop) const;
 private:
 	//	static std::map<std::string, CTexture>mTexFile;
 		//ファイル名
