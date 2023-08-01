@@ -119,6 +119,7 @@ CBoss::CBoss(float x, float y, float w, float h, CTexture* pt)
 	, mBossTime2(0)
 	, mBossTime3(0)
 	, mBossTime4(0)
+	, mItemFlag(false)
 	, mDeath(false)
 {
 	mTexture8.Load("É{ÉX3.png");
@@ -350,6 +351,11 @@ void CBoss::Update()
 				mFlg3 = 0;
 				mFlg4 = 0;
 				mState = EState::EMOVE;
+				if (mItemFlag == false)
+				{
+					mpItem = new CItem(400.0f, 200.0f, 30.0f, 30.0f, CApplication::Texture9());
+					mItemFlag = true;
+				}
 			}
 		}
 		break;

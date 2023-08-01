@@ -15,6 +15,11 @@ public:
 	//デストラクタ
 	~CRectangle();
 
+	//bool CollisionBlock(四角形のポインタ、X調整ポインタ,Y調整ポインタ)
+	// ブロック専用の当たり判定
+	//true:衝突している
+	//false:衝突していない
+	bool CollisionBlock(CRectangle* pRect, float* ax, float* ay);
 	//bool Collision(四角形のポインタ, X調整ポインタ,Y調整ポインタ)
 	//戻り値
 	//true:衝突している
@@ -25,6 +30,7 @@ public:
     //true:衝突している
     //false;衝突していない
 	bool Collision(CRectangle* pRect);
+
 
 	void Render();
 	void Render(float x, float y, float w, float h);

@@ -56,6 +56,8 @@ public:
 	void Damage();
 	//死亡処理
 	void Death();
+	//ステージ移動処理
+	void MoveStage();
 	//死亡判定を取得
 	bool BoolDeath();
 };

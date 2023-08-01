@@ -169,7 +169,7 @@ void CWolf::Update()
 	switch (mState)
 	{
 	case EState::EDEATH: //€–S
-		//HP‚ª‚O‚É‚È‚Á‚½”•bŒã‚ÉÁ–Å‚³‚¹‚é
+		//HP‚ª0‚É‚È‚Á‚½”•bŒã‚ÉÁ–Å‚³‚¹‚é
 		if (mWolfTime3 == 19)
 		{
 			if (mWVx < 0) { Texture(Texture(), WOLFDAL); }

@@ -27,6 +27,7 @@ public:
 		EATTACK2,  //攻撃2
 		EDAMAGE,   //ダメージ時
 		EDEATH,    //死亡
+		ESTAGEMOVE,//ステージ移動
 	};
 
 private:

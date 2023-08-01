@@ -98,6 +98,50 @@ bool CRectangle::Collision(CRectangle* r, float* ax, float* ay)
 	return false;
 }
 
+bool CRectangle::CollisionBlock(CRectangle* r, float* ax, float* ay)
+{
+	//XŽ²“–‚½‚è”»’è
+	if (mX < r->mX)
+		*ax = r->mX - mX - mW - r->mW;
+	else
+		*ax = mX - r->mX - mW - r->mW;
+	//0ˆÈã‚ÍÕ“Ë‚µ‚È‚¢
+	if (*ax >= 0.0f)
+		return false;
+
+	//YŽ²“–‚½‚è”»’è
+	if (mY < r->mY)
+		*ay = r->mY - mY - mH - r->mH;
+	else
+		*ay = mY - r->mY - mH - r->mH;
+	//0ˆÈã‚ÍÕ“Ë‚µ‚È‚¢
+	if (*ay >= 0.0f)
+		return false;
+
+	//Y‚ª’Z‚¢‚©”»’è
+	if (*ax < *ay)
+	{//YC³AX‚Í0
+		*ax = 0.0f;
+		//‰º‚ÌŽž
+		*ay = *ay;
+		//ã‚ÌŽž
+		if (mY > r->mY)
+			*ay = -*ay;
+		else if (mY < r->mY)
+			*ay = *ay / 3;
+	}
+	else
+	{//XC³AY‚Í0
+		*ay = 0.0f;
+		//¶‚ÌŽž
+		*ax = *ax;
+		//‰E‚ÌŽž
+		if (mX > r->mX)
+			*ax = -*ax;
+	}
+	return true;
+}
+
 
 void CRectangle::Render()
 {

@@ -73,7 +73,7 @@ void CApplication::Update()
 	{
 	case EState::ESTART:	//状態がスタート
 		mpGame->Start();	//スタート画面表示
-		if (mInput.Key(VK_RETURN))
+		if (mInput.PushKey(VK_RETURN))
 		{
 			mSoundSE.Play();
 			//状態をプレイ中にする
@@ -103,14 +103,17 @@ void CApplication::Update()
 		mpGame->Update();
 		if (CGame::Num() == 0)
 		{
-			sStageCount++;
+			if (CGame::ItemuNum() == 0)
+			{
+				sStageCount++;
+			}
 		}
-		if (sStageCount == 200)
+		if(sStageCount == 200)
 		{
 			mState = EState::ESTAGE2;
 			sStageCount = 201;
 		}
-		else if (sStageCount == 430)
+		if (sStageCount == 430)
 		{
 			mSoundBGM.Stop();
 			mState = EState::EBOSS;
@@ -143,7 +146,7 @@ void CApplication::Update()
 		//ゲームオーバー処理
 		mpGame->Over();
 		//エンターキー入力時
-		if (mInput.Key('N'))
+		if (mInput.PushKey('N'))
 		{	
 			mSoundSE.Play();
 			mSoundOver.Stop();
@@ -155,7 +158,7 @@ void CApplication::Update()
 			//状態をスタートにする
 			mState = EState::ESTART;
 		}
-		else if (mInput.Key('Y'))
+		else if (mInput.PushKey('Y'))
 		{
 			mSoundSE.Play();
 			mSoundOver.Stop();
@@ -172,7 +175,7 @@ void CApplication::Update()
 	case EState::ECLEAR:
 		//ゲームクリア処理
 		mpGame->Clear();
-		if (mInput.Key(VK_RETURN))
+		if (mInput.PushKey(VK_RETURN))
 		{
 			mSoundSE.Play();
 			mSoundClear.Stop();

@@ -4,6 +4,7 @@
 #include "CInput.h"
 #include "CBossAttackBox.h"
 #include "CBossAttackBox2.h"
+#include "CItem.h"
 
 #define BOSSX 2.0f 
 #define BOSSY 2.0f
@@ -40,6 +41,7 @@ public:
 private:
 	CBossAttackBox* mpBossAttackBox;
 	CBossAttackBox2* mpBossAttackBox2;
+	CItem* mpItem;
 	static CBoss* spInstance4;
 	static int sBEhp; //ボスのHP
 	static int sNum;	//敵の数
@@ -60,6 +62,7 @@ private:
 	float mBVx;	//X軸速度
 	float mBVy;	//Y軸速度
 	float mBLR;
+	bool mItemFlag;//アイテムの有効フラグ
 	bool mDeath; //死亡時のフラグ
 	CInput mInput;
 };

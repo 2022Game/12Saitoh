@@ -1,6 +1,7 @@
 #include "CPlayer.h"
 #include "CApplication.h"
 #include "CBoss.h"
+#include "CBackGround.h"
 
 #define DEFAULT  0, 200, 400, 200   //アイドリングテクスチャ(右向き)
 #define JUMPV0 30               	//ジャンプの初速
@@ -91,7 +92,7 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 		}
 		break;
 	case ETag::EBLOCK:
-		if (CRectangle::Collision(o, &x, &y))
+		if (CRectangle::CollisionBlock(o, &x, &y))
 		{
 			if (mState != EState::EJUMP)
 			{
@@ -122,6 +123,11 @@ void CPlayer::Update()
 {
 	if (CApplication::Delete() == true)
 		mEnabled = false;
+	//ステージ移動中の時
+	if (CBackGround::GetMoveStage())
+	{
+		mState = EState::ESTAGEMOVE;
+	}
 	switch (State())
 	{
 		//移動状態
@@ -154,6 +160,9 @@ void CPlayer::Update()
 	case EState::EDEATH: Death();
 		sCoolTime = 0;
 		break;
+	case EState::ESTAGEMOVE: MoveStage();
+		sStamina++;
+		break;
 	}
 
 	//HPが0になると死亡状態にする
@@ -163,6 +172,11 @@ void CPlayer::Update()
 		{
 			mState = EState::EDEATH;
 		}
+	}
+	//HPの上限
+	if (sHp >= 10)
+	{
+		sHp = 10;
 	}
 	//スタミナの上限
 	if (sStamina >= 100)
@@ -449,6 +463,32 @@ void CPlayer::Death()
 	left = (mAnimationCount / 60) * 200;
 	right = left + 200;
 	Texture(Texture(), left, right, 1200, 1000);
+}
+
+//ステージ移動処理
+void CPlayer::MoveStage()
+{
+	//アニメーション処理
+	float left;
+	float right;
+	mAnimationCount %= 48;
+	left = (mAnimationCount / 8) * 200;
+	right = left + 200;
+	mAnimationCount++;
+	//右向き
+	Texture(Texture(), left, right, 200, 0);
+
+	mSoundCount %= 35;
+	mSoundCount++;
+	//10フレーム毎にサウンドを再生
+	if (mSoundCount == 10)
+		mSoundRan.Play();
+
+	//ステージ移動が終わったらアイドリング状態に移行する
+	if (!CBackGround::GetMoveStage())
+	{
+		mState = EState::EIDLING;
+	}
 }
 
 //死亡判定を取得

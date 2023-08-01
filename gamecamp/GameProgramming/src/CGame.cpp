@@ -80,10 +80,10 @@ void CGame::Stage1()
 	delete mpBackGround4;
 	mpBackGround4 = nullptr;
 
-	mpBlock = new CBlock(640.0f, 460.0f, 10000.0f, 10.0f, CApplication::Texture9());
-	mpBlock = new CBlock(640.0f, -10.0f, 10000.0f, 10.0f, CApplication::Texture9());
-	mpBlock = new CBlock(-10.0f, 400.0f, 10.0f, 800.0f, CApplication::Texture9());
-	mpBlock = new CBlock(1290.0f, 400.0f, 10.0f, 800.0f, CApplication::Texture9());
+	mpBlock = new CBlock(640.0f, 500.0f, 1280.0f, 5.0f, CApplication::Texture9());
+	mpBlock = new CBlock(640.0f, -20.0f, 1280.0f, 5.0f, CApplication::Texture9());
+	mpBlock = new CBlock(-50.0f, 0.0f, 5.0f, 50.0f, CApplication::Texture9());
+	mpBlock = new CBlock(1360.0f, 0.0f, 5.0f, 50.0f, CApplication::Texture9());
 	mpPlayer = new CPlayer(400.0f, 250.0f, 110.0f, 110.0f, CApplication::Texture());
 	mpSlime = new CSlime(1000.0f, 100.0f, 80.0f, 60.0f, CSlime::Texture6());
 	mpSlime = new CSlime(800.0f, 300.0f, 80.0f, 60.0f, CSlime::Texture6());

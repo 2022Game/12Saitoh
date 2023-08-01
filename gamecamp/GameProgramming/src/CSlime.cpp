@@ -353,7 +353,7 @@ void CSlime::Update()
 			}
 		}
 		Y(Y() + mSVy);
-			if (Y() < CPlayer::Instance()->Y())
+			if (Y() < CPlayer::Instance()->Y()-50)
 			{
 				if (mSVy < 0)
 				{

@@ -21,15 +21,6 @@ void CBlock::Collision()
 //Õ“Ë”»’è4
 void CBlock::Collision(CCharacter* m, CCharacter* o)
 {
-	////‚ß‚è‚İ’²®•Ï”‚ğéŒ¾‚·‚é
-	switch (o->Tag())
-	{
-	case ETag::EPLAYER:
-		if (CRectangle::Collision(o))
-		{
-		}
-		break;
-	}
 }
 
 //XVˆ—
