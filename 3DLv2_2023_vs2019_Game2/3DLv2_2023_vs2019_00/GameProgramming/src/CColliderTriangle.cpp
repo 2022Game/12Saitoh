@@ -10,13 +10,13 @@ void CColliderTriangle::ChangePriority()
 	CCollider::ChangePriority(pos.Length());
 }
 
-CColliderTriangle::CColliderTriangle(CCharacter3* parent, CMatrix* matrix
+CColliderTriangle::CColliderTriangle(CCharacter* parent, CMatrix* matrix
 	, const CVector& v0, const CVector& v1, const CVector& v2)
 {
 	Set(parent, matrix, v0, v1, v2);
 }
 
-void CColliderTriangle::Set(CCharacter3* parent, CMatrix* matrix
+void CColliderTriangle::Set(CCharacter* parent, CMatrix* matrix
 	, const CVector& v0, const CVector& v1, const CVector& v2) {
 	mType = ETRIANGLE;//三角コライダ
 	mpParent = parent;//親設定

@@ -7,7 +7,6 @@
 #include "CTransform.h"
 #include "CCollisionManager.h"
 #include "CBillBoard.h"
-#include "CEnemy3.h"
 
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル

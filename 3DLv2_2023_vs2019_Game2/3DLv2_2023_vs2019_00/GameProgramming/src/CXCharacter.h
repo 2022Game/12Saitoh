@@ -3,9 +3,9 @@
 
 #include "CModelX.h"
 #include "CMaterial.h"
-#include "CCharacter3.h"
+#include "CCharacter.h"
 
-class CXCharacter : public CCharacter3
+class CXCharacter : public CCharacter
 {
 public:
 	//コンストラクタ

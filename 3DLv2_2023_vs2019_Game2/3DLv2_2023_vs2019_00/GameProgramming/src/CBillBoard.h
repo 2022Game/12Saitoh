@@ -1,11 +1,11 @@
 #ifndef CBILLBOARD_H
 #define CBILLBOARD_H
-#include "CCharacter3.h"
+#include "CCharacter.h"
 /*
 ビルボードクラス
 常にカメラの方を向く四角形
 */
-class CBillBoard : public CCharacter3 {
+class CBillBoard : public CCharacter {
 public:
 	//コンストラクタ
 	CBillBoard();

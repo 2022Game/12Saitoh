@@ -1,9 +1,6 @@
 #pragma once
 #include "CTexture.h"
-#include "CCharacter3.h"
-#include "CBullet.h"
-#include "CEnemy.h"
-#include "CPlayer.h"
+#include "CCharacter.h"
 #include "CInput.h"
 #include "CFont.h"
 #include <vector>
@@ -55,8 +52,6 @@ private:
 		EOVER,	//ゲームオーバー
 	};
 	EState mState;
-	CPlayer* mpPlayer;
-	CEnemy* mpEnemy;
 	CFont mFont;
 public:
 	~CApplication();

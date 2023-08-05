@@ -60,7 +60,7 @@ CCollider::~CCollider() {
 	CCollisionManager::Instance()->Remove(this);
 }
 
-CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
+CCollider::CCollider(CCharacter* parent, CMatrix* matrix,
 	const CVector& position, float radius, ETag tag) 
 	: CCollider() 
 {
@@ -78,7 +78,7 @@ CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
 	//CCollisionManager::Instance()->Add(this);
 }
 
-CCharacter3* CCollider::Parent()
+CCharacter* CCollider::Parent()
 {
 	return mpParent;
 }

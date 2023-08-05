@@ -11,7 +11,7 @@ CBillBoard::CBillBoard(CVector pos, float w, float h)
 }
 
 CBillBoard::CBillBoard(CVector pos, float w, float h, int priority)
-	: CCharacter3(priority)
+	: CCharacter(priority)
 {
 	Set(pos, w, h);
 }

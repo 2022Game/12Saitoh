@@ -8,13 +8,13 @@ void CColliderLine::ChangePriority()
 	CCollider::ChangePriority(pos.Length());
 }
 
-CColliderLine::CColliderLine(CCharacter3* parent, CMatrix* matrix
+CColliderLine::CColliderLine(CCharacter* parent, CMatrix* matrix
 	, const CVector& v0, const CVector& v1)
 {
 	Set(parent, matrix, v0, v1);
 }
 
-void CColliderLine::Set(CCharacter3* parent, CMatrix* matrix
+void CColliderLine::Set(CCharacter* parent, CMatrix* matrix
 	, const CVector& v0, const CVector& v1)
 {
 	mType = ELINE;//ü•ªƒRƒ‰ƒCƒ_

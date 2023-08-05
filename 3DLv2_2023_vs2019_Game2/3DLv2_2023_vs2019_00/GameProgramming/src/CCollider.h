@@ -1,7 +1,7 @@
 #ifndef CCOLLIDER_H
 #define CCOLLIDER_H
 //キャラクタクラスのインクルード
-#include "CCharacter3.h"
+#include "CCharacter.h"
 
 class CCollisionManager;
 /*
@@ -47,11 +47,11 @@ public:
 	~CCollider();
 	//コンストラクタ
 	//CCollider(親, 親行列, 位置, 半径)
-	CCollider(CCharacter3* parent, CMatrix* matrix,
+	CCollider(CCharacter* parent, CMatrix* matrix,
 		const CVector& position, float radius,
 		ETag tag = ETag::EBODY);
 	//親ポインタの取得
-	CCharacter3* Parent();
+	CCharacter* Parent();
 	//描画
 	void Render();
 	void Matrix(CMatrix* m);
@@ -61,7 +61,7 @@ protected:
 	//頂点
 	CVector mV[3];
 
-	CCharacter3* mpParent;//親
+	CCharacter* mpParent;//親
 	CMatrix* mpMatrix;//親行列
 	float mRadius;	//半径
 };
