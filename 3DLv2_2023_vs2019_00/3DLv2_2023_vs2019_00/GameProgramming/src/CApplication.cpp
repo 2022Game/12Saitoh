@@ -113,7 +113,7 @@ void CApplication::Update()
 	//2D描画開始
 	CCamera::Start(0, 800, 0, 600);
 
-	mFont.Draw(20, 20, 10, 12, "3D PROGRAMMING");
+	mFont.Draw(20, 20, 10, 12, "3D programing");
 
 	//2D描画終了
 	CCamera::End();
