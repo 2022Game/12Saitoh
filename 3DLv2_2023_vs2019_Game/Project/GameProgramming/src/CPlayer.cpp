@@ -17,7 +17,7 @@ CPlayer* CPlayer::spInstance = nullptr;
 CPlayer::CPlayer()
 	: mCollider1(this, &mMatrix, CVector(0.0f, 70.0f, 0.0f), 1.05f, CCollider::EColliderTag::EPLAYER)
 	, mCollider2(this, &mMatrix, CVector(0.0f, 45.0f, 0.0f), 0.54f, CCollider::EColliderTag::EPLAYER)
-	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.675f, CCollider::EColliderTag::EPLAYER)
+	, mCollider3(this, &mMatrix, CVector(0.0f, 13.0f, 0.0f), 0.7f, CCollider::EColliderTag::EPLAYER)
 {
 	//インスタンスの設定
 	spInstance = this;

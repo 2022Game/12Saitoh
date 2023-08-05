@@ -51,7 +51,7 @@ void CCharacter3::Update()
 {
 	if (mpNode != nullptr)
 	{
-		mpNode->SetPos(Position());
+		mpNode->SetPos(Position() + CVector(0.0f, 0.5f, 0.0f));
 	}
 }
 

@@ -71,9 +71,6 @@ void CGameScene::Update()
 	//プレイヤーが存在しなければ処理しない
 	CPlayer* player = CPlayer::Instance();
 	if (player == nullptr) return;
-	//敵が存在しなければ処理しない
-	CEnemy* enemy = CEnemy::Instance();
-	if (enemy == nullptr) return;
 
 	//カメラのパラメータを作成する
 	CVector e, c, u; //視点、注視点、上方向
@@ -110,6 +107,10 @@ void CGameScene::Update()
 		//カメラの設定
 		gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	}
+
+	//敵が存在しなければ処理しない
+	CEnemy* enemy = CEnemy::Instance();
+	if (enemy == nullptr) return;
 
 	//プレイヤーが死亡したらゲームオーバー画面に移行する
 	if (player->IsDeath())

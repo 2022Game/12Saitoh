@@ -52,10 +52,10 @@ void CApplication::Update()
 	mModelViewInverse.M(1, 3, 0);
 	mModelViewInverse.M(2, 3, 0);
 
-	//タスクリストの削除
-	CTaskManager::Instance()->Delete();
 	//タスクマネージャの衝突処理
 	CTaskManager::Instance()->Collision();
+	//タスクリストの削除
+	CTaskManager::Instance()->Delete();
 	//タスクマネージャの描画
 	CTaskManager::Instance()->Render();
 	//コリジョンマネージャ描画

@@ -195,7 +195,8 @@ void CEnemy::UpdateChase()
 
 	//プレイヤーまでの間に遮蔽物があるか調べる
 	float outDist = 9999.0f;
-	gMap->CollisionRay(enemyNodePos, playerNodePos, &outDist);
+	//レイの当たり判定は目線あたりでとる
+	gMap->CollisionRay(enemyNodePos + CVector(0.0f, 0.5f, 0.0f), playerNodePos + CVector(0.0f, 0.5f, 0.0f), &outDist);
 	//遮蔽物が存在しない
 	if (dist < outDist)
 	{
@@ -278,9 +279,6 @@ void CEnemy::UpdateLost()
 //攻撃状態の更新処理
 void CEnemy::UpdateAttack()
 {
-	CVector playerPos = CPlayer::Instance()->Position();
-	float distance = (playerPos - Position()).Length();
-
 	//攻撃処理
 	//雪玉を発射していなければ
 	if (mFlag == false)

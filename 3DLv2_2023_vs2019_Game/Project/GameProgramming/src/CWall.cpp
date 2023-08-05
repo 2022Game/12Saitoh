@@ -22,26 +22,6 @@ void CWall::Update()
 	CTransform::Update();
 }
 
-//衝突処理
-//CCollision(コライダ１、コライダ２）
-void CWall::Collision(CCollider* m, CCollider* o) {
-	//if (CCollider::Collision(m, o)) {
-	//	mEnabled = false;
-	//}
-}
-
-void CWall::Collision()
-{
-	////コライダの優先度変更
-	//mCollider1.ChangePriority();
-	//mCollider2.ChangePriority();
-	//mCollider3.ChangePriority();
-	////衝突処理を実行
-	//CCollisionManager::Instance()->Collision(&mCollider1, COLLISIONRANGE);
-	//CCollisionManager::Instance()->Collision(&mCollider2, COLLISIONRANGE);
-	//CCollisionManager::Instance()->Collision(&mCollider3, COLLISIONRANGE);
-}
-
 bool CWall::CollisionRay(const CVector& start, const CVector& end, float* outDistance)
 {
 	CVector lv[2] = { start, end };

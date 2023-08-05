@@ -1,20 +1,4 @@
 ﻿  CAlly.cpp
-  CApplication.cpp
-  CBillBoard.cpp
-  CEnemyBullet.cpp
-  CPlayerBullet.cpp
-  CCharacter3.cpp
-  CClearScene.cpp
-  CCollider.cpp
-  CColliderLine.cpp
-  CColliderMesh.cpp
-  CColliderTriangle.cpp
-  CCollisionManager.cpp
-  CEffect.cpp
-  CEnemy.cpp
-  CField.cpp
-  CFlag.cpp
-  CGameScene.cpp
   CModel.cpp
 C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CModel.cpp(10,1): error C2169: 'strcmp': 組み込み関数は定義できません。
 C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CModel.cpp(59,7): error C2065: 'strcmp': 定義されていない識別子です。
@@ -32,16 +16,3 @@ C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv
 C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CModel.cpp(251,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
 C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CModel.cpp(253,21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   CPlayer.cpp
-  COverScene.cpp
-  コンパイル中...
-  CSeneManager.cpp
-  CTaskManager.cpp
-  CUi.cpp
-  CWall.cpp
-  CMapManager.cpp
-C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CMapManager.cpp(30,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CMapManager.cpp(51,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CMapManager.cpp(60,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\hiror\OneDrive\デスクトップ\game programming\授業\12Saitoh\3DLv2_2023_vs2019_Game\Project\GameProgramming\src\CMapManager.cpp(108,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-  NavManager.cpp
-  NavNode.cpp

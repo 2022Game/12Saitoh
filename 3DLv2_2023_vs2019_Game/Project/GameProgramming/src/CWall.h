@@ -13,10 +13,6 @@ private:
 	CColliderMesh mColliderMesh;
 
 public:
-	//衝突処理
-	//Collision(コライダ１、コライダ２）
-	void Collision(CCollider* m, CCollider* o);
-	void Collision();
 	bool CollisionRay(const CVector& start, const CVector& end, float* outDistance);
 	//コンストラクタ
 	//CWall(モデル,位置,回転,拡縮）
