@@ -56,6 +56,12 @@
     <Filter Include="ソース ファイル\Game\Field\Object">
       <UniqueIdentifier>{944b0643-4c32-4f86-9d33-49cba7329b64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Player">
+      <UniqueIdentifier>{189a686e-3c31-4ffc-84e2-68cd44e60115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Enemy">
+      <UniqueIdentifier>{7cc41db0-1351-43d4-9160-594231cea148}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -123,12 +129,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CApplication.cpp">
       <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CPlayer.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CEnemy.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CEffect.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
@@ -198,6 +198,12 @@
     </ClCompile>
     <ClCompile Include="src\Game\CRotateFloor.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPlayer.cpp">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEnemy.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -269,12 +275,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CApplication.h">
       <Filter>ソース ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CPlayer.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CEnemy.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CEffect.h">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
@@ -362,6 +362,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CRotateFloor.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPlayer.h">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEnemy.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

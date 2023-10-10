@@ -24,7 +24,7 @@ void CGameScene::Load()
 	new CField();
 
 	CPlayer* player = new CPlayer();
-	player->Scale(1.0f, 1.0f, 1.0f);
+	player->Scale(10.0f, 10.0f, 10.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

@@ -20,17 +20,21 @@ public:
 	~CPlayer();
 
 	// 待機状態
-	void UpdateIdle();
+	void Update_Idle();
+	// 移動状態
+	void Update_Move();
+	//ダッシュ移動状態
+	void Update_FastMove();
 	// 攻撃
-	void UpdateAttack();
+	void Update_Attack();
 	// 攻撃終了待ち
-	void UpdateAttackWait();
+	void Update_AttackWait();
 	// ジャンプ開始
-	void UpdateJumpStart();
+	void Update_JumpStart();
 	// ジャンプ中
-	void UpdateJump();
+	void Update_Jump();
 	// ジャンプ終了
-	void UpdateJumpEnd();
+	void Update_JumpEnd();
 
 	// 更新
 	void Update();
@@ -53,7 +57,10 @@ private:
 
 		eTPose,		// Tポーズ
 		eIdle,		// 待機
-		eWalk,		// 歩行
+		eRunStart,	// 走り開始
+		eRun,		// 走り
+		eRunEnd,	// 走り終わり
+		eFastRun,	// ダッシュ
 		eAttack,	// 攻撃
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
@@ -81,6 +88,8 @@ private:
 	enum class EState
 	{
 		eIdle,		// 待機
+		eMove,		// 移動
+		eFastMove,	// ダッシュ移動
 		eAttack,	// 攻撃
 		eAttackWait,// 攻撃終了待ち
 		eJumpStart,	// ジャンプ開始
