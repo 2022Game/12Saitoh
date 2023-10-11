@@ -35,6 +35,8 @@ public:
 	void Update_Jump();
 	// ジャンプ終了
 	void Update_JumpEnd();
+	// 回避動作
+	void Update_Avoidance();
 
 	// 更新
 	void Update();
@@ -55,16 +57,19 @@ private:
 	{
 		None = -1,
 
-		eTPose,		// Tポーズ
-		eIdle,		// 待機
-		eRunStart,	// 走り開始
-		eRun,		// 走り
-		eRunEnd,	// 走り終わり
-		eFastRun,	// ダッシュ
-		eAttack,	// 攻撃
-		eJumpStart,	// ジャンプ開始
-		eJump,		// ジャンプ中
-		eJumpEnd,	// ジャンプ終了
+		eTPose,			// Tポーズ
+		eIdle,			// 待機
+		eRunStart,		// 走り開始
+		eRun,			// 走り
+		eRunEnd,		// 走り終終了
+		eFastRunStart,	// ダッシュ開始
+		eFastRun,		// ダッシュ
+		eFastRunEnd,	// ダッシュ終了
+		eRoll,			// 回避動作
+		eAttack,		// 攻撃
+		eJumpStart,		// ジャンプ開始
+		eJump,			// ジャンプ中
+		eJumpEnd,		// ジャンプ終了
 
 		Num
 	};
@@ -87,6 +92,8 @@ private:
 	// プレイヤーの状態
 	enum class EState
 	{
+		None = -1,	//初期値
+
 		eIdle,		// 待機
 		eMove,		// 移動
 		eFastMove,	// ダッシュ移動
@@ -96,7 +103,8 @@ private:
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
 	};
-	EState mState;	// プレイヤーの状態
+	EState mState;		// プレイヤーの状態
+	EState mState_save;	// プレイヤーの状態を一時的に保存
 
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか

@@ -12,12 +12,15 @@ CPlayer* CPlayer::spInstance = nullptr;
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
-	{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",		true,	601.0f	},	// 待機
-	{ "Character\\Player\\anim\\run_start.x",	false,	36.0f	},	// 走り開始
-	{ "Character\\Player\\anim\\run_loop.x",	true,	40.0f	},	// 走る
-	{ "Character\\Player\\anim\\run_end.x",		false,	50.0f	},	// 走り終了
-	{ "Character\\Player\\anim\\fastrun_loop.x",true,	28.0f	},	// ダッシュ	
+	{ "",												true,	0.0f	},	// Tポーズ
+	{ "Character\\Player\\anim\\idle.x",				true,	601.0f	},	// 待機
+	{ "Character\\Player\\anim\\run_start.x",			false,	36.0f	},	// 走り開始
+	{ "Character\\Player\\anim\\run_loop.x",			true,	40.0f	},	// 走る
+	{ "Character\\Player\\anim\\run_end.x",				false,	50.0f	},	// 走り終了
+	{ "Character\\Player\\anim\\fastrun_start.x",		false,	11.0f	},	// ダッシュ開始
+	{ "Character\\Player\\anim\\fastrun_loop.x",		true,	28.0f	},	// ダッシュ	
+	{ "Character\\Player\\anim\\fastrun_end.x",			false,	52.0f	},	// ダッシュ終了
+	{ "Character\\Player\\anim\\roll.x",				false,	67.0f	},	// 回避動作	
 	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
 	//{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
 	//{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
@@ -25,7 +28,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 
 #define PLAYER_HEIGHT 16.0f
 #define MOVE_SPEED 1.0f			// 走る速度
-#define FASTMOOV_SPEED 1.5f		//ダッシュ速度
+#define FASTMOVE_SPEED 1.5f		//ダッシュ速度
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
@@ -34,6 +37,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
+	, mState_save(EState::None)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -110,6 +114,12 @@ void CPlayer::Update_Idle()
 			// 走り出しのアニメーションを再生
 			ChangeAnimation(EAnimType::eRunStart);
 			mState = EState::eMove;
+			// ダッシュキーが押されている場合ダッシュ移動状態に切り替える
+			if (CInput::Key(VK_SHIFT))
+			{
+				mState = EState::eFastMove;
+				ChangeAnimation(EAnimType::eFastRunStart);
+			}
 		}
 		else
 		{
@@ -168,16 +178,18 @@ void CPlayer::Update_Move()
 
 			mMoveSpeed += move * MOVE_SPEED;
 
-			//走り出しアニメーションが終了
-			if (AnimationIndex() == (int)EAnimType::eRunStart &&
-				IsAnimationFinished())
+			// 走り出しアニメーションが終了
+			if (AnimationIndex()==
+				(int)EAnimType::eRunStart && IsAnimationFinished())
 			{
 				// 走りアニメーションに切り替え
 				ChangeAnimation(EAnimType::eRun);
 			}
-			if (CInput::PushKey(VK_SHIFT))
+			//ダッシュ移動の切り替え
+			if (CInput::Key(VK_SHIFT))
 			{
 				mState = EState::eFastMove;
+				ChangeAnimation(EAnimType::eFastRun);
 			}
 		}
 		// 移動キーが押されていない
@@ -188,12 +200,69 @@ void CPlayer::Update_Move()
 			mState = EState::eIdle;
 		}
 	}
+	else
+	{
+		ChangeAnimation(EAnimType::eIdle);
+	}
 }
 
 //ダッシュ移動
 void CPlayer::Update_FastMove()
 {
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 
+	//地面に接地しているか判定
+	if (mIsGrounded)
+	{
+		// 移動処理
+		// キーの入力ベクトルを取得
+		CVector input;
+		// ダッシュキーの入力判定	true:入力中 false:非入力中
+		bool dash = true;
+		if (CInput::Key('W'))		input.Z(1.0f);
+		else if (CInput::Key('S'))	input.Z(-1.0f);
+		if (CInput::Key('A'))		input.X(-1.0f);
+		else if (CInput::Key('D'))	input.X(1.0f);
+		if (CInput::PullKey(VK_SHIFT)) dash = false;
+
+		// 入力ベクトルの長さで入力されているか判定
+		if (input.LengthSqr() > 0)
+		{
+			// カメラの向きに合わせた移動ベクトルに変換
+			CVector move = CCamera::MainCamera()->Rotation() * input;
+			move.Y(0.0f);
+			move.Normalize();
+
+			mMoveSpeed += move * FASTMOVE_SPEED;
+
+			// ダッシュ開始アニメーションが終了
+			if (AnimationIndex() ==
+				(int)EAnimType::eFastRunStart && IsAnimationFinished())
+			{
+				// ダッシュアニメーションに切り替え
+				ChangeAnimation(EAnimType::eFastRun);
+			}
+			// ダッシュキーを離した場合
+			// ダッシュのアニメーションから走るアニメーションに切り替える
+			if (dash == false)
+			{
+				mState = EState::eMove;
+				ChangeAnimation(EAnimType::eRun);
+			}
+		}
+		// 移動キーが押されていない
+		else
+		{
+			// 走り終わりのアニメーションを再生し、アイドル状態に戻す
+			ChangeAnimation(EAnimType::eFastRunEnd);
+			mState = EState::eIdle;
+		}
+	}
+	else
+	{
+		ChangeAnimation(EAnimType::eIdle);
+	}
 }
 
 // 攻撃
@@ -244,6 +313,17 @@ void CPlayer::Update_JumpEnd()
 	{
 		mState = EState::eIdle;
 	}
+}
+
+// 回避動作
+void CPlayer::Update_Avoidance()
+{
+	//保存している状態が初期値の時、現在の状態を保存する
+	if (mState_save == EState::None)
+	{
+		mState_save = mState;
+	}
+
 }
 
 // 更新
