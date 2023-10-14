@@ -66,7 +66,9 @@ private:
 		eFastRunStart,	// ダッシュ開始
 		eFastRun,		// ダッシュ
 		eFastRunEnd,	// ダッシュ終了
-		eRoll,			// 回避動作
+		eRollStart,		// 回避動作開始
+		eRollEnd_idle,	// 回避後アイドル移行
+		eRollEnd_run,	// 回避後走り移行
 		eAttack,		// 攻撃
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
@@ -98,6 +100,7 @@ private:
 		eIdle,		// 待機
 		eMove,		// 移動
 		eFastMove,	// ダッシュ移動
+		eAvoidance,	// 回避
 		eAttack,	// 攻撃
 		eAttackWait,// 攻撃終了待ち
 		eJumpStart,	// ジャンプ開始
@@ -105,8 +108,8 @@ private:
 		eJumpEnd,	// ジャンプ終了
 	};
 	EState mState;		// プレイヤーの状態
-	EState mState_save;	// プレイヤーの状態を一時的に保存
 
+	CVector mInput_save;//入力ベクトルを仮保存
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
 
