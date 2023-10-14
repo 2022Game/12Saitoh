@@ -20,7 +20,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\fastrun_start.x",		false,	11.0f	},	// ダッシュ開始
 	{ "Character\\Player\\anim\\fastrun_loop.x",		true,	28.0f	},	// ダッシュ	
 	{ "Character\\Player\\anim\\fastrun_end.x",			false,	52.0f	},	// ダッシュ終了
-	{ "Character\\Player\\anim\\roll_start.x",			false,	36.0f	},	// 回避動作開始
+	{ "Character\\Player\\anim\\roll_start.x",			false,	20.0f	},	// 回避動作開始
 	{ "Character\\Player\\anim\\roll_end_idle.x",		false,	20.0f	},	// 回避動作からアイドルへ移行	
 	{ "Character\\Player\\anim\\roll_end_run.x",		false,	19.0f	},	// 回避動作から走りへ移行
 	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
@@ -31,7 +31,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 #define PLAYER_HEIGHT 16.0f
 #define MOVE_SPEED 1.0f			// 走る速度
 #define FASTMOVE_SPEED 1.5f		// ダッシュ速度
-#define ROLL_SPEED 1.0f			// 回避速度
+#define ROLL_SPEED 1.3f			// 回避速度
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
@@ -240,11 +240,16 @@ void CPlayer::Update_FastMove()
 			mMoveSpeed += move * FASTMOVE_SPEED;
 
 			// ダッシュ開始アニメーションが終了
-			if (AnimationIndex() ==
-				(int)EAnimType::eFastRunStart && IsAnimationFinished())
+			if (IsAnimationFinished())
 			{
 				// ダッシュアニメーションに切り替え
 				ChangeAnimation(EAnimType::eFastRun);
+			}
+			// 回避動作への切り替え
+			if (CInput::PushKey(VK_SPACE))
+			{
+				mState = EState::eAvoidance;
+				ChangeAnimation(EAnimType::eRollStart);
 			}
 			// ダッシュキーを離した場合
 			// ダッシュのアニメーションから走るアニメーションに切り替える
@@ -303,6 +308,10 @@ void CPlayer::Update_Avoidance()
 		{
 			mState = EState::eMove;
 			ChangeAnimation(EAnimType::eRollEnd_run);
+			if (CInput::Key(VK_SHIFT))
+			{
+				mState = EState::eFastMove;
+			}
 		}
 		// キー入力がない場合はアイドル状態へ移行
 		else

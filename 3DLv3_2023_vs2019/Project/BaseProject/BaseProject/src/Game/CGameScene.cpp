@@ -25,6 +25,7 @@ void CGameScene::Load()
 
 	CPlayer* player = new CPlayer();
 	player->Scale(10.0f, 10.0f, 10.0f);
+	player->Rotate(0.0f, 180.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera
 	(
