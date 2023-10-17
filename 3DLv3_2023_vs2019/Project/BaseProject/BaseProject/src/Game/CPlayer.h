@@ -27,8 +27,10 @@ public:
 	void Update_FastMove();
 	// 攻撃
 	void Update_Attack();
-	// 攻撃終了待ち
+	// 次の攻撃待ち
 	void Update_AttackWait();
+	// 攻撃終了
+	void Update_AttackEnd();
 	// ジャンプ開始
 	void Update_JumpStart();
 	// ジャンプ中
@@ -58,21 +60,30 @@ private:
 	{
 		None = -1,
 
-		eTPose,			// Tポーズ
-		eIdle,			// 待機
-		eRunStart,		// 走り開始
-		eRun,			// 走り
-		eRunEnd,		// 走り終終了
-		eFastRunStart,	// ダッシュ開始
-		eFastRun,		// ダッシュ
-		eFastRunEnd,	// ダッシュ終了
-		eRollStart,		// 回避動作開始
-		eRollEnd_idle,	// 回避後アイドル移行
-		eRollEnd_run,	// 回避後走り移行
-		eAttack,		// 攻撃
-		eJumpStart,		// ジャンプ開始
-		eJump,			// ジャンプ中
-		eJumpEnd,		// ジャンプ終了
+		eTPose,				// Tポーズ
+		eIdle,				// 待機
+		eRunStart,			// 走り開始
+		eRun,				// 走り
+		eRunEnd,			// 走り終終了
+		eFastRunStart,		// ダッシュ開始
+		eFastRun,			// ダッシュ
+		eFastRunEnd,		// ダッシュ終了
+		eRollStart,			// 回避動作開始
+		eRollEnd_idle,		// 回避後アイドル移行
+		eRollEnd_run,		// 回避後走り移行
+		eRunAttack,			// 走り後攻撃
+		eNormalAttack1_1,	// 通常攻撃1-1
+		eNormalWait1_1,		// 通常攻撃1-1攻撃待ち
+		eNormalEnd1_1,		// 通常攻撃1-1終了
+		eNormalAttack1_2,	// 通常攻撃1-2
+		eNormalWait1_2,		// 通常攻撃1-2攻撃待ち
+		eNormalEnd1_2,		// 通常攻撃1-2終了
+		eNormalAttack1_3,	// 通常攻撃1-3
+		eNormalWait1_3,		// 通常攻撃1-3攻撃待ち
+		eNormalEnd1_3,		// 通常攻撃1-3終了
+		eJumpStart,			// ジャンプ開始
+		eJump,				// ジャンプ中
+		eJumpEnd,			// ジャンプ終了
 
 		Num
 	};
@@ -103,6 +114,7 @@ private:
 		eAvoidance,	// 回避
 		eAttack,	// 攻撃
 		eAttackWait,// 攻撃終了待ち
+		eAttackEnd,	// 攻撃終了
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
