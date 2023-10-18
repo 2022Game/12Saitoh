@@ -13,36 +13,37 @@ CPlayer* CPlayer::spInstance = nullptr;
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
-	{ "",												true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",				true,	601.0f	},	// 待機
-	{ "Character\\Player\\anim\\run_start.x",			false,	36.0f	},	// 走り開始
-	{ "Character\\Player\\anim\\run_loop.x",			true,	40.0f	},	// 走る
-	{ "Character\\Player\\anim\\run_end.x",				false,	50.0f	},	// 走り終了
-	{ "Character\\Player\\anim\\fastrun_start.x",		false,	11.0f	},	// ダッシュ開始
-	{ "Character\\Player\\anim\\fastrun_loop.x",		true,	28.0f	},	// ダッシュ	
-	{ "Character\\Player\\anim\\fastrun_end.x",			false,	52.0f	},	// ダッシュ終了
-	{ "Character\\Player\\anim\\roll_start.x",			false,	20.0f	},	// 回避動作開始
-	{ "Character\\Player\\anim\\roll_end_idle.x",		false,	20.0f	},	// 回避動作からアイドルへ移行	
-	{ "Character\\Player\\anim\\roll_end_run.x",		false,	19.0f	},	// 回避動作から走りへ移行
-	{ "Character\\Player\\anim\\run_attack.x",			false,	125.0f	},	// 走り後攻撃
-	{ "Character\\Player\\anim\\attack_normal_1-1.x",	false,	24.0f	},	// 通常攻撃1-1
-	{ "Character\\Player\\anim\\attackwait_normal_1-1.x",false,	39.0f	},	// 通常攻撃1-1攻撃待ち
-	{ "Character\\Player\\anim\\attackend_normal_1-1.x",false,	30.0f	},	// 通常攻撃1-1終了
-	{ "Character\\Player\\anim\\attack_normal_1-2.x",	false,	22.0f	},	// 通常攻撃1-2
-	{ "Character\\Player\\anim\\attackwait_normal_1-2.x",false,	31.0f	},	// 通常攻撃1-2攻撃待ち
-	{ "Character\\Player\\anim\\attackend_normal_1-2.x",false,	30.0f	},	// 通常攻撃1-2終了
-	{ "Character\\Player\\anim\\attack_normal_1-3.x",	false,	56.0f	},	// 通常攻撃1-3
-	{ "Character\\Player\\anim\\attackwait_normal_1-3.x",false,	28.0f	},	// 通常攻撃1-3攻撃待ち
-	{ "Character\\Player\\anim\\attackend_normal_1-3.x",false,	30.0f	},	// 通常攻撃1-3終了
+	{ "",													true,	0.0f	},	// Tポーズ
+	{ "Character\\Player\\anim\\idle.x",					true,	601.0f	},	// 待機
+	{ "Character\\Player\\anim\\run_start.x",				false,	36.0f	},	// 走り開始
+	{ "Character\\Player\\anim\\run_loop.x",				true,	40.0f	},	// 走る
+	{ "Character\\Player\\anim\\run_end.x",					false,	50.0f	},	// 走り終了
+	{ "Character\\Player\\anim\\fastrun_start.x",			false,	11.0f	},	// ダッシュ開始
+	{ "Character\\Player\\anim\\fastrun_loop.x",			true,	28.0f	},	// ダッシュ	
+	{ "Character\\Player\\anim\\fastrun_end.x",				false,	52.0f	},	// ダッシュ終了
+	{ "Character\\Player\\anim\\roll_start.x",				false,	20.0f	},	// 回避動作開始
+	{ "Character\\Player\\anim\\roll_end_idle.x",			false,	20.0f	},	// 回避動作からアイドルへ移行	
+	{ "Character\\Player\\anim\\roll_end_run.x",			false,	19.0f	},	// 回避動作から走りへ移行
+	{ "Character\\Player\\anim\\run_attack.x",				false,	125.0f	},	// 走り後攻撃
+	{ "Character\\Player\\anim\\attack_normal_1-1.x",		false,	24.0f	},	// 通常攻撃1-1
+	{ "Character\\Player\\anim\\attackwait_normal_1-1.x",	false,	39.0f	},	// 通常攻撃1-1攻撃待ち
+	{ "Character\\Player\\anim\\attackend_normal_1-1.x",	false,	30.0f	},	// 通常攻撃1-1終了
+	{ "Character\\Player\\anim\\attack_normal_1-2.x",		false,	22.0f	},	// 通常攻撃1-2
+	{ "Character\\Player\\anim\\attackwait_normal_1-2.x",	false,	31.0f	},	// 通常攻撃1-2攻撃待ち
+	{ "Character\\Player\\anim\\attackend_normal_1-2.x",	false,	30.0f	},	// 通常攻撃1-2終了
+	{ "Character\\Player\\anim\\attack_normal_1-3.x",		false,	56.0f	},	// 通常攻撃1-3
+	{ "Character\\Player\\anim\\attackwait_normal_1-3.x",	false,	28.0f	},	// 通常攻撃1-3攻撃待ち
+	{ "Character\\Player\\anim\\attackend_normal_1-3.x",	false,	30.0f	},	// 通常攻撃1-3終了
 	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
 	//{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
 	//{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
 };
 
-#define PLAYER_HEIGHT 16.0f
+#define PLAYER_HEIGHT 1.8f
 #define MOVE_SPEED 1.0f			// 走る速度
 #define FASTMOVE_SPEED 1.5f		// ダッシュ速度
 #define ROLL_SPEED 1.3f			// 回避速度
+#define ATTACK_SPEED 0.5f		// 攻撃時の移動速度
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
@@ -206,6 +207,14 @@ void CPlayer::Update_Move()
 				mState = EState::eAvoidance;
 				ChangeAnimation(EAnimType::eRollStart);
 			}
+			// 攻撃状態への切り替え
+			if (CInput::PushKey(VK_LBUTTON))
+			{
+				mMoveSpeed.X(0.0f);
+				mMoveSpeed.Z(0.0f);
+				mState = EState::eAttack;
+				ChangeAnimation(EAnimType::eNormalAttack1_1);
+			}
 		}
 		// 移動キーが押されていない
 		else
@@ -362,6 +371,11 @@ void CPlayer::Update_Attack()
 			ChangeAnimation(EAnimType::eNormalWait1_3);
 		}
 	}
+	if (IsAnimationFinished())
+	{
+		// 一時的に保存した入力ベクトルを初期値に戻す
+		mInput_save = CVector::zero;
+	}
 }
 
 // 攻撃終了待ち
@@ -416,6 +430,18 @@ void CPlayer::Update_AttackWait()
 		mState = EState::eIdle;
 		ChangeAnimation(EAnimType::eIdle);
 	}
+
+	// 攻撃待ちモーション中に移動＋回避キーの入力があれば
+	// 回避状態へ移行する
+	if (CInput::Key('W') || CInput::Key('A') ||
+		CInput::Key('S') || CInput::Key('D'))
+	{
+		if (CInput::PushKey(VK_SPACE))
+		{
+			mState = EState::eAvoidance;
+			ChangeAnimation(EAnimType::eRollStart);
+		}
+	}
 }
 
 // 攻撃終了
@@ -432,6 +458,12 @@ void CPlayer::Update_AttackEnd()
 		{
 			mState = EState::eFastMove;
 			ChangeAnimation(EAnimType::eFastRunStart);
+		}
+		// 回避動作への切り替え
+		if (CInput::PushKey(VK_SPACE))
+		{
+			mState = EState::eAvoidance;
+			ChangeAnimation(EAnimType::eRollStart);
 		}
 	}
 	// 攻撃終了モーションが終了したら待機状態へ移行する
