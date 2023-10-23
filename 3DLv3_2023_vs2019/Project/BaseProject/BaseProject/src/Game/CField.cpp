@@ -48,7 +48,6 @@ void CField::CreateFieldObjects()
 
 	mpCylinderModel = new CModel();
 	mpCylinderModel->Load("Field\\Object\\cylinder.obj", "Field\\Object\\cylinder.mtl");
-
 	new CMoveFloor
 	(
 		mpCubeModel,

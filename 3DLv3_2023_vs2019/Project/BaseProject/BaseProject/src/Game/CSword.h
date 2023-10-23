@@ -1,12 +1,12 @@
 #pragma once
 #include "CModel.h"
-#include "CColliderMesh.h"
 #include "CObjectBase.h"
+#include "CPlayer.h"
 
 class CSword :public CObjectBase
 {
 public:
-	CSword(const CVector &pos,const CVector &scale);
+	CSword(const CVector& pos, const CVector& scale);
 	~CSword();
 
 	void Update();
@@ -14,5 +14,5 @@ public:
 
 private:
 	CModel* mpModel;
-	CColliderMesh* mpColliderMesh;
+	CPlayer* mpPlayer;
 };
