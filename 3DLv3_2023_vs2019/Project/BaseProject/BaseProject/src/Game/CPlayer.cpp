@@ -3,6 +3,7 @@
 #include "CInput.h"
 #include "CCamera.h"
 #include "CDebugPrint.h"
+#include "CSword.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -75,6 +76,8 @@ CPlayer::CPlayer()
 
 	// 最初は待機アニメーションを再生
 	ChangeAnimation(EAnimType::eIdle);
+
+	new CSword(CVector(0.0f, 0.0f, 0.0f), CVector(0.1f, 0.1f, 0.1f));
 
 	//線分コライダの設定
 	mpColliderLine = new CColliderLine

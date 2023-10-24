@@ -1,5 +1,6 @@
 #include "CSword.h"
 
+// Œ•ƒ‚ƒfƒ‹
 #define SWORD_MODEL	"Character\\Sword\\sword.obj","Character\\Sword\\sword.mtl"
 
 CSword::CSword(const CVector &pos,const CVector &scale)
@@ -22,11 +23,16 @@ CSword::~CSword()
 		delete mpModel;
 		mpModel = nullptr;
 	}
+	if (mpPlayer != nullptr)
+	{
+		delete mpPlayer;
+		mpPlayer = nullptr;
+	}
 }
 
 void CSword::Update()
 {
-
+	Position(mpPlayer->Position());
 }
 
 void CSword::Render()

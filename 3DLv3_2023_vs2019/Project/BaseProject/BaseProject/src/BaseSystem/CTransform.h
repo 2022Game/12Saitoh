@@ -139,7 +139,7 @@ public:
 	void LocalScale(float x, float y, float z);
 
 	// 位置、回転値、スケール値を合わせた行列を取得
-	virtual CMatrix Matrix() const;
+	virtual CMatrix Matrix() const; 
 
 	// 正面方向のベクトルを取得
 	CVector VectorZ() const;
