@@ -3,7 +3,6 @@
 #include "CInput.h"
 #include "CCamera.h"
 #include "CDebugPrint.h"
-#include "CSword.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -15,10 +14,17 @@ CPlayer* CPlayer::spInstance = nullptr;
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
 	{ "",													true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",					true,	601.0f	},	// 待機
-	{ "Character\\Player\\anim\\run_start.x",				false,	36.0f	},	// 走り開始
-	{ "Character\\Player\\anim\\run_loop.x",				true,	40.0f	},	// 走る
-	{ "Character\\Player\\anim\\run_end.x",					false,	50.0f	},	// 走り終了
+	{ "Character\\Player\\anim\\idle.x",					true,	601.0f	},	// 待機(納刀)
+	{ "Character\\Player\\anim\\idle_combat.x",				true,	601.0f	},	// 待機(抜刀)
+	{ "Character\\Player\\anim\\idle_drawn_combat.x",		false,	101.0f	},	// 待機中抜刀動作
+	{ "Character\\Player\\anim\\idle_sheathed_combat.x",	false,	81.0f	},	// 待機中納刀動作
+	{ "Character\\Player\\anim\\run_start.x",				false,	36.0f	},	// 走り開始(納刀)
+	{ "Character\\Player\\anim\\run_loop.x",				true,	40.0f	},	// 走り(納刀)
+	{ "Character\\Player\\anim\\run_end.x",					false,	50.0f	},	// 走り終了(納刀)
+	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	40.0f	},	// 走り中抜刀動作
+	{ "Character\\Player\\anim\\run_combat_start.x",		false,	36.0f	},	// 走り開始(抜刀)
+	{ "Character\\Player\\anim\\run_combat.x",				true,	40.0f	},	// 走り(抜刀)
+	{ "Character\\Player\\anim\\run_combat_end.x",			false,	50.0f	},	// 走り終了(抜刀)
 	{ "Character\\Player\\anim\\fastrun_start.x",			false,	11.0f	},	// ダッシュ開始
 	{ "Character\\Player\\anim\\fastrun_loop.x",			true,	28.0f	},	// ダッシュ	
 	{ "Character\\Player\\anim\\fastrun_end.x",				false,	52.0f	},	// ダッシュ終了
@@ -48,12 +54,20 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
+// プレイヤー抜刀状態へ切り替えるフレーム(待機状態中)
+#define SWITCH_DRAWN_IDLE_FRAME 35
+// プレイヤー納刀状態へ切り替えるフレーム(待機状態中)
+#define SWITCH_SHEATHED_IDLE_FRAME 31
+// プレイヤー抜刀状態へ切り替えるフレーム(走り中)
+#define SWITCH_DRAWN_RUN_FRAME 13
 
 // コンストラクタ
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mInput_save(CVector::zero)
+	, mIsGrounded(false)
+	, mIsDrawn(false)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -77,8 +91,6 @@ CPlayer::CPlayer()
 	// 最初は待機アニメーションを再生
 	ChangeAnimation(EAnimType::eIdle);
 
-	new CSword(CVector(0.0f, 0.0f, 0.0f), CVector(0.1f, 0.1f, 0.1f));
-
 	//線分コライダの設定
 	mpColliderLine = new CColliderLine
 	(
@@ -96,11 +108,15 @@ CPlayer::~CPlayer()
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
 	}
-
 	if (mpModel != nullptr)
 	{
 		delete mpModel;
 		mpModel = nullptr;
+	}
+	if (mpSword != nullptr)
+	{
+		delete mpSword;
+		mpSword = nullptr;
 	}
 }
 
@@ -117,51 +133,144 @@ void CPlayer::ChangeAnimation(EAnimType type)
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
 
+// 抜納状態を切り替える
+void CPlayer::SwitchDrawn()
+{
+	// 抜刀状態の時、納刀状態へ切り替える
+	if (mIsDrawn)
+	{
+		mIsDrawn = false;
+	}
+	else // 納刀状態の時、抜刀状態へ切り替える
+	{
+		mIsDrawn = true;
+	}
+}
+
+// 抜納の切り替え処理
+void CPlayer::Update_SwitchDrawn()
+{
+	// 特定のアニメーションで抜納状態を切り替える
+	// アニメーション中のフレームによって切り替えるタイミングを決める
+	switch (mIsDrawn)
+	{
+	case true:	// 抜刀
+		switch (mState)	// プレイヤーの状態
+		{
+		case CPlayer::EState::eIdle: // 待機状態
+			if (AnimationIndex() == (int)EAnimType::eIdle_Sheathed_Combat &&
+				GetAnimationFrame() == SWITCH_SHEATHED_IDLE_FRAME){
+				SwitchDrawn();
+			}
+			break;
+		}
+		break;
+	case false:	// 納刀
+		switch (mState) // プレイヤーの状態
+		{
+		case CPlayer::EState::eIdle: // 待機状態
+			if (AnimationIndex() == (int)EAnimType::eIdle_Drawn_Combat &&
+				GetAnimationFrame() == SWITCH_DRAWN_IDLE_FRAME) {
+				SwitchDrawn();
+			}
+			break;
+		case CPlayer::EState::eMove: // 移動状態
+			if (AnimationIndex() == (int)EAnimType::eRun_Drawn_Combat &&
+				GetAnimationFrame() == SWITCH_DRAWN_RUN_FRAME) {
+				SwitchDrawn();
+			}
+		}
+		break;
+	}
+}
+
 // 待機
 void CPlayer::Update_Idle()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	
-	if (mIsGrounded)
+	// 抜納状態の判定
+	switch (mIsDrawn)
 	{
-		// 移動キーが押されたか判定
-		if (CInput::Key('W') || CInput::Key('A') ||
-			CInput::Key('S') || CInput::Key('D'))
+	case true:	// 抜刀時
+		// 地面に接地しているか判定
+		if (mIsGrounded)
 		{
-			// 走り出しのアニメーションを再生
-			ChangeAnimation(EAnimType::eRunStart);
-			mState = EState::eMove;
-			// ダッシュキーが押されている場合ダッシュ移動状態に切り替える
-			if (CInput::Key(VK_SHIFT))
+			// 移動キーが押されたか判定
+			if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
 			{
-				mState = EState::eFastMove;
-				ChangeAnimation(EAnimType::eFastRunStart);
+				// 走り出しのアニメーションを再生
+				ChangeAnimation(EAnimType::eRunStart_Combat);
+				mState = EState::eMove;
+			}
+			else
+			{
+				// アニメーションが終了したら
+				// アイドルアニメーションに切り替える
+				if (IsAnimationFinished())
+				{
+					ChangeAnimation(EAnimType::eIdle_Combat);
+				}
+			}
+			// 左クリックで攻撃状態へ移行
+			if (CInput::PushKey(VK_LBUTTON))
+			{
+				mState = EState::eAttack;
+				ChangeAnimation(EAnimType::eNormalAttack1_1);
+			}
+			/*ひとまず右クリックで納刀状態へ移行*/
+			if (CInput::PushKey(VK_RBUTTON))
+			{
+				ChangeAnimation(EAnimType::eIdle_Sheathed_Combat);
 			}
 		}
 		else
 		{
-			// アニメーションが終了したら
-			// アイドルアニメーションに切り替える
-			if (IsAnimationFinished())
+			/* ひとまずは、待機モーションを追加飛び降り中のモーションを追加予定*/
+			ChangeAnimation(EAnimType::eIdle);
+		}
+		break;
+	case false:	// 納刀時
+		// 地面に接地しているか判定
+		if (mIsGrounded)
+		{
+			// 移動キーが押されたか判定
+			if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
 			{
-				ChangeAnimation(EAnimType::eIdle);
+				// 走り出しのアニメーションを再生
+				ChangeAnimation(EAnimType::eRunStart);
+				mState = EState::eMove;
+				// ダッシュキーが押されている場合ダッシュ移動状態に切り替える
+				if (CInput::Key(VK_SHIFT))
+				{
+					mState = EState::eFastMove;
+					ChangeAnimation(EAnimType::eFastRunStart);
+				}
+			}
+			else // 移動キーが押されていない時
+			{
+				// アニメーションが終了したら
+				// アイドルアニメーションに切り替える
+				if (IsAnimationFinished())
+				{
+					ChangeAnimation(EAnimType::eIdle);
+				}
+				// 左クリックで抜刀
+				if (CInput::PushKey(VK_LBUTTON))
+				{
+					// 抜刀アニメーションを再生
+					ChangeAnimation(EAnimType::eIdle_Drawn_Combat);
+				}
 			}
 		}
-
-		// 左クリックで攻撃状態へ移行
-		if (CInput::PushKey(VK_LBUTTON))
+		else
 		{
-			mMoveSpeed.X(0.0f);
-			mMoveSpeed.Z(0.0f);
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eNormalAttack1_1);
+			// ひとまずは、待機モーションを追加
+			// 飛び降り中のモーションを追加予定
+			ChangeAnimation(EAnimType::eIdle);
 		}
-	}
-	else
-	{
-		// 待機状態に切り替え
-		ChangeAnimation(EAnimType::eIdle);
+		break;
 	}
 }
 
@@ -171,65 +280,118 @@ void CPlayer::Update_Move()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	//地面に接地しているか判定
-	if (mIsGrounded)
+	//抜納状態の判定
+	switch (mIsDrawn)
 	{
-		// 移動処理
-		// キーの入力ベクトルを取得
-		CVector input;
-		if (CInput::Key('W'))		input.Z(1.0f);
-		else if (CInput::Key('S'))	input.Z(-1.0f);
-		if (CInput::Key('A'))		input.X(-1.0f);
-		else if (CInput::Key('D'))	input.X(1.0f);
-		
-		// 入力ベクトルの長さで入力されているか判定
-		if (input.LengthSqr() > 0)
+	case true:	// 抜刀
+		// 地面に接地しているか判定
+		if (mIsGrounded)
 		{
-			// カメラの向きに合わせた移動ベクトルに変換
-			CVector move = CCamera::MainCamera()->Rotation() * input;
-			move.Y(0.0f);
-			move.Normalize();
+			// 移動処理
+			// キーの入力ベクトルを取得
+			CVector input;
+			if (CInput::Key('W'))		input.Z(1.0f);
+			else if (CInput::Key('S'))	input.Z(-1.0f);
+			if (CInput::Key('A'))		input.X(-1.0f);
+			else if (CInput::Key('D'))	input.X(1.0f);
 
-			mMoveSpeed += move * MOVE_SPEED;
+			// 入力ベクトルの長さで入力されているか判定
+			if (input.LengthSqr() > 0)
+			{
+				// カメラの向きに合わせた移動ベクトルに変換
+				CVector move = CCamera::MainCamera()->Rotation() * input;
+				move.Y(0.0f);
+				move.Normalize();
 
-			// アニメーションが終了
-			if (IsAnimationFinished())
-			{
-				// 走りアニメーションに切り替え
-				ChangeAnimation(EAnimType::eRun);
+				mMoveSpeed += move * MOVE_SPEED;
+
+				// アニメーションが終了
+				if (IsAnimationFinished())
+				{
+					// 走りアニメーションに切り替え
+					ChangeAnimation(EAnimType::eRun_Combat);
+				}
+				// 回避動作への切り替え
+				if (CInput::PushKey(VK_SPACE))
+				{
+					mState = EState::eAvoidance;
+					ChangeAnimation(EAnimType::eRollStart);
+				}
 			}
-			// ダッシュ移動の切り替え
-			if (CInput::Key(VK_SHIFT))
+			// 移動キーが押されていない
+			else
 			{
-				mState = EState::eFastMove;
-				ChangeAnimation(EAnimType::eFastRun);
-			}
-			// 回避動作への切り替え
-			if (CInput::PushKey(VK_SPACE))
-			{
-				mState = EState::eAvoidance;
-				ChangeAnimation(EAnimType::eRollStart);
-			}
-			// 攻撃状態への切り替え
-			if (CInput::PushKey(VK_LBUTTON))
-			{
-				mMoveSpeed.X(0.0f);
-				mMoveSpeed.Z(0.0f);
-				mState = EState::eAttack;
-				ChangeAnimation(EAnimType::eNormalAttack1_1);
+				// 走り終わりのアニメーションを再生し、アイドル状態に戻す
+				ChangeAnimation(EAnimType::eRunEnd_Combat);
+				mState = EState::eIdle;
 			}
 		}
-		// 移動キーが押されていない
 		else
 		{
-			// 走り終わりのアニメーションを再生し、アイドル状態に戻す
-			ChangeAnimation(EAnimType::eRunEnd);
-			mState = EState::eIdle;
+			/* ひとまずは、待機モーションを追加飛び降り中のモーションを追加予定*/
+			ChangeAnimation(EAnimType::eIdle);
 		}
-	}
-	else
-	{
-		ChangeAnimation(EAnimType::eIdle);
+		break;
+	case false:	// 納刀
+		// 地面に接地しているか判定
+		if (mIsGrounded)
+		{
+			// 移動処理
+			// キーの入力ベクトルを取得
+			CVector input;
+			if (CInput::Key('W'))		input.Z(1.0f);
+			else if (CInput::Key('S'))	input.Z(-1.0f);
+			if (CInput::Key('A'))		input.X(-1.0f);
+			else if (CInput::Key('D'))	input.X(1.0f);
+
+			// 入力ベクトルの長さで入力されているか判定
+			if (input.LengthSqr() > 0)
+			{
+				// カメラの向きに合わせた移動ベクトルに変換
+				CVector move = CCamera::MainCamera()->Rotation() * input;
+				move.Y(0.0f);
+				move.Normalize();
+
+				mMoveSpeed += move * MOVE_SPEED;
+
+				// アニメーションが終了
+				if (IsAnimationFinished())
+				{
+					// 走りアニメーションに切り替え
+					ChangeAnimation(EAnimType::eRun);
+				}
+				// ダッシュ移動の切り替え
+				if (CInput::Key(VK_SHIFT))
+				{
+					mState = EState::eFastMove;
+					ChangeAnimation(EAnimType::eFastRun);
+				}
+				// 回避動作への切り替え
+				if (CInput::PushKey(VK_SPACE))
+				{
+					mState = EState::eAvoidance;
+					ChangeAnimation(EAnimType::eRollStart);
+				}
+				// 左クリックで抜刀
+				if (CInput::PushKey(VK_LBUTTON))
+				{
+					ChangeAnimation(EAnimType::eRun_Drawn_Combat);
+				}
+			}
+			// 移動キーが押されていない
+			else
+			{
+				// 走り終わりのアニメーションを再生し、アイドル状態に戻す
+				ChangeAnimation(EAnimType::eRunEnd);
+				mState = EState::eIdle;
+			}
+		}
+		else
+		{
+			/* ひとまずは、待機モーションを追加飛び降り中のモーションを追加予定*/
+			ChangeAnimation(EAnimType::eIdle);
+		}
+		break;
 	}
 }
 
@@ -332,9 +494,13 @@ void CPlayer::Update_Avoidance()
 		{
 			mState = EState::eMove;
 			ChangeAnimation(EAnimType::eRollEnd_run);
+			// ダッシュキーが押されている場合、ダッシュに切り替える(納刀中のみ)
 			if (CInput::Key(VK_SHIFT))
 			{
-				mState = EState::eFastMove;
+				if (mIsDrawn == false)
+				{
+					mState = EState::eFastMove;
+				}
 			}
 		}
 		// キー入力がない場合はアイドル状態へ移行
@@ -351,6 +517,9 @@ void CPlayer::Update_Avoidance()
 // 攻撃
 void CPlayer::Update_Attack()
 {
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
 	switch (AnimationIndex())
 	{
 	case (int)EAnimType::eNormalAttack1_1:	// 通常攻撃1-1処理
@@ -431,7 +600,6 @@ void CPlayer::Update_AttackWait()
 	{
 		// 待機状態へ移行
 		mState = EState::eIdle;
-		ChangeAnimation(EAnimType::eIdle);
 	}
 
 	// 攻撃待ちモーション中に移動＋回避キーの入力があれば
@@ -455,13 +623,7 @@ void CPlayer::Update_AttackEnd()
 		CInput::Key('S') || CInput::Key('D'))
 	{
 		mState = EState::eMove;
-		ChangeAnimation(EAnimType::eRunStart);
-		// ダッシュキーが押された場合はダッシュ状態へ移行する
-		if (CInput::Key(VK_SHIFT))
-		{
-			mState = EState::eFastMove;
-			ChangeAnimation(EAnimType::eFastRunStart);
-		}
+		ChangeAnimation(EAnimType::eRunStart_Combat);
 		// 回避動作への切り替え
 		if (CInput::PushKey(VK_SPACE))
 		{
@@ -473,7 +635,6 @@ void CPlayer::Update_AttackEnd()
 	if (IsAnimationFinished())
 	{
 		mState = EState::eIdle;
-		ChangeAnimation(EAnimType::eIdle);
 	}
 }
 
@@ -557,6 +718,9 @@ void CPlayer::Update()
 			break;
 	}
 
+	// 特定の条件をクリアしている場合抜納を切り替える
+	Update_SwitchDrawn();
+
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
 	// 移動
@@ -582,7 +746,12 @@ void CPlayer::Update()
 
 	CVector angles = EulerAngles();
 	CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
-
+	if (mIsDrawn){
+		CDebugPrint::Print("状態 : 抜刀");
+	}
+	else{
+		CDebugPrint::Print("状態 : 納刀");
+	}
 #endif
 }
 
@@ -609,4 +778,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 void CPlayer::Render()
 {
 	CXCharacter::Render();
+}
+
+// 納刀中か抜刀中か判定
+bool CPlayer::IsDrawn()
+{
+	return mIsDrawn;
 }

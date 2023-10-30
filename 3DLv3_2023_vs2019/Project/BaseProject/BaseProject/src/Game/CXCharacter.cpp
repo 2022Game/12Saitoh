@@ -141,3 +141,16 @@ int CXCharacter::AnimationIndex()
 {
 	return mAnimationIndex;
 }
+
+float CXCharacter::GetAnimationFrame()
+{
+	return mAnimationFrame;
+}
+
+const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
+{
+	if (mpModel == nullptr) return nullptr;
+	CModelXFrame* frame = mpModel->FinedFrame(name.c_str());
+	if (frame == nullptr) return nullptr;
+	return &frame->CombinedMatrix();
+}

@@ -62,7 +62,10 @@
     <Filter Include="ソース ファイル\Game\Character\Enemy">
       <UniqueIdentifier>{7cc41db0-1351-43d4-9160-594231cea148}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Character\Player\Sword">
+    <Filter Include="ソース ファイル\Game\Weapon">
+      <UniqueIdentifier>{3821e875-372b-4b8a-a719-e6e9366d3218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Weapon\Sword">
       <UniqueIdentifier>{a19aafe2-9c7e-4477-a28b-e8d99f97e34f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -209,7 +212,10 @@
       <Filter>ソース ファイル\Game\Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CSword.cpp">
-      <Filter>ソース ファイル\Game\Character\Player\Sword</Filter>
+      <Filter>ソース ファイル\Game\Weapon\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CWeapon.cpp">
+      <Filter>ソース ファイル\Game\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,7 +382,10 @@
       <Filter>ソース ファイル\Game\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CSword.h">
-      <Filter>ソース ファイル\Game\Character\Player\Sword</Filter>
+      <Filter>ソース ファイル\Game\Weapon\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CWeapon.h">
+      <Filter>ソース ファイル\Game\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "CXCharacter.h"
 #include "CColliderLine.h"
 #include "CRideableObject.h"
+#include "CSword.h"
 
 /*
 プレイヤークラス
@@ -54,41 +55,55 @@ public:
 	// 描画
 	void Render();
 
+	// 納刀状態か抜刀状態か判定
+	bool IsDrawn();
 private:
 	// アニメーションの種類
 	enum class EAnimType
 	{
 		None = -1,
 
-		eTPose,				// Tポーズ
-		eIdle,				// 待機
-		eRunStart,			// 走り開始
-		eRun,				// 走り
-		eRunEnd,			// 走り終終了
-		eFastRunStart,		// ダッシュ開始
-		eFastRun,			// ダッシュ
-		eFastRunEnd,		// ダッシュ終了
-		eRollStart,			// 回避動作開始
-		eRollEnd_idle,		// 回避後アイドル移行
-		eRollEnd_run,		// 回避後走り移行
-		eRunAttack,			// 走り後攻撃
-		eNormalAttack1_1,	// 通常攻撃1-1
-		eNormalWait1_1,		// 通常攻撃1-1攻撃待ち
-		eNormalEnd1_1,		// 通常攻撃1-1終了
-		eNormalAttack1_2,	// 通常攻撃1-2
-		eNormalWait1_2,		// 通常攻撃1-2攻撃待ち
-		eNormalEnd1_2,		// 通常攻撃1-2終了
-		eNormalAttack1_3,	// 通常攻撃1-3
-		eNormalWait1_3,		// 通常攻撃1-3攻撃待ち
-		eNormalEnd1_3,		// 通常攻撃1-3終了
-		eJumpStart,			// ジャンプ開始
-		eJump,				// ジャンプ中
-		eJumpEnd,			// ジャンプ終了
+		eTPose,					// Tポーズ
+		eIdle,					// 待機(納刀)
+		eIdle_Combat,			// 待機(抜刀)
+		eIdle_Drawn_Combat,		// 待機中抜刀動作
+		eIdle_Sheathed_Combat,	// 待機中納刀動作
+		eRunStart,				// 走り開始(納刀)
+		eRun,					// 走り(納刀)
+		eRunEnd,				// 走り終了(納刀)
+		eRun_Drawn_Combat,		// 走り中抜刀動作
+		eRunStart_Combat,		// 走り開始(抜刀)
+		eRun_Combat,			// 走り(抜刀)
+		eRunEnd_Combat,			// 走り終了(抜刀)
+		eFastRunStart,			// ダッシュ開始
+		eFastRun,				// ダッシュ
+		eFastRunEnd,			// ダッシュ終了
+		eRollStart,				// 回避動作開始
+		eRollEnd_idle,			// 回避後アイドル移行
+		eRollEnd_run,			// 回避後走り移行
+		eRunAttack,				// 走り後攻撃
+		eNormalAttack1_1,		// 通常攻撃1-1
+		eNormalWait1_1,			// 通常攻撃1-1攻撃待ち
+		eNormalEnd1_1,			// 通常攻撃1-1終了
+		eNormalAttack1_2,		// 通常攻撃1-2
+		eNormalWait1_2,			// 通常攻撃1-2攻撃待ち
+		eNormalEnd1_2,			// 通常攻撃1-2終了
+		eNormalAttack1_3,		// 通常攻撃1-3
+		eNormalWait1_3,			// 通常攻撃1-3攻撃待ち
+		eNormalEnd1_3,			// 通常攻撃1-3終了
+		eJumpStart,				// ジャンプ開始
+		eJump,					// ジャンプ中
+		eJumpEnd,				// ジャンプ終了
 
 		Num
 	};
 	// アニメーション切り替え
 	void ChangeAnimation(EAnimType type);
+
+	// 抜納状態を切り替える
+	void SwitchDrawn();
+	// 抜納の切り替え処理
+	void Update_SwitchDrawn();
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
@@ -121,10 +136,12 @@ private:
 	};
 	EState mState;		// プレイヤーの状態
 
-	CVector mInput_save;//入力ベクトルを仮保存
+	CVector mInput_save;// 入力ベクトルを仮保存
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
-
+	bool mIsDrawn;		// 納刀状態か抜刀状態か判定 true:抜刀 false:納刀
+	
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
+	CSword* mpSword;
 };

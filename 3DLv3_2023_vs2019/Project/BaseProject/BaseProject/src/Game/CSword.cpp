@@ -1,41 +1,65 @@
 #include "CSword.h"
+#include "CCollisionManager.h"
+#include "CPlayer.h"
 
 // 剣モデル
 #define SWORD_MODEL	"Character\\Sword\\sword.obj","Character\\Sword\\sword.mtl"
 
-CSword::CSword(const CVector &pos,const CVector &scale)
-	: CObjectBase(ETag::eGear, ETaskPriority::eGear)
+CSword::CSword()
 {
-	mpModel = new CModel();
-	mpModel->Load(SWORD_MODEL);
-	Position(pos);
-	Scale(scale);
+	mpSword = new CModel();
+	mpSword->Load(SWORD_MODEL);
 
-	// 親をプレイヤーに設定
-	mpPlayer = CPlayer::Instance();
-	SetParent(mpPlayer);
 }
 
 CSword::~CSword()
 {
-	if (mpModel != nullptr)
+	if (mpSword != nullptr)
 	{
-		delete mpModel;
-		mpModel = nullptr;
+		delete mpSword;
+		mpSword = nullptr;
 	}
-	if (mpPlayer != nullptr)
-	{
-		delete mpPlayer;
-		mpPlayer = nullptr;
-	}
+}
+
+void CSword::CreateFieldObjects()
+{
 }
 
 void CSword::Update()
 {
-	Position(mpPlayer->Position());
+	// 納刀状態と抜刀状態で親のボーンを変更
+	if (CPlayer::Instance()->IsDrawn())
+	{
+		SetAttachMtx(CPlayer::Instance()->GetFrameMtx("Armature_weapon_r"));
+	}
+	else
+	{
+		SetAttachMtx(CPlayer::Instance()->GetFrameMtx("Armature_sword_holder"));
+	}
 }
 
 void CSword::Render()
 {
-	mpModel->Render(Matrix());
+	if (mpAttachMtx == nullptr)
+	{
+		mpSword->Render(Matrix());
+	}
+	else
+	{
+		CMatrix sm;
+		CMatrix rm;
+		sm.Scale(12.0f, 12.0f, 12.0f);
+		// 納刀状態と抜刀状態か判定し、描画の調整を行う
+		if (CPlayer::Instance()->IsDrawn()) //抜刀
+		{
+			//rm.RotateZ(180.0f);
+			//rm.RotateY(180.0f);
+			mpSword->Render(sm * (*mpAttachMtx));
+		}
+		else //納刀
+		{
+			rm.RotateX(-90.0f);
+			mpSword->Render(rm * sm * (*mpAttachMtx));
+		}
+	}
 }

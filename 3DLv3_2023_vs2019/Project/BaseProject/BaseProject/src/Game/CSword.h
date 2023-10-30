@@ -1,22 +1,19 @@
 #pragma once
-#include "CModel.h"
 #include "CObjectBase.h"
-#include "CPlayer.h"
+#include "CColliderMesh.h"
+#include "CWeapon.h"
 
-class CSword :public CObjectBase
+class CSword : public CWeapon
 {
 public:
-	// コンストラクタ
-	CSword(const CVector& pos, const CVector& scale);
-	// デストラクタ
+	CSword();
 	~CSword();
 
-	// 更新処理
 	void Update();
-	// 描画処理
 	void Render();
 
 private:
-	CModel* mpModel;
-	CPlayer* mpPlayer;
+	void CreateFieldObjects();
+
+	CModel* mpSword;
 };
