@@ -30,6 +30,7 @@ public:
 
 	float GetAnimationFrame();
 
+	// 指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
 protected:
 	CModelX* mpModel;			//モデルデータ

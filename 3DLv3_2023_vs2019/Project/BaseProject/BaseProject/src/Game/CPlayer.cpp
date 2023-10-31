@@ -21,10 +21,11 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\run_start.x",				false,	36.0f	},	// 走り開始(納刀)
 	{ "Character\\Player\\anim\\run_loop.x",				true,	40.0f	},	// 走り(納刀)
 	{ "Character\\Player\\anim\\run_end.x",					false,	50.0f	},	// 走り終了(納刀)
-	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	400.0f	},	// 走り中抜刀動作
 	{ "Character\\Player\\anim\\run_combat_start.x",		false,	36.0f	},	// 走り開始(抜刀)
 	{ "Character\\Player\\anim\\run_combat.x",				true,	40.0f	},	// 走り(抜刀)
 	{ "Character\\Player\\anim\\run_combat_end.x",			false,	50.0f	},	// 走り終了(抜刀)
+	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	40.0f	},	// 走り中抜刀動作
+	{ "Character\\Player\\anim\\run_sheathed_combat.x",		false,	40.0f	},	// 走り中納刀動作
 	{ "Character\\Player\\anim\\fastrun_start.x",			false,	11.0f	},	// ダッシュ開始
 	{ "Character\\Player\\anim\\fastrun_loop.x",			true,	28.0f	},	// ダッシュ	
 	{ "Character\\Player\\anim\\fastrun_end.x",				false,	52.0f	},	// ダッシュ終了
@@ -47,7 +48,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 };
 
 #define PLAYER_HEIGHT 1.8f
-#define MOVE_SPEED 0.1f			// 走る速度
+#define MOVE_SPEED 1.0f			// 走る速度
 #define FASTMOVE_SPEED 1.5f		// ダッシュ速度
 #define ROLL_SPEED 1.3f			// 回避速度
 #define ATTACK_SPEED 0.5f		// 攻撃時の移動速度
@@ -59,7 +60,28 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 // プレイヤー納刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_SHEATHED_IDLE_FRAME 31
 // プレイヤー抜刀状態へ切り替えるフレーム(走り中)
-#define SWITCH_DRAWN_RUN_FRAME 130
+#define SWITCH_DRAWN_RUN_FRAME 13
+// プレイヤー納刀状態へ切り替えるフレーム(走り中)
+#define SWITCH_SHEATHED_RUN_FRAME 20
+
+// プレイヤー通常攻撃1-1の移動するフレーム区間(始め)
+#define NORMALATTACK1_1_START_FRAME	1
+// プレイヤー通常攻撃1-1の移動するフレーム区間(終わり)
+#define NORMALATTACK1_1_END_FRAME 15
+// プレイヤー通常攻撃1-1の移動速度
+#define NORMALATTACK1_1_MOVESPEED 0.5
+// プレイヤー通常攻撃1-2の移動するフレーム区間(始め)
+#define NORMALATTACK1_2_START_FRAME 0
+// プレイヤー通常攻撃1-2の移動するフレーム区間(終わり)
+#define NORMALATTACK1_2_END_FRAME 12
+// プレイヤー通常攻撃1-2の移動速度
+#define NORMALATTACK1_2_MOVESPEED 0.5
+// プレイヤー通常攻撃1-3の移動するフレーム区間(始め)
+#define NORMALATTACK1_3_START_FRAME 7
+// プレイヤー通常攻撃1-3の移動するフレーム区間(終わり)
+#define NORMALATTACK1_3_END_FRAME 30
+// プレイヤー通常攻撃1-3の移動速度
+#define NORMALATTACK1_3_MOVESPEED 0.5
 
 // コンストラクタ
 CPlayer::CPlayer()
@@ -163,6 +185,11 @@ void CPlayer::Update_SwitchDrawn()
 				SwitchDrawn();
 			}
 			break;
+		case CPlayer::EState::eMove: // 移動状態
+			if (AnimationIndex() == (int)EAnimType::eRun_Sheathed_Combat &&
+				GetAnimationFrame() == SWITCH_SHEATHED_RUN_FRAME){
+				SwitchDrawn();
+			}
 		}
 		break;
 	case false:	// 納刀
@@ -219,15 +246,14 @@ void CPlayer::Update_Idle()
 				mState = EState::eAttack;
 				ChangeAnimation(EAnimType::eNormalAttack1_1);
 			}
-			/*ひとまず右クリックで納刀状態へ移行*/
-			if (CInput::PushKey(VK_RBUTTON))
+			// Eキーで納刀
+			if (CInput::PushKey('E'))
 			{
 				ChangeAnimation(EAnimType::eIdle_Sheathed_Combat);
 			}
 		}
 		else
 		{
-			/* ひとまずは、待機モーションを追加飛び降り中のモーションを追加予定*/
 			ChangeAnimation(EAnimType::eIdle);
 		}
 		break;
@@ -316,6 +342,17 @@ void CPlayer::Update_Move()
 				{
 					mState = EState::eAvoidance;
 					ChangeAnimation(EAnimType::eRollStart);
+				}
+				// 左クリックで攻撃状態へ移行
+				if (CInput::PushKey(VK_LBUTTON))
+				{
+					mState = EState::eAttack;
+					ChangeAnimation(EAnimType::eNormalAttack1_1);
+				}
+				// Eキーで納刀
+				if (CInput::PushKey('E'))
+				{
+					ChangeAnimation(EAnimType::eRun_Sheathed_Combat);
 				}
 			}
 			// 移動キーが押されていない
@@ -520,6 +557,30 @@ void CPlayer::Update_Attack()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
+	// キーの入力ベクトルを取得
+	CVector input;
+	if (CInput::Key('W'))		input.Z(1.0f);
+	else if (CInput::Key('S'))	input.Z(-1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 仮保存の入力ベクトルが初期値の場合
+	if (mInput_save == CVector::zero)
+	{
+		// 入力ベクトルデータを一時的に保存
+		mInput_save = input;
+	}
+	// 攻撃アニメーションが終了したら
+	// 一時的に保存した入力ベクトルを初期化する
+	if (IsAnimationFinished())
+	{
+		mInput_save = CVector::zero;
+	}
+	// カメラの向きに合わせた移動ベクトルに変換
+	CVector move = CCamera::MainCamera()->Rotation();
+	move.Y(0.0f);
+	move.Normalize();
+
 	switch (AnimationIndex())
 	{
 	case (int)EAnimType::eNormalAttack1_1:	// 通常攻撃1-1処理
@@ -528,12 +589,24 @@ void CPlayer::Update_Attack()
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eNormalWait1_1);
 		}
+		// 攻撃に合わせてプレイヤーを移動させる
+		if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= NORMALATTACK1_1_END_FRAME)
+		{
+			mMoveSpeed += move * NORMALATTACK1_1_MOVESPEED;
+		}
 		break;
 	case (int)EAnimType::eNormalAttack1_2:	// 通常攻撃1-2処理
 		if (IsAnimationFinished())
 		{
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eNormalWait1_2);
+		}
+		// 攻撃に合わせてプレイヤーを移動させる
+		if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= NORMALATTACK1_2_END_FRAME)
+		{
+			mMoveSpeed += move * NORMALATTACK1_2_MOVESPEED;
 		}
 		break;
 	case (int)EAnimType::eNormalAttack1_3:	// 通常攻撃1-3処理
@@ -542,12 +615,14 @@ void CPlayer::Update_Attack()
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eNormalWait1_3);
 		}
+		// 攻撃に合わせてプレイヤーを移動させる
+		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
+		{
+			mMoveSpeed += move * NORMALATTACK1_3_MOVESPEED;
+		}
 	}
-	if (IsAnimationFinished())
-	{
-		// 一時的に保存した入力ベクトルを初期値に戻す
-		mInput_save = CVector::zero;
-	}
+
 }
 
 // 攻撃終了待ち

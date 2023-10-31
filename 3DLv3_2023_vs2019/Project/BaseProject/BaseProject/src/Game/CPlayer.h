@@ -71,10 +71,11 @@ private:
 		eRunStart,				// 走り開始(納刀)
 		eRun,					// 走り(納刀)
 		eRunEnd,				// 走り終了(納刀)
-		eRun_Drawn_Combat,		// 走り中抜刀動作
 		eRunStart_Combat,		// 走り開始(抜刀)
 		eRun_Combat,			// 走り(抜刀)
 		eRunEnd_Combat,			// 走り終了(抜刀)
+		eRun_Drawn_Combat,		// 走り中抜刀動作
+		eRun_Sheathed_Combat,	// 走り中納刀動作
 		eFastRunStart,			// ダッシュ開始
 		eFastRun,				// ダッシュ
 		eFastRunEnd,			// ダッシュ終了

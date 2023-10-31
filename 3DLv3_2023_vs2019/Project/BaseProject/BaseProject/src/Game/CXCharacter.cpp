@@ -147,6 +147,7 @@ float CXCharacter::GetAnimationFrame()
 	return mAnimationFrame;
 }
 
+// 指定したボーンの行列を取得
 const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
 {
 	if (mpModel == nullptr) return nullptr;
