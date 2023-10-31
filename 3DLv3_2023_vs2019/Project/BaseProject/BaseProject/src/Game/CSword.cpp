@@ -53,8 +53,8 @@ void CSword::Render()
 		if (CPlayer::Instance()->IsDrawn()) //”²“
 		{
 			//rm.RotateZ(180.0f);
-			//rm.RotateY(180.0f);
-			mpSword->Render(sm * (*mpAttachMtx));
+			rm = rm.RotateY(-90.0f);
+			mpSword->Render( rm *  sm * (*mpAttachMtx));
 		}
 		else //”[“
 		{

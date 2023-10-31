@@ -21,7 +21,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\run_start.x",				false,	36.0f	},	// 走り開始(納刀)
 	{ "Character\\Player\\anim\\run_loop.x",				true,	40.0f	},	// 走り(納刀)
 	{ "Character\\Player\\anim\\run_end.x",					false,	50.0f	},	// 走り終了(納刀)
-	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	40.0f	},	// 走り中抜刀動作
+	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	400.0f	},	// 走り中抜刀動作
 	{ "Character\\Player\\anim\\run_combat_start.x",		false,	36.0f	},	// 走り開始(抜刀)
 	{ "Character\\Player\\anim\\run_combat.x",				true,	40.0f	},	// 走り(抜刀)
 	{ "Character\\Player\\anim\\run_combat_end.x",			false,	50.0f	},	// 走り終了(抜刀)
@@ -47,7 +47,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 };
 
 #define PLAYER_HEIGHT 1.8f
-#define MOVE_SPEED 1.0f			// 走る速度
+#define MOVE_SPEED 0.1f			// 走る速度
 #define FASTMOVE_SPEED 1.5f		// ダッシュ速度
 #define ROLL_SPEED 1.3f			// 回避速度
 #define ATTACK_SPEED 0.5f		// 攻撃時の移動速度
@@ -59,7 +59,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 // プレイヤー納刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_SHEATHED_IDLE_FRAME 31
 // プレイヤー抜刀状態へ切り替えるフレーム(走り中)
-#define SWITCH_DRAWN_RUN_FRAME 13
+#define SWITCH_DRAWN_RUN_FRAME 130
 
 // コンストラクタ
 CPlayer::CPlayer()
@@ -175,8 +175,8 @@ void CPlayer::Update_SwitchDrawn()
 			}
 			break;
 		case CPlayer::EState::eMove: // 移動状態
-			if (AnimationIndex() == (int)EAnimType::eRun_Drawn_Combat &&
-				GetAnimationFrame() == SWITCH_DRAWN_RUN_FRAME) {
+			if (AnimationIndex() == (int)EAnimType::eRun_Drawn_Combat) {
+				if (GetAnimationFrame() == SWITCH_DRAWN_RUN_FRAME)
 				SwitchDrawn();
 			}
 		}
@@ -746,6 +746,7 @@ void CPlayer::Update()
 
 	CVector angles = EulerAngles();
 	CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
+	CDebugPrint::Print("フレーム : %.1f\n",GetAnimationFrame());
 	if (mIsDrawn){
 		CDebugPrint::Print("状態 : 抜刀");
 	}
