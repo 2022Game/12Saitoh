@@ -576,10 +576,11 @@ void CPlayer::Update_Attack()
 	{
 		mInput_save = CVector::zero;
 	}
+
 	// ƒJƒƒ‰‚ÌŒü‚«‚É‡‚í‚¹‚½ˆÚ“®ƒxƒNƒgƒ‹‚É•ÏŠ·
-	CVector move = CCamera::MainCamera()->Rotation() * mInput_save;
-	move.Y(0.0f);
-	move.Normalize();
+	CVector angle = CCamera::MainCamera()->Rotation() * mInput_save;
+	angle.Y(0.0f);
+	angle.Normalize();
 
 	switch (AnimationIndex())
 	{
@@ -593,7 +594,7 @@ void CPlayer::Update_Attack()
 		if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_1_END_FRAME)
 		{
-			mMoveSpeed += move * NORMALATTACK1_1_MOVESPEED;
+			mMoveSpeed += angle * NORMALATTACK1_1_MOVESPEED;
 		}
 		break;
 	case (int)EAnimType::eNormalAttack1_2:	// ’ÊíUŒ‚1-2ˆ—
@@ -606,7 +607,7 @@ void CPlayer::Update_Attack()
 		if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_2_END_FRAME)
 		{
-			mMoveSpeed += move * NORMALATTACK1_2_MOVESPEED;
+			mMoveSpeed += angle * NORMALATTACK1_2_MOVESPEED;
 		}
 		break;
 	case (int)EAnimType::eNormalAttack1_3:	// ’ÊíUŒ‚1-3ˆ—
@@ -619,7 +620,7 @@ void CPlayer::Update_Attack()
 		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
 		{
-			mMoveSpeed += move * NORMALATTACK1_3_MOVESPEED;
+			mMoveSpeed += angle * NORMALATTACK1_3_MOVESPEED;
 		}
 	}
 
@@ -823,11 +824,16 @@ void CPlayer::Update()
 	CDebugPrint::Print("‰ñ“]’l(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
 	CDebugPrint::Print("ƒtƒŒ[ƒ€ : %.1f\n",GetAnimationFrame());
 	if (mIsDrawn){
-		CDebugPrint::Print("ó‘Ô : ”²“");
+		CDebugPrint::Print("ó‘Ô : ”²“\n");
 	}
 	else{
-		CDebugPrint::Print("ó‘Ô : ”[“");
+		CDebugPrint::Print("ó‘Ô : ”[“\n");
 	}
+	CVector eulerangle = CTransform::EulerAngles();
+	CDebugPrint::Print("ƒ[ƒ‹ƒh‰ñ“]Šp“x(X:%f ,Y%f, Z:%f\n", eulerangle.X(), eulerangle.Y(), eulerangle.Z());
+
+	CVector localrotate = CTransform::LocalEulerAngles();
+	CDebugPrint::Print("ƒ[ƒJƒ‹‰ñ“]Šp“x(X:%f ,Y%f, Z:%f\n", localrotate.X(), localrotate.Y(), localrotate.Z());
 #endif
 }
 
