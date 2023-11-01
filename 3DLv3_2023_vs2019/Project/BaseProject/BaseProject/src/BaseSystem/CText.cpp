@@ -79,15 +79,16 @@ void CText::SetTextAlignV(ETextAlignV align)
 
 void CText::SetText(const char* format, ...)
 {
-	char buf[256];
+	static const int size = 1024;
+	char buf[size];
 	va_list ap;
 	va_start(ap, format);
 	vsprintf_s(buf, format, ap);
 	va_end(ap);
 
-	wchar_t wbuf[256];
+	wchar_t wbuf[size];
 	setlocale(LC_CTYPE, "jpn");
-	size_t len = mbstowcs(wbuf, buf, 256);
+	size_t len = mbstowcs(wbuf, buf, size);
 	if (len >= 0)
 	{
 		mText = wbuf;
