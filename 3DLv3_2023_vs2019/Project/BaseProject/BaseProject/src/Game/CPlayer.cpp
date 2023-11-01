@@ -577,7 +577,7 @@ void CPlayer::Update_Attack()
 		mInput_save = CVector::zero;
 	}
 	// カメラの向きに合わせた移動ベクトルに変換
-	CVector move = CCamera::MainCamera()->Rotation();
+	CVector move = CCamera::MainCamera()->Rotation() * mInput_save;
 	move.Y(0.0f);
 	move.Normalize();
 

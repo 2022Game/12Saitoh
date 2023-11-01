@@ -6,7 +6,7 @@
 class CUIBase : public CTask
 {
 public:
-	CUIBase();
+	CUIBase(ETaskPriority prio = ETaskPriority::eUI, bool dontDelete = false);
 	virtual ~CUIBase();
 
 	//表示座標を設定（CVector2版）

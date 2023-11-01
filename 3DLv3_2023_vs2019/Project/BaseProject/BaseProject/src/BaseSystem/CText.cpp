@@ -3,10 +3,13 @@
 #include <locale.h>
 
 CText::CText(CFont* font, int fontSize, const CVector2& pos,
-	const CVector2& size, const CColor& color)
-	: mpFont(font)
+	const CVector2& size, const CColor& color, bool dontDelete)
+	: CUIBase(ETaskPriority::eUI, dontDelete)
+	, mpFont(font)
 	, mText(L"")
 	, mFontSize(fontSize)
+	, mTextAlignH(ETextAlignH::eLeft)
+	, mTextAlignV(ETextAlignV::eTop)
 {
 	mPosition = pos;
 	mSize = size;

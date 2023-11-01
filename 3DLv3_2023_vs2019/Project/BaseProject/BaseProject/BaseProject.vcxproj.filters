@@ -217,6 +217,12 @@
     <ClCompile Include="src\Game\CWeapon.cpp">
       <Filter>ソース ファイル\Game\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CDebugProfiler.cpp">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CDebugTimer.cpp">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -386,6 +392,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CWeapon.h">
       <Filter>ソース ファイル\Game\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CDebugProfiler.h">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CDebugTimer.h">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\Time.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
