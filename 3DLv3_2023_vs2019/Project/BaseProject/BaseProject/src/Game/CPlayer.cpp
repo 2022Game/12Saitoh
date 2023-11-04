@@ -47,14 +47,14 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	//{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
 };
 
-#define PLAYER_HEIGHT 1.8f
-#define MOVE_SPEED 1.0f			// 走る速度
-#define FASTMOVE_SPEED 1.5f		// ダッシュ速度
-#define ROLL_SPEED 1.3f			// 回避速度
-#define ATTACK_SPEED 0.5f		// 攻撃時の移動速度
-#define JUMP_SPEED 1.5f
-#define GRAVITY 0.0625f
-#define JUMP_END_Y 1.0f
+#define PLAYER_HEIGHT	1.8f
+#define MOVE_SPEED		1.0f	// 走る速度
+#define FASTMOVE_SPEED	1.5f	// ダッシュ速度
+#define ROLL_SPEED		1.3f	// 回避速度
+#define ATTACK_SPEED	0.5f	// 攻撃時の移動速度
+#define JUMP_SPEED		1.5f
+#define GRAVITY			0.0625f
+#define JUMP_END_Y		1.0f
 // プレイヤー抜刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_DRAWN_IDLE_FRAME 35
 // プレイヤー納刀状態へ切り替えるフレーム(待機状態中)
@@ -71,7 +71,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 // プレイヤー通常攻撃1-1の移動速度
 #define NORMALATTACK1_1_MOVESPEED 0.5
 // プレイヤー通常攻撃1-2の移動するフレーム区間(始め)
-#define NORMALATTACK1_2_START_FRAME 0
+#define NORMALATTACK1_2_START_FRAME 1
 // プレイヤー通常攻撃1-2の移動するフレーム区間(終わり)
 #define NORMALATTACK1_2_END_FRAME 12
 // プレイヤー通常攻撃1-2の移動速度
@@ -556,9 +556,10 @@ void CPlayer::Update_Attack()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-
+	
 	// キーの入力ベクトルを取得
-	CVector input;
+	CVector input = CVector::zero;
+	bool isinput = false;	// キーが入力されているか判定
 	if (CInput::Key('W'))		input.Z(1.0f);
 	else if (CInput::Key('S'))	input.Z(-1.0f);
 	if (CInput::Key('A'))		input.X(-1.0f);
@@ -569,18 +570,40 @@ void CPlayer::Update_Attack()
 	{
 		// 入力ベクトルデータを一時的に保存
 		mInput_save = input;
+		isinput = true;
 	}
 	// 攻撃アニメーションが終了したら
 	// 一時的に保存した入力ベクトルを初期化する
 	if (IsAnimationFinished())
 	{
 		mInput_save = CVector::zero;
+		isinput = false;
 	}
 
+	// プレイヤーの回転角度によってベクトルを入手
+	CVector vec;
+	CVector angle = EulerAngles();
+	// 316 ～ 45度の間
+	if (0 <= angle.Y() && angle.Y() <= 45 ||
+		316 <= angle.Y() && angle.Y() <= 365)		vec.Z(-1.0f);
+	// 46 ～ 135度の間
+	else if (46 <= angle.Y() && angle.Y() <= 135)	vec.X(-1.0f);
+	// 136 ～ 225度の間
+	else if (136 <= angle.Y() && angle.Y() <= 225)	vec.Z(1.0f);
+	// 226 ～ 315度の間
+	else if (226 <= angle.Y() && angle.Y() <= 315)	vec.X(1.0f);
+
 	// カメラの向きに合わせた移動ベクトルに変換
-	CVector angle = CCamera::MainCamera()->Rotation() * mInput_save;
-	angle.Y(0.0f);
-	angle.Normalize();
+	// 移動キー入力があるかによって移動ベクトルを変更dd
+	CVector anglevec = CVector::zero;
+	if (isinput) {
+		anglevec = CCamera::MainCamera()->Rotation() * vec;
+	}
+	else {
+		anglevec = CCamera::MainCamera()->Rotation() * mInput_save;
+	}
+	anglevec.Y(0.0f);
+	anglevec.Normalize();
 
 	switch (AnimationIndex())
 	{
@@ -594,7 +617,7 @@ void CPlayer::Update_Attack()
 		if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_1_END_FRAME)
 		{
-			mMoveSpeed += angle * NORMALATTACK1_1_MOVESPEED;
+			mMoveSpeed += anglevec * NORMALATTACK1_1_MOVESPEED;
 		}
 		break;
 	case (int)EAnimType::eNormalAttack1_2:	// 通常攻撃1-2処理
@@ -607,7 +630,7 @@ void CPlayer::Update_Attack()
 		if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_2_END_FRAME)
 		{
-			mMoveSpeed += angle * NORMALATTACK1_2_MOVESPEED;
+			mMoveSpeed += anglevec * NORMALATTACK1_2_MOVESPEED;
 		}
 		break;
 	case (int)EAnimType::eNormalAttack1_3:	// 通常攻撃1-3処理
@@ -620,7 +643,7 @@ void CPlayer::Update_Attack()
 		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
 		{
-			mMoveSpeed += angle * NORMALATTACK1_3_MOVESPEED;
+			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
 		}
 	}
 
@@ -829,11 +852,8 @@ void CPlayer::Update()
 	else{
 		CDebugPrint::Print("状態 : 納刀\n");
 	}
-	CVector eulerangle = CTransform::EulerAngles();
-	CDebugPrint::Print("ワールド回転角度(X:%f ,Y%f, Z:%f\n", eulerangle.X(), eulerangle.Y(), eulerangle.Z());
-
-	CVector localrotate = CTransform::LocalEulerAngles();
-	CDebugPrint::Print("ローカル回転角度(X:%f ,Y%f, Z:%f\n", localrotate.X(), localrotate.Y(), localrotate.Z());
+	CVector eangles = EulerAngles();
+	CDebugPrint::Print("X:%.1f, Y:%.1f, Z:%.1f\n", eangles.X(),eangles.Y(),eangles.Z());
 #endif
 }
 
