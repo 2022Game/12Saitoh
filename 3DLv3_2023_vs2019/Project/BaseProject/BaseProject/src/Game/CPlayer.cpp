@@ -16,6 +16,8 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "",													true,	0.0f	},	// Tポーズ
 	{ "Character\\Player\\anim\\idle.x",					true,	601.0f	},	// 待機(納刀)
 	{ "Character\\Player\\anim\\idle_combat.x",				true,	601.0f	},	// 待機(抜刀)
+	{ "Character\\Player\\anim\\idleair.x",					true,	20.0f	},	// 空中待機(納刀
+	{ "Character\\Player\\anim\\idleair_combat.x",			true,	20.0f	},	// 空中待機(抜刀)
 	{ "Character\\Player\\anim\\idle_drawn_combat.x",		false,	101.0f	},	// 待機中抜刀動作
 	{ "Character\\Player\\anim\\idle_sheathed_combat.x",	false,	81.0f	},	// 待機中納刀動作
 	{ "Character\\Player\\anim\\run_start.x",				false,	36.0f	},	// 走り開始(納刀)
@@ -42,6 +44,12 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\attack_normal_1-3.x",		false,	56.0f	},	// 通常攻撃1-3
 	{ "Character\\Player\\anim\\attackwait_normal_1-3.x",	false,	28.0f	},	// 通常攻撃1-3攻撃待ち
 	{ "Character\\Player\\anim\\attackend_normal_1-3.x",	false,	30.0f	},	// 通常攻撃1-3終了
+	{ "Character\\Player\\anim\\attack_air_1-1.x",			false,	11.0f	},	// 空中攻撃1-1
+	{ "Character\\Player\\anim\\attackwait_air_1-1.x",		false,	13.0f	},	// 空中攻撃1-1攻撃待ち
+	{ "Character\\Player\\anim\\attackend_air_1-1.x",		false,	29.0f	},	// 空中攻撃1-1終了
+	{ "Character\\Player\\anim\\attack_up.x",				false,	59.0f	},	// ジャンプ攻撃
+	{ "Character\\Player\\anim\\landing.x",					false,	35.0f	},	// 着地動作(納刀)
+	{ "Character\\Player\\anim\\landing_combat.x",			false,	35.0f	},	// 着地動作(抜刀)
 	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
 	//{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
 	//{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
@@ -69,19 +77,29 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 // プレイヤー通常攻撃1-1の移動するフレーム区間(終わり)
 #define NORMALATTACK1_1_END_FRAME 15
 // プレイヤー通常攻撃1-1の移動速度
-#define NORMALATTACK1_1_MOVESPEED 0.5
+#define NORMALATTACK1_1_MOVESPEED 1.0f
 // プレイヤー通常攻撃1-2の移動するフレーム区間(始め)
 #define NORMALATTACK1_2_START_FRAME 1
 // プレイヤー通常攻撃1-2の移動するフレーム区間(終わり)
 #define NORMALATTACK1_2_END_FRAME 12
 // プレイヤー通常攻撃1-2の移動速度
-#define NORMALATTACK1_2_MOVESPEED 0.5
+#define NORMALATTACK1_2_MOVESPEED 1.0f
 // プレイヤー通常攻撃1-3の移動するフレーム区間(始め)
 #define NORMALATTACK1_3_START_FRAME 7
 // プレイヤー通常攻撃1-3の移動するフレーム区間(終わり)
 #define NORMALATTACK1_3_END_FRAME 30
 // プレイヤー通常攻撃1-3の移動速度
-#define NORMALATTACK1_3_MOVESPEED 0.5
+#define NORMALATTACK1_3_MOVESPEED 0.7f
+// ジャンプ攻撃の移動するフレーム区間(始め)
+#define ATTACK_UP_START_FRAME 7
+// ジャンプ攻撃の移動するフレーム区間(終わり)
+#define ATTACK_UP_END_FRAME 19
+// ジャンプ攻撃の移動速度
+#define ATTACK_UP_MOVE_SPEED 1.0f
+// ジャンプ攻撃のジャンプを始めるフレーム
+#define ATTACK_UP_JUMPSTART_FRAME 26
+// ジャンプ攻撃のジャンプ初速度
+#define ATTACK_UP_JUMP_SPEED 2.5f
 
 // コンストラクタ
 CPlayer::CPlayer()
@@ -240,21 +258,23 @@ void CPlayer::Update_Idle()
 					ChangeAnimation(EAnimType::eIdle_Combat);
 				}
 			}
-			// 左クリックで攻撃状態へ移行
+			// 左クリックで通常攻撃へ移行
 			if (CInput::PushKey(VK_LBUTTON))
 			{
 				mState = EState::eAttack;
 				ChangeAnimation(EAnimType::eNormalAttack1_1);
+			}
+			// マウスホイールクリックでジャンプ攻撃へ移行
+			if (CInput::PushKey(VK_MBUTTON))
+			{
+				mState = EState::eAttack;
+				ChangeAnimation(EAnimType::eAttack_Up);
 			}
 			// Eキーで納刀
 			if (CInput::PushKey('E'))
 			{
 				ChangeAnimation(EAnimType::eIdle_Sheathed_Combat);
 			}
-		}
-		else
-		{
-			ChangeAnimation(EAnimType::eIdle);
 		}
 		break;
 	case false:	// 納刀時
@@ -289,12 +309,6 @@ void CPlayer::Update_Idle()
 					ChangeAnimation(EAnimType::eIdle_Drawn_Combat);
 				}
 			}
-		}
-		else
-		{
-			// ひとまずは、待機モーションを追加
-			// 飛び降り中のモーションを追加予定
-			ChangeAnimation(EAnimType::eIdle);
 		}
 		break;
 	}
@@ -349,6 +363,12 @@ void CPlayer::Update_Move()
 					mState = EState::eAttack;
 					ChangeAnimation(EAnimType::eNormalAttack1_1);
 				}
+				// マウスホイールクリックでジャンプ攻撃へ移行
+				if (CInput::PushKey(VK_MBUTTON))
+				{
+					mState = EState::eAttack;
+					ChangeAnimation(EAnimType::eAttack_Up);
+				}
 				// Eキーで納刀
 				if (CInput::PushKey('E'))
 				{
@@ -365,8 +385,8 @@ void CPlayer::Update_Move()
 		}
 		else
 		{
-			/* ひとまずは、待機モーションを追加飛び降り中のモーションを追加予定*/
-			ChangeAnimation(EAnimType::eIdle);
+			ChangeAnimation(EAnimType::eIdleAir_Combat);
+			mState = EState::eIdle;
 		}
 		break;
 	case false:	// 納刀
@@ -425,8 +445,8 @@ void CPlayer::Update_Move()
 		}
 		else
 		{
-			/* ひとまずは、待機モーションを追加飛び降り中のモーションを追加予定*/
-			ChangeAnimation(EAnimType::eIdle);
+			ChangeAnimation(EAnimType::eIdleAir);
+			mState = EState::eIdle;
 		}
 		break;
 	}
@@ -492,7 +512,8 @@ void CPlayer::Update_FastMove()
 	}
 	else
 	{
-		ChangeAnimation(EAnimType::eIdle);
+		ChangeAnimation(EAnimType::eIdleAir);
+		mState = EState::eIdle;
 	}
 }
 
@@ -607,44 +628,71 @@ void CPlayer::Update_Attack()
 
 	switch (AnimationIndex())
 	{
-	case (int)EAnimType::eNormalAttack1_1:	// 通常攻撃1-1処理
+	case (int)EAnimType::eNormalAttack1_1:// 通常攻撃1-1処理
 		if (IsAnimationFinished())
 		{
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eNormalWait1_1);
 		}
-		// 攻撃に合わせてプレイヤーを移動させる
+		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_1_END_FRAME)
 		{
 			mMoveSpeed += anglevec * NORMALATTACK1_1_MOVESPEED;
 		}
 		break;
-	case (int)EAnimType::eNormalAttack1_2:	// 通常攻撃1-2処理
+	case (int)EAnimType::eNormalAttack1_2:// 通常攻撃1-2処理
 		if (IsAnimationFinished())
 		{
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eNormalWait1_2);
 		}
-		// 攻撃に合わせてプレイヤーを移動させる
+		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_2_END_FRAME)
 		{
 			mMoveSpeed += anglevec * NORMALATTACK1_2_MOVESPEED;
 		}
 		break;
-	case (int)EAnimType::eNormalAttack1_3:	// 通常攻撃1-3処理
+	case (int)EAnimType::eNormalAttack1_3:// 通常攻撃1-3処理
 		if (IsAnimationFinished())
 		{
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eNormalWait1_3);
 		}
-		// 攻撃に合わせてプレイヤーを移動させる
+		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
 		{
 			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
 		}
+		break;
+	case (int)EAnimType::eAttack_Up:// ジャンプ攻撃処理
+		if (IsAnimationFinished())
+		{
+			mState = EState::eAttackWait;
+			ChangeAnimation(EAnimType::eIdleAir_Combat);
+		}
+		// 攻撃に合わせてプレイヤーを移動
+		if (ATTACK_UP_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= ATTACK_UP_END_FRAME)
+		{
+			mMoveSpeed += anglevec * ATTACK_UP_MOVE_SPEED;
+		}
+		if (ATTACK_UP_JUMPSTART_FRAME == GetAnimationFrame())
+		{
+			mMoveSpeed += CVector(0.0f, ATTACK_UP_JUMP_SPEED, 0.0f);
+			mIsGrounded = false;
+		}
+		break;
+	case (int)EAnimType::eAirAttack1_1:// 空中攻撃1-1処理
+		if (IsAnimationFinished())
+		{
+			mState = EState::eAttackWait;
+			ChangeAnimation(EAnimType::eAirAttackWait1_1);
+		}
+		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+		break;
 	}
 
 }
@@ -654,12 +702,18 @@ void CPlayer::Update_AttackWait()
 {
 	switch (AnimationIndex())
 	{
-	case (int)EAnimType::eNormalWait1_1:	// 通常攻撃1-1攻撃待ち
+	case (int)EAnimType::eNormalWait1_1:// 通常攻撃1-1
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-2へ切り替え
 			mState = EState::eAttack;
 			ChangeAnimation(EAnimType::eNormalAttack1_2);
+		}
+		else if (CInput::PushKey(VK_MBUTTON))
+		{
+			// ジャンプ攻撃へ切り替え
+			mState = EState::eAttack;
+			ChangeAnimation(EAnimType::eAttack_Up);
 		}
 		if (IsAnimationFinished())
 		{
@@ -667,12 +721,18 @@ void CPlayer::Update_AttackWait()
 			ChangeAnimation(EAnimType::eNormalEnd1_1);
 		}
 		break;
-	case (int)EAnimType::eNormalWait1_2:	// 通常攻撃1-2攻撃待ち
+	case (int)EAnimType::eNormalWait1_2:// 通常攻撃1-2
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-3へ切り替え
 			mState = EState::eAttack;
 			ChangeAnimation(EAnimType::eNormalAttack1_3);
+		}
+		else if (CInput::PushKey(VK_MBUTTON))
+		{
+			// ジャンプ攻撃へ切り替え
+			mState = EState::eAttack;
+			ChangeAnimation(EAnimType::eAttack_Up);
 		}
 		if (IsAnimationFinished())
 		{
@@ -680,18 +740,44 @@ void CPlayer::Update_AttackWait()
 			ChangeAnimation(EAnimType::eNormalEnd1_2);
 		}
 		break;
-	case (int)EAnimType::eNormalWait1_3:	// 通常攻撃1-3攻撃待ち
+	case (int)EAnimType::eNormalWait1_3:// 通常攻撃1-3
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-1へ切り替え
 			mState = EState::eAttack;
 			ChangeAnimation(EAnimType::eNormalAttack1_1);
 		}
+		else if (CInput::PushKey(VK_MBUTTON))
+		{
+			// ジャンプ攻撃へ切り替え
+			mState = EState::eAttack;
+			ChangeAnimation(EAnimType::eAttack_Up);
+		}
 		if (IsAnimationFinished())
 		{
 			mState = EState::eAttackEnd;
 			ChangeAnimation(EAnimType::eNormalEnd1_3);
 		}
+		break;
+	case (int)EAnimType::eIdleAir_Combat:// ジャンプ攻撃
+		if (CInput::PushKey(VK_LBUTTON))
+		{
+			// 空中攻撃1-1へ切り替え
+			mState = EState::eAttack; 
+			ChangeAnimation(EAnimType::eAirAttack1_1);
+		}
+		break;
+	case (int)EAnimType::eAirAttackWait1_1:// 空中攻撃1-1
+		if (CInput::PushKey(VK_LBUTTON))
+		{
+			/* 空中攻撃1-2実装予定 */
+		}
+		if (IsAnimationFinished())
+		{
+			mState = EState::eAttackEnd;
+			ChangeAnimation(EAnimType::eAirAttackEnd1_1);
+		}
+		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
 	}
 	// 攻撃待ちモーションの間に何も入力がなければ、
 	// アイドル状態に移行する
@@ -717,17 +803,20 @@ void CPlayer::Update_AttackWait()
 // 攻撃終了
 void CPlayer::Update_AttackEnd()
 {
-	// 移動キーが入力されたら移動状態へ移行する
-	if (CInput::Key('W') || CInput::Key('A') ||
-		CInput::Key('S') || CInput::Key('D'))
+	if (mIsGrounded)
 	{
-		mState = EState::eMove;
-		ChangeAnimation(EAnimType::eRunStart_Combat);
-		// 回避動作への切り替え
-		if (CInput::PushKey(VK_SPACE))
+		// 移動キーが入力されたら移動状態へ移行する
+		if (CInput::Key('W') || CInput::Key('A') ||
+			CInput::Key('S') || CInput::Key('D'))
 		{
-			mState = EState::eAvoidance;
-			ChangeAnimation(EAnimType::eRollStart);
+			mState = EState::eMove;
+			ChangeAnimation(EAnimType::eRunStart_Combat);
+			// 回避動作への切り替え
+			if (CInput::PushKey(VK_SPACE))
+			{
+				mState = EState::eAvoidance;
+				ChangeAnimation(EAnimType::eRollStart);
+			}
 		}
 	}
 	// 攻撃終了モーションが終了したら待機状態へ移行する
@@ -820,6 +909,7 @@ void CPlayer::Update()
 	// 特定の条件をクリアしている場合抜納を切り替える
 	Update_SwitchDrawn();
 
+	// 重力を設定
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
 	// 移動
@@ -846,14 +936,18 @@ void CPlayer::Update()
 	CVector angles = EulerAngles();
 	CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
 	CDebugPrint::Print("フレーム : %.1f\n",GetAnimationFrame());
-	if (mIsDrawn){
-		CDebugPrint::Print("状態 : 抜刀\n");
-	}
-	else{
-		CDebugPrint::Print("状態 : 納刀\n");
-	}
-	CVector eangles = EulerAngles();
-	CDebugPrint::Print("X:%.1f, Y:%.1f, Z:%.1f\n", eangles.X(),eangles.Y(),eangles.Z());
+	if (mIsDrawn) CDebugPrint::Print("抜刀\n");
+	else CDebugPrint::Print("納刀\n");
+	
+	CDebugPrint::Print("プレイヤー状態 : ");
+	if (mState == EState::eIdle)			CDebugPrint::Print("待機状態\n");
+	else if (mState == EState::eMove)		CDebugPrint::Print("移動状態\n");
+	else if (mState == EState::eFastMove)	CDebugPrint::Print("ダッシュ状態\n");
+	else if (mState == EState::eAvoidance)	CDebugPrint::Print("回避状態\n");
+	else if (mState == EState::eAttack)		CDebugPrint::Print("攻撃状態\n");
+	else if (mState == EState::eAttackWait)	CDebugPrint::Print("攻撃待ち状態\n");
+	else if (mState == EState::eAttackEnd)	CDebugPrint::Print("攻撃終了状態\n");
+
 #endif
 }
 
@@ -865,8 +959,40 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eField)
 		{
 			mMoveSpeed.Y(0.0f);
+			// めり込まないように調整
 			Position(Position() + hit.adjust);
 			mIsGrounded = true;
+			
+
+			// 特定のアニメーションの時、着地モーションを再生
+			if (AnimationIndex() == (int)EAnimType::eIdleAir)
+			{
+				// 着地時に移動キーを押していた場合、着地モーションをローリングに設定
+				if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
+				{
+					mState = EState::eAvoidance;
+					ChangeAnimation(EAnimType::eRollStart);
+				}
+				else
+				{
+					// 着地動作(納刀)を再生
+					ChangeAnimation(EAnimType::eLanding);
+				}
+			}
+			else if (AnimationIndex() == (int)EAnimType::eIdleAir_Combat)
+			{
+				// 移動キーを押していた場合、着地モーションをローリングに設定
+				if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
+				{
+					mState = EState::eAvoidance;
+					ChangeAnimation(EAnimType::eRollStart);
+				}
+				else
+				{
+					// 着地動作(抜刀)を再生
+					ChangeAnimation(EAnimType::eLandin_Combat);
+				}
+			}
 
 			if (other->Tag() == ETag::eRideableObject)
 			{

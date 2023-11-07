@@ -66,6 +66,8 @@ private:
 		eTPose,					// Tポーズ
 		eIdle,					// 待機(納刀)
 		eIdle_Combat,			// 待機(抜刀)
+		eIdleAir,				// 空中待機(納刀)
+		eIdleAir_Combat,		// 空中待機(抜刀)
 		eIdle_Drawn_Combat,		// 待機中抜刀動作
 		eIdle_Sheathed_Combat,	// 待機中納刀動作
 		eRunStart,				// 走り開始(納刀)
@@ -92,10 +94,15 @@ private:
 		eNormalAttack1_3,		// 通常攻撃1-3
 		eNormalWait1_3,			// 通常攻撃1-3攻撃待ち
 		eNormalEnd1_3,			// 通常攻撃1-3終了
+		eAirAttack1_1,			// 空中攻撃1-1
+		eAirAttackWait1_1,		// 空中攻撃1-1攻撃待ち
+		eAirAttackEnd1_1,		// 空中攻撃1-1終了
+		eAttack_Up,				// ジャンプ攻撃
+		eLanding,				// 着地動作(納刀)
+		eLandin_Combat,			// 着地動作(抜刀)
 		eJumpStart,				// ジャンプ開始
 		eJump,					// ジャンプ中
 		eJumpEnd,				// ジャンプ終了
-
 		Num
 	};
 	// アニメーション切り替え
