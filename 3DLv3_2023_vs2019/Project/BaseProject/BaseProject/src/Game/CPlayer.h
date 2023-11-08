@@ -97,6 +97,9 @@ private:
 		eAirAttack1_1,			// ‹ó’†UŒ‚1-1
 		eAirAttackWait1_1,		// ‹ó’†UŒ‚1-1UŒ‚‘Ò‚¿
 		eAirAttackEnd1_1,		// ‹ó’†UŒ‚1-1I—¹
+		eAirAttack1_2,			// ‹ó’†UŒ‚1-2
+		eAirAttackWait1_2,		// ‹ó’†UŒ‚1-2UŒ‚‘Ò‚¿
+		eAirAttackEnd1_2,		// ‹ó’†UŒ‚1-2I—¹
 		eAttack_Up,				// ƒWƒƒƒ“ƒvUŒ‚
 		eLanding,				// ’…’n“®ì(”[“)
 		eLandin_Combat,			// ’…’n“®ì(”²“)
@@ -148,6 +151,7 @@ private:
 	CVector mMoveSpeed;	// ˆÚ“®‘¬“x
 	bool mIsGrounded;	// Ú’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool mIsDrawn;		// ”[“ó‘Ô‚©”²“ó‘Ô‚©”»’è true:”²“ false:”[“
+	bool mIsAirAttack;	// ‹ó’†UŒ‚‚ğs‚Á‚½‚©‚Ç‚¤‚©
 	
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;

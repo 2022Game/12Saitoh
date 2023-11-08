@@ -46,7 +46,10 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\attackend_normal_1-3.x",	false,	30.0f	},	// 通常攻撃1-3終了
 	{ "Character\\Player\\anim\\attack_air_1-1.x",			false,	11.0f	},	// 空中攻撃1-1
 	{ "Character\\Player\\anim\\attackwait_air_1-1.x",		false,	13.0f	},	// 空中攻撃1-1攻撃待ち
-	{ "Character\\Player\\anim\\attackend_air_1-1.x",		false,	29.0f	},	// 空中攻撃1-1終了
+	{ "Character\\Player\\anim\\attackend_air_1-1.x",		false,	19.0f	},	// 空中攻撃1-1終了
+	{ "Character\\Player\\anim\\attack_air_1-2.x",			false,	14.0f	},	// 空中攻撃1-2
+	{ "Character\\Player\\anim\\attackwait_air_1-2.x",		false,	16.0f	},	// 空中攻撃1-2攻撃待ち
+	{ "Character\\Player\\anim\\attackend_air_1-2.x",		false,	19.0f	},	// 空中攻撃1-2終了
 	{ "Character\\Player\\anim\\attack_up.x",				false,	59.0f	},	// ジャンプ攻撃
 	{ "Character\\Player\\anim\\landing.x",					false,	35.0f	},	// 着地動作(納刀)
 	{ "Character\\Player\\anim\\landing_combat.x",			false,	35.0f	},	// 着地動作(抜刀)
@@ -99,7 +102,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 // ジャンプ攻撃のジャンプを始めるフレーム
 #define ATTACK_UP_JUMPSTART_FRAME 26
 // ジャンプ攻撃のジャンプ初速度
-#define ATTACK_UP_JUMP_SPEED 2.5f
+#define ATTACK_UP_JUMP_SPEED 12.5f
 
 // コンストラクタ
 CPlayer::CPlayer()
@@ -108,6 +111,7 @@ CPlayer::CPlayer()
 	, mInput_save(CVector::zero)
 	, mIsGrounded(false)
 	, mIsDrawn(false)
+	, mIsAirAttack(false)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -274,6 +278,18 @@ void CPlayer::Update_Idle()
 			if (CInput::PushKey('E'))
 			{
 				ChangeAnimation(EAnimType::eIdle_Sheathed_Combat);
+			}
+		}
+		else
+		{
+			ChangeAnimation(EAnimType::eIdleAir_Combat);
+			// 一度も空中攻撃を行っていない場合、
+			// 左クリックで空中攻撃へ移行する
+			if (!mIsAirAttack && CInput::PushKey(VK_LBUTTON))
+			{
+				mState = EState::eAttack;
+				ChangeAnimation(EAnimType::eAirAttack1_1);
+				mIsAirAttack = true;
 			}
 		}
 		break;
@@ -672,6 +688,7 @@ void CPlayer::Update_Attack()
 		{
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eIdleAir_Combat);
+			mMoveSpeed = CVector::zero;
 		}
 		// 攻撃に合わせてプレイヤーを移動
 		if (ATTACK_UP_START_FRAME <= GetAnimationFrame() &&
@@ -679,6 +696,7 @@ void CPlayer::Update_Attack()
 		{
 			mMoveSpeed += anglevec * ATTACK_UP_MOVE_SPEED;
 		}
+		// モーションに合わせてジャンプを行う
 		if (ATTACK_UP_JUMPSTART_FRAME == GetAnimationFrame())
 		{
 			mMoveSpeed += CVector(0.0f, ATTACK_UP_JUMP_SPEED, 0.0f);
@@ -691,8 +709,17 @@ void CPlayer::Update_Attack()
 			mState = EState::eAttackWait;
 			ChangeAnimation(EAnimType::eAirAttackWait1_1);
 		}
+		// 攻撃中は落下しない
 		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
 		break;
+	case (int)EAnimType::eAirAttack1_2:// 空中攻撃1-2処理
+		if (IsAnimationFinished())
+		{
+			mState = EState::eAttackWait;
+			ChangeAnimation(EAnimType::eAirAttackWait1_2);
+		}
+		// 攻撃中は落下しない
+		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
 	}
 
 }
@@ -765,18 +792,35 @@ void CPlayer::Update_AttackWait()
 			// 空中攻撃1-1へ切り替え
 			mState = EState::eAttack; 
 			ChangeAnimation(EAnimType::eAirAttack1_1);
+			mIsAirAttack = true;
 		}
 		break;
 	case (int)EAnimType::eAirAttackWait1_1:// 空中攻撃1-1
 		if (CInput::PushKey(VK_LBUTTON))
 		{
-			/* 空中攻撃1-2実装予定 */
+			// 空中攻撃1-2へ切り替え
+			mState = EState::eAttack;
+			ChangeAnimation(EAnimType::eAirAttack1_2);
 		}
 		if (IsAnimationFinished())
 		{
 			mState = EState::eAttackEnd;
 			ChangeAnimation(EAnimType::eAirAttackEnd1_1);
 		}
+		// 攻撃中は落下しない
+		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+		break;
+	case (int)EAnimType::eAirAttackWait1_2:// 空中攻撃1-2
+		if (CInput::PushKey(VK_LBUTTON))
+		{
+			// 空中攻撃1-3へ切り替え
+		}
+		if (IsAnimationFinished())
+		{
+			mState = EState::eAttackEnd;
+			ChangeAnimation(EAnimType::eAirAttackEnd1_2);
+		}
+		// 攻撃中は落下しない
 		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
 	}
 	// 攻撃待ちモーションの間に何も入力がなければ、
@@ -964,7 +1008,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			mIsGrounded = true;
 			
 
-			// 特定のアニメーションの時、着地モーションを再生
+			// 納刀時の空中待機時
 			if (AnimationIndex() == (int)EAnimType::eIdleAir)
 			{
 				// 着地時に移動キーを押していた場合、着地モーションをローリングに設定
@@ -979,18 +1023,25 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeAnimation(EAnimType::eLanding);
 				}
 			}
-			else if (AnimationIndex() == (int)EAnimType::eIdleAir_Combat)
+			// 抜刀時の空中待機または、空中攻撃終了時
+			else if (AnimationIndex() == (int)EAnimType::eIdleAir_Combat ||
+				AnimationIndex() == (int)EAnimType::eAirAttackWait1_1||
+				AnimationIndex() == (int)EAnimType::eAirAttackEnd1_1 ||
+				AnimationIndex() == (int)EAnimType::eAirAttackWait1_2||
+				AnimationIndex() == (int)EAnimType::eAirAttackEnd1_2)
 			{
 				// 移動キーを押していた場合、着地モーションをローリングに設定
 				if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
 				{
 					mState = EState::eAvoidance;
 					ChangeAnimation(EAnimType::eRollStart);
+					mIsAirAttack = false;
 				}
 				else
 				{
 					// 着地動作(抜刀)を再生
 					ChangeAnimation(EAnimType::eLandin_Combat);
+					mIsAirAttack = false;
 				}
 			}
 
