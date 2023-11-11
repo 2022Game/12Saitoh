@@ -81,9 +81,12 @@ private:
 		eFastRunStart,			// ダッシュ開始
 		eFastRun,				// ダッシュ
 		eFastRunEnd,			// ダッシュ終了
-		eRollStart,				// 回避動作開始
-		eRollEnd_idle,			// 回避後アイドル移行
-		eRollEnd_run,			// 回避後走り移行
+		eRollStart,				// 回避動作開始(納刀)
+		eRollEnd_idle,			// 回避後アイドル移行(納刀)
+		eRollEnd_run,			// 回避後走り移行(納刀)
+		eRollStart_Combat,		// 回避動作開始(抜刀)
+		eRollEnd_idle_Combat,	// 回避後アイドル移行(抜刀)
+		eRollEnd_run_Combat,	// 回避後走り移行(抜刀)
 		eRunAttack,				// 走り後攻撃
 		eNormalAttack1_1,		// 通常攻撃1-1
 		eNormalWait1_1,			// 通常攻撃1-1攻撃待ち
@@ -100,6 +103,11 @@ private:
 		eAirAttack1_2,			// 空中攻撃1-2
 		eAirAttackWait1_2,		// 空中攻撃1-2攻撃待ち
 		eAirAttackEnd1_2,		// 空中攻撃1-2終了
+		eAirAttack1_3,			// 空中攻撃1-3
+		eAirAttackWait1_3,		// 空中攻撃1-3攻撃待ち
+		eAirAttackEnd1_3,		// 空中攻撃1-3終了
+		eAirAttack1_4,			// 空中攻撃1-4
+		eAirAttackEnd1_4,		// 空中攻撃1-4終了
 		eAttack_Up,				// ジャンプ攻撃
 		eLanding,				// 着地動作(納刀)
 		eLandin_Combat,			// 着地動作(抜刀)

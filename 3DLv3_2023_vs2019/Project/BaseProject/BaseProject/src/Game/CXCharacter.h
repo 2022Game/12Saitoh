@@ -28,7 +28,7 @@ public:
 
 	int AnimationIndex();	//アニメーションの番号の取得
 
-	float GetAnimationFrame();
+	float GetAnimationFrame(); //再生フレームを取得
 
 	// 指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
