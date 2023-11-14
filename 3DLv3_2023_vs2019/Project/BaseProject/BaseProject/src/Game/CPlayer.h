@@ -32,12 +32,6 @@ public:
 	void Update_AttackWait();
 	// 攻撃終了
 	void Update_AttackEnd();
-	// ジャンプ開始
-	void Update_JumpStart();
-	// ジャンプ中
-	void Update_Jump();
-	// ジャンプ終了
-	void Update_JumpEnd();
 	// 回避動作
 	void Update_Avoidance();
 
@@ -58,7 +52,7 @@ public:
 	// 納刀状態か抜刀状態か判定
 	bool IsDrawn();
 private:
-	// アニメーションの種類
+		// アニメーションの種類
 	enum class EAnimType
 	{
 		None = -1,
@@ -126,16 +120,6 @@ private:
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
-
-	// アニメーションデータ
-	struct AnimData
-	{
-		std::string path;	// アニメーションデータのパス
-		bool loop;			// ループするかどうか
-		float frameLength;	// アニメーションのフレーム数
-	};
-	// アニメーションデータのテーブル
-	static const AnimData ANIM_DATA[];
 
 	// プレイヤーの状態
 	enum class EState

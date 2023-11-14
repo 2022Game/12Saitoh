@@ -483,5 +483,8 @@
     <ClInclude Include="src\Test\CMeasure.h">
       <Filter>ソース ファイル\Test\CollisionTest</Filter>
     </ClInclude>
+    <ClInclude Include="src\Game\PlayerData.h">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

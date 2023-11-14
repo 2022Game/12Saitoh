@@ -139,6 +139,7 @@
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CWeapon.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
+    <ClInclude Include="src\Game\PlayerData.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
     <ClInclude Include="src\Test\CColLine.h" />
