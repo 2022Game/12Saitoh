@@ -15,6 +15,7 @@ class CHitInfo
 {
 public:
 	CVector adjust;
+	float weight;
 	std::list<STVertex> tris;
 };
 
@@ -31,7 +32,7 @@ public:
 	/// <param name="owner">コライダーの持ち主</param>
 	/// <param name="layer">衝突判定用のレイヤー</param>
 	/// <param name="type">コライダーの種類</param>
-	CCollider(CObjectBase* owner, ELayer layer, EColliderType type);
+	CCollider(CObjectBase* owner, ELayer layer, EColliderType type, bool isKinematic, float weight);
 	// デストラクタ
 	virtual ~CCollider();
 
@@ -54,6 +55,28 @@ public:
 	/// </summary>
 	/// <returns>trueならば有効</returns>
 	bool IsEnable() const;
+
+	/// <summary>
+	/// 衝突時の押し戻しの影響を受けるかどうかを設定
+	/// </summary>
+	/// <param name="isKinematic">trueならば、影響を受けない</param>
+	void SetKinematic(bool isKinematic);
+	/// <summary>
+	/// 衝突時の押し戻しの影響を受けるかどうか
+	/// </summary>
+	/// <returns>trueならば、影響を受けない</returns>
+	bool IsKinematic() const;
+
+	/// <summary>
+	/// コライダーの重量を設定
+	/// </summary>
+	/// <param name="weight"></param>
+	void SetWeight(float weight);
+	/// <summary>
+	/// コライダーの重量を取得
+	/// </summary>
+	/// <returns></returns>
+	float GetWeight() const;
 
 	/// <summary>
 	/// 指定したコライダーと衝突判定を行うかどうかを取得
@@ -117,9 +140,9 @@ public:
 	/// <param name="t12">三角形2の頂点3</param>
 	/// <param name="hit">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionTriangle(const CVector& t00, const CVector& t01, const CVector& t02,
-		const CVector& t10, const CVector& t11, const CVector& t12,
-		CHitInfo* hit);
+	static bool CollisionTriangle(	const CVector& t00, const CVector& t01, const CVector& t02,
+									const CVector& t10, const CVector& t11, const CVector& t12,
+									CHitInfo* hit);
 
 	/// <summary>
 	/// 三角形と線分の衝突判定
@@ -131,8 +154,8 @@ public:
 	/// <param name="le">線分の終点</param>
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionTriangleLine(const CVector& t0, const CVector& t1, const CVector& t2,
-		const CVector& ls, const CVector& le, CHitInfo* info);
+	static bool CollisionTriangleLine(	const CVector& t0, const CVector& t1, const CVector& t2,
+										const CVector& ls, const CVector& le, CHitInfo* info);
 
 	/// <summary>
 	/// 三角形と球の衝突判定
@@ -145,7 +168,7 @@ public:
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
 	static bool CollisionTriangleSphere(const CVector& t0, const CVector& t1, const CVector& t2,
-		const CVector& sp, const float sr, CHitInfo* info);
+										const CVector& sp, const float sr, CHitInfo* info);
 
 	/// <summary>
 	/// 球と球の衝突判定
@@ -157,7 +180,7 @@ public:
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
 	static bool CollisionSphere(const CVector& sp0, const float sr0,
-		const CVector& sp1, const float sr1, CHitInfo* info);
+								const CVector& sp1, const float sr1, CHitInfo* info);
 
 	/// <summary>
 	/// 球と線分の衝突判定
@@ -169,7 +192,7 @@ public:
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
 	static bool CollisionSphereLine(const CVector& sp, const float sr,
-		const CVector& ls, const CVector& le, CHitInfo* info);
+									const CVector& ls, const CVector& le, CHitInfo* info);
 
 	/// <summary>
 	/// 線分と線分の衝突判定
@@ -180,8 +203,8 @@ public:
 	/// <param name="le1">線分2の終点</param>
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionLine(const CVector& ls0, const CVector& le0,
-		const CVector& ls1, const CVector& le1, CHitInfo* info);
+	static bool CollisionLine(	const CVector& ls0, const CVector& le0,
+								const CVector& ls1, const CVector& le1, CHitInfo* info);
 
 	/// <summary>
 	/// メッシュと線分の衝突判定
@@ -191,8 +214,8 @@ public:
 	/// <param name="le">線分の終点</param>
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionMeshLine(const std::list<STVertex>& tris,
-		const CVector& ls, const CVector& le, CHitInfo* info);
+	static bool CollisionMeshLine(	const std::list<STVertex>& tris,
+									const CVector& ls, const CVector& le, CHitInfo* info);
 
 	/// <summary>
 	/// メッシュと球の衝突判定
@@ -203,7 +226,7 @@ public:
 	/// <param name="info">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
 	static bool CollisionMeshSpehre(const std::list<STVertex>& tris,
-		const CVector& sp, const float sr, CHitInfo* info);
+									const CVector& sp, const float sr, CHitInfo* info);
 
 	/// <summary>
 	/// メッシュと三角形の衝突判定
@@ -214,9 +237,9 @@ public:
 	/// <param name="t2">三角形の頂点3</param>
 	/// <param name="hit">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionMeshTriangle(const std::list<STVertex>& tris,
-		const CVector& t0, const CVector& t1, const CVector& t2,
-		CHitInfo* hit);
+	static bool CollisionMeshTriangle(	const std::list<STVertex>& tris,
+										const CVector& t0, const CVector& t1, const CVector& t2,
+										CHitInfo* hit);
 
 	static float CalcDistancePointToLine(const CVector& point, const CVector& lineS, const CVector& lineE, CVector* nearest = nullptr);
 
@@ -228,6 +251,14 @@ public:
 	/// <param name="hit">ヒットした時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
 	static bool Collision(CCollider* c0, CCollider* c1, CHitInfo* hit);
+
+	/// <summary>
+	/// 衝突時の押し戻し割合を算出
+	/// </summary>
+	/// <param name="self">自身のコライダー</param>
+	/// <param name="other">相手のコライダー</param>
+	/// <returns>押し戻し割合（0.0f ～ 1.0f）</returns>
+	static float CalcPushBackRatio(CCollider* self, CCollider* other);
 
 protected:
 	/// <summary>
@@ -242,6 +273,8 @@ private:
 	EColliderType mType;	// コライダーの種類
 	CObjectBase* mpOwner;	// コライダーの持ち主
 	bool mIsEnable;			// 有効かどうか
+	bool mIsKinematic;		// 衝突時の押し戻しの影響を受けないかどうか
+	float mWeight;			// コライダーの重量
 	int mCollisionLayers;	// 衝突判定を行うレイヤーのビットフラグ
 	int mCollisionTags;		// 衝突判定を行うオブジェクトタグのビットフラグ
 };

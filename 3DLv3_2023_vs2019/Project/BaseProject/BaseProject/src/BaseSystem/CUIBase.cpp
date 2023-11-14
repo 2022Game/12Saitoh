@@ -4,7 +4,7 @@ CUIBase::CUIBase(ETaskPriority prio, bool dontDelete)
 	: CTask(prio, dontDelete)
 	, mPosition(0.0f, 0.0f)
 	, mSize(100.0f, 100.0f)
-	, mColor(1.0f, 1.0f, 1.0f)
+	, mColor(1.0f, 1.0f, 1.0f, 1.0f)
 {
 }
 

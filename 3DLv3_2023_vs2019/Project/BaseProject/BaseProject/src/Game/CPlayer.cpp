@@ -356,8 +356,8 @@ void CPlayer::Update_Move()
 			// 移動処理
 			// キーの入力ベクトルを取得
 			CVector input;
-			if (CInput::Key('W'))		input.Z(1.0f);
-			else if (CInput::Key('S'))	input.Z(-1.0f);
+			if (CInput::Key('W'))		input.Z(-1.0f);
+			else if (CInput::Key('S'))	input.Z(1.0f);
 			if (CInput::Key('A'))		input.X(-1.0f);
 			else if (CInput::Key('D'))	input.X(1.0f);
 
@@ -422,8 +422,8 @@ void CPlayer::Update_Move()
 			// 移動処理
 			// キーの入力ベクトルを取得
 			CVector input;
-			if (CInput::Key('W'))		input.Z(1.0f);
-			else if (CInput::Key('S'))	input.Z(-1.0f);
+			if (CInput::Key('W'))		input.Z(-1.0f);
+			else if (CInput::Key('S'))	input.Z(1.0f);
 			if (CInput::Key('A'))		input.X(-1.0f);
 			else if (CInput::Key('D'))	input.X(1.0f);
 
@@ -492,8 +492,8 @@ void CPlayer::Update_FastMove()
 		CVector input;
 		// ダッシュキーの入力判定	true:入力中 false:非入力中
 		bool dash = true;
-		if (CInput::Key('W'))		input.Z(1.0f);
-		else if (CInput::Key('S'))	input.Z(-1.0f);
+		if (CInput::Key('W'))		input.Z(-1.0f);
+		else if (CInput::Key('S'))	input.Z(1.0f);
 		if (CInput::Key('A'))		input.X(-1.0f);
 		else if (CInput::Key('D'))	input.X(1.0f);
 		if (CInput::PullKey(VK_SHIFT)) dash = false;
@@ -552,8 +552,8 @@ void CPlayer::Update_Avoidance()
 	// キーの入力ベクトルを取得
 	CVector input;
 
-	if (CInput::Key('W'))		input.Z(1.0f);
-	else if (CInput::Key('S'))	input.Z(-1.0f);
+	if (CInput::Key('W'))		input.Z(-1.0f);
+	else if (CInput::Key('S'))	input.Z(1.0f);
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
 
@@ -620,8 +620,8 @@ void CPlayer::Update_Attack()
 	// キーの入力ベクトルを取得
 	CVector input = CVector::zero;
 	bool isinput = false;	// キーが入力されているか判定
-	if (CInput::Key('W'))		input.Z(1.0f);
-	else if (CInput::Key('S'))	input.Z(-1.0f);
+	if (CInput::Key('W'))		input.Z(-1.0f);
+	else if (CInput::Key('S'))	input.Z(1.0f);
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
 

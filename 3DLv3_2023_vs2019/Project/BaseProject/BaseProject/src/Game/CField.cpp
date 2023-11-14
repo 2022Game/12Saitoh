@@ -9,7 +9,7 @@ CField::CField()
 	mpModel = new CModel();
 	mpModel->Load("Field\\field.obj", "Field\\field.mtl");
 
-	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel);
+	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
 	CreateFieldObjects();
 }
@@ -48,6 +48,7 @@ void CField::CreateFieldObjects()
 
 	mpCylinderModel = new CModel();
 	mpCylinderModel->Load("Field\\Object\\cylinder.obj", "Field\\Object\\cylinder.mtl");
+
 	new CMoveFloor
 	(
 		mpCubeModel,

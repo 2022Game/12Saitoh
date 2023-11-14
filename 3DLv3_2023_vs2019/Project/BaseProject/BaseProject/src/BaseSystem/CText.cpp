@@ -14,6 +14,7 @@ CText::CText(CFont* font, int fontSize, const CVector2& pos,
 	mPosition = pos;
 	mSize = size;
 	mColor = color;
+
 	if (mpFont == nullptr)
 	{
 		mpFont = new CFont();

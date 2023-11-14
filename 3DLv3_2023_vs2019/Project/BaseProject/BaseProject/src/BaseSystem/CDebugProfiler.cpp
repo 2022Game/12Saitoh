@@ -37,7 +37,7 @@ void CDebugProfiler::StartTimer(std::string name)
 	{
 		timer = new CDebugTimer();
 		timers[name] = timer;
-	}
+ 	}
 
 	timer->Start();
 }

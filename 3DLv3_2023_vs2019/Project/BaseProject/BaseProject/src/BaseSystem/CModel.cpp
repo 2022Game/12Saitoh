@@ -132,7 +132,7 @@ void CModel::Load(char* obj, char* mtl) {
 			//マテリアル名の設定
 			pm->Name(str[1]);
 			//マテリアルの可変長配列に追加
- 			mpMaterials.push_back(pm);
+			mpMaterials.push_back(pm);
 			//配列の長さを取得
 			idx = mpMaterials.size() - 1;
 		}
