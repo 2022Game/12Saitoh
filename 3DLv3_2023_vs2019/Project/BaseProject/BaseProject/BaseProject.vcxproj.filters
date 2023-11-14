@@ -268,6 +268,9 @@
     <ClCompile Include="src\Test\CMeasure.cpp">
       <Filter>ソース ファイル\Test\CollisionTest</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\PlayerUpdate_Attack.cpp">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">

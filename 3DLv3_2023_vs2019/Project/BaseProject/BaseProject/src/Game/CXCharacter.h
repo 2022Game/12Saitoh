@@ -5,6 +5,7 @@
 #include "CMaterial.h"
 #include "CCharaBase.h"
 
+
 class CXCharacter : public CCharaBase
 {
 public:

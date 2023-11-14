@@ -4,7 +4,7 @@
 #include "CColliderLine.h"
 #include "CRideableObject.h"
 #include "CSword.h"
-
+#include "PlayerData.h"
 /*
 プレイヤークラス
 キャラクタクラスを継承
@@ -28,10 +28,28 @@ public:
 	void Update_FastMove();
 	// 攻撃
 	void Update_Attack();
-	// 次の攻撃待ち
+	// 攻撃待ち処理
 	void Update_AttackWait();
 	// 攻撃終了
 	void Update_AttackEnd();
+	// プレイヤーの向いている方向のベクトルを取得
+	void Update_AttackAngleVec(CVector *direction);
+	// 通常攻撃1-1処理
+	void Update_NormalAttack1();
+	// 通常攻撃1-2処理
+	void Update_NormalAttack2();
+	// 通常攻撃1-3処理
+	void Update_NormalAttack3();
+	// ジャンプ攻撃処理
+	void Update_AttackUp();
+	// 空中攻撃1-1処理
+	void Update_AirAttack1();
+	// 空中攻撃1-2処理
+	void Update_AirAttack2();
+	// 空中攻撃1-3処理
+	void Update_AirAttack3();
+	// 空中攻撃1-4処理
+	void Update_AirAttack4();
 	// 回避動作
 	void Update_Avoidance();
 
@@ -52,7 +70,7 @@ public:
 	// 納刀状態か抜刀状態か判定
 	bool IsDrawn();
 private:
-		// アニメーションの種類
+	// アニメーションの種類
 	enum class EAnimType
 	{
 		None = -1,
@@ -145,6 +163,7 @@ private:
 	bool mIsDrawn;		// 納刀状態か抜刀状態か判定 true:抜刀 false:納刀
 	bool mIsAirAttack;	// 空中攻撃を行ったかどうか
 	
+	int AttackStep;
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	CSword* mpSword;

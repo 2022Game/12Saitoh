@@ -3,7 +3,6 @@
 #include "CInput.h"
 #include "CCamera.h"
 #include "CDebugPrint.h"
-#include "PlayerData.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -16,6 +15,7 @@ CPlayer::CPlayer()
 	, mIsGrounded(false)
 	, mIsDrawn(false)
 	, mIsAirAttack(false)
+	, AttackStep(0)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -488,326 +488,249 @@ void CPlayer::Update_Avoidance()
 	}
 }
 
-// 攻撃
-void CPlayer::Update_Attack()
-{
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
-	
-	// キーの入力ベクトルを取得
-	CVector input = CVector::zero;
-	bool isinput = false;	// キーが入力されているか判定
-	if (CInput::Key('W'))		input.Z(-1.0f);
-	else if (CInput::Key('S'))	input.Z(1.0f);
-	if (CInput::Key('A'))		input.X(-1.0f);
-	else if (CInput::Key('D'))	input.X(1.0f);
+//// 攻撃
+//void CPlayer::Update_Attack()
+//{
+//	switch (AnimationIndex())
+//	{
+//	//case (int)EAnimType::eNormalAttack1_1:// 通常攻撃1-1処理
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackWait;
+//	//		ChangeAnimation(EAnimType::eNormalWait1_1);
+//	//	}
+//	//	// 攻撃に合わせてプレイヤーを移動
+//	//	if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
+//	//		GetAnimationFrame() <= NORMALATTACK1_1_END_FRAME)
+//	//	{
+//	//		mMoveSpeed += anglevec * NORMALATTACK1_1_MOVESPEED;
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eNormalAttack1_2:// 通常攻撃1-2処理
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackWait;
+//	//		ChangeAnimation(EAnimType::eNormalWait1_2);
+//	//	}
+//	//	// 攻撃に合わせてプレイヤーを移動
+//	//	if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
+//	//		GetAnimationFrame() <= NORMALATTACK1_2_END_FRAME)
+//	//	{
+//	//		mMoveSpeed += anglevec * NORMALATTACK1_2_MOVESPEED;
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eNormalAttack1_3:// 通常攻撃1-3処理
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackWait;
+//	//		ChangeAnimation(EAnimType::eNormalWait1_3);
+//	//	}
+//	//	// 攻撃に合わせてプレイヤーを移動
+//	//	if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
+//	//		GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
+//	//	{
+//	//		mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eAttack_Up:// ジャンプ攻撃処理
+//		//if (IsAnimationFinished())
+//		//{
+//		//	mState = EState::eAttackWait;
+//		//	ChangeAnimation(EAnimType::eIdleAir_Combat);
+//		//	mMoveSpeed = CVector::zero;
+//		//}
+//		//// 攻撃に合わせてプレイヤーを移動
+//		//if (ATTACK_UP_START_FRAME <= GetAnimationFrame() &&
+//		//	GetAnimationFrame() <= ATTACK_UP_END_FRAME)
+//		//{
+//		//	mMoveSpeed += anglevec * ATTACK_UP_MOVE_SPEED;
+//		//}
+//		//// モーションに合わせてジャンプを行う
+//		//if (ATTACK_UP_JUMPSTART_FRAME == GetAnimationFrame())
+//		//{
+//		//	mMoveSpeed += CVector(0.0f, ATTACK_UP_JUMP_SPEED, 0.0f);
+//		//	mIsGrounded = false;
+//		//}
+//	//	break;
+//	//case (int)EAnimType::eAirAttack1_1:// 空中攻撃1-1処理
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackWait;
+//	//		ChangeAnimation(EAnimType::eAirAttackWait1_1);
+//	//	}
+//	//	// 攻撃中は落下しない
+//	//	mMoveSpeed += -mMoveSpeed;
+//	//	break;
+//	//case (int)EAnimType::eAirAttack1_2:// 空中攻撃1-2処理
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackWait;
+//	//		ChangeAnimation(EAnimType::eAirAttackWait1_2);
+//	//	}
+//	//	// 攻撃中は落下しない
+//	//	mMoveSpeed += -mMoveSpeed;
+//	//	break;
+//	//case (int)EAnimType::eAirAttack1_3:// 空中攻撃1-3処理
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackWait;
+//	//		ChangeAnimation(EAnimType::eAirAttackWait1_3);
+//	//	}
+//	//	// 攻撃中は落下しない
+//	//	mMoveSpeed += -mMoveSpeed;
+//	//	break;
+//	case (int)EAnimType::eAirAttack1_4:// 空中攻撃1-4処理
+//		if (IsAnimationFinished())
+//		{
+//			mState = EState::eAttackEnd;
+//			ChangeAnimation(EAnimType::eAirAttackEnd1_4);
+//		}
+//		// 攻撃中は落下しない
+//		mMoveSpeed += -mMoveSpeed;
+//		break;
+//	}
+//
+//}
 
-	// 仮保存の入力ベクトルが初期値の場合
-	if (mInput_save == CVector::zero)
-	{
-		// 入力ベクトルデータを一時的に保存
-		mInput_save = input;
-		isinput = true;
-	}
-	// 攻撃アニメーションが終了したら
-	// 一時的に保存した入力ベクトルを初期化する
-	if (IsAnimationFinished())
-	{
-		mInput_save = CVector::zero;
-		isinput = false;
-	}
-
-	// プレイヤーの回転角度によってベクトルを入手
-	CVector vec;
-	CVector angle = EulerAngles();
-	// 316 ～ 45度の間
-	if (0 <= angle.Y() && angle.Y() <= 45 ||
-		316 <= angle.Y() && angle.Y() <= 365)		vec.Z(1.0f);
-	// 46 ～ 135度の間
-	else if (46 <= angle.Y() && angle.Y() <= 135)	vec.X(-1.0f);
-	// 136 ～ 225度の間
-	else if (136 <= angle.Y() && angle.Y() <= 225)	vec.Z(-1.0f);
-	// 226 ～ 315度の間
-	else if (226 <= angle.Y() && angle.Y() <= 315)	vec.X(1.0f);
-
-	// カメラの向きに合わせた移動ベクトルに変換
-	// 移動キー入力があるかによって移動ベクトルを変更dd
-	CVector anglevec = CVector::zero;
-	if (isinput) {
-		anglevec = CCamera::MainCamera()->Rotation() * vec;
-	}
-	else {
-		anglevec = CCamera::MainCamera()->Rotation() * mInput_save;
-	}
-	anglevec.Y(0.0f);
-	anglevec.Normalize();
-
-	switch (AnimationIndex())
-	{
-	case (int)EAnimType::eNormalAttack1_1:// 通常攻撃1-1処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eNormalWait1_1);
-		}
-		// 攻撃に合わせてプレイヤーを移動
-		if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= NORMALATTACK1_1_END_FRAME)
-		{
-			mMoveSpeed += anglevec * NORMALATTACK1_1_MOVESPEED;
-		}
-		break;
-	case (int)EAnimType::eNormalAttack1_2:// 通常攻撃1-2処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eNormalWait1_2);
-		}
-		// 攻撃に合わせてプレイヤーを移動
-		if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= NORMALATTACK1_2_END_FRAME)
-		{
-			mMoveSpeed += anglevec * NORMALATTACK1_2_MOVESPEED;
-		}
-		break;
-	case (int)EAnimType::eNormalAttack1_3:// 通常攻撃1-3処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eNormalWait1_3);
-		}
-		// 攻撃に合わせてプレイヤーを移動
-		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
-		{
-			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
-		}
-		break;
-	case (int)EAnimType::eAttack_Up:// ジャンプ攻撃処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eIdleAir_Combat);
-			mMoveSpeed = CVector::zero;
-		}
-		// 攻撃に合わせてプレイヤーを移動
-		if (ATTACK_UP_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= ATTACK_UP_END_FRAME)
-		{
-			mMoveSpeed += anglevec * ATTACK_UP_MOVE_SPEED;
-		}
-		// モーションに合わせてジャンプを行う
-		if (ATTACK_UP_JUMPSTART_FRAME == GetAnimationFrame())
-		{
-			mMoveSpeed += CVector(0.0f, ATTACK_UP_JUMP_SPEED, 0.0f);
-			mIsGrounded = false;
-		}
-		break;
-	case (int)EAnimType::eAirAttack1_1:// 空中攻撃1-1処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eAirAttackWait1_1);
-		}
-		// 攻撃中は落下しない
-		mMoveSpeed += -mMoveSpeed;
-		break;
-	case (int)EAnimType::eAirAttack1_2:// 空中攻撃1-2処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eAirAttackWait1_2);
-		}
-		// 攻撃中は落下しない
-		mMoveSpeed += -mMoveSpeed;
-		break;
-	case (int)EAnimType::eAirAttack1_3:// 空中攻撃1-3処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackWait;
-			ChangeAnimation(EAnimType::eAirAttackWait1_3);
-		}
-		// 攻撃中は落下しない
-		mMoveSpeed += -mMoveSpeed;
-		break;
-	case (int)EAnimType::eAirAttack1_4:// 空中攻撃1-4処理
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eAirAttackEnd1_4);
-		}
-		// 攻撃中は落下しない
-		mMoveSpeed += -mMoveSpeed;
-		break;
-	}
-
-}
-
-// 攻撃終了待ち
-void CPlayer::Update_AttackWait()
-{
-	switch (AnimationIndex())
-	{
-	case (int)EAnimType::eNormalWait1_1:// 通常攻撃1-1
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 通常攻撃1-2へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eNormalAttack1_2);
-		}
-		else if (CInput::PushKey(VK_MBUTTON))
-		{
-			// ジャンプ攻撃へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eAttack_Up);
-		}
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eNormalEnd1_1);
-		}
-		break;
-	case (int)EAnimType::eNormalWait1_2:// 通常攻撃1-2
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 通常攻撃1-3へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eNormalAttack1_3);
-		}
-		else if (CInput::PushKey(VK_MBUTTON))
-		{
-			// ジャンプ攻撃へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eAttack_Up);
-		}
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eNormalEnd1_2);
-		}
-		break;
-	case (int)EAnimType::eNormalWait1_3:// 通常攻撃1-3
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 通常攻撃1-1へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eNormalAttack1_1);
-		}
-		else if (CInput::PushKey(VK_MBUTTON))
-		{
-			// ジャンプ攻撃へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eAttack_Up);
-		}
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eNormalEnd1_3);
-		}
-		break;
-	case (int)EAnimType::eIdleAir_Combat:// ジャンプ攻撃
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 空中攻撃1-1へ切り替え
-			mState = EState::eAttack; 
-			ChangeAnimation(EAnimType::eAirAttack1_1);
-			mIsAirAttack = true;
-		}
-		break;
-	case (int)EAnimType::eAirAttackWait1_1:// 空中攻撃1-1
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 空中攻撃1-2へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eAirAttack1_2);
-		}
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eAirAttackEnd1_1);
-		}
-		// 攻撃中は落下しない
-		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
-		break;
-	case (int)EAnimType::eAirAttackWait1_2:// 空中攻撃1-2
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 空中攻撃1-3へ切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eAirAttack1_3);
-		}
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eAirAttackEnd1_2);
-		}
-		// 攻撃中は落下しない
-		mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
-		break;
-	case (int)EAnimType::eAirAttackWait1_3:
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			// 空中攻撃1-4に切り替え
-			mState = EState::eAttack;
-			ChangeAnimation(EAnimType::eAirAttack1_4);
-		}
-		if (IsAnimationFinished())
-		{
-			mState = EState::eAttackEnd;
-			ChangeAnimation(EAnimType::eAirAttackEnd1_3);
-		}
-		mMoveSpeed += -mMoveSpeed;
-		break;
-	}
-	// 攻撃待ちモーションの間に何も入力がなければ、
-	// アイドル状態に移行する
-	if (IsAnimationFinished())
-	{
-		// 待機状態へ移行
-		mState = EState::eIdle;
-	}
-
-	if (mIsGrounded)
-	{
-		// 攻撃待ちモーション中に移動＋回避キーの入力があれば
-		// 回避状態へ移行する
-		if (CInput::Key('W') || CInput::Key('A') ||
-			CInput::Key('S') || CInput::Key('D'))
-		{
-			if (CInput::PushKey(VK_SPACE))
-			{
-				mState = EState::eAvoidance;
-				ChangeAnimation(EAnimType::eRollStart_Combat);
-			}
-		}
-	}
-}
-
-// 攻撃終了
-void CPlayer::Update_AttackEnd()
-{
-	if (mIsGrounded)
-	{
-		// 移動キーが入力されたら移動状態へ移行する
-		if (CInput::Key('W') || CInput::Key('A') ||
-			CInput::Key('S') || CInput::Key('D'))
-		{
-			mState = EState::eMove;
-			ChangeAnimation(EAnimType::eRunStart_Combat);
-			// 回避動作への切り替え
-			if (CInput::PushKey(VK_SPACE))
-			{
-				mState = EState::eAvoidance;
-				ChangeAnimation(EAnimType::eRollStart_Combat);
-			}
-		}
-	}
-	// 攻撃終了モーションが終了したら待機状態へ移行する
-	if (IsAnimationFinished())
-	{
-		mState = EState::eIdle;
-	}
-}
+//// 攻撃終了待ち
+//void CPlayer::Update_AttackWait()
+//{
+//	//switch (AnimationIndex())
+//	//{
+//	//case (int)EAnimType::eNormalWait1_1:// 通常攻撃1-1
+//	//	if (CInput::PushKey(VK_LBUTTON))
+//	//	{
+//	//		// 通常攻撃1-2へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eNormalAttack1_2);
+//	//	}
+//	//	else if (CInput::PushKey(VK_MBUTTON))
+//	//	{
+//	//		// ジャンプ攻撃へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eAttack_Up);
+//	//	}
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackEnd;
+//	//		ChangeAnimation(EAnimType::eNormalEnd1_1);
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eNormalWait1_2:// 通常攻撃1-2
+//	//	if (CInput::PushKey(VK_LBUTTON))
+//	//	{
+//	//		// 通常攻撃1-3へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eNormalAttack1_3);
+//	//	}
+//	//	else if (CInput::PushKey(VK_MBUTTON))
+//	//	{
+//	//		// ジャンプ攻撃へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eAttack_Up);
+//	//	}
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackEnd;
+//	//		ChangeAnimation(EAnimType::eNormalEnd1_2);
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eNormalWait1_3:// 通常攻撃1-3
+//	//	if (CInput::PushKey(VK_LBUTTON))
+//	//	{
+//	//		// 通常攻撃1-1へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eNormalAttack1_1);
+//	//	}
+//	//	else if (CInput::PushKey(VK_MBUTTON))
+//	//	{
+//	//		// ジャンプ攻撃へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eAttack_Up);
+//	//	}
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackEnd;
+//	//		ChangeAnimation(EAnimType::eNormalEnd1_3);
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eIdleAir_Combat:// ジャンプ攻撃
+//	//	if (CInput::PushKey(VK_LBUTTON))
+//	//	{
+//	//		// 空中攻撃1-1へ切り替え
+//	//		mState = EState::eAttack; 
+//	//		ChangeAnimation(EAnimType::eAirAttack1_1);
+//	//		mIsAirAttack = true;
+//	//	}
+//	//	break;
+//	//case (int)EAnimType::eAirAttackWait1_1:// 空中攻撃1-1
+//		//if (CInput::PushKey(VK_LBUTTON))
+//		//{
+//		//	// 空中攻撃1-2へ切り替え
+//		//	mState = EState::eAttack;
+//		//	ChangeAnimation(EAnimType::eAirAttack1_2);
+//		//}
+//		//if (IsAnimationFinished())
+//		//{
+//		//	mState = EState::eAttackEnd;
+//		//	ChangeAnimation(EAnimType::eAirAttackEnd1_1);
+//		//}
+//		//// 攻撃中は落下しない
+//		//mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+//	//	break;
+//	//case (int)EAnimType::eAirAttackWait1_2:// 空中攻撃1-2
+//	//	if (CInput::PushKey(VK_LBUTTON))
+//	//	{
+//	//		// 空中攻撃1-3へ切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eAirAttack1_3);
+//	//	}
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackEnd;
+//	//		ChangeAnimation(EAnimType::eAirAttackEnd1_2);
+//	//	}
+//	//	// 攻撃中は落下しない
+//	//	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+//	//	break;
+//	//case (int)EAnimType::eAirAttackWait1_3:
+//	//	if (CInput::PushKey(VK_LBUTTON))
+//	//	{
+//	//		// 空中攻撃1-4に切り替え
+//	//		mState = EState::eAttack;
+//	//		ChangeAnimation(EAnimType::eAirAttack1_4);
+//	//	}
+//	//	if (IsAnimationFinished())
+//	//	{
+//	//		mState = EState::eAttackEnd;
+//	//		ChangeAnimation(EAnimType::eAirAttackEnd1_3);
+//	//	}
+//	//	mMoveSpeed += -mMoveSpeed;
+//	//	break;
+//	//}
+//	// 攻撃待ちモーションの間に何も入力がなければ、
+//	// アイドル状態に移行する
+//	//if (IsAnimationFinished())
+//	//{
+//	//	// 待機状態へ移行
+//	//	mState = EState::eIdle;
+//	//}
+//
+//	//if (mIsGrounded)
+//	//{
+//	//	// 攻撃待ちモーション中に移動＋回避キーの入力があれば
+//	//	// 回避状態へ移行する
+//	//	if (CInput::Key('W') || CInput::Key('A') ||
+//	//		CInput::Key('S') || CInput::Key('D'))
+//	//	{
+//	//		if (CInput::PushKey(VK_SPACE))
+//	//		{
+//	//			mState = EState::eAvoidance;
+//	//			ChangeAnimation(EAnimType::eRollStart_Combat);
+//	//		}
+//	//	}
+//	//}
+//}
 
 // 更新
 void CPlayer::Update()
@@ -837,14 +760,6 @@ void CPlayer::Update()
 		// 攻撃
 		case EState::eAttack:
 			Update_Attack();
-			break;
-		// 攻撃待ち
-		case EState::eAttackWait:
-			Update_AttackWait();
-			break;
-		// 攻撃終了
-		case EState::eAttackEnd:
-			Update_AttackEnd();
 			break;
 	}
 

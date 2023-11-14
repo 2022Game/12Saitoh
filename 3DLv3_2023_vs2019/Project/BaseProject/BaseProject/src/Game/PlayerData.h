@@ -67,7 +67,6 @@ const PlayerData::AnimData PlayerData::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\landing.x",					false,	35.0f	},	// 着地動作(納刀)
 	{ "Character\\Player\\anim\\landing_combat.x",			false,	35.0f	},	// 着地動作(抜刀)
 };
-
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Player\\player.x"
 
