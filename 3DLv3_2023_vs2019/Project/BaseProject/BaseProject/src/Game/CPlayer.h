@@ -5,6 +5,9 @@
 #include "CRideableObject.h"
 #include "CSword.h"
 #include "PlayerData.h"
+#include "CInput.h"
+#include "CCamera.h"
+
 /*
 プレイヤークラス
 キャラクタクラスを継承

@@ -77,6 +77,9 @@
     <Filter Include="ソース ファイル\Test\CollisionTest">
       <UniqueIdentifier>{f022cc2d-943f-4756-8b87-c1676a756df2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Player\Player_Update">
+      <UniqueIdentifier>{f4f22512-4788-4b96-a2e0-d2018f6bc3cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -268,11 +271,20 @@
     <ClCompile Include="src\Test\CMeasure.cpp">
       <Filter>ソース ファイル\Test\CollisionTest</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\PlayerUpdate_Attack.cpp">
-      <Filter>ソース ファイル\Game\Character\Player</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\PlayerData.cpp">
       <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\PlayerUpdate_Attack.cpp">
+      <Filter>ソース ファイル\Game\Character\Player\Player_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\PlayerUpdate_Idle.cpp">
+      <Filter>ソース ファイル\Game\Character\Player\Player_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\PlayerUpdate_Move.cpp">
+      <Filter>ソース ファイル\Game\Character\Player\Player_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\PlayerUpdate_Avoidance.cpp">
+      <Filter>ソース ファイル\Game\Character\Player\Player_Update</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

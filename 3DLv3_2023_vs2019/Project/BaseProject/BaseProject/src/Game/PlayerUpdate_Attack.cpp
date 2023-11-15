@@ -1,6 +1,4 @@
 #include "CPlayer.h"
-#include "CInput.h"
-#include "CCamera.h"
 
 #define ATTACKSTEP_END 2	// 攻撃終了の処理のタイミング
 

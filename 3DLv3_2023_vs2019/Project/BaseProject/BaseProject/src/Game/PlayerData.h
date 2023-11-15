@@ -27,13 +27,21 @@ private:
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Player\\player.x"
 
-#define PLAYER_HEIGHT	1.8f
+#define PLAYER_HEIGHT	1.8f	
 #define MOVE_SPEED		1.0f	// 走る速度
 #define FASTMOVE_SPEED	1.5f	// ダッシュ速度
 #define ROLL_SPEED		1.3f	// 回避速度
-#define JUMP_SPEED		1.5f
-#define GRAVITY			0.0625f
-#define JUMP_END_Y		1.0f
+#define GRAVITY			0.0625f	// 重力
+
+#define PLAYER_ATK		100		// 攻撃力
+#define PLAYER_DEF		100		// 防御力
+#define PLAYER_HP		100		// HP
+#define PLAYER_MAX_HP	100		// HPの最大値
+#define PLAYER_SP		100		// スタミナ
+#define PLAYER_MAX_SP	100		// スタミナの最大値
+#define PLAYER_TOUKI	0		// 闘気ゲージ
+#define PLAYER_MAX_TOUKI300		// 闘気ゲージの最大値
+
 // プレイヤー抜刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_DRAWN_IDLE_FRAME 35
 // プレイヤー納刀状態へ切り替えるフレーム(待機状態中)
