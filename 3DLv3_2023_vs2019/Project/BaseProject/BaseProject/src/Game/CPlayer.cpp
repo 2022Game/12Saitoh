@@ -15,7 +15,7 @@ CPlayer::CPlayer()
 	, mIsGrounded(false)
 	, mIsDrawn(false)
 	, mIsAirAttack(false)
-	, AttackStep(0)
+	, mAttackStep(0)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -26,10 +26,11 @@ CPlayer::CPlayer()
 	model->Load(MODEL_PATH);
 
 	// テーブル内のアニメーションデータを読み込み
-	int size = ARRAY_SIZE(PlayerData::ANIM_DATA);
+	//int size = ARRAY_SIZE(PlayerData::ANIM_DATA);
+	int size = PlayerData::GetAnimDataSize();
 	for (int i = 0; i < size; i++)
 	{
-		const PlayerData::AnimData& data = PlayerData::ANIM_DATA[i];
+		const PlayerData::AnimData& data = PlayerData::GetAnimData(i);
 		if (data.path.empty()) continue;
 		model->AddAnimationSet(data.path.c_str());
 	}
@@ -65,7 +66,7 @@ CPlayer* CPlayer::Instance()
 void CPlayer::ChangeAnimation(EAnimType type)
 {
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
-	PlayerData::AnimData data = PlayerData::ANIM_DATA[(int)type];
+	PlayerData::AnimData data = PlayerData::GetAnimData((int)type);
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
 
@@ -805,6 +806,7 @@ void CPlayer::Update()
 	else if (mState == EState::eAttackWait)	CDebugPrint::Print("攻撃待ち状態\n");
 	else if (mState == EState::eAttackEnd)	CDebugPrint::Print("攻撃終了状態\n");
 
+	CDebugPrint::Print("AttackStep : %d", mAttackStep);
 #endif
 }
 

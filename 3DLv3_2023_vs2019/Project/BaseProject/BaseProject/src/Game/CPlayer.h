@@ -163,7 +163,7 @@ private:
 	bool mIsDrawn;		// ”[“ó‘Ô‚©”²“ó‘Ô‚©”»’è true:”²“ false:”[“
 	bool mIsAirAttack;	// ‹ó’†UŒ‚‚ğs‚Á‚½‚©‚Ç‚¤‚©
 	
-	int AttackStep;
+	int mAttackStep;	// UŒ‚‚Ì’iŠK 0:UŒ‚@1:UŒ‚‘Ò‚¿ 2:UŒ‚I—¹
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	CSword* mpSword;

@@ -66,12 +66,12 @@ void CPlayer::Update_NormalAttack1()
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
 
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalWait1_1);
 		}
 		// UŒ‚‚É‡‚í‚¹‚ÄƒvƒŒƒCƒ„[‚ğˆÚ“®
@@ -85,18 +85,18 @@ void CPlayer::Update_NormalAttack1()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ’ÊíUŒ‚1-2‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eNormalAttack1_2);
 		}
 		else if (CInput::PushKey(VK_MBUTTON))
 		{
 			// ƒWƒƒƒ“ƒvUŒ‚‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAttack_Up);
 		}
 		if (IsAnimationFinished())
 		{
-			AttackStep = 2;
+			mAttackStep = 2;
 			ChangeAnimation(EAnimType::eNormalEnd1_1);
 		}
 		Update_AttackWait();
@@ -110,12 +110,12 @@ void CPlayer::Update_NormalAttack2()
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
 
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalWait1_2);
 		}
 		// UŒ‚‚É‡‚í‚¹‚ÄƒvƒŒƒCƒ„[‚ğˆÚ“®
@@ -129,18 +129,18 @@ void CPlayer::Update_NormalAttack2()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ’ÊíUŒ‚1-3‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eNormalAttack1_3);
 		}
 		else if (CInput::PushKey(VK_MBUTTON))
 		{
 			// ƒWƒƒƒ“ƒvUŒ‚‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAttack_Up);
 		}
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalEnd1_2);
 		}
 		Update_AttackWait();
@@ -153,12 +153,12 @@ void CPlayer::Update_NormalAttack3()
 {
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalWait1_3);
 		}
 		// UŒ‚‚É‡‚í‚¹‚ÄƒvƒŒƒCƒ„[‚ğˆÚ“®
@@ -172,18 +172,18 @@ void CPlayer::Update_NormalAttack3()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ’ÊíUŒ‚1-1‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eNormalAttack1_1);
 		}
 		else if (CInput::PushKey(VK_MBUTTON))
 		{
 			// ƒWƒƒƒ“ƒvUŒ‚‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAttack_Up);
 		}
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalEnd1_3);
 		}
 		Update_AttackWait();
@@ -196,12 +196,12 @@ void CPlayer::Update_AttackUp()
 {
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eIdleAir_Combat);
 			mMoveSpeed = CVector::zero;
 		}
@@ -222,7 +222,7 @@ void CPlayer::Update_AttackUp()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ‹ó’†UŒ‚1-1‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAirAttack1_1);
 			mIsAirAttack = true;
 		}
@@ -236,12 +236,12 @@ void CPlayer::Update_AirAttack1()
 {
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackWait1_1);
 		}
 		// UŒ‚’†‚Í—‰º‚µ‚È‚¢
@@ -251,12 +251,12 @@ void CPlayer::Update_AirAttack1()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ‹ó’†UŒ‚1-2‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAirAttack1_2);
 		}
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackEnd1_1);
 		}
 		// UŒ‚’†‚Í—‰º‚µ‚È‚¢
@@ -270,12 +270,12 @@ void CPlayer::Update_AirAttack2()
 {
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackWait1_2);
 		}
 		// UŒ‚’†‚Í—‰º‚µ‚È‚¢
@@ -285,12 +285,12 @@ void CPlayer::Update_AirAttack2()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ‹ó’†UŒ‚1-3‚ÖØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAirAttack1_3);
 		}
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackEnd1_2);
 		}
 		// UŒ‚’†‚Í—‰º‚µ‚È‚¢
@@ -304,12 +304,12 @@ void CPlayer::Update_AirAttack3()
 {
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
-	switch (AttackStep)
+	switch (mAttackStep)
 	{
 	case 0:
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackWait1_3);
 		}
 		// UŒ‚’†‚Í—‰º‚µ‚È‚¢
@@ -319,12 +319,12 @@ void CPlayer::Update_AirAttack3()
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// ‹ó’†UŒ‚1-4‚ÉØ‚è‘Ö‚¦
-			AttackStep = 0;
+			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAirAttack1_4);
 		}
 		if (IsAnimationFinished())
 		{
-			AttackStep++;
+			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackEnd1_3);
 		}
 		mMoveSpeed += -mMoveSpeed;
@@ -339,7 +339,7 @@ void CPlayer::Update_AirAttack4()
 	Update_AttackAngleVec(&anglevec);
 	if (IsAnimationFinished())
 	{
-		AttackStep += 2;
+		mAttackStep += 2;
 		ChangeAnimation(EAnimType::eAirAttackEnd1_4);
 	}
 	// UŒ‚’†‚Í—‰º‚µ‚È‚¢
@@ -356,7 +356,7 @@ void CPlayer::Update_AttackWait()
 	{
 		// ‘Ò‹@ó‘Ô‚ÖˆÚs
 		mState = EState::eIdle;
-		AttackStep = 0;
+		mAttackStep = 0;
 	}
 
 	if (mIsGrounded)
@@ -366,9 +366,9 @@ void CPlayer::Update_AttackWait()
 		if (CInput::Key('W') || CInput::Key('A') ||
 			CInput::Key('S') || CInput::Key('D'))
 		{
-			AttackStep = 0;
 			if (CInput::PushKey(VK_SPACE))
 			{
+				mAttackStep = 0;
 				mState = EState::eAvoidance;
 				ChangeAnimation(EAnimType::eRollStart_Combat);
 			}
@@ -385,7 +385,7 @@ void CPlayer::Update_AttackEnd()
 		if (CInput::Key('W') || CInput::Key('A') ||
 			CInput::Key('S') || CInput::Key('D'))
 		{
-			AttackStep = 0;
+			mAttackStep = 0;
 			mState = EState::eMove;
 			ChangeAnimation(EAnimType::eRunStart_Combat);
 			// ‰ñ”ğ“®ì‚Ö‚ÌØ‚è‘Ö‚¦
@@ -399,7 +399,7 @@ void CPlayer::Update_AttackEnd()
 	// UŒ‚I—¹ƒ‚[ƒVƒ‡ƒ“‚ªI—¹‚µ‚½‚ç‘Ò‹@ó‘Ô‚ÖˆÚs‚·‚é
 	if (IsAnimationFinished())
 	{
-		AttackStep = 0;
+		mAttackStep = 0;
 		mState = EState::eIdle;
 	}
 }
@@ -456,7 +456,7 @@ void CPlayer::Update_Attack()
 		break;
 	}
 
-	if (AttackStep == ATTACKSTEP_END)
+	if (mAttackStep == ATTACKSTEP_END)
 	{
 		// UŒ‚I—¹ˆ—‚ğÀs
 		Update_AttackEnd();
