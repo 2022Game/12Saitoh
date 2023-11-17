@@ -47,8 +47,13 @@ std::vector<PlayerData::AnimData> PlayerData::ANIM_DATA =
 	{ "Character\\Player\\anim\\attackwait_air_1-3.x",		false,	14.0f	},	// 空中攻撃1-3攻撃待ち
 	{ "Character\\Player\\anim\\attackend_air_1-3.x",		false,	22.0f	},	// 空中攻撃1-3終了
 	{ "Character\\Player\\anim\\attack_air_1-4.x",			false,	20.0f	},	// 空中攻撃1-4
-	{ "Character\\Player\\anim\\attackend_air_1-4.x",		false,	34.0f	},	// 通常攻撃1-4終了
+	{ "Character\\Player\\anim\\attackend_air_1-4.x",		false,	34.0f	},	// 空中攻撃1-4終了
 	{ "Character\\Player\\anim\\attack_up.x",				false,	59.0f	},	// ジャンプ攻撃
+	{ "Character\\Player\\anim\\parry_counter_attack.x",	false,	81.0f	},	// カウンター攻撃
+	{ "Character\\Player\\anim\\parry_counter_attack_end.x",false,	30.0f	},	// カウンター攻撃終了
+	{ "Character\\Player\\anim\\attack_counter_start.x",	false,	25.0f	},	// カウンター構え開始
+	{ "Character\\Player\\anim\\attack_counter_loop.x",		true,	164.0f	},	// カウンター構え中
+	{ "Character\\Player\\anim\\attack_counter_end.x",		false,	46.0f	},	// カウンター構え終了
 	{ "Character\\Player\\anim\\landing.x",					false,	35.0f	},	// 着地動作(納刀)
 	{ "Character\\Player\\anim\\landing_combat.x",			false,	35.0f	},	// 着地動作(抜刀)
 };
