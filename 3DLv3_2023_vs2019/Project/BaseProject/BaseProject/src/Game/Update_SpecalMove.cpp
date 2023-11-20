@@ -82,5 +82,28 @@ void CPlayer::Update_Weak_SpecalMove()
 // ã≠ì¨ãZèàóù
 void CPlayer::Update_Strong_SpecalMove()
 {
+	switch (mAttackStep)
+	{
+	case 0:// ã≠çUåÇç\Ç¶äJén
+		if (IsAnimationFinished())
+		{
+			mAttackStep++;
+			ChangeAnimation(EAnimType::ePowerAttack_Loop);
+		}
+		break;
+	case 1:// ã≠çUåÇç\Ç¶íÜ
+		if (IsAnimationFinished())
+		{
+			mAttackStep++;
+			ChangeAnimation(EAnimType::ePowerAttack);
+		}
+		else if (CInput::PushKey(VK_LBUTTON))
+		{
+			mAttackStep++;
+			ChangeAnimation(EAnimType::ePowerAttack);
+		}
+		break;
+	case 3:// ã≠ì¨ãZ
 
+	}
 }

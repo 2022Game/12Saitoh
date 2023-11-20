@@ -79,6 +79,9 @@ enum class EAnimType
 	eCounter_Start,			// カウンター構え開始
 	eCounter_Loop,			// カウンター構え中
 	eCounter_End,			// カウンター構え終了
+	ePowerAttack_Start,		// 強闘技構え開始
+	ePowerAttack_Loop,		// 強闘技構え中
+	ePowerAttack,			// 強闘技攻撃
 	eLanding,				// 着地動作(納刀)
 	eLandin_Combat,			// 着地動作(抜刀)
 	Num

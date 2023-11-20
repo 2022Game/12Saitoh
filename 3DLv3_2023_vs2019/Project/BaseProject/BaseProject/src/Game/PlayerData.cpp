@@ -54,6 +54,9 @@ std::vector<PlayerData::AnimData> PlayerData::ANIM_DATA =
 	{ "Character\\Player\\anim\\attack_counter_start.x",	false,	25.0f	},	// カウンター構え開始
 	{ "Character\\Player\\anim\\attack_counter_loop.x",		true,	164.0f	},	// カウンター構え中
 	{ "Character\\Player\\anim\\attack_counter_end.x",		false,	46.0f	},	// カウンター構え終了
+	{ "Character\\Player\\anim\\powerattack_start.x",		false,	20.0f	},	// 強闘技構え開始
+	{ "Character\\Player\\anim\\powerattack_loop.x",		true,	45.0f	},	// 強闘技構え中
+	{ "Character\\Player\\anim\\powerattack.x",				false,	139.0f	},	// 強闘技攻撃
 	{ "Character\\Player\\anim\\landing.x",					false,	35.0f	},	// 着地動作(納刀)
 	{ "Character\\Player\\anim\\landing_combat.x",			false,	35.0f	},	// 着地動作(抜刀)
 };
