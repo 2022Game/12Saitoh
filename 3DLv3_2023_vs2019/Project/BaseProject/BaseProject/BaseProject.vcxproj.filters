@@ -286,6 +286,9 @@
     <ClCompile Include="src\Game\PlayerUpdate_Avoidance.cpp">
       <Filter>ソース ファイル\Game\Character\Player\Player_Update</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\Update_SpecalMove.cpp">
+      <Filter>ソース ファイル\Game\Character\Player\Player_Update</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">

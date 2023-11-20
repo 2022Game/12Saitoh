@@ -13,6 +13,7 @@ CPlayer::CPlayer()
 	, mIsGrounded(false)
 	, mIsDrawn(false)
 	, mIsAirAttack(false)
+	, mIsCounter(false)
 	, mAttackStep(0)
 	, mpRideObject(nullptr)
 {
@@ -154,6 +155,10 @@ void CPlayer::Update()
 		case EState::eAttack:
 			Update_Attack();
 			break;
+		// 闘技
+		case EState::eSpecalMove:
+			Update_SpecialMove();
+			break;
 	}
 
 	// 特定の条件をクリアしている場合抜納を切り替える
@@ -195,6 +200,7 @@ void CPlayer::Update()
 	else if (mState == EState::eFastMove)	CDebugPrint::Print("ダッシュ状態\n");
 	else if (mState == EState::eAvoidance)	CDebugPrint::Print("回避状態\n");
 	else if (mState == EState::eAttack)		CDebugPrint::Print("攻撃状態\n");
+	else if (mState == EState::eSpecalMove) CDebugPrint::Print("闘技状態\n");
 
 	CDebugPrint::Print("攻撃力 : %d\n", mStatas.atk);
 	CDebugPrint::Print("防御力 : %d\n", mStatas.def);
@@ -202,6 +208,11 @@ void CPlayer::Update()
 	CDebugPrint::Print("スタミナ : %d\n", mStatas.sp);
 	CDebugPrint::Print("闘気ゲージ : %d\n", mStatas.touki);
 
+	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
+	if (CInput::PushKey('Q'))
+	{
+		mIsCounter = true;
+	}
 #endif
 }
 

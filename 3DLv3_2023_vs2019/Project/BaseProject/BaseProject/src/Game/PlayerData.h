@@ -100,6 +100,9 @@ enum class EAnimType
 #define PLAYER_MAX_SP	100		// スタミナの最大値
 #define PLAYER_TOUKI	0		// 闘気ゲージ
 #define PLAYER_MAX_TOUKI300		// 闘気ゲージの最大値
+#define ATTACKSTEP_END -1		// 攻撃終了の段階
+#define ATTACKSTEP_COUNTER 3	// カウンターの段階
+
 
 // プレイヤー抜刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_DRAWN_IDLE_FRAME 35

@@ -21,10 +21,10 @@ std::vector<PlayerData::AnimData> PlayerData::ANIM_DATA =
 	{ "Character\\Player\\anim\\fastrun_start.x",			false,	11.0f	},	// ダッシュ開始
 	{ "Character\\Player\\anim\\fastrun_loop.x",			true,	28.0f	},	// ダッシュ	
 	{ "Character\\Player\\anim\\fastrun_end.x",				false,	52.0f	},	// ダッシュ終了
-	{ "Character\\Player\\anim\\roll_start.x",				false,	25.0f	},	// 回避動作開始(納刀)
-	{ "Character\\Player\\anim\\roll_end_idle.x",			false,	25.0f	},	// 回避動作からアイドルへ移行(納刀)
+	{ "Character\\Player\\anim\\roll_start.x",				false,	20.0f	},	// 回避動作開始(納刀)
+	{ "Character\\Player\\anim\\roll_end_idle.x",			false,	20.0f	},	// 回避動作からアイドルへ移行(納刀)
 	{ "Character\\Player\\anim\\roll_end_run.x",			false,	20.0f	},	// 回避動作から走りへ移行(納刀)
-	{ "Character\\Player\\anim\\roll_combat.x",				false,	25.0f	},	// 回避動作開始(抜刀)
+	{ "Character\\Player\\anim\\roll_combat.x",				false,	20.0f	},	// 回避動作開始(抜刀)
 	{ "Character\\Player\\anim\\roll_end_combat_idle.x",	false,	20.0f	},	// 回避動作からアイドルへ移行(抜刀)
 	{ "Character\\Player\\anim\\roll_end_combat_run.x",		false,	19.0f	},	// 回避動作から走りへ移行(抜刀)
 	{ "Character\\Player\\anim\\run_attack.x",				false,	125.0f	},	// 走り後攻撃

@@ -70,6 +70,7 @@
     <ClCompile Include="src\Game\PlayerUpdate_Avoidance.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Idle.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Move.cpp" />
+    <ClCompile Include="src\Game\Update_SpecalMove.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
     <ClCompile Include="src\Test\CColBase.cpp" />
