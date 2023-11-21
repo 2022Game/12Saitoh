@@ -170,13 +170,16 @@ void CPlayer::Update()
 	// 移動
 	Position(Position() + mMoveSpeed);
 
-	// プレイヤーを移動方向へ向ける
-	CVector current = VectorZ();
-	CVector target = mMoveSpeed;
-	target.Y(0.0f);
-	target.Normalize();
-	CVector forward = CVector::Slerp(current, target, 0.125f);
-	Rotation(CQuaternion::LookRotation(forward));
+	if (mState != EState::eSpecalMove)
+	{
+		// プレイヤーを移動方向へ向ける
+		CVector current = VectorZ();
+		CVector target = mMoveSpeed;
+		target.Y(0.0f);
+		target.Normalize();
+		CVector forward = CVector::Slerp(current, target, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
 
 	// キャラクターの更新
 	CXCharacter::Update();

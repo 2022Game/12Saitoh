@@ -59,6 +59,8 @@ public:
 	void Update_Weak_SpecalMove();
 	// ‹­“¬‹Zˆ—
 	void Update_Strong_SpecalMove();
+	// ‹­“¬‹Z’†‚ÌƒvƒŒƒCƒ„[‚ÌˆÚ“®ˆ—
+	void Strong_SpecalMove_Move();
 	// ‰ñ”ğ“®ì
 	void Update_Avoidance();
 

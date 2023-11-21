@@ -47,6 +47,12 @@ void CPlayer::Update_Idle()
 				mState = EState::eSpecalMove;
 				ChangeAnimation(EAnimType::eCounter_Start);
 			}
+			// Cキー＋右クリックで強闘技へ移行
+			if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
+			{
+				mState = EState::eSpecalMove;
+				ChangeAnimation(EAnimType::ePowerAttack_Start);
+			}
 			// Eキーで納刀
 			if (CInput::PushKey('E'))
 			{

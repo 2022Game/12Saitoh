@@ -147,3 +147,56 @@ enum class EAnimType
 #define ATTACK_UP_JUMPSTART_FRAME 26
 // ジャンプ攻撃のジャンプ初速度
 #define ATTACK_UP_JUMP_SPEED 2.5f
+
+/* 強闘技 */
+// 一度目の移動するフレーム区間(始め)
+#define POWERATTACK1_START 0
+// 一度目の移動するフレーム区間(終わり)
+#define POWERATTACK1_END 5
+//　一度目の移動方向ベクトル
+#define POWERATTACK1_VEC CVector(0.0f, 0.0f, -1.0f)
+
+// 二度目の移動するフレーム区間(始め)
+#define POWERATTACK2_START 8
+// 二度目の移動するフレーム区間(終わり)
+#define POWERATTACK2_END 12
+//　二度目の移動方向ベクトル
+#define POWERATTACK2_VEC CVector(-1.0f, 0.0f, 1.0f)
+
+// 三度目の移動するフレーム区間(始め)
+#define POWERATTACK3_START 16
+// 三度目の移動するフレーム区間(終わり)
+#define POWERATTACK3_END 20
+// 三度目の移動方向ベクトル
+#define POWERATTACK3_VEC CVector(1.0f, 0.0f, 0.8f)
+
+// 四度目の移動するフレーム区間(始め)
+#define POWERATTACK4_START 24
+// 四度目の移動するフレーム区間(終わり)
+#define POWERATTACK4_END 30
+// 四度目の移動方向ベクトル
+#define POWERATTACK4_VEC CVector(-2.0f, 0.0f, 0.0f)
+
+// 五度目の移動するフレーム区間(始め)
+#define POWERATTACK5_START 36
+// 五度目の移動するフレーム区間(終わり)
+#define POWERATTACK5_END 41
+// 五度目の移動方向ベクトル
+#define POWERATTACK5_VEC CVector(4.0f, 0.0f, -2.0f)
+
+// 六度目の移動するフレーム区間(始め)
+#define POWERATTACK6_START 48
+// 六度目の移動するフレーム区間(終わり)
+#define POWERATTACK6_END 57
+// 六度目の移動方向ベクトル
+#define POWERATTACK6_VEC CVector(-1.0f, 0.1f, 1.0f)
+
+// 七度目の移動するフレーム区間(始め)
+#define POWERATTACK7_START 58
+// 七度目の移動するフレーム区間(終わり)
+#define POWERATTACK7_END 65
+// 七度目の移動方向ベクトル
+#define POWERATTACL7_VEC CVector(0.0f, 3.0f, 0.0f)
+
+// 強闘技の攻撃時の移動速度
+#define POWERATTACK_MOVESPEED 4.0f
