@@ -1,5 +1,6 @@
 #include "CPlayer.h"
 
+// プレイヤーの向いている方向のベクトルを取得
 void CPlayer::Update_AttackAngleVec(CVector *direction)
 {
 	mMoveSpeed.X(0.0f);

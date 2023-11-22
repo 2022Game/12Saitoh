@@ -212,6 +212,7 @@ void CPlayer::Update()
 	CDebugPrint::Print("“¬‹CƒQ[ƒW : %d\n", mStatas.touki);
 
 	CDebugPrint::Print("UŒ‚’iŠK : %d\n", mAttackStep);
+
 	if (CInput::PushKey('Q'))
 	{
 		mIsCounter = true;

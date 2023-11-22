@@ -1,8 +1,8 @@
 #include "CXCharacter.h"
 
 //コンストラクタ
-CXCharacter::CXCharacter(ETag tag, ETaskPriority prio)
-	: CCharaBase(tag, prio)
+CXCharacter::CXCharacter(ETag tag, ETaskPriority prio, int sortOrder, ETaskPauseType pause)
+	: CCharaBase(tag, prio, sortOrder, pause)
 	, mpModel(nullptr)
 	, mpCombinedMatrix(nullptr)
 	, mAnimationLoopFlg(false)
@@ -142,16 +142,22 @@ int CXCharacter::AnimationIndex()
 	return mAnimationIndex;
 }
 
+//指定したボーンの行列を取得
+const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
+{
+	//モデルデータが設定されていない
+	if (mpModel == nullptr) return nullptr;
+
+	//フレーム検索
+	CModelXFrame* frame = mpModel->FinedFrame(name.c_str());
+	//指定されたフレームが存在しなかった
+	if (frame == nullptr) return nullptr;
+
+	//フレームの行列を返す
+	return &frame->CombinedMatrix();
+}
+
 float CXCharacter::GetAnimationFrame()
 {
 	return mAnimationFrame;
-}
-
-// 指定したボーンの行列を取得
-const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
-{
-	if (mpModel == nullptr) return nullptr;
-	CModelXFrame* frame = mpModel->FinedFrame(name.c_str());
-	if (frame == nullptr) return nullptr;
-	return &frame->CombinedMatrix();
 }

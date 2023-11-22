@@ -5,12 +5,12 @@
 #include "CMaterial.h"
 #include "CCharaBase.h"
 
-
 class CXCharacter : public CCharaBase
 {
 public:
 	//コンストラクタ
-	CXCharacter(ETag tag, ETaskPriority prio);
+	CXCharacter(ETag tag, ETaskPriority prio, int sortOrder = 0,
+		ETaskPauseType pause = ETaskPauseType::eGame);
 	//デストラクタ
 	virtual ~CXCharacter();
 
@@ -29,10 +29,10 @@ public:
 
 	int AnimationIndex();	//アニメーションの番号の取得
 
-	float GetAnimationFrame(); //再生フレームを取得
-
-	// 指定したボーンの行列を取得
+	float GetAnimationFrame();	// 再生中のフレームを取得
+	//指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
+
 protected:
 	CModelX* mpModel;			//モデルデータ
 	CMatrix* mpCombinedMatrix;	//合成行列退避
