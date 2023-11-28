@@ -80,6 +80,9 @@
     <Filter Include="ソース ファイル\Game\Character\Player\Player_Update">
       <UniqueIdentifier>{f4f22512-4788-4b96-a2e0-d2018f6bc3cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\CutIn">
+      <UniqueIdentifier>{b0c6f3b1-2d8a-4212-ad46-5c0c403ab710}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -291,6 +294,15 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CGamePause.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutInCamera.cpp">
+      <Filter>ソース ファイル\Game\CutIn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutInTest.cpp">
+      <Filter>ソース ファイル\Game\CutIn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp">
+      <Filter>ソース ファイル\Game\CutIn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +524,15 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CGamePause.h">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInCamera.h">
+      <Filter>ソース ファイル\Game\CutIn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInTest.h">
+      <Filter>ソース ファイル\Game\CutIn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutIn_PowerAttack.h">
+      <Filter>ソース ファイル\Game\CutIn</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

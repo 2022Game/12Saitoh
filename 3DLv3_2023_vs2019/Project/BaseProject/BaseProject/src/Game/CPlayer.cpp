@@ -7,7 +7,8 @@ CPlayer* CPlayer::spInstance = nullptr;
 
 // コンストラクタ
 CPlayer::CPlayer()
-	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
+	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer,
+		0, ETaskPauseType::ePlayer)
 	, mState(EState::eIdle)
 	, mInput_save(CVector::zero)
 	, mIsGrounded(false)
@@ -53,6 +54,8 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
 }
 
 CPlayer::~CPlayer()
@@ -60,6 +63,8 @@ CPlayer::~CPlayer()
 	SAFE_DELETE(mpColliderLine);
 	SAFE_DELETE(mpModel);
 	SAFE_DELETE(mpSword);
+
+	mpCutIn_PowerAttack->Kill();
 }
 
 CPlayer* CPlayer::Instance()
@@ -129,6 +134,13 @@ void CPlayer::Update_SwitchDrawn()
 // 更新
 void CPlayer::Update()
 {
+	if (mpCutIn_PowerAttack->IsPlaying())
+	{
+		// キャラクターの更新
+		CXCharacter::Update();
+		return;
+	}
+
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 

@@ -52,6 +52,9 @@ void CPlayer::Update_Idle()
 			{
 				mState = EState::eSpecalMove;
 				ChangeAnimation(EAnimType::ePowerAttack_Start);
+				// カットインカメラの設定
+				mpCutIn_PowerAttack->Setup(this);
+				mpCutIn_PowerAttack->Start();
 			}
 			// Eキーで納刀
 			if (CInput::PushKey('E'))

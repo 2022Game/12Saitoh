@@ -8,6 +8,8 @@
 #define PAUSE_GAME (1 << 0)
 //メニューを開いた時
 #define PAUSE_MENU_OPEN (1 << 1)
+// カットイン再生時
+#define PAUSE_CUTIN (1 << 2)
 
 //------------------------------
 
@@ -20,7 +22,9 @@ enum class ETaskPauseType
 	eDefault = eNone,
 	//ゲーム中のオブジェクト
 	//（ゲームポーズ時とメニューを開いた時にポーズするTaskに設定）
-	eGame = PAUSE_GAME | PAUSE_MENU_OPEN,
+	eGame = PAUSE_GAME | PAUSE_MENU_OPEN | PAUSE_CUTIN,
+	// プレイヤー 
+	ePlayer = PAUSE_GAME | PAUSE_MENU_OPEN,
 	//メニュー内のオブジェクト
 	//（ゲームポーズ時のみポーズするTaskに設定）
 	eMenu = PAUSE_GAME,

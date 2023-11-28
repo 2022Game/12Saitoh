@@ -7,6 +7,7 @@
 #include "PlayerData.h"
 #include "CInput.h"
 #include "CCamera.h"
+#include "CCutIn_PowerAttack.h"
 
 /*
 プレイヤークラス
@@ -117,4 +118,5 @@ private:
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	CSword* mpSword;
+	CCutIn_PowerAttack* mpCutIn_PowerAttack;
 };
