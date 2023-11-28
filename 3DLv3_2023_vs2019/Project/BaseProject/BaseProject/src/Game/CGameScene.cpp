@@ -49,4 +49,5 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
+
 }
