@@ -134,12 +134,6 @@ void CPlayer::Update_SwitchDrawn()
 // 更新
 void CPlayer::Update()
 {
-	if (mpCutIn_PowerAttack->IsPlaying())
-	{
-		// キャラクターの更新
-		CXCharacter::Update();
-		return;
-	}
 
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
@@ -171,6 +165,13 @@ void CPlayer::Update()
 		case EState::eSpecalMove:
 			Update_SpecialMove();
 			break;
+	}
+
+	if (mpCutIn_PowerAttack->IsPlaying())
+	{
+		// キャラクターの更新
+		CXCharacter::Update();
+		return;
 	}
 
 	// 特定の条件をクリアしている場合抜納を切り替える
