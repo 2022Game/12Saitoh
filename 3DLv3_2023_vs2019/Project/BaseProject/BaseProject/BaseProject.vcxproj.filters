@@ -304,6 +304,12 @@
     <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp">
       <Filter>ソース ファイル\Game\CutIn</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CRect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBillBoardImage.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -533,6 +539,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCutIn_PowerAttack.h">
       <Filter>ソース ファイル\Game\CutIn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CRect.h">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBillBoardImage.h">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
