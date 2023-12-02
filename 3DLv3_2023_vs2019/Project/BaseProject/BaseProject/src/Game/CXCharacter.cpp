@@ -157,6 +157,19 @@ const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
 	return &frame->CombinedMatrix();
 }
 
+// キャラの最大ステータスを取得
+const CharaStatus& CXCharacter::MaxStatus() const
+{
+	return mCharaMaxStatus;
+}
+
+// キャラの現在ステータスを取得
+const CharaStatus& CXCharacter::Status() const
+{
+	return mCharaStatus;
+}
+
+// 再生中のアニメーションフレームを取得
 float CXCharacter::GetAnimationFrame()
 {
 	return mAnimationFrame;

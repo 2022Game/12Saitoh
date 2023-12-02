@@ -30,6 +30,7 @@
     <ClCompile Include="src\BaseSystem\CFont.cpp" />
     <ClCompile Include="src\BaseSystem\CCharaBase.cpp" />
     <ClCompile Include="src\BaseSystem\CGamePause.cpp" />
+    <ClCompile Include="src\BaseSystem\CharaStatus.cpp" />
     <ClCompile Include="src\BaseSystem\CInput.cpp" />
     <ClCompile Include="src\BaseSystem\CMaterial.cpp" />
     <ClCompile Include="src\BaseSystem\CMatrix.cpp" />
@@ -50,6 +51,7 @@
     <ClCompile Include="src\BaseSystem\CTransform.cpp" />
     <ClCompile Include="src\BaseSystem\CTriangle.cpp" />
     <ClCompile Include="src\BaseSystem\CUIBase.cpp" />
+    <ClCompile Include="src\BaseSystem\CUIGauge.cpp" />
     <ClCompile Include="src\BaseSystem\CVector.cpp" />
     <ClCompile Include="src\BaseSystem\CObjectBase.cpp" />
     <ClCompile Include="src\BaseSystem\Maths.cpp" />
@@ -62,11 +64,13 @@
     <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CGameScene.cpp" />
+    <ClCompile Include="src\Game\CHPGauge.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
     <ClCompile Include="src\Game\CMoveFloor.cpp" />
     <ClCompile Include="src\Game\CPlayer.cpp" />
     <ClCompile Include="src\Game\CRideabeObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloor.cpp" />
+    <ClCompile Include="src\Game\CSPGauge.cpp" />
     <ClCompile Include="src\Game\CSword.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CWeapon.cpp" />
@@ -107,6 +111,7 @@
     <ClInclude Include="src\BaseSystem\CFont.h" />
     <ClInclude Include="src\BaseSystem\CCharaBase.h" />
     <ClInclude Include="src\BaseSystem\CGamePause.h" />
+    <ClInclude Include="src\BaseSystem\CharaStatus.h" />
     <ClInclude Include="src\BaseSystem\CInput.h" />
     <ClInclude Include="src\BaseSystem\CMaterial.h" />
     <ClInclude Include="src\BaseSystem\CMatrix.h" />
@@ -129,6 +134,7 @@
     <ClInclude Include="src\BaseSystem\CTransform.h" />
     <ClInclude Include="src\BaseSystem\CTriangle.h" />
     <ClInclude Include="src\BaseSystem\CUIBase.h" />
+    <ClInclude Include="src\BaseSystem\CUIGauge.h" />
     <ClInclude Include="src\BaseSystem\CVector.h" />
     <ClInclude Include="src\BaseSystem\CVertex.h" />
     <ClInclude Include="src\BaseSystem\CObjectBase.h" />
@@ -148,11 +154,13 @@
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CField.h" />
     <ClInclude Include="src\Game\CGameScene.h" />
+    <ClInclude Include="src\Game\CHPGauge.h" />
     <ClInclude Include="src\Game\CImage.h" />
     <ClInclude Include="src\Game\CMoveFloor.h" />
     <ClInclude Include="src\Game\CPlayer.h" />
     <ClInclude Include="src\Game\CRideableObject.h" />
     <ClInclude Include="src\Game\CRotateFloor.h" />
+    <ClInclude Include="src\Game\CSPGauge.h" />
     <ClInclude Include="src\Game\CSword.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CWeapon.h" />

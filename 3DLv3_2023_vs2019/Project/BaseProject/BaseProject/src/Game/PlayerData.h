@@ -95,11 +95,8 @@ enum class EAnimType
 #define ROLL_SPEED		1.3f	// 回避速度
 #define GRAVITY			0.0625f	// 重力
 
-#define PLAYER_ATK		100		// 攻撃力
-#define PLAYER_DEF		100		// 防御力
-#define PLAYER_HP		100		// HP
+#define PLAYER_STATAS	0		// プレイヤーデータテーブル
 #define PLAYER_MAX_HP	100		// HPの最大値
-#define PLAYER_SP		100		// スタミナ
 #define PLAYER_MAX_SP	100		// スタミナの最大値
 #define PLAYER_TOUKI	0		// 闘気ゲージ
 #define PLAYER_MAX_TOUKI300		// 闘気ゲージの最大値

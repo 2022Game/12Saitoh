@@ -1,6 +1,8 @@
 //プレイヤークラスのインクルード
 #include "CPlayer.h"
 #include "CDebugPrint.h"
+#include "CHPGauge.h"
+#include "CSPGauge.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -17,6 +19,7 @@ CPlayer::CPlayer()
 	, mIsCounter(false)
 	, mAttackStep(0)
 	, mpRideObject(nullptr)
+
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -39,13 +42,6 @@ CPlayer::CPlayer()
 	// 最初は待機アニメーションを再生
 	ChangeAnimation(EAnimType::eIdle);
 
-	// ステータスの設定
-	mStatas.atk = PLAYER_ATK;
-	mStatas.def = PLAYER_DEF;
-	mStatas.hp = PLAYER_HP;
-	mStatas.sp = PLAYER_SP;
-	mStatas.touki = PLAYER_TOUKI;
-
 	//線分コライダの設定
 	mpColliderLine = new CColliderLine
 	(
@@ -56,6 +52,19 @@ CPlayer::CPlayer()
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
+
+	// プレイヤーのステータスを取得
+	mStatas = PLAYER_STATUS[PLAYER_STATAS];
+
+	// HPゲージを作成
+	mpHPGauge = new CHPGauge();
+	mpHPGauge->SetPos(10.0f, 10.0f);
+	mpHPGauge->SetMaxValue(mStatas.hp);
+
+	// SPゲージを作成
+	mpSPGauge = new CSPGauge();
+	mpSPGauge->SetPos(10.0f, 40.0f);
+	mpSPGauge->SetMaxValue(mStatas.sp);
 }
 
 CPlayer::~CPlayer()
@@ -199,6 +208,10 @@ void CPlayer::Update()
 
 	mIsGrounded = false;
 
+	// HPゲージに現在のHPを設定
+	mpHPGauge->SetValue(mStatas.hp);
+	// SPゲージに現在のSPを設定
+	mpSPGauge->SetValue(mStatas.sp);
 #ifdef _DEBUG
 	CVector pos = Position();
 	CDebugPrint::Print("プレイヤー情報:\n");
@@ -206,7 +219,7 @@ void CPlayer::Update()
 
 	CVector angles = EulerAngles();
 	CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
-	CDebugPrint::Print("フレーム : %.1f\n",GetAnimationFrame());
+	CDebugPrint::Print("アニメーションフレーム : %.1f\n",GetAnimationFrame());
 	if (mIsDrawn) CDebugPrint::Print("抜刀\n");
 	else CDebugPrint::Print("納刀\n");
 	
@@ -218,18 +231,30 @@ void CPlayer::Update()
 	else if (mState == EState::eAttack)		CDebugPrint::Print("攻撃状態\n");
 	else if (mState == EState::eSpecalMove) CDebugPrint::Print("闘技状態\n");
 
+	CDebugPrint::Print("HP : %d\n", mStatas.hp);
 	CDebugPrint::Print("攻撃力 : %d\n", mStatas.atk);
 	CDebugPrint::Print("防御力 : %d\n", mStatas.def);
-	CDebugPrint::Print("HP : %d\n", mStatas.hp);
 	CDebugPrint::Print("スタミナ : %d\n", mStatas.sp);
 	CDebugPrint::Print("闘気ゲージ : %d\n", mStatas.touki);
 
 	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
-
-	if (CInput::PushKey('Q'))
-	{
+	if (CInput::PushKey('Q')){
 		mIsCounter = true;
 	}
+
+	//  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
+	if (CInput::Key('1'))
+	{
+		if (CInput::Key(VK_UP)) mStatas.hp++;
+		else if (CInput::Key(VK_DOWN)) mStatas.hp--;
+	}
+	// 2キーを押しながら、「↑」キーでSP増加 「↓」でSP減少
+	if (CInput::Key('2'))
+	{
+		if (CInput::Key(VK_UP)) mStatas.sp++;
+		else if (CInput::Key(VK_DOWN)) mStatas.sp--;
+	}
+
 #endif
 }
 

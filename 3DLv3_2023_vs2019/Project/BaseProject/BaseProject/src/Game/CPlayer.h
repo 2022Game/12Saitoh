@@ -8,6 +8,8 @@
 #include "CInput.h"
 #include "CCamera.h"
 #include "CCutIn_PowerAttack.h"
+class CSPGauge;
+class CHPGauge;
 
 /*
 プレイヤークラス
@@ -115,8 +117,13 @@ private:
 	bool mIsCounter;	// カウンター構え中に攻撃が当たったかどうか
 
 	int mAttackStep;	// 攻撃の段階
+
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	CSword* mpSword;
 	CCutIn_PowerAttack* mpCutIn_PowerAttack;
+
+	CHPGauge* mpHPGauge;	// HPゲージ
+	CSPGauge* mpSPGauge;	// SPゲージ
+	CharaStatus mStatas;	// キャラクターステータス
 };

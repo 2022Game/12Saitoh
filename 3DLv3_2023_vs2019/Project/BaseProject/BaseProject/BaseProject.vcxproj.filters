@@ -83,6 +83,9 @@
     <Filter Include="ソース ファイル\Game\CutIn">
       <UniqueIdentifier>{b0c6f3b1-2d8a-4212-ad46-5c0c403ab710}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\BaseSystem\UI\CIGauge">
+      <UniqueIdentifier>{8b2ca422-adbe-44a2-9851-4b525818a2b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -309,6 +312,18 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CBillBoardImage.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CharaStatus.cpp">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CUIGauge.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSPGauge.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHPGauge.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -545,6 +560,18 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CBillBoardImage.h">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CharaStatus.h">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CUIGauge.h">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSPGauge.h">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHPGauge.h">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
