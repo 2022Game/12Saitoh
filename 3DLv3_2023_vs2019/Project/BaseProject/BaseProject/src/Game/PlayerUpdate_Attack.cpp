@@ -94,19 +94,12 @@ void CPlayer::Update_NormalAttack1()
 		if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
 		{
 			// 弱闘技へ切り替え
-			mAttackStep = 0;
-			mState = EState::eSpecalMove;
-			ChangeAnimation(EAnimType::eCounter_Start);
+			SetSpecalMove(EAnimType::eCounter_Start, false);
 		}
 		if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
 		{
 			// 強闘技へ切り替え
-			mAttackStep = 0;
-			mState = EState::eSpecalMove;
-			ChangeAnimation(EAnimType::ePowerAttack_Start);
-			// カットインカメラの設定
-			mpCutIn_PowerAttack->Setup(this);
-			mpCutIn_PowerAttack->Start();
+			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
 		}
 		if (IsAnimationFinished())
 		{
@@ -155,19 +148,12 @@ void CPlayer::Update_NormalAttack2()
 		if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
 		{
 			// 弱闘技へ切り替え
-			mAttackStep = 0;
-			mState = EState::eSpecalMove;
-			ChangeAnimation(EAnimType::eCounter_Start);
+			SetSpecalMove(EAnimType::eCounter_Start, false);
 		}
 		if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
 		{
 			// 強闘技へ切り替え
-			mAttackStep = 0;
-			mState = EState::eSpecalMove;
-			ChangeAnimation(EAnimType::ePowerAttack_Start);
-			// カットインカメラの設定
-			mpCutIn_PowerAttack->Setup(this);
-			mpCutIn_PowerAttack->Start();
+			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
 		}
 		if (IsAnimationFinished())
 		{
@@ -215,19 +201,12 @@ void CPlayer::Update_NormalAttack3()
 		if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
 		{
 			// 弱闘技へ切り替え
-			mAttackStep = 0;
-			mState = EState::eSpecalMove;
-			ChangeAnimation(EAnimType::eCounter_Start);
+			SetSpecalMove(EAnimType::eCounter_Start, false);
 		}
 		if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
 		{
 			// 強闘技へ切り替え
-			mAttackStep = 0;
-			mState = EState::eSpecalMove;
-			ChangeAnimation(EAnimType::ePowerAttack_Start);
-			// カットインカメラの設定
-			mpCutIn_PowerAttack->Setup(this);
-			mpCutIn_PowerAttack->Start();
+			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
 		}
 		if (IsAnimationFinished())
 		{

@@ -44,19 +44,12 @@ void CPlayer::Update_Idle()
 			// Cキー＋左クリックで弱闘技へ移行
 			if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
 			{
-				mAttackStep = 0;
-				mState = EState::eSpecalMove;
-				ChangeAnimation(EAnimType::eCounter_Start);
+				SetSpecalMove(EAnimType::eCounter_Start, false);
 			}
 			// Cキー＋右クリックで強闘技へ移行
 			if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
 			{
-				mAttackStep = 0;
-				mState = EState::eSpecalMove;
-				ChangeAnimation(EAnimType::ePowerAttack_Start);
-				// カットインカメラの設定
-				mpCutIn_PowerAttack->Setup(this);
-				mpCutIn_PowerAttack->Start();
+				SetSpecalMove(EAnimType::ePowerAttack_Start, true);
 			}
 			// Eキーで納刀
 			if (CInput::PushKey('E'))

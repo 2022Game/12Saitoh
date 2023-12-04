@@ -92,6 +92,10 @@ private:
 	// 抜納の切り替え処理
 	void Update_SwitchDrawn();
 
+	// 闘技に必要な情報を設定
+	// type : 再生するアニメーション　cutin : カットインの有無
+	void SetSpecalMove(EAnimType type, bool cutin);
+
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
 

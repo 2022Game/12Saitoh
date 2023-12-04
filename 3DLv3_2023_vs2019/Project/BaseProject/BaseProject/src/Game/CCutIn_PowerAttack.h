@@ -29,7 +29,8 @@ private:
 	int mCutInStep;		// カットインのステップ
 	float mElapsedTime;	// 経過時間計測長
 
-	CVector mCenterPos;	// カットインの中心地点
-	float mStartAngleY;	// 開始のカメラのY軸角度
-	float mStartAngleX;	// 開始のカメラのX軸角度
+	CVector mCenterPos;		// カットインの中心地点
+	CVector mStartSideVec;	// 開始時のプレイヤーの横方向のベクトル
+	float mStartAngleY;		// 開始のカメラのY軸角度
+	float mStartAngleX;		// 開始のカメラのX軸角度
 };

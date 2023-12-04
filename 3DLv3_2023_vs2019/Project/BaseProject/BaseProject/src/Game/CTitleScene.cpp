@@ -8,6 +8,7 @@ CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
 	, mBgImage(nullptr)
 {
+	
 }
 
 //デストラクタ

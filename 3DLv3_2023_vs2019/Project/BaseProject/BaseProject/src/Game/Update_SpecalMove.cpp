@@ -1,5 +1,21 @@
 #include "CPlayer.h"
 
+// 闘技に必要な情報を設定
+void CPlayer::SetSpecalMove(EAnimType type, bool cutin)
+{
+	mAttackStep = 0;
+	mState = EState::eSpecalMove;
+	ChangeAnimation(type);
+
+	// カットインが必要な場合
+	// カットインカメラの設定を行う
+	if (cutin)
+	{
+		mpCutIn_PowerAttack->Setup(this);
+		mpCutIn_PowerAttack->Start();
+	}
+}
+
 //　闘技処理
 void CPlayer::Update_SpecialMove()
 {
@@ -101,11 +117,6 @@ void CPlayer::Update_Strong_SpecalMove()
 		break;
 	case 1:// 強攻撃構え中
 		if (IsAnimationFinished())
-		{
-			mAttackStep++;
-			ChangeAnimation(EAnimType::ePowerAttack);
-		}
-		else if (CInput::PushKey(VK_LBUTTON))
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::ePowerAttack);

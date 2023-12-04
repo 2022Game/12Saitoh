@@ -238,9 +238,13 @@ void CPlayer::Update()
 	CDebugPrint::Print("闘気ゲージ : %d\n", mStatas.touki);
 
 	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
-	if (CInput::PushKey('Q')){
-		mIsCounter = true;
-	}
+	
+	// カウンター攻撃フラグの変更
+	if (CInput::PushKey('Q')) mIsCounter = true;
+	
+	CDebugPrint::Print("カウンターフラグ : ");
+	if (mIsCounter) CDebugPrint::Print("ture\n");
+	else CDebugPrint::Print("false\n");
 
 	//  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
 	if (CInput::Key('1'))

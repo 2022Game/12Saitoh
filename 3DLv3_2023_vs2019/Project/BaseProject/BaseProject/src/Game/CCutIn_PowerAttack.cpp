@@ -8,6 +8,7 @@ CCutIn_PowerAttack::CCutIn_PowerAttack()
 	, mCenterPos(0.0f, 0.0f, 0.0f)
 	, mStartAngleY(0.0f)
 	, mStartAngleX(0.0f)
+	, mStartSideVec(0.0f, 0.0f, 0.0f)
 {
 }
 
@@ -45,6 +46,11 @@ void CCutIn_PowerAttack::Setup(CObjectBase* obj)
 	mCenterPos = obj->Position();
 	// 設定されたオブジェクトの現在の向きのY軸の角度を取得
 	mStartAngleY = obj->EulerAngles().Y();
+	// 設定されたオブジェクトの現在の向きのX軸の角度を取得
+	mStartAngleX = obj->EulerAngles().X();
+	
+	// 設定されたオブジェクトの横方向ベクトルを取得
+	mStartSideVec = obj->VectorX();
 }
 
 #define CUTIN_TIME 0.4f		// 継続時間
@@ -58,7 +64,7 @@ void CCutIn_PowerAttack::Setup(CObjectBase* obj)
 #define END_X -3.0f			// 終了時のカメラの横方向
 #define START_DIST 15.0f	// 開始時の画面拡縮
 #define END_DIST 14.0f		// 終了時の画面拡縮
-#define WAIT_TIME 0.4f		// 待ち時間
+#define WAIT_TIME 0.4f	// 待ち時間
 
 // ステップ0 カメラを回転
 void CCutIn_PowerAttack::CutInStep0()
@@ -71,11 +77,11 @@ void CCutIn_PowerAttack::CutInStep0()
 		// カットインの進行度に応じて高さを補完
 		CVector offsetPos = CVector::zero;
 		float offsetX = Math::Lerp(START_X, END_X, per);
-		offsetPos.X(offsetX);
+		offsetPos += mStartSideVec * offsetX;
 		float offsetY = Math::Lerp(START_Y, END_Y, per);
 		offsetPos.Y(offsetY);
 
-		// カットインの進行度に応じて回転角度を補
+		// カットインの進行度に応じて回転角度を補完
 		// X軸
 		float startAngX = mStartAngleX + START_ANGLEX;
 		float endAngX = mStartAngleX + END_ANGLEX;
@@ -101,7 +107,7 @@ void CCutIn_PowerAttack::CutInStep0()
 	{
 		// カットイン終了時の位置と向き
 		CVector offsetPos = CVector::zero;
-		offsetPos.X(END_X);
+		offsetPos += mStartSideVec * END_X;
 		offsetPos.Y(END_Y);
 
 		float radAngX = Math::DegreeToRadian(END_ANGLEX);
