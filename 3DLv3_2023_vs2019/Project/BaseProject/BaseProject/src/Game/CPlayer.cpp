@@ -3,6 +3,7 @@
 #include "CDebugPrint.h"
 #include "CHPGauge.h"
 #include "CSPGauge.h"
+#include "CEnemy.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -19,6 +20,7 @@ CPlayer::CPlayer()
 	, mIsCounter(false)
 	, mAttackStep(0)
 	, mpRideObject(nullptr)
+	, time(0)
 
 {
 	//インスタンスの設定
@@ -51,20 +53,21 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
+	// カットインカメラの生成
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
 
 	// プレイヤーのステータスを取得
-	mStatas = PLAYER_STATUS[PLAYER_STATAS];
+	mStatus = PLAYER_STATUS[PLAYER_STATAS];
 
 	// HPゲージを作成
 	mpHPGauge = new CHPGauge();
 	mpHPGauge->SetPos(10.0f, 10.0f);
-	mpHPGauge->SetMaxValue(mStatas.hp);
+	mpHPGauge->SetMaxValue(mStatus.hp);
 
 	// SPゲージを作成
 	mpSPGauge = new CSPGauge();
 	mpSPGauge->SetPos(10.0f, 40.0f);
-	mpSPGauge->SetMaxValue(mStatas.sp);
+	mpSPGauge->SetMaxValue(0);
 }
 
 CPlayer::~CPlayer()
@@ -86,7 +89,7 @@ void CPlayer::ChangeAnimation(EAnimType type)
 {
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
 	PlayerData::AnimData data = PlayerData::GetAnimData((int)type);
-	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
+	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.MotionValue);
 }
 
 // 抜納状態を切り替える
@@ -143,7 +146,6 @@ void CPlayer::Update_SwitchDrawn()
 // 更新
 void CPlayer::Update()
 {
-
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 
@@ -209,9 +211,9 @@ void CPlayer::Update()
 	mIsGrounded = false;
 
 	// HPゲージに現在のHPを設定
-	mpHPGauge->SetValue(mStatas.hp);
+	mpHPGauge->SetValue(mStatus.hp);
 	// SPゲージに現在のSPを設定
-	mpSPGauge->SetValue(mStatas.sp);
+	mpSPGauge->SetValue(mStatus.sp);
 #ifdef _DEBUG
 	CVector pos = Position();
 	CDebugPrint::Print("プレイヤー情報:\n");
@@ -231,11 +233,11 @@ void CPlayer::Update()
 	else if (mState == EState::eAttack)		CDebugPrint::Print("攻撃状態\n");
 	else if (mState == EState::eSpecalMove) CDebugPrint::Print("闘技状態\n");
 
-	CDebugPrint::Print("HP : %d\n", mStatas.hp);
-	CDebugPrint::Print("攻撃力 : %d\n", mStatas.atk);
-	CDebugPrint::Print("防御力 : %d\n", mStatas.def);
-	CDebugPrint::Print("スタミナ : %d\n", mStatas.sp);
-	CDebugPrint::Print("闘気ゲージ : %d\n", mStatas.touki);
+	CDebugPrint::Print("  HP 　: %d\n", mStatus.hp);
+	CDebugPrint::Print("攻撃力 : %d\n", mStatus.atk);
+	CDebugPrint::Print("防御力 : %d\n", mStatus.def);
+	CDebugPrint::Print("スタミナ : %d\n", mStatus.sp);
+	CDebugPrint::Print("闘気ゲージ : %d\n", mStatus.touki);
 
 	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
 	
@@ -249,16 +251,45 @@ void CPlayer::Update()
 	//  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
 	if (CInput::Key('1'))
 	{
-		if (CInput::Key(VK_UP)) mStatas.hp++;
-		else if (CInput::Key(VK_DOWN)) mStatas.hp--;
+		if (CInput::Key(VK_UP)) mStatus.hp++;
+		else if (CInput::Key(VK_DOWN)) mStatus.hp--;
 	}
 	// 2キーを押しながら、「↑」キーでSP増加 「↓」でSP減少
 	if (CInput::Key('2'))
 	{
-		if (CInput::Key(VK_UP)) mStatas.sp++;
-		else if (CInput::Key(VK_DOWN)) mStatas.sp--;
+		if (CInput::Key(VK_UP)) mStatus.sp++;
+		else if (CInput::Key(VK_DOWN)) mStatus.sp--;
 	}
 
+	CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
+	if (CInput::Key('1'))
+	{
+		if (CInput::Key(VK_RIGHT))
+		{
+			CEnemy* enemy = new CEnemy();
+			int damage = TakePlayerToDamage(
+				enemy->Instance()->Status().atk,
+				mStatus.def,
+				1.6
+				);
+			mStatus.hp -= damage; 
+			printf("%d\n", damage);
+		}
+	}
+	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
+	if (mTemporaryDamage > 0)
+	{
+		if (time >= 1)
+		{
+			mStatus.hp++;
+			mTemporaryDamage--;
+			time = 0;
+		}
+		else {
+			time += 0.016666f;
+		}
+
+	}
 #endif
 }
 

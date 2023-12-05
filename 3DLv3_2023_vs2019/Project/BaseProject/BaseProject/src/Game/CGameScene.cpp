@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CCamera.h"
 #include "CSword.h"
+#include "CEnemy.h"
 
 //コンストラクタ
 CGameScene::CGameScene()

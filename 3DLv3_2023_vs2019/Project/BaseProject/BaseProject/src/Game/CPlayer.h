@@ -129,5 +129,5 @@ private:
 
 	CHPGauge* mpHPGauge;	// HPゲージ
 	CSPGauge* mpSPGauge;	// SPゲージ
-	CharaStatus mStatas;	// キャラクターステータス
+	float time;
 };

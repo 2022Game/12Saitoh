@@ -4,7 +4,6 @@
 #include "CModelX.h"
 #include "CMaterial.h"
 #include "CCharaBase.h"
-#include "CharaStatus.h"
 
 class CXCharacter : public CCharaBase
 {
@@ -18,7 +17,7 @@ public:
 	//初期化処理
 	void Init(CModelX* model);
 	//アニメーションの変更
-	void ChangeAnimation(int index, bool loop, float framesize);
+	void ChangeAnimation(int index, bool loop, float framesize, float  motionvalue);
 	//更新処理
 	void Update(const CMatrix& m);
 	void Update();
@@ -30,14 +29,14 @@ public:
 
 	int AnimationIndex();	//アニメーションの番号の取得
 
-	float GetAnimationFrame();	// 再生中のフレームを取得
+	float GetAnimationFrame() const;// 再生中のフレームを取得
+	float GetMotionValue() const;	// アニメーションのモーション値を取得
+
 	//指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
 
 	// キャラの最大ステータスを取得
 	const CharaStatus& MaxStatus() const;
-	// キャラの現在ステータスを取得
-	const CharaStatus& Status() const;
 
 protected:
 	CModelX* mpModel;			//モデルデータ
@@ -49,8 +48,8 @@ protected:
 
 	float mAnimationFrame;		//アニメーションの再生フレーム
 	float mAnimationFrameSize;	//アニメーションの再生フレーム数
+	float  mMotionValue;		// モーション値
 
 	CharaStatus mCharaMaxStatus;//キャラの最大ステータス
-	CharaStatus mCharaStatus;	// キャラの現在ステータス
 };
 #endif

@@ -3,12 +3,12 @@
 #include "CGameScene.h"
 #include "CCamera.h"
 
+#include "CCharaBase.h"
 //コンストラクタ
 CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
 	, mBgImage(nullptr)
 {
-	
 }
 
 //デストラクタ

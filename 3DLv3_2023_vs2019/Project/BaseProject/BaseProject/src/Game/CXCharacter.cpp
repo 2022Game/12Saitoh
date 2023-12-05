@@ -48,16 +48,17 @@ index:アニメーションの番号
 loop:true:繰り返す
 framesize:最後まで再生するのに使用されるフレーム数
 */
-void CXCharacter::ChangeAnimation(int index, bool loop, float framesize)
+void CXCharacter::ChangeAnimation(int index, bool loop, float framesize, float  motionvalue)
 {
 	//同じ場合は切り替えない
 	if (mAnimationIndex == index) return;
 	//今のアニメーションの重みを0.0(0%)にする
 	mpModel->AnimationSet()[mAnimationIndex]->Weight(0.0f);
-	//番号、繰り返し、フレーム数を指定
+	//番号、繰り返し、フレーム数、モーション値を指定
 	mAnimationIndex = index % mpModel->AnimationSet().size();
 	mAnimationLoopFlg = loop;
 	mAnimationFrameSize = framesize;
+	mMotionValue = motionvalue;
 	//アニメーションのフレームを最初にする
 	mAnimationFrame = 0.0f;
 	mpModel->AnimationSet()[mAnimationIndex]->Time(mAnimationFrame);
@@ -163,14 +164,14 @@ const CharaStatus& CXCharacter::MaxStatus() const
 	return mCharaMaxStatus;
 }
 
-// キャラの現在ステータスを取得
-const CharaStatus& CXCharacter::Status() const
-{
-	return mCharaStatus;
-}
-
 // 再生中のアニメーションフレームを取得
-float CXCharacter::GetAnimationFrame()
+float CXCharacter::GetAnimationFrame() const
 {
 	return mAnimationFrame;
+}
+
+// アニメーションのモーション値を取得
+float CXCharacter::GetMotionValue() const
+{
+	return mMotionValue;
 }

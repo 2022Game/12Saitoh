@@ -1,20 +1,47 @@
 #include "CHPGauge.h"
 #include "CImage.h"
 #include "Maths.h"
+#include "CPlayer.h"
 
 // コンストラクタ
 CHPGauge::CHPGauge()
 {
 	// HP設定
+	// フレーム
 	mpHPFrameImage = new CImage(FRAME_IMAGE);
 	mpHPFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
+	// 緑ゲージバー
 	mpHPBarImage = new CImage(GAUGE_BAR);
 	mpHPBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
+	// 赤ゲージバー
+	mpRedBarImage = new CImage(GAUGE_BAR);
+	mpRedBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
 }
 
 // デストラクタ
 CHPGauge::~CHPGauge()
 {
+}
+
+void CHPGauge::Update_RedBar()
+{
+	// 赤ゲージの設定
+	mpRedBarImage->SetPos(
+		CVector2(mPosition.X() + mpHPBarImage->GetSize().X() + FRAME_BORDER,
+			mPosition.Y() + FRAME_BORDER));
+	int value = CPlayer::Instance()->GetTemporaryDamage();
+	SetMaxValue(mMaxValue);
+	// 暫定ダメージから赤ゲージのバーサイズを変更
+	CVector2 size = CVector2(BARSIZE_X, BARSIZE_Y);
+	float percent = Math::Clamp01((float)value / mMaxValue);
+	size.X(BARSIZE_X * percent);
+	mpRedBarImage->SetSize(size);
+
+	// 色の設定
+	CColor color;
+	// 赤色に設定
+	color = CColor(1.0f, 1.0f, 1.0f);
+	mpRedBarImage->SetColor(color);
 }
 
 // 更新
@@ -24,18 +51,19 @@ void CHPGauge::Update()
 	mpHPFrameImage->SetPos(mPosition);
 	mpHPBarImage->SetPos(mPosition + CVector2(FRAME_BORDER, FRAME_BORDER));
 
-	// バーのサイズを最大値と現在値から求める
+	// 緑ゲージのバーのサイズを最大値と現在値から求める
 	CVector2 size = CVector2(BARSIZE_X, BARSIZE_Y);
 	float percent = Math::Clamp01((float)mValue / mMaxValue);
 	size.X(BARSIZE_X * percent);
 	mpHPBarImage->SetSize(size);
 
+	// 赤ゲージの更新を行う
+	Update_RedBar();
+
 	// HPバーの割合でバーの色を変更
 	CColor color;
 	// 10%以下は赤色
 	if (percent <= 0.1f) color = CColor(1.0f, 0.0f, 0.0f);
-	// 30%以下は黄色
-	else if (percent <= 0.3f) color = CColor(1.0f, 1.0f, 0.0f);
 	// それ以外は緑
 	else color = CColor(0.0f, 1.0f, 0.0f);
 
