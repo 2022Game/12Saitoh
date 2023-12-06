@@ -13,9 +13,14 @@ CCharaBase::~CCharaBase()
 }
 
 // プレイヤーが敵に与えるダメージ計算
-int CCharaBase::TakeEnemyToDamage()
+int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float motionvalue, float const multiplier)
 {
-	return 0;
+	// ダメージ計算
+	// ダメージ  = ((攻撃力 × モーション値) - (防御力/2)) × 肉質倍率
+	float damage = ((atk * motionvalue) - (def / 2)) * multiplier;
+	mDamage = static_cast<int>(damage);
+	
+	return mDamage;
 }
 
 // 敵がプレイヤーに与えるダメージ計算

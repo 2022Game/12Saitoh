@@ -49,7 +49,5 @@ protected:
 	float mAnimationFrame;		//アニメーションの再生フレーム
 	float mAnimationFrameSize;	//アニメーションの再生フレーム数
 	float  mMotionValue;		// モーション値
-
-	CharaStatus mCharaMaxStatus;//キャラの最大ステータス
 };
 #endif

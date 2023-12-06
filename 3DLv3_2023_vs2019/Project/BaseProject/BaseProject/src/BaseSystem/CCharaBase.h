@@ -12,10 +12,22 @@ public:
 		ETaskPauseType pause = ETaskPauseType::eGame);
 	virtual ~CCharaBase();
 
-	/* ダメージ計算 */
-	// プレイヤーが敵に与えるダメージ計算
-	int TakeEnemyToDamage();
-	// 敵がプレイヤーに与えるダメージ計算
+	/// <summary>
+	/// プレイヤーが敵に与えるダメージ
+	/// </summary>
+	/// <param name="atk">プレイヤーの攻撃力</param>
+	/// <param name="def">敵の防御力</param>
+	/// <param name="motionvalue">モーション値</param>
+	/// <param name="multiplier">肉質倍率</param>
+	/// <returns>ダメージ</returns>
+	int TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const float multiplier);
+	/// <summary>
+	/// 敵がプレイヤーに与えるダメージ
+	/// </summary>
+	/// <param name="atk">敵の攻撃力</param>
+	/// <param name="def">プレイヤーの防御力</param>
+	/// <param name="motionvalue">モーション値</param>
+	/// <returns>被ダメージ値</returns>
 	int TakePlayerToDamage(const int atk, const int def, const float motionvalue);
 
 	// ダメージ軽減率の計算
@@ -31,6 +43,7 @@ public:
 
 private:
 	int mDamage; // ダメージ値
+
 protected:
 	CharaStatus mStatus;	// キャラクターステータス
 	int mTemporaryDamage;	// 暫定ダメージ

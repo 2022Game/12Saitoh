@@ -31,6 +31,7 @@ void CHPGauge::Update_RedBar()
 			mPosition.Y() + FRAME_BORDER));
 	int value = CPlayer::Instance()->GetTemporaryDamage();
 	SetMaxValue(mMaxValue);
+
 	// 暫定ダメージから赤ゲージのバーサイズを変更
 	CVector2 size = CVector2(BARSIZE_X, BARSIZE_Y);
 	float percent = Math::Clamp01((float)value / mMaxValue);
