@@ -2,23 +2,13 @@
 #include "CCollisionManager.h"
 #include "CPlayer.h"
 
-// Œ•ƒ‚ƒfƒ‹
-#define SWORD_MODEL	"Character\\Sword\\sword.obj","Character\\Sword\\sword.mtl"
-
 CSword::CSword()
 {
-	mpSword = new CModel();
-	mpSword->Load(SWORD_MODEL);
-
+	mpSword = CResourceManager::Get<CModel>("Sword");
 }
 
 CSword::~CSword()
 {
-	if (mpSword != nullptr)
-	{
-		delete mpSword;
-		mpSword = nullptr;
-	}
 }
 
 void CSword::CreateFieldObjects()

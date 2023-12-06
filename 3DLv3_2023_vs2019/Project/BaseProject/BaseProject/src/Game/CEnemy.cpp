@@ -13,8 +13,7 @@ CEnemy::CEnemy()
 	spInstance = this;
 
 	// モデルデータ読み込み
-	CModelX* model = new CModelX();
-	model->Load(MODEL_PATH);
+	CModelX* model = CResourceManager::Get<CModelX>("Player");
 
 	// CXCharacterの初期化
 	Init(model);

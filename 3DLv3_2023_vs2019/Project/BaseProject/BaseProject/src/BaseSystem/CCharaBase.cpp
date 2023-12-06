@@ -4,6 +4,7 @@ CCharaBase::CCharaBase(ETag tag, ETaskPriority prio, int sortOrder, ETaskPauseTy
 	: CObjectBase(tag, prio, sortOrder, pause)
 	, mDamage(0)
 	, mTemporaryDamage(0)
+	, mStatus(DEFAULT[0])
 {
 }
 
@@ -22,9 +23,12 @@ int CCharaBase::TakePlayerToDamage(const int atk, const int def, const float mot
 {
 	// ダメージ計算
 	// 被ダメージ = 攻撃力 × モーション値 × ダメージ軽減率
-	mDamage = atk * motionvalue * DamageReductionRate(def);
+	float damage = atk * motionvalue * DamageReductionRate(def);
+	mDamage = static_cast<int>(damage);
+
 	// 被ダメージから暫定ダメージを計算
-	mTemporaryDamage = mDamage * 0.5f;
+	float temporarydamage = mDamage * 0.5f;
+	mTemporaryDamage = static_cast<int>(temporarydamage);
 
 	return mDamage;
 }

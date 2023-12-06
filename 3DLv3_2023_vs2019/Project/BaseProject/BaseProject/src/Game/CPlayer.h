@@ -124,7 +124,6 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	CSword* mpSword;
 	CCutIn_PowerAttack* mpCutIn_PowerAttack;
 
 	CHPGauge* mpHPGauge;	// HPÉQÅ[ÉW

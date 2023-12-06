@@ -27,8 +27,11 @@ CPlayer::CPlayer()
 	spInstance = this;
 
 	// モデルデータ読み込み
-	CModelX* model = new CModelX();
-	model->Load(MODEL_PATH);
+	//CModelX* model = new CModelX();
+	//model->Load(MODEL_PATH);
+
+	// モデルデータ取得
+	CModelX* model = CResourceManager::Get<CModelX>("Player");
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = PlayerData::GetAnimDataSize();
@@ -73,8 +76,6 @@ CPlayer::CPlayer()
 CPlayer::~CPlayer()
 {
 	SAFE_DELETE(mpColliderLine);
-	SAFE_DELETE(mpModel);
-	SAFE_DELETE(mpSword);
 
 	mpCutIn_PowerAttack->Kill();
 }
@@ -264,14 +265,14 @@ void CPlayer::Update()
 	CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
 	if (CInput::Key('1'))
 	{
-		if (CInput::Key(VK_RIGHT))
+		if (CInput::PushKey(VK_RIGHT))
 		{
-			CEnemy* enemy = new CEnemy();
-			int damage = TakePlayerToDamage(
-				enemy->Instance()->Status().atk,
-				mStatus.def,
-				1.6
-				);
+			//CEnemy* enemy = new CEnemy();
+			//int damage = TakePlayerToDamage(
+			//	enemy->Instance()->Status().atk,
+			//	mStatus.def,
+			//	1.6);
+			int damage = TakePlayerToDamage(100, mStatus.def, 1.5);
 			mStatus.hp -= damage; 
 			printf("%d\n", damage);
 		}
@@ -288,7 +289,6 @@ void CPlayer::Update()
 		else {
 			time += 0.016666f;
 		}
-
 	}
 #endif
 }

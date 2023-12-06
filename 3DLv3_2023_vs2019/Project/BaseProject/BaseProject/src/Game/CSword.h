@@ -14,6 +14,5 @@ public:
 
 private:
 	void CreateFieldObjects();
-
 	CModel* mpSword;
 };

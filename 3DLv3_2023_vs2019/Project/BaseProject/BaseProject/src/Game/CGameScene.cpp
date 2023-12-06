@@ -5,6 +5,7 @@
 #include "CCamera.h"
 #include "CSword.h"
 #include "CEnemy.h"
+//#include "CLineEffect.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -25,6 +26,11 @@ void CGameScene::Load()
 	//ここでゲーム中に必要な
 	//リソースの読み込みやクラスの生成を行う
 
+	CResourceManager::Load<CModel>("Field", "Field\\field.obj");
+	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
+	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
+	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
+	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
 	//フィールドを生成
 	new CField();
 
@@ -45,6 +51,13 @@ void CGameScene::Load()
 	);
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	mainCamera->SetFollowTargetTf(player);
+
+	//CLineEffect* le = new CLineEffect(ETag::eNone);
+//le->AddPoint(CVector(0.0f, 10.0f, 10.0f), 1.0f);
+//le->AddPoint(CVector(10.0f, 10.0f, 10.0f), 1.0f);
+//le->AddPoint(CVector(10.0f, 20.0f, 50.0f), 1.0f);
+//le->AddPoint(CVector(50.0f, 10.0f, 50.0f), 1.0f);
+
 }
 
 //シーンの更新処理

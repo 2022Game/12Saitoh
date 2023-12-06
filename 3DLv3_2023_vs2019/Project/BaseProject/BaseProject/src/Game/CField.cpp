@@ -6,48 +6,26 @@
 CField::CField()
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
 {
-	mpModel = new CModel();
-	mpModel->Load("Field\\field.obj", "Field\\field.mtl");
+	mpModel = CResourceManager::Get<CModel>("Field");
 
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
-	//CreateFieldObjects();
+	CreateFieldObjects();
 }
 
 CField::~CField()
 {
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-		mpModel = nullptr;
-	}
-
 	if (mpColliderMesh != nullptr)
 	{
 		delete mpColliderMesh;
 		mpColliderMesh = nullptr;
 	}
-
-	if (mpCubeModel != nullptr)
-	{
-		delete mpCubeModel;
-		mpCubeModel = nullptr;
-	}
-
-	if (mpCylinderModel != nullptr)
-	{
-		delete mpCubeModel;
-		mpCubeModel = nullptr;
-	}
 }
 
 void CField::CreateFieldObjects()
 {
-	mpCubeModel = new CModel();
-	mpCubeModel->Load("Field\\Object\\cube.obj", "Field\\Object\\cube.mtl");
-
-	mpCylinderModel = new CModel();
-	mpCylinderModel->Load("Field\\Object\\cylinder.obj", "Field\\Object\\cylinder.mtl");
+	mpCubeModel = CResourceManager::Get<CModel>("FieldCube");
+	mpCylinderModel = CResourceManager::Get<CModel>("FieldCylinder");
 
 	new CMoveFloor
 	(

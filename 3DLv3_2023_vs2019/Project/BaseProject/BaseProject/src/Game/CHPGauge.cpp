@@ -62,10 +62,8 @@ void CHPGauge::Update()
 
 	// HPバーの割合でバーの色を変更
 	CColor color;
-	// 10%以下は赤色
-	if (percent <= 0.1f) color = CColor(1.0f, 0.0f, 0.0f);
-	// それ以外は緑
-	else color = CColor(0.0f, 1.0f, 0.0f);
+	// 緑色に設定
+	color = CColor(0.0f, 1.0f, 0.0f);
 
 	// バーに色を設定
 	mpHPBarImage->SetColor(color);

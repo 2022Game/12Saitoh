@@ -14,6 +14,9 @@ struct CharaStatus
 // 敵の最大レベル
 #define ENEMY_LEVEL_MAX 5
 
+// 初期化用
+extern const CharaStatus DEFAULT[];
+
 // プレイヤーのステータステーブル
 extern const CharaStatus PLAYER_STATUS[];
 // 敵のステータステーブル
