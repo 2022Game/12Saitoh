@@ -21,6 +21,9 @@ CHPGauge::CHPGauge()
 // デストラクタ
 CHPGauge::~CHPGauge()
 {
+	mpHPFrameImage->Kill();
+	mpHPBarImage->Kill();
+	mpRedBarImage->Kill();
 }
 
 void CHPGauge::Update_RedBar()
@@ -29,10 +32,9 @@ void CHPGauge::Update_RedBar()
 	mpRedBarImage->SetPos(
 		CVector2(mPosition.X() + mpHPBarImage->GetSize().X() + FRAME_BORDER,
 			mPosition.Y() + FRAME_BORDER));
-	int value = CPlayer::Instance()->GetTemporaryDamage();
-	SetMaxValue(mMaxValue);
 
 	// 暫定ダメージから赤ゲージのバーサイズを変更
+	int value = CPlayer::Instance()->GetTemporaryDamage();
 	CVector2 size = CVector2(BARSIZE_X, BARSIZE_Y);
 	float percent = Math::Clamp01((float)value / mMaxValue);
 	size.X(BARSIZE_X * percent);
@@ -41,7 +43,7 @@ void CHPGauge::Update_RedBar()
 	// 色の設定
 	CColor color;
 	// 赤色に設定
-	color = CColor(1.0f, 1.0f, 1.0f);
+	color = CColor(1.0f, 0.0f, 0.0f);
 	mpRedBarImage->SetColor(color);
 }
 

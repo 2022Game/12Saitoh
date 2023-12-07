@@ -282,8 +282,8 @@ void CPlayer::Update()
 	{
 		if (time >= 1)
 		{
-			mStatus.hp++;
 			mTemporaryDamage--;
+			mStatus.hp++;
 			time = 0;
 		}
 		else {
