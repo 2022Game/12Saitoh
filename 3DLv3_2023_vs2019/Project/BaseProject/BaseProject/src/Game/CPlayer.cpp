@@ -26,10 +26,6 @@ CPlayer::CPlayer()
 	//インスタンスの設定
 	spInstance = this;
 
-	// モデルデータ読み込み
-	//CModelX* model = new CModelX();
-	//model->Load(MODEL_PATH);
-
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Player");
 
@@ -71,6 +67,9 @@ CPlayer::CPlayer()
 	mpSPGauge = new CSPGauge();
 	mpSPGauge->SetPos(10.0f, 40.0f);
 	mpSPGauge->SetMaxValue(0);
+
+	// それぞれのステータスの最大値を設定
+
 }
 
 CPlayer::~CPlayer()
@@ -179,6 +178,16 @@ void CPlayer::Update()
 			break;
 	}
 
+	// 各ステータスの上限値と下限値を設定
+	// 上限
+	if (mStatus.hp > 100) mStatus.hp = 100;	// HP
+	if (mStatus.sp > 100) mStatus.sp = 100;	// SP
+	if (mStatus.touki > 300) mStatus.touki = 300; // 闘気
+	// 加減
+	if (mStatus.hp < 0) mStatus.hp = 0;	// HP
+	if (mStatus.sp < 0) mStatus.sp = 0;	// SP
+	if (mStatus.touki < 0) mStatus.touki = 0; // 闘気
+
 	if (mpCutIn_PowerAttack->IsPlaying())
 	{
 		// キャラクターの更新
@@ -211,10 +220,6 @@ void CPlayer::Update()
 
 	mIsGrounded = false;
 
-	// HPゲージに現在のHPを設定
-	mpHPGauge->SetValue(mStatus.hp);
-	// SPゲージに現在のSPを設定
-	mpSPGauge->SetValue(mStatus.sp);
 #ifdef _DEBUG
 	CVector pos = Position();
 	CDebugPrint::Print("プレイヤー情報:\n");
@@ -280,7 +285,7 @@ void CPlayer::Update()
 	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
 	if (mTemporaryDamage > 0)
 	{
-		if (time >= 1)
+		if (time >= 2)
 		{
 			mTemporaryDamage--;
 			mStatus.hp++;
@@ -290,6 +295,10 @@ void CPlayer::Update()
 			time += 0.016666f;
 		}
 	}
+	// HPゲージに現在のHPを設定
+	mpHPGauge->SetValue(mStatus.hp);
+	// SPゲージに現在のSPを設定
+	mpSPGauge->SetValue(mStatus.sp);
 #endif
 }
 

@@ -316,9 +316,6 @@
     <ClCompile Include="src\BaseSystem\CBillBoardImage.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseSystem\CharaStatus.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseSystem\CUIGauge.cpp">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClCompile>
@@ -333,6 +330,9 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CResourceManager.cpp">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CharaStatus.cpp">
+      <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

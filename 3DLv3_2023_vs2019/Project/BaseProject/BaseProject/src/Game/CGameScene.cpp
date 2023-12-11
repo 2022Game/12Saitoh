@@ -31,6 +31,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
+	//CResourceManager::Load<CModelX>("Enemy", "Character\\Enemy\\Dragon.x");
 	//フィールドを生成
 	new CField();
 
@@ -38,6 +39,11 @@ void CGameScene::Load()
 	CPlayer* player = new CPlayer();
 	player->Scale(10.0f, 10.0f, 10.0f);
 	player->Rotate(0.0f, 180.0f, 0.0f);
+
+	// 敵を生成
+	//CEnemy* enemy = new CEnemy();
+	//enemy->Position(-50.0f, 0.0f, -50.0f);
+	//enemy->Scale(100.0f, 100.0f, 100.0f);
 
 	//剣を生成
 	CSword* sword = new CSword();
