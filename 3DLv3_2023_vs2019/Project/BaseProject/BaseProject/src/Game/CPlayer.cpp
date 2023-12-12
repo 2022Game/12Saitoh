@@ -18,9 +18,11 @@ CPlayer::CPlayer()
 	, mIsDrawn(false)
 	, mIsAirAttack(false)
 	, mIsCounter(false)
+	, mIsDash(false)
+	, mSPZeroFlag(false)
 	, mAttackStep(0)
 	, mpRideObject(nullptr)
-	, time(0)
+	, mHPRecoveryTime(0)
 
 {
 	//インスタンスの設定
@@ -66,7 +68,7 @@ CPlayer::CPlayer()
 	// SPゲージを作成
 	mpSPGauge = new CSPGauge();
 	mpSPGauge->SetPos(10.0f, 40.0f);
-	mpSPGauge->SetMaxValue(0);
+	mpSPGauge->SetMaxValue(mStatus.sp);
 
 	// それぞれのステータスの最大値を設定
 
@@ -178,15 +180,29 @@ void CPlayer::Update()
 			break;
 	}
 
+	// スタミナ回復処理
+	if (!mIsDash)
+	{
+		if (mStatus.sp <= 100.0f)
+		{
+			mStatus.sp += 0.3;
+		}
+		if (mStatus.sp >= 100.0f)
+		{
+			// SPが全回復
+			mSPZeroFlag = false;
+		}
+	}
+
 	// 各ステータスの上限値と下限値を設定
 	// 上限
-	if (mStatus.hp > 100) mStatus.hp = 100;	// HP
-	if (mStatus.sp > 100) mStatus.sp = 100;	// SP
-	if (mStatus.touki > 300) mStatus.touki = 300; // 闘気
+	if (mStatus.hp >= 100) mStatus.hp = 100;		// HP
+	if (mStatus.sp >= 100.0f) mStatus.sp = 100.0f;	// SP
+	if (mStatus.touki > 300) mStatus.touki = 300;	// 闘気
 	// 加減
-	if (mStatus.hp < 0) mStatus.hp = 0;	// HP
-	if (mStatus.sp < 0) mStatus.sp = 0;	// SP
-	if (mStatus.touki < 0) mStatus.touki = 0; // 闘気
+	if (mStatus.hp <= 0) mStatus.hp = 0;		// HP
+	if (mStatus.sp <= 0.0f) mStatus.sp = 0;		// SP
+	if (mStatus.touki < 0) mStatus.touki = 0;	// 闘気
 
 	if (mpCutIn_PowerAttack->IsPlaying())
 	{
@@ -285,21 +301,22 @@ void CPlayer::Update()
 	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
 	if (mTemporaryDamage > 0)
 	{
-		if (time >= 2)
+		if (mHPRecoveryTime >= 2)
 		{
 			mTemporaryDamage--;
 			mStatus.hp++;
-			time = 0;
+			mHPRecoveryTime = 0;
 		}
 		else {
-			time += 0.016666f;
+			mHPRecoveryTime += 0.016666f;
 		}
 	}
+#endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);
 	// SPゲージに現在のSPを設定
-	mpSPGauge->SetValue(mStatus.sp);
-#endif
+	mpSPGauge->SetValueF(mStatus.sp);
+	mpSPGauge->SetSPZeroFlag(mSPZeroFlag);
 }
 
 // 衝突処理

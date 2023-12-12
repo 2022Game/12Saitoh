@@ -83,8 +83,17 @@ void CPlayer::Update_Idle()
 				// ダッシュキーが押されている場合ダッシュ移動状態に切り替える
 				if (CInput::Key(VK_SHIFT))
 				{
-					mState = EState::eFastMove;
-					ChangeAnimation(EAnimType::eFastRunStart);
+					// スタミナが0以上かつフラグが立っていない
+					if (mStatus.sp > 0 && !mSPZeroFlag)
+					{
+						mState = EState::eFastMove;
+						ChangeAnimation(EAnimType::eFastRunStart);
+					}
+					else
+					{
+						mState = EState::eMove;
+						ChangeAnimation(EAnimType::eRun);
+					}
 				}
 			}
 			else // 移動キーが押されていない時

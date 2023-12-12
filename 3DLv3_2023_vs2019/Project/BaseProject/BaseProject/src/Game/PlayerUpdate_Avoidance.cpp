@@ -46,7 +46,16 @@ void CPlayer::Update_Avoidance()
 				// ダッシュキーが押されている場合、ダッシュに切り替える(納刀中のみ)
 				if (CInput::Key(VK_SHIFT))
 				{
-					mState = EState::eFastMove;
+					// スタミナが0以上かつフラグが立っていない
+					if (mStatus.sp > 0 && !mSPZeroFlag)
+					{
+						mState = EState::eFastMove;
+					}
+					else
+					{
+						mState = EState::eMove;
+						ChangeAnimation(EAnimType::eRun);
+					}
 				}
 			}
 		}

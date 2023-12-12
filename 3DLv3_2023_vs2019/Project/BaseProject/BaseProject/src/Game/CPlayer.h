@@ -83,6 +83,7 @@ public:
 
 	// 納刀状態か抜刀状態か判定
 	bool IsDrawn();
+	// プレイヤーのスタミナのフラグを取得
 private:
 	// アニメーション切り替え
 	void ChangeAnimation(EAnimType type);
@@ -119,6 +120,8 @@ private:
 	bool mIsDrawn;		// 納刀状態か抜刀状態か判定 true:抜刀 false:納刀
 	bool mIsAirAttack;	// 空中攻撃を行ったかどうか
 	bool mIsCounter;	// カウンター構え中に攻撃が当たったかどうか
+	bool mIsDash;		// ダッシュ中かどうか
+	bool mSPZeroFlag;	// スタミナが0になった時のスタミナ回復中のフラグ
 
 	int mAttackStep;	// 攻撃の段階
 
@@ -128,5 +131,6 @@ private:
 
 	CHPGauge* mpHPGauge;	// HPゲージ
 	CSPGauge* mpSPGauge;	// SPゲージ
-	float time;
+
+	float mHPRecoveryTime;	// HP回復調整用
 };

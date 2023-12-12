@@ -31,6 +31,8 @@ public:
 	void SetMaxValue(int value);
 	// 現在値を設定
 	void SetValue(int value);
+	// 現在値を設定
+	void SetValueF(float valuef);
 
 	// 更新
 	void Update() override;
@@ -38,4 +40,5 @@ public:
 protected:
 	int mMaxValue;			// ポイントの最大値
 	int mValue;				// ポイントの現在値
+	float mValueF;			// ポイントの現在値(float型)
 };

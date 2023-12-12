@@ -6,6 +6,7 @@
 CUIGauge::CUIGauge()
 	: mMaxValue(0)
 	, mValue(0)
+	, mValueF(0)
 {
 }
 
@@ -24,6 +25,12 @@ void CUIGauge::SetMaxValue(int value)
 void CUIGauge::SetValue(int value)
 {
 	mValue = value;
+}
+
+// åªç›ílÇÃê›íË(floatå^)
+void CUIGauge::SetValueF(float valuef)
+{
+	mValueF = valuef;
 }
 
 // çXêV

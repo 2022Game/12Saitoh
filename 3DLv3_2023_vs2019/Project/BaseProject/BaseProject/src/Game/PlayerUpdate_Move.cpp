@@ -117,8 +117,12 @@ void CPlayer::Update_Move()
 				// ダッシュ移動の切り替え
 				if (CInput::Key(VK_SHIFT))
 				{
-					mState = EState::eFastMove;
-					ChangeAnimation(EAnimType::eFastRun);
+					// スタミナが0以上かつフラグが立っていない
+					if (mStatus.sp > 0 && !mSPZeroFlag)
+					{
+						mState = EState::eFastMove;
+						ChangeAnimation(EAnimType::eFastRun);
+					}
 				}
 				// 回避動作への切り替え
 				if (CInput::PushKey(VK_SPACE))
@@ -162,12 +166,12 @@ void CPlayer::Update_FastMove()
 		// キーの入力ベクトルを取得
 		CVector input;
 		// ダッシュキーの入力判定	true:入力中 false:非入力中
-		bool dash = true;
+		mIsDash = true;
 		if (CInput::Key('W'))		input.Z(-1.0f);
 		else if (CInput::Key('S'))	input.Z(1.0f);
 		if (CInput::Key('A'))		input.X(-1.0f);
 		else if (CInput::Key('D'))	input.X(1.0f);
-		if (CInput::PullKey(VK_SHIFT)) dash = false;
+		if (CInput::PullKey(VK_SHIFT)) mIsDash = false;
 
 		// 入力ベクトルの長さで入力されているか判定
 		if (input.LengthSqr() > 0)
@@ -178,6 +182,8 @@ void CPlayer::Update_FastMove()
 			move.Normalize();
 
 			mMoveSpeed += move * FASTMOVE_SPEED;
+			// スタミナを減少
+			mStatus.sp -= 0.5;
 
 			// ダッシュ開始アニメーションが終了
 			if (IsAnimationFinished())
@@ -193,7 +199,7 @@ void CPlayer::Update_FastMove()
 			}
 			// ダッシュキーを離した場合
 			// ダッシュのアニメーションから走るアニメーションに切り替える
-			if (dash == false)
+			if (!mIsDash)
 			{
 				mState = EState::eMove;
 				ChangeAnimation(EAnimType::eRun);
@@ -211,5 +217,14 @@ void CPlayer::Update_FastMove()
 	{
 		ChangeAnimation(EAnimType::eIdleAir);
 		mState = EState::eIdle;
+	}
+	// スタミナがゼロになったら強制的にダッシュを終了
+	// 一定時間ダッシュができないようにフラグを立てる
+	if (mStatus.sp <= 0)
+	{
+		mIsDash = false;
+		mSPZeroFlag = true;
+		mState = EState::eMove;
+		ChangeAnimation(EAnimType::eRun);
 	}
 }
