@@ -5,6 +5,7 @@
 CSword::CSword()
 {
 	mpSword = CResourceManager::Get<CModel>("Sword");
+
 }
 
 CSword::~CSword()

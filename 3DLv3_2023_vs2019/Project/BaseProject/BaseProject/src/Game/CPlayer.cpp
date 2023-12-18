@@ -4,6 +4,7 @@
 #include "CHPGauge.h"
 #include "CSPGauge.h"
 #include "CEnemy.h"
+#include "CColliderSphere.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -54,6 +55,12 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
+	// 球コライダの生成
+	mpBodyCol = new CColliderSphere(this, ELayer::ePlayer, 0.5f);
+	mpBodyCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpBodyCol->SetCollisionTags({ ETag::eEnemy });
+	mpBodyCol->Position(0.0f, 1.0f, 0.0f);
+
 	// カットインカメラの生成
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
 
@@ -70,13 +77,12 @@ CPlayer::CPlayer()
 	mpSPGauge->SetPos(10.0f, 40.0f);
 	mpSPGauge->SetMaxValue(mStatus.sp);
 
-	// それぞれのステータスの最大値を設定
-
 }
 
 CPlayer::~CPlayer()
 {
 	SAFE_DELETE(mpColliderLine);
+	SAFE_DELETE(mpBodyCol);
 
 	mpCutIn_PowerAttack->Kill();
 }
@@ -91,7 +97,7 @@ void CPlayer::ChangeAnimation(EAnimType type)
 {
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
 	PlayerData::AnimData data = PlayerData::GetAnimData((int)type);
-	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.MotionValue);
+	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.motionValue);
 }
 
 // 抜納状態を切り替える
@@ -311,6 +317,7 @@ void CPlayer::Update()
 			mHPRecoveryTime += 0.016666f;
 		}
 	}
+
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);
@@ -387,4 +394,18 @@ void CPlayer::Render()
 bool CPlayer::IsDrawn()
 {
 	return mIsDrawn;
+}
+
+// ダメージ処理
+void CPlayer::TakeDamage(int damage)
+{
+	mStatus.hp -= damage;
+	if (mStatus.hp <= 0)
+	{
+		// 死亡処理
+	}
+	else
+	{
+		// のけ反る処理
+	}
 }

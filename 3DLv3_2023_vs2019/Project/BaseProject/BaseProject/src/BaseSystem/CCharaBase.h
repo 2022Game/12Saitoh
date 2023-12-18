@@ -41,6 +41,8 @@ public:
 	// キャラの現在ステータスを取得
 	const CharaStatus& Status() const;
 
+	virtual void TakeDamage(int damage);
+
 private:
 	int mDamage; // ダメージ値
 

@@ -35,9 +35,6 @@ public:
 	//指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
 
-	// キャラの最大ステータスを取得
-	const CharaStatus& MaxStatus() const;
-
 protected:
 	CModelX* mpModel;			//モデルデータ
 	CMatrix* mpCombinedMatrix;	//合成行列退避

@@ -8,7 +8,7 @@ public:
 		std::string path;	// アニメーションデータのパス
 		bool loop;			// ループするかどうか
 		float frameLength;	// アニメーションのフレーム数
-		float MotionValue;	// モーション値
+		float motionValue;	// モーション値
 	};
 	// アニメーションデータテーブルを取得
 	static const AnimData& GetAnimData(int index)

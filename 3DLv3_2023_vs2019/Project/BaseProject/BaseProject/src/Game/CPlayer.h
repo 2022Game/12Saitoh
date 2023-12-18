@@ -26,6 +26,25 @@ public:
 	// デストラクタ
 	~CPlayer();
 
+	// 更新
+	void Update();
+
+	/// <summary>
+	/// 衝突処理
+	/// </summary>
+	/// <param name="self">衝突した自身のコライダー</param>
+	/// <param name="other">衝突した相手のコライダー</param>
+	/// <param name="hit">衝突した時の情報</param>
+	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
+
+	// 描画
+	void Render();
+
+	// 納刀状態か抜刀状態か判定
+	bool IsDrawn();
+
+	void TakeDamage(int damage) override;
+private:
 	// 待機状態
 	void Update_Idle();
 	// 移動状態
@@ -39,7 +58,7 @@ public:
 	// 攻撃終了
 	void Update_AttackEnd();
 	// プレイヤーの向いている方向のベクトルを取得
-	void Update_AttackAngleVec(CVector *direction);
+	void Update_AttackAngleVec(CVector* direction);
 	// 通常攻撃1-1処理
 	void Update_NormalAttack1();
 	// 通常攻撃1-2処理
@@ -67,24 +86,6 @@ public:
 	// 回避動作
 	void Update_Avoidance();
 
-	// 更新
-	void Update();
-
-	/// <summary>
-	/// 衝突処理
-	/// </summary>
-	/// <param name="self">衝突した自身のコライダー</param>
-	/// <param name="other">衝突した相手のコライダー</param>
-	/// <param name="hit">衝突した時の情報</param>
-	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
-
-	// 描画
-	void Render();
-
-	// 納刀状態か抜刀状態か判定
-	bool IsDrawn();
-	// プレイヤーのスタミナのフラグを取得
-private:
 	// アニメーション切り替え
 	void ChangeAnimation(EAnimType type);
 
@@ -125,12 +126,14 @@ private:
 
 	int mAttackStep;	// 攻撃の段階
 
+	float mHPRecoveryTime;	// HP回復調整用
+
 	CColliderLine* mpColliderLine;
+	CColliderSphere* mpBodyCol;
+
 	CTransform* mpRideObject;
 	CCutIn_PowerAttack* mpCutIn_PowerAttack;
 
 	CHPGauge* mpHPGauge;	// HPゲージ
 	CSPGauge* mpSPGauge;	// SPゲージ
-
-	float mHPRecoveryTime;	// HP回復調整用
 };

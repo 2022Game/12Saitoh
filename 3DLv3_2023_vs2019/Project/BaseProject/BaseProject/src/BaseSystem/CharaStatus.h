@@ -7,7 +7,7 @@ struct CharaStatus
 	int hp;		// HP
 	int atk;	// 攻撃力
 	int def;	// 防御力
-	float sp;		// スタミナ
+	float sp;	// スタミナ
 	int touki;	// 闘気ゲージ
 };
 

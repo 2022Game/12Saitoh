@@ -19,10 +19,16 @@ public:
 	// 更新処理
 	void Update();
 
+	// 衝突処理
+	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
+
 	// 描画処理
 	void Render();
 
 private:
+	// コライダーの更新処理
+	void ColliderUpdate();
+
 	// アニメーションの種類
 	enum class EAnimType
 	{
@@ -42,12 +48,14 @@ private:
 		std::string path;	// アニメーションデータパス
 		bool loop;			// ループするかどうか
 		float frameLength;	// アニメーションのフレーム数
+		float motionValue;	// モーション値
 	};
 
 	static const AnimData ANIM_DATA[];
 
 	static CEnemy* spInstance;
 	CModel* mModel;
-};
 
+	CColliderSphere* mpHeadCol;
+};
 #endif
