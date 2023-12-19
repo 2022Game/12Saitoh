@@ -26,6 +26,15 @@ public:
 	void Render();
 
 private:
+	// 待機状態
+	void Update_Idle();
+	// 移動状態
+	void Update_Move();
+	// 攻撃状態
+	void Update_Attack();
+	// 死亡状態
+	void Update_Death();
+
 	// コライダーの更新処理
 	void ColliderUpdate();
 
@@ -34,8 +43,24 @@ private:
 	{
 		None = -1,
 
-		eTPose, // Tポーズ
-		eIdle,	// アイドル
+		eTPose,		// Tポーズ
+		eIdle,		// アイドル
+		eIdle2,		// アイドル2
+		eIdle3,		// アイドル3
+		eWalk,		// 歩き
+		eRun,		// 走り
+		eAttack_Bite,// 噛みつき
+		eAttack_Scratching,// 引っ掻き
+		eAttack_Tail,// 尻尾攻撃
+		eRoar,		// 咆哮
+		eFear_Right,// 怯み(右)
+		eFear_Left,	// 怯み(左)
+		eDeath,		// 死亡
+		eFly,		// 飛行
+		eFly_Attack,// 飛行中攻撃
+		eFly_Breath,// 飛行中ブレス
+		eFly_Fear,	// 飛行中怯み
+		eFly_Death,	// 飛行中死亡
 
 		Num
 	};
@@ -50,12 +75,25 @@ private:
 		float frameLength;	// アニメーションのフレーム数
 		float motionValue;	// モーション値
 	};
+	
+	// 敵の状態
+	enum class EState
+	{
+		None = -1,
 
+		eIdle,		// 待機
+		eMove,		// 移動
+		Attack,		// 攻撃
+		eDeath,		// 死亡
+	};
+	EState mState;	// 敵の状態
+
+	// アニメーションデータテーブル
 	static const AnimData ANIM_DATA[];
-
+	// インスタンス
 	static CEnemy* spInstance;
-	CModel* mModel;
 
+	CModel* mModel;
 	CColliderSphere* mpHeadCol;
 };
 #endif

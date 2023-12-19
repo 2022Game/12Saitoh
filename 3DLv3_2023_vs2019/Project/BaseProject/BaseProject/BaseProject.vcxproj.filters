@@ -89,6 +89,9 @@
     <Filter Include="ソース ファイル\BaseSystem\Resource">
       <UniqueIdentifier>{80231c21-7d3e-4196-9ae8-9065d9ff91ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Enemy\Enemy_Update">
+      <UniqueIdentifier>{5e48614f-c375-49b4-9eb4-230099bdd91d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -333,6 +336,15 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CharaStatus.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Update_Idle.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Update_Move.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Update_Attack.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

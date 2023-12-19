@@ -104,8 +104,7 @@ private:
 	// プレイヤーの状態
 	enum class EState
 	{
-		None = -1,	//初期値
-
+		None = -1,
 		eIdle,		// 待機
 		eMove,		// 移動
 		eFastMove,	// ダッシュ移動
