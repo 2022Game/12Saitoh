@@ -55,7 +55,8 @@ public:
 	/// <param name="eye">カメラの位置</param>
 	/// <param name="at">注視する位置</param>
 	/// <param name="up">上ベクトル</param>
-	void LookAt(const CVector& eye, const CVector& at, const CVector& up);
+	/// <param name="updateTargetEye">視点の目標位置も更新するかどうか</param>
+	void LookAt(const CVector& eye, const CVector& at, const CVector& up, bool updateTargetEye = true);
 
 	/// <summary>
 	/// 画面サイズ変更時のコールバック関数

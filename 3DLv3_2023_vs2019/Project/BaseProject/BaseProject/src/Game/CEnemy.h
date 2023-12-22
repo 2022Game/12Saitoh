@@ -57,6 +57,7 @@ private:
 		eFear_Left,	// 怯み(左)
 		eDeath,		// 死亡
 		eFly,		// 飛行
+		eFlyStart,	// 飛行始め
 		eFly_Attack,// 飛行中攻撃
 		eFly_Breath,// 飛行中ブレス
 		eFly_Fear,	// 飛行中怯み
@@ -95,5 +96,10 @@ private:
 
 	CModel* mModel;
 	CColliderSphere* mpHeadCol;
+
+	// 経過時間計測長
+	float mElapsedTime;
+	// アイドル管理用の時間
+	int mIdleTime;
 };
 #endif

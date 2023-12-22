@@ -156,8 +156,9 @@ void CCamera::LookAt(const CVector& pos, const CVector& up)
 }
 
 // 注視する位置を設定（視点 + 注視点 + 上ベクトル）
-void CCamera::LookAt(const CVector& eye, const CVector& at, const CVector& up)
+void CCamera::LookAt(const CVector& eye, const CVector& at, const CVector& up, bool updateTargetEye)
 {
+	if (updateTargetEye) mTargetEye = eye;
 	mEye = eye; mAt = at; mUp = up;
 	mViewMatrix.Identity();
 	CVector f = (mEye - mAt).Normalized();
@@ -351,7 +352,7 @@ void CCamera::Update()
 	ApplyCollision();
 
 	// 視点、注視点、上ベクトルから各行列を更新
-	LookAt(mEye, mAt, mUp);
+	LookAt(mEye, mAt, mUp, false);
 }
 
 // 削除
