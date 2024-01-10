@@ -5,7 +5,7 @@
 // カメラの回転速度
 #define ROTATE_SPEED 0.1f
 // カメラの上下回転の範囲
-#define ROTATE_RANGE_X 45.0f
+#define ROTATE_RANGE_X 70.0f
 
 // コンストラクタ
 CGameCamera::CGameCamera(const CVector& eye, const CVector& center, bool isMainCamera)
@@ -64,7 +64,7 @@ void CGameCamera::Update()
 		mEye = mTargetEye;
 	}
 
-	CDebugPrint::Print("Angle:%f, %f, %f", mRotateAngle.X(), mRotateAngle.Y(), mRotateAngle.Z());
+	//CDebugPrint::Print("Angle:%f, %f, %f", mRotateAngle.X(), mRotateAngle.Y(), mRotateAngle.Z());
 
 	// 設定されているコライダーと衝突する場合は、
 	// カメラの位置を押し出す

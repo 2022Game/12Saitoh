@@ -28,6 +28,7 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	CResourceManager::Load<CModel>("Field", "Field\\field.obj");
+	CResourceManager::Load<CModel>("FieldCamCol", "Field\\fieldCamCol.obj");
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
@@ -36,7 +37,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
 
 	//フィールドを生成
-	new CField();
+	CField * field = new CField();
 
 	//プレイヤーを生成
 	CPlayer* player = new CPlayer();
@@ -65,7 +66,8 @@ void CGameScene::Load()
 
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	mainCamera->SetFollowTargetTf(player);
-
+	// メインカメラの衝突判定にフィールドのコライダーを追加
+	mainCamera->AddCollider(field->GetFieldCol());
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
 

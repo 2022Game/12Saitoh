@@ -10,6 +10,10 @@ CField::CField()
 
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
+	CModel* camCol = CResourceManager::Get<CModel>("FieldCamCol");
+	mpCamColliderMesh = new CColliderMesh(this, ELayer::eField, camCol, true);
+	mpCamColliderMesh->SetEnable(false);
+
 	//CreateFieldObjects();
 }
 
@@ -20,6 +24,17 @@ CField::~CField()
 		delete mpColliderMesh;
 		mpColliderMesh = nullptr;
 	}
+	if (mpCamColliderMesh != nullptr)
+	{
+		delete mpCamColliderMesh;
+		mpCamColliderMesh = nullptr;
+	}
+}
+
+// フィールドの床のコライダーを取得
+CColliderMesh* CField::GetFieldCol() const
+{
+	return mpCamColliderMesh;
 }
 
 void CField::CreateFieldObjects()

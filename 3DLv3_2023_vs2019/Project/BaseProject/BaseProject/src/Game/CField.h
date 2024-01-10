@@ -8,6 +8,8 @@ public:
 	CField();
 	~CField();
 
+	// フィールドの床のコライダーを取得
+	CColliderMesh* GetFieldCol() const;
 	void Update();
 	void Render();
 
@@ -16,6 +18,7 @@ private:
 
 	CModel* mpModel;
 	CColliderMesh* mpColliderMesh;
+	CColliderMesh* mpCamColliderMesh;
 
 	CModel* mpCubeModel;
 	CModel* mpCylinderModel;
