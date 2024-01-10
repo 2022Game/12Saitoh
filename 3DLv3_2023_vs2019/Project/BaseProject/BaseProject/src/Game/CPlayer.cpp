@@ -3,6 +3,7 @@
 #include "CDebugPrint.h"
 #include "CHPGauge.h"
 #include "CSPGauge.h"
+#include "CSword.h"
 #include "CEnemy.h"
 #include "CColliderSphere.h"
 #include "CBullet.h"
@@ -79,6 +80,9 @@ CPlayer::CPlayer()
 	mpSPGauge->SetPos(10.0f, 40.0f);
 	mpSPGauge->SetMaxValue(mStatus.sp);
 
+	//剣を生成
+	CSword* sword = new CSword();
+	sword->Rotate(CVector(0.0f, 0.0f, 0.0f));
 }
 
 CPlayer::~CPlayer()
@@ -335,11 +339,6 @@ void CPlayer::Update()
 		);
 	}
 
-	// コントロールキーでカメラをリセット
-	if (CInput::PushKey(VK_CONTROL))
-	{
-
-	}
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);

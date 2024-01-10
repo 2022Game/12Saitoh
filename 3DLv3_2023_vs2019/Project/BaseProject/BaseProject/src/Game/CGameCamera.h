@@ -15,6 +15,14 @@ public:
 	// デストラクタ
 	~CGameCamera();
 
+	void SetFollowTargetTf(CTransform* target) override;
+	void LookAt(const CVector& eye, const CVector& at,
+		const CVector& up, bool updateTargetEye = true) override;
+
 	// 更新
 	void Update() override;
+
+private:
+	CVector mFollowDefaultEyeVec;
+	CVector mRotateAngle;
 };

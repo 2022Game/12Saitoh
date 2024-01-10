@@ -1,12 +1,17 @@
 #include "CGameCamera.h"
 #include "CInput.h"
+#include "Maths.h"
 
 // カメラの回転速度
 #define ROTATE_SPEED 0.1f
+// カメラの上下回転の範囲
+#define ROTATE_RANGE_X 45.0f
 
 // コンストラクタ
 CGameCamera::CGameCamera(const CVector& eye, const CVector& center, bool isMainCamera)
 	: CCamera(eye, center, isMainCamera)
+	, mFollowDefaultEyeVec(CVector::forward)
+	, mRotateAngle(CVector::zero)
 {
 }
 
@@ -15,22 +20,59 @@ CGameCamera::~CGameCamera()
 {
 }
 
+void CGameCamera::SetFollowTargetTf(CTransform* target)
+{
+	mFollowTargetTf = target;
+	if (mFollowTargetTf != nullptr)
+	{
+		mFollowDefaultEyeVec = mTargetEye - mAt;
+		mFollowOffsetPos = mAt - mFollowTargetTf->Position();
+	}
+}
+
+void CGameCamera::LookAt(const CVector& eye, const CVector& at, const CVector& up, bool updateTargetEye)
+{
+	CCamera::LookAt(eye, at, up, updateTargetEye);
+	if (mFollowTargetTf != nullptr)
+	{
+		if (updateTargetEye)
+		{
+			mFollowDefaultEyeVec = mTargetEye - mAt;
+		}
+		mFollowOffsetPos = mAt - mFollowTargetTf->Position();
+	}
+}
+
 // 更新
 void CGameCamera::Update()
 {
-	// マウスの横方向の移動量に合わせて、回転値（クォータニオン）を求める
-	CVector2 delta = CInput::GetDeltaMousePos();
-	//CQuaternion rot = CQuaternion(0.0f, delta.X() * ROTATE_SPEED, 0.0f);
-	CQuaternion rot = CQuaternion(delta.Y() * ROTATE_SPEED, delta.X() * ROTATE_SPEED, 0.0f);
+	// 追従するターゲットが設定されていれば、
+	if (mFollowTargetTf != nullptr)
+	{
+		// マウスの移動量に合わせて、カメラの回転角度を変更
+		CVector2 delta = CInput::GetDeltaMousePos();
+		float x = Math::Clamp(mRotateAngle.X() + delta.Y() * ROTATE_SPEED, -ROTATE_RANGE_X, ROTATE_RANGE_X);
+		float y = Math::Repeat(mRotateAngle.Y() + delta.X() * ROTATE_SPEED, 360.0f);
+		mRotateAngle.X(x);
+		mRotateAngle.Y(y);
 
-	// 追従時のオフセット位置を回転
-	mFollowOffsetPos = rot * mFollowOffsetPos;
+		// 回転値を求めて、注視点から視点までのベクトルを回転させることで、
+		// 視点の位置を更新する
+		CQuaternion rot = CQuaternion(mRotateAngle);
+		mAt = mFollowTargetTf->Position() + mFollowOffsetPos;
+		mTargetEye = mAt + rot * mFollowDefaultEyeVec;
+		mEye = mTargetEye;
+	}
 
-	// カメラの向きを回転
-	CVector vec = -mEyeVec.Normalized();
-	CVector forward = rot * vec;
-	Rotation(CQuaternion::LookRotation(forward));
+	CDebugPrint::Print("Angle:%f, %f, %f", mRotateAngle.X(), mRotateAngle.Y(), mRotateAngle.Z());
+
+	// 設定されているコライダーと衝突する場合は、
+	// カメラの位置を押し出す
+	ApplyCollision();
+
+	// 視点、注視点、上ベクトルから各行列を更新
+	LookAt(mEye, mAt, mUp, false);
 
 	// カメラのベースの更新処理
-	CCamera::Update();
+	//CCamera::Update();
 }

@@ -2,14 +2,15 @@
 #include "CSceneManager.h"
 #include "CField.h"
 #include "CPlayer.h""
-#include "CSword.h"
 #include "CEnemy.h"
 #include "CGameCamera.h"
 #include "CInput.h"
+#include "CGameMenu.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
+	, mpGameMenu(nullptr)
 {
 }
 
@@ -47,20 +48,26 @@ void CGameScene::Load()
 	enemy->Position(-50.0f, 0.0f, -50.0f);
 	enemy->Scale(20.0f, 20.0f, 20.0f);
 
-	//剣を生成
-	CSword* sword = new CSword();
-	sword->Rotate(CVector(0.0f, 0.0f, 0.0f));
-
-	//カメラセット
+	////カメラセット
+	//CGameCamera* mainCamera = new CGameCamera
+	//(
+	//	CVector(0.0f, 30.0f, 40.0f),
+	//	player->Position()
+	//);
+	
+	// CGameCameraのテスト
+	CVector atPos = player->Position() + CVector(0.0f, 10.0f, 0.0f);
 	CGameCamera* mainCamera = new CGameCamera
 	(
-		CVector(0.0f, 30.0f, 40.0f),
-		player->Position()
+		atPos + CVector(0.0f, 0.0f, 40.0f),
+		atPos
 	);
-
 
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	mainCamera->SetFollowTargetTf(player);
+
+	// ゲームメニューを作成
+	mpGameMenu = new CGameMenu();
 
 	//CLineEffect* le = new CLineEffect(ETag::eNone);
 //le->AddPoint(CVector(0.0f, 10.0f, 10.0f), 1.0f);
@@ -76,5 +83,14 @@ void CGameScene::Update()
 	if (CInput::PushKey('T'))
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);
+	}
+
+	// ゲームメニューを開いてなければ、[Ｍ]キーでメニューを開く
+	if (!mpGameMenu->IsOpened())
+	{
+		if (CInput::PushKey('M'))
+		{
+			mpGameMenu->Open();
+		}
 	}
 }
