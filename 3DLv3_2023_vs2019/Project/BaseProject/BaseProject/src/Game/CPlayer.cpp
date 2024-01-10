@@ -5,6 +5,8 @@
 #include "CSPGauge.h"
 #include "CEnemy.h"
 #include "CColliderSphere.h"
+#include "CBullet.h"
+#define MOVE_SPEED 0.375f * 5.0f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -243,6 +245,7 @@ void CPlayer::Update()
 	mIsGrounded = false;
 
 #ifdef _DEBUG
+	CDebugPrint::Print("FPS:%f\n", Time::FPS());
 	CVector pos = Position();
 	CDebugPrint::Print("プレイヤー情報:\n");
 	CDebugPrint::Print("座標(X:%f, Y:%f, Z:%f)\n", pos.X(), pos.Y(), pos.Z());
@@ -318,6 +321,25 @@ void CPlayer::Update()
 		}
 	}
 
+	// 右クリックで発射
+	if (CInput::PushKey(VK_RBUTTON))
+	{
+		// 弾丸を生成
+		new CBullet
+		(
+			// 発射位置
+			Position() + CVector(0.0f, 10.0f, 0.0f) + VectorZ() * 20.0f,
+			VectorZ(),	// 発射方向
+			1000.0f,	// 移動距離
+			1000.0f		// 飛距離
+		);
+	}
+
+	// コントロールキーでカメラをリセット
+	if (CInput::PushKey(VK_CONTROL))
+	{
+
+	}
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);

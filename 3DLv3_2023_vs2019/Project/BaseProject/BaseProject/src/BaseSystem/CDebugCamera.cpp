@@ -73,6 +73,7 @@ void CDebugCamera::On(bool disableInput)
 		spDebugCamera->mMoveSpeed = CVector::zero;
 		spDebugCamera->mMoveSpeedRatio = 1.0f;
 		spDebugCamera->mRotateAngle = spDebugCamera->EulerAngles();
+		spDebugCamera->mRotateAngle.Z(0.0f);
 	}
 
 	spDebugCamera->Reshape(WINDOW_WIDTH, WINDOW_HEIGHT);

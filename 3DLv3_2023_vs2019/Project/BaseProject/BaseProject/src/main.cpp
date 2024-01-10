@@ -120,6 +120,8 @@ int main(void)
 		return -1;
 	}
 	CInput::Window(window);
+	// ゲーム中はマウスカーソルを非表示にする
+	CInput::ShowCursor(false);
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 

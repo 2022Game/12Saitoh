@@ -1,11 +1,11 @@
 #include "CGameScene.h"
 #include "CSceneManager.h"
 #include "CField.h"
-#include "CPlayer.h"
-#include "CCamera.h"
+#include "CPlayer.h""
 #include "CSword.h"
 #include "CEnemy.h"
-//#include "CLineEffect.h"
+#include "CGameCamera.h"
+#include "CInput.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -32,7 +32,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
 	CResourceManager::Load<CModelX>("Enemy", "Character\\Enemy\\Dragon.x");
-	
+	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+
 	//フィールドを生成
 	new CField();
 
@@ -51,11 +52,13 @@ void CGameScene::Load()
 	sword->Rotate(CVector(0.0f, 0.0f, 0.0f));
 
 	//カメラセット
-	CCamera* mainCamera = new CCamera
+	CGameCamera* mainCamera = new CGameCamera
 	(
-		CVector(0.0f, 20.0f, 50.0f),
+		CVector(0.0f, 30.0f, 40.0f),
 		player->Position()
 	);
+
+
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	mainCamera->SetFollowTargetTf(player);
 
@@ -70,5 +73,8 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-
+	if (CInput::PushKey('T'))
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eTitle);
+	}
 }

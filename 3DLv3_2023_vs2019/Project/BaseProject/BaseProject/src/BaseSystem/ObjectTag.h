@@ -13,6 +13,8 @@ enum class ETag
 	ePlayer,// プレイヤー
 	eEnemy,	// エネミー
 
+	eBullet,// 弾丸
+
 	eCamera,// カメラ
 
 	Num

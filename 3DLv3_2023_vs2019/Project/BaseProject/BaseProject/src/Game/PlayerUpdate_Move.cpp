@@ -25,7 +25,10 @@ void CPlayer::Update_Move()
 			if (input.LengthSqr() > 0)
 			{
 				// カメラの向きに合わせた移動ベクトルに変換
-				CVector move = CCamera::MainCamera()->Rotation() * input;
+				CCamera* mainCamera = CCamera::MainCamera();
+				CVector camForward = mainCamera->VectorZ();
+				CVector camSide = CVector::Cross(CVector::up, camForward);
+				CVector move = camForward * input.Z() + camSide * input.X();
 				move.Y(0.0f);
 				move.Normalize();
 
@@ -102,7 +105,10 @@ void CPlayer::Update_Move()
 			if (input.LengthSqr() > 0)
 			{
 				// カメラの向きに合わせた移動ベクトルに変換
-				CVector move = CCamera::MainCamera()->Rotation() * input;
+				CCamera* mainCamera = CCamera::MainCamera();
+				CVector camForward = mainCamera->VectorZ();
+				CVector camSide = CVector::Cross(CVector::up, camForward);
+				CVector move = camForward * input.Z() + camSide * input.X();
 				move.Y(0.0f);
 				move.Normalize();
 
