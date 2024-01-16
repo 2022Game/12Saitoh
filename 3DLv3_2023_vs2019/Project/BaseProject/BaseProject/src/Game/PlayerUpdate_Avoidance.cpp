@@ -1,6 +1,5 @@
 #include "CPlayer.h"
 
-
 // 回避動作
 void CPlayer::Update_Avoidance()
 {
@@ -15,14 +14,18 @@ void CPlayer::Update_Avoidance()
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
 
+	CCamera* mainCamera = CCamera::MainCamera();
+	CVector camFoward = mainCamera->VectorZ();
+	CVector camSide = CVector::Cross(CVector::up, camFoward);
+
 	// 仮保存の入力ベクトルが初期値の場合
-	if (mInput_save == CVector::zero)
+	if (mInput_save.LengthSqr() == 0.0f)
 	{
 		// 入力ベクトルデータを一時的に保存
-		mInput_save = input;
+		mInput_save = camFoward * input.Z() + camSide * input.X();
 	}
 	// カメラの向きに合わせた移動ベクトルに変換
-	CVector move = CCamera::MainCamera()->Rotation() * mInput_save;
+	CVector move = mInput_save;
 	move.Y(0.0f);
 	move.Normalize();
 

@@ -122,6 +122,7 @@ private:
 	bool mIsCounter;	// カウンター構え中に攻撃が当たったかどうか
 	bool mIsDash;		// ダッシュ中かどうか
 	bool mSPZeroFlag;	// スタミナが0になった時のスタミナ回復中のフラグ
+	bool mIsUpdateInput;// 入力情報を更新するフラグ
 
 	int mAttackStep;	// 攻撃の段階
 

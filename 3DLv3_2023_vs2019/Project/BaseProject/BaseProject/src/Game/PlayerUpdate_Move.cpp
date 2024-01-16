@@ -183,7 +183,10 @@ void CPlayer::Update_FastMove()
 		if (input.LengthSqr() > 0)
 		{
 			// カメラの向きに合わせた移動ベクトルに変換
-			CVector move = CCamera::MainCamera()->Rotation() * input;
+			CCamera* mainCamera = CCamera::MainCamera();
+			CVector camFoward = mainCamera->VectorZ();
+			CVector camSide = CVector::Cross(CVector::up, camFoward);
+			CVector move = camFoward * input.Z() + camSide * input.X();
 			move.Y(0.0f);
 			move.Normalize();
 

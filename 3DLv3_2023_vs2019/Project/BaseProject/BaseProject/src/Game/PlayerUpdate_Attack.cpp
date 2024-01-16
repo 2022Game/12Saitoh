@@ -8,48 +8,36 @@ void CPlayer::Update_AttackAngleVec(CVector *direction)
 
 	// キーの入力ベクトルを取得
 	CVector input = CVector::zero;
-	bool isinput = false;	// キーが入力されているか判定
 	if (CInput::Key('W'))		input.Z(-1.0f);
 	else if (CInput::Key('S'))	input.Z(1.0f);
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
 
+	CCamera* mainCamera = CCamera::MainCamera();
+	CVector camForward = mainCamera->VectorZ();
+	CVector camSide = CVector::Cross(CVector::up, camForward);
 	// 仮保存の入力ベクトルが初期値の場合
-	if (mInput_save == CVector::zero)
+	if (mIsUpdateInput && input.LengthSqr() > 0.0f) 
 	{
 		// 入力ベクトルデータを一時的に保存
-		mInput_save = input;
-		isinput = true;
+		mInput_save = camForward * input.Z() + camSide * input.X();
+		mIsUpdateInput = false;
 	}
 	// 攻撃アニメーションが終了したら
 	// 一時的に保存した入力ベクトルを初期化する
 	if (IsAnimationFinished())
 	{
-		mInput_save = CVector::zero;
-		isinput = false;
+		mIsUpdateInput = true;
 	}
-
-	// プレイヤーの回転角度によってベクトルを入手
-	CVector vec;
-	CVector angle = EulerAngles();
-	// 316 ～ 45度の間
-	if (0 <= angle.Y() && angle.Y() <= 45 ||
-		316 <= angle.Y() && angle.Y() <= 365)		vec.Z(1.0f);
-	// 46 ～ 135度の間
-	else if (46 <= angle.Y() && angle.Y() <= 135)	vec.X(-1.0f);
-	// 136 ～ 225度の間
-	else if (136 <= angle.Y() && angle.Y() <= 225)	vec.Z(-1.0f);
-	// 226 ～ 315度の間
-	else if (226 <= angle.Y() && angle.Y() <= 315)	vec.X(1.0f);
 
 	// カメラの向きに合わせた移動ベクトルに変換
 	// 移動キー入力があるかによって移動ベクトルを変更
 	CVector anglevec = CVector::zero;
-	if (isinput) {
-		anglevec = CCamera::MainCamera()->Rotation() * vec;
+	if (mIsUpdateInput || mInput_save.LengthSqr() == 0.0f) {
+		anglevec = VectorZ();
 	}
 	else {
-		anglevec = CCamera::MainCamera()->Rotation() * mInput_save;
+		anglevec = mInput_save;
 	}
 	anglevec.Y(0.0f);
 	anglevec.Normalize();
