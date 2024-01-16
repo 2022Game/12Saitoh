@@ -2,6 +2,7 @@
 #define CENEMY_H
 #include "CXCharacter.h"
 #include "CCollider.h"
+#include "CColliderLine.h"
 #include "CModel.h"
 
 /*
@@ -84,7 +85,7 @@ private:
 
 		eIdle,		// 待機
 		eMove,		// 移動
-		Attack,		// 攻撃
+		eAttack,	// 攻撃
 		eDeath,		// 死亡
 	};
 	EState mState;	// 敵の状態
@@ -95,11 +96,12 @@ private:
 	static CEnemy* spInstance;
 
 	CModel* mModel;
-	CColliderSphere* mpHeadCol;
+	CColliderSphere* mpHeadCol;		// 頭
+	CColliderLine* mpColliderLine;	// 地面との当たり判定用
 
-	// 経過時間計測長
-	float mElapsedTime;
-	// アイドル管理用の時間
-	int mIdleTime;
+	CVector mMoveSpeed;	// 移動速度
+	bool mIsGrounded;	// 接地しているかどうか
+	int mIdleTime;		// アイドル管理用の時間
+	float mElapsedTime;	// 経過時間計測長
 };
 #endif

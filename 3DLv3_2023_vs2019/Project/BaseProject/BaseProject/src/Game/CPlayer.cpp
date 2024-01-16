@@ -6,8 +6,6 @@
 #include "CSword.h"
 #include "CEnemy.h"
 #include "CColliderSphere.h"
-#include "CBullet.h"
-#define MOVE_SPEED 0.375f * 5.0f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -211,7 +209,7 @@ void CPlayer::Update()
 	if (mStatus.hp >= 100) mStatus.hp = 100;		// HP
 	if (mStatus.sp >= 100.0f) mStatus.sp = 100.0f;	// SP
 	if (mStatus.touki > 300) mStatus.touki = 300;	// 闘気
-	// 加減
+	// 下限
 	if (mStatus.hp <= 0) mStatus.hp = 0;		// HP
 	if (mStatus.sp <= 0.0f) mStatus.sp = 0;		// SP
 	if (mStatus.touki < 0) mStatus.touki = 0;	// 闘気
@@ -271,7 +269,7 @@ void CPlayer::Update()
 	CDebugPrint::Print("  HP 　: %d\n", mStatus.hp);
 	CDebugPrint::Print("攻撃力 : %d\n", mStatus.atk);
 	CDebugPrint::Print("防御力 : %d\n", mStatus.def);
-	CDebugPrint::Print("スタミナ : %d\n", mStatus.sp);
+	CDebugPrint::Print("スタミナ : %.0f\n", mStatus.sp);
 	CDebugPrint::Print("闘気ゲージ : %d\n", mStatus.touki);
 
 	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
@@ -325,20 +323,6 @@ void CPlayer::Update()
 		}
 	}
 
-	// 右クリックで発射
-	if (CInput::PushKey(VK_RBUTTON))
-	{
-		// 弾丸を生成
-		new CBullet
-		(
-			// 発射位置
-			Position() + CVector(0.0f, 10.0f, 0.0f) + VectorZ() * 20.0f,
-			VectorZ(),	// 発射方向
-			1000.0f,	// 移動距離
-			1000.0f		// 飛距離
-		);
-	}
-
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);
@@ -359,7 +343,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			Position(Position() + hit.adjust);
 			mIsGrounded = true;
 			
-
 			// 納刀時の空中待機時
 			if (AnimationIndex() == (int)EAnimType::eIdleAir)
 			{

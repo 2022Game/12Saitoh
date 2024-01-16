@@ -337,13 +337,13 @@
     <ClCompile Include="src\BaseSystem\CharaStatus.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\Update_Idle.cpp">
+    <ClCompile Include="src\Game\EnemyUpdate_Idle.cpp">
       <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\Update_Move.cpp">
+    <ClCompile Include="src\Game\EnemyUpdate_Move.cpp">
       <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\Update_Attack.cpp">
+    <ClCompile Include="src\Game\EnemyUpdate_Attack.cpp">
       <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CLineEffect.cpp">

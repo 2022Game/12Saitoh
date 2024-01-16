@@ -217,6 +217,7 @@ void CPlayer::Update_FastMove()
 			// 走り終わりのアニメーションを再生し、アイドル状態に戻す
 			ChangeAnimation(EAnimType::eFastRunEnd);
 			mState = EState::eIdle;
+			mIsDash = false;
 		}
 	}
 	else

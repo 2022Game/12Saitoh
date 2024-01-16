@@ -5,6 +5,9 @@
 #include "CColliderSphere.h"
 #include "CPlayer.h"
 
+#define GRAVITY			0.0625f	// 重力
+#define ENEMY_HEIGHT	3.0f
+
 CEnemy* CEnemy::spInstance = nullptr;
 
 // 敵のアニメーションデータのテーブル
@@ -74,6 +77,14 @@ CEnemy::CEnemy()
 
 	// 状態の設定
 	mState = EState::eIdle;
+
+	// 線分コライダの設定
+	mpColliderLine = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
+	);
 	// コライダーの生成
 	mpHeadCol = new CColliderSphere(this, ELayer::eDamageCol, 0.2);
 	mpHeadCol->SetCollisionLayers({ ELayer::eAttackCol });
@@ -100,7 +111,7 @@ void CEnemy::ColliderUpdate()
 //更新処理
 void CEnemy::Update()
 {
-	// 状態に合わせて、更新処理を切り替える
+	// 状態に合わせて更新処理を切り替える
 	switch (mState)
 	{
 		// アイドル状態
@@ -112,7 +123,7 @@ void CEnemy::Update()
 		Update_Move();
 		break;
 		// 攻撃状態
-	case EState::Attack:
+	case EState::eAttack:
 		Update_Attack();
 		break;
 		// 死亡状態
@@ -121,31 +132,33 @@ void CEnemy::Update()
 		break;
 	}
 
+	// 重力を設定
+	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+
+	// 移動
+	Position(Position() + mMoveSpeed);
+
+	// 移動方向へ向ける
+	CVector current = VectorZ();
+	CVector target = mMoveSpeed;
+	target.Y(0.0f);
+	target.Normalize();
+	CVector forward = CVector::Slerp(current, target, 0.125f);
+	Rotation(CQuaternion::LookRotation(forward));
+
 	CXCharacter::Update();
 	ColliderUpdate();
-#ifdef _DEBUG
-	auto enemydata = Instance();
-	CVector enemy = Position();
-	CDebugPrint::Print("X : %1f, Y : %1f, Z : %1f\n", enemy.X(), enemy.Y(), enemy.Z());
 
-	if (CInput::PushKey('1')) ChangeAnimation(EAnimType::eIdle);
-	else if (CInput::PushKey('2')) ChangeAnimation(EAnimType::eIdle2);
-	else if (CInput::PushKey('3')) ChangeAnimation(EAnimType::eIdle3);
-	else if (CInput::PushKey('4')) ChangeAnimation(EAnimType::eWalk);
-	else if (CInput::PushKey('5')) ChangeAnimation(EAnimType::eRun);
-	else if (CInput::PushKey('6')) ChangeAnimation(EAnimType::eAttack_Bite);
-	else if (CInput::PushKey('7')) ChangeAnimation(EAnimType::eAttack_Scratching);
-	else if (CInput::PushKey('8')) ChangeAnimation(EAnimType::eAttack_Tail);
-	else if (CInput::PushKey('9')) ChangeAnimation(EAnimType::eRoar);
-	if (CInput::Key('T') && CInput::PushKey('1')) ChangeAnimation(EAnimType::eFear_Right);
-	else if (CInput::Key('T') && CInput::PushKey('2')) ChangeAnimation(EAnimType::eFear_Left);
-	else if (CInput::Key('T') && CInput::PushKey('3')) ChangeAnimation(EAnimType::eDeath);
-	else if (CInput::Key('T') && CInput::PushKey('4')) ChangeAnimation(EAnimType::eFly);
-	else if (CInput::Key('T') && CInput::PushKey('5')) ChangeAnimation(EAnimType::eFly_Attack);
-	else if (CInput::Key('T') && CInput::PushKey('6')) ChangeAnimation(EAnimType::eFly_Breath);
-	else if (CInput::Key('T') && CInput::PushKey('7')) ChangeAnimation(EAnimType::eFly_Fear);
-	else if (CInput::Key('T') && CInput::PushKey('8')) ChangeAnimation(EAnimType::eFly_Death);
-	else if (CInput::Key('T') && CInput::PushKey('9')) ChangeAnimation(EAnimType::eFlyStart);
+#ifdef _DEBUG
+	CEnemy *enemydata = Instance();
+	CVector pos = Position();
+	CDebugPrint::Print("X : %1f, Y : %1f, Z : %1f\n", pos.X(), pos.Y(), pos.Z());
+
+	// 敵の状態を切り替える
+	if (CInput::PushKey('1')) mState = EState::eIdle;
+	else if (CInput::PushKey('2')) mState = EState::eMove;
+	else if (CInput::PushKey('3')) mState = EState::eAttack;
+	else if (CInput::PushKey('4')) mState = EState::eDeath;
 #endif
 }
 
@@ -157,6 +170,16 @@ void CEnemy::Update_Death()
 // 衝突処理
 void CEnemy::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
+	if (self == mpColliderLine)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Y(0.0f);
+			// めり込まないように調整
+			Position(Position() + hit.adjust);
+			mIsGrounded = true;
+		}
+	}
 //	if (self == mpAttackCol)
 //	{
 //		CPlayer* player = dynamic_cast<CPlayer*>(other->Owner());

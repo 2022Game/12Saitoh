@@ -1,6 +1,6 @@
 # Blender 3.6.3
 # www.blender.org
-mtllib fieidCamCol.mtl
+mtllib fieldCamCol.mtl
 o Plane
 v -500.000000 5.000008 100.000000
 v -300.000000 5.000008 100.000000
