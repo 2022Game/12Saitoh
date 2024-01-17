@@ -116,11 +116,15 @@ private:
 
 	CVector mInput_save;// 入力ベクトルを仮保存
 	CVector mMoveSpeed;	// 移動速度
+	CVector mCamForward;// メインカメラの正面ベクトル
+	CVector mCamSide;	// メインカメラのサイドベクトル
+
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsDrawn;		// 納刀状態か抜刀状態か判定 true:抜刀 false:納刀
 	bool mIsAirAttack;	// 空中攻撃を行ったかどうか
 	bool mIsCounter;	// カウンター構え中に攻撃が当たったかどうか
 	bool mIsDash;		// ダッシュ中かどうか
+	bool mIsAvoid;		// 回避中かどうか
 	bool mSPZeroFlag;	// スタミナが0になった時のスタミナ回復中のフラグ
 	bool mIsUpdateInput;// 入力情報を更新するフラグ
 

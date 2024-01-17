@@ -16,16 +16,20 @@ CPlayer::CPlayer()
 		0, ETaskPauseType::ePlayer)
 	, mState(EState::eIdle)
 	, mInput_save(CVector::zero)
+	, mMoveSpeed(CVector::zero)
+	, mCamForward(CVector::zero)
+	, mCamSide(CVector::zero)
 	, mIsGrounded(false)
 	, mIsDrawn(false)
 	, mIsAirAttack(false)
 	, mIsCounter(false)
 	, mIsDash(false)
+	, mIsAvoid(false)
 	, mSPZeroFlag(false)
 	, mIsUpdateInput(false)
 	, mAttackStep(0)
 	, mpRideObject(nullptr)
-	, mHPRecoveryTime(0)
+	, mHPRecoveryTime(0.0f)
 
 {
 	//インスタンスの設定
@@ -109,9 +113,9 @@ void CPlayer::ChangeAnimation(EAnimType type)
 void CPlayer::SwitchDrawn()
 {
 	// 抜刀状態の時、納刀状態へ切り替える
-	if (mIsDrawn){mIsDrawn = false;}
+	if (mIsDrawn) mIsDrawn = false;
 	// 納刀状態の時、抜刀状態へ切り替える
-	else{mIsDrawn = true;}
+	else mIsDrawn = true;
 }
 
 // 抜納の切り替え処理
@@ -159,6 +163,11 @@ void CPlayer::Update_SwitchDrawn()
 // 更新
 void CPlayer::Update()
 {
+	// カメラの正面・サイドベクトルを設定
+	CCamera* mainCamera = CCamera::MainCamera();
+	mCamForward = mainCamera->VectorZ();
+	mCamSide = CVector::Cross(CVector::up, mCamForward);
+
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 
@@ -192,13 +201,14 @@ void CPlayer::Update()
 	}
 
 	// スタミナ回復処理
-	if (!mIsDash)
+	// ダッシュまたは回避中以外の時は実行
+	if (!mIsDash && !mIsAvoid)
 	{
-		if (mStatus.sp <= 100.0f)
+		if (mStatus.sp <= PLAYER_MAX_SP)
 		{
 			mStatus.sp += 0.3;
 		}
-		if (mStatus.sp >= 100.0f)
+		if (mStatus.sp >= PLAYER_MAX_SP)
 		{
 			// SPが全回復
 			mSPZeroFlag = false;
@@ -207,13 +217,13 @@ void CPlayer::Update()
 
 	// 各ステータスの上限値と下限値を設定
 	// 上限
-	if (mStatus.hp >= 100) mStatus.hp = 100;		// HP
-	if (mStatus.sp >= 100.0f) mStatus.sp = 100.0f;	// SP
-	if (mStatus.touki > 300) mStatus.touki = 300;	// 闘気
+	if (mStatus.hp >= PLAYER_MAX_HP) mStatus.hp = 100; // HP
+	if (mStatus.sp >= PLAYER_MAX_SP) mStatus.sp = 100.0f; // SP
+	if (mStatus.touki > PLAYER_MAX_TOUKI) mStatus.touki = 300;// 闘気
 	// 下限
-	if (mStatus.hp <= 0) mStatus.hp = 0;		// HP
-	if (mStatus.sp <= 0.0f) mStatus.sp = 0;		// SP
-	if (mStatus.touki < 0) mStatus.touki = 0;	// 闘気
+	if (mStatus.hp <= PLAYER_MIN_HP) mStatus.hp = 0; // HP
+	if (mStatus.sp <= PLAYER_MIN_SP) mStatus.sp = 0; // SP
+	if (mStatus.touki < PLAYER_MIN_TOUKI) mStatus.touki = 0;// 闘気
 
 	if (mpCutIn_PowerAttack->IsPlaying())
 	{

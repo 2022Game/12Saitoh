@@ -4,9 +4,14 @@
 #include "PlayerData.h"
 #include "CColliderSphere.h"
 #include "CPlayer.h"
+#include "Primitive.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #define GRAVITY			0.0625f	// 重力
 #define ENEMY_HEIGHT	3.0f
+#define FOV_LANGE		100.0f
+#define FOV_ANGLE		45.0f
 
 CEnemy* CEnemy::spInstance = nullptr;
 
@@ -89,6 +94,9 @@ CEnemy::CEnemy()
 	mpHeadCol = new CColliderSphere(this, ELayer::eDamageCol, 0.2);
 	mpHeadCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpHeadCol->SetCollisionTags({ ETag::ePlayer });
+	mpBodyCol = new CColliderSphere(this, ELayer::eDamageCol, 0.4);
+	mpBodyCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpBodyCol->SetCollisionTags({ ETag::ePlayer });
 
 	const CMatrix* headcol = GetFrameMtx("Bip01_Bip01_Head");
 	mpHeadCol->SetAttachMtx(headcol);
@@ -106,6 +114,34 @@ void CEnemy::ChangeAnimation(EAnimType type)
 void CEnemy::ColliderUpdate()
 {
 	mpHeadCol->Update();
+}
+
+// プレイヤーを見つけたかどうか
+bool CEnemy::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	// 視野の角度の判定
+	// 自身からプレイヤーまでのベクトルを取得
+	CVector EP = (playerPos - enemyPos).Normalized();
+	// 自身の正面方向のベクトルを取得
+	CVector forward = VectorZ().Normalized();
+	// 正面方向のベクトルとプレイヤーまでのベクトルの
+	// 内積から角度を求める
+	float dotZ = forward.Dot(EP);
+
+	// 求めた角度が視野角度外の場合、falseを返す
+	if (dotZ <= cosf(FOV_ANGLE * M_PI / 180.0f)) return false;
+
+	// 距離の判定
+	// 自身からプレイヤーまでの距離を求める
+	float distance = (playerPos - enemyPos).Length();
+	// 求めた距離が視野距離よりも遠い場合、falseを返す
+	if (distance > FOV_LANGE) return false;
+
+	// 視野判定と距離判定を通ったのでtrueを返す
+	return true;
 }
 
 //更新処理
@@ -198,6 +234,18 @@ void CEnemy::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 void CEnemy::Render()
 {
 	CXCharacter::Render();
+
+	// 視野角の描画
+	Primitive::DrawSector
+	(
+		Position() + CVector(0.0f, 1.5f, 0.0f),
+		EulerAngles(),
+		-FOV_ANGLE,
+		FOV_ANGLE,
+		FOV_LANGE,
+		CColor::red,
+		45
+	);
 }
 
 CEnemy* CEnemy::Instance()

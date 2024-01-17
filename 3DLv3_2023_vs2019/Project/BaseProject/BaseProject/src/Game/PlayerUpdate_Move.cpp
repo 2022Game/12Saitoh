@@ -105,10 +105,7 @@ void CPlayer::Update_Move()
 			if (input.LengthSqr() > 0)
 			{
 				// カメラの向きに合わせた移動ベクトルに変換
-				CCamera* mainCamera = CCamera::MainCamera();
-				CVector camForward = mainCamera->VectorZ();
-				CVector camSide = CVector::Cross(CVector::up, camForward);
-				CVector move = camForward * input.Z() + camSide * input.X();
+				CVector move = mCamForward * input.Z() + mCamSide * input.X();
 				move.Y(0.0f);
 				move.Normalize();
 
@@ -168,16 +165,17 @@ void CPlayer::Update_FastMove()
 	//地面に接地しているか判定
 	if (mIsGrounded)
 	{
-		// 移動処理
+		// 移動処理 
+		// ダッシュキーの入力判定	true:入力中 false:非入力中
+		if (!mIsDash) mIsDash = true;
+		if (CInput::PullKey(VK_SHIFT)) mIsDash = false;
+
 		// キーの入力ベクトルを取得
 		CVector input;
-		// ダッシュキーの入力判定	true:入力中 false:非入力中
-		mIsDash = true;
 		if (CInput::Key('W'))		input.Z(-1.0f);
 		else if (CInput::Key('S'))	input.Z(1.0f);
 		if (CInput::Key('A'))		input.X(-1.0f);
 		else if (CInput::Key('D'))	input.X(1.0f);
-		if (CInput::PullKey(VK_SHIFT)) mIsDash = false;
 
 		// 入力ベクトルの長さで入力されているか判定
 		if (input.LengthSqr() > 0)
@@ -205,6 +203,8 @@ void CPlayer::Update_FastMove()
 			{
 				mState = EState::eAvoidance;
 				ChangeAnimation(EAnimType::eRollStart);
+				mIsDash = false;
+				return;
 			}
 			// ダッシュキーを離した場合
 			// ダッシュのアニメーションから走るアニメーションに切り替える
@@ -227,6 +227,7 @@ void CPlayer::Update_FastMove()
 	{
 		ChangeAnimation(EAnimType::eIdleAir);
 		mState = EState::eIdle;
+		mIsDash = false;
 	}
 	// スタミナがゼロになったら強制的にダッシュを終了
 	// 一定時間ダッシュができないようにフラグを立てる

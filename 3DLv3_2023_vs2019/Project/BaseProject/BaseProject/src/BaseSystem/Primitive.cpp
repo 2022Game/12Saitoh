@@ -204,3 +204,63 @@ void Primitive::DrawQuad(const CMatrix& m, const CVector2& size, const CColor& c
 	// ï`âÊëOÇÃçsóÒÇ…ñﬂÇ∑
 	glPopMatrix();
 }
+
+void Primitive::DrawSector(const CVector& pos, const CVector& rot, const float start, const float end, const float size, const CColor& color, const int div)
+{
+	CVector* vertex = new CVector[div * 3];
+	float* s = new float[div + 1];
+	float* c = new float[div + 1];
+	for (int i = 0; i <= div; i++)
+	{
+		float angle = Math::Lerp(start, end, (float)i / div);
+		angle = Math::DegreeToRadian(angle);
+		s[i] = sinf(angle);
+		c[i] = cosf(angle);
+	}
+
+	int idx = 0;
+	for (int i = 0; i < div; ++i)
+	{
+		const float& is1 = s[i];
+		const float& is2 = s[i + 1];
+		const float& ic1 = c[i];
+		const float& ic2 = c[i + 1];
+		vertex[idx] = CVector(0.0f, 0.0f, 0.0f);
+		vertex[idx + 1] = CVector(is1, 0.0f, ic1);
+		vertex[idx + 2] = CVector(is2, 0.0f, ic2);
+		idx += 3;
+	}
+
+	glPushMatrix();
+
+	CMatrix tm;
+	tm.Translate(pos.X(), pos.Y(), pos.Z());
+	CMatrix rm =
+		CMatrix().RotateZ(rot.Z()) *
+		CMatrix().RotateX(rot.X()) *
+		CMatrix().RotateY(rot.Y());
+	CMatrix sm;
+	sm.Scale(size, size, size);
+	glMultMatrixf((sm * rm * tm).M());
+
+	glDisable(GL_LIGHTING);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertex);
+
+	// DIFFUSEê‘êFê›íË
+	float coldata[] = { color.R(), color.G(), color.B(), color.A() };
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, c);
+	glColor4fv(coldata);
+	glDrawArrays(GL_TRIANGLES, 0, div * 3);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glEnable(GL_LIGHTING);
+
+	glPopMatrix();
+
+	delete[] vertex;
+	delete[] s;
+	delete[] c;
+}

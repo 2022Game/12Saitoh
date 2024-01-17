@@ -53,4 +53,15 @@ namespace Primitive
 	/// <param name="size">縦横のサイズ</param>
 	/// <param name="color">色</param>
 	void DrawQuad(const CMatrix& m, const CVector2& size, const CColor& color);
+
+	/// <summary>
+	/// 扇形の円を描画
+	/// </summary>
+	/// <param name="pos">位置</param>
+	/// <param name="rot">回転</param>
+	/// <param name="start">始点</param>
+	/// <param name="end">終点</param>
+	/// <param name="size">半径</param>
+	/// <param name="color">色</param>
+	void DrawSector(const CVector& pos, const CVector& rot, const float start, const float end, const float size, const CColor& color, const int div = 15);
 };

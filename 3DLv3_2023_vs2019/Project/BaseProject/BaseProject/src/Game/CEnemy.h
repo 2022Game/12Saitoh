@@ -39,6 +39,9 @@ private:
 	// コライダーの更新処理
 	void ColliderUpdate();
 
+	// プレイヤーを見つけたかどうか
+	bool IsFoundPlayer()const;
+
 	// アニメーションの種類
 	enum class EAnimType
 	{
@@ -66,7 +69,6 @@ private:
 
 		Num
 	};
-
 	// アニメーションの切り替え
 	void ChangeAnimation(EAnimType type);
 	// アニメーションデータテーブル
@@ -97,6 +99,8 @@ private:
 
 	CModel* mModel;
 	CColliderSphere* mpHeadCol;		// 頭
+	CColliderSphere* mpBodyCol;		// 体
+	CColliderSphere* mpTailCol;		// 尻尾
 	CColliderLine* mpColliderLine;	// 地面との当たり判定用
 
 	CVector mMoveSpeed;	// 移動速度

@@ -5,6 +5,14 @@
 
 void CEnemy::Update_Idle()
 {
+	// 敵がプレイヤーを見つけた場合、戦闘状態に移行する
+	if (IsFoundPlayer())
+	{
+		mState = EState::eMove;
+		ChangeAnimation(EAnimType::eWalk);
+		return;
+	}
+
 	if (IsAnimationFinished() && AnimationIndex() != (int)EAnimType::eIdle)
 	{
 		ChangeAnimation(EAnimType::eIdle);
@@ -14,7 +22,7 @@ void CEnemy::Update_Idle()
 	mElapsedTime += Time::DeltaTime();
 	if (mElapsedTime >= 20.0f)
 	{
-		int rand = Math::Rand(0.0f, 3.0f);
+		int rand = Math::Rand(0.0f, 2.0f);
 		printf("敵乱数 : %d\n", rand);
 		// 経過時間を初期化
 		mElapsedTime = 0.0f;
@@ -23,9 +31,7 @@ void CEnemy::Update_Idle()
 		switch (rand)
 		{
 		case 0:
-			mState = EState::eMove;
-			ChangeAnimation(EAnimType::eWalk);
-			break;
+			ChangeAnimation(EAnimType::eIdle);
 		case 1:
 			ChangeAnimation(EAnimType::eIdle2);
 			break;

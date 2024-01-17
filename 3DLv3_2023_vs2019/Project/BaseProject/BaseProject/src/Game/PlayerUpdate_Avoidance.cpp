@@ -13,16 +13,14 @@ void CPlayer::Update_Avoidance()
 	else if (CInput::Key('S'))	input.Z(1.0f);
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
-
-	CCamera* mainCamera = CCamera::MainCamera();
-	CVector camFoward = mainCamera->VectorZ();
-	CVector camSide = CVector::Cross(CVector::up, camFoward);
+	// 回避中のフラグを立てる
+	if (!mIsAvoid) mIsAvoid = true;
 
 	// 仮保存の入力ベクトルが初期値の場合
 	if (mInput_save.LengthSqr() == 0.0f)
 	{
 		// 入力ベクトルデータを一時的に保存
-		mInput_save = camFoward * input.Z() + camSide * input.X();
+		mInput_save = mCamForward * input.Z() + mCamSide * input.X();
 	}
 	// カメラの向きに合わせた移動ベクトルに変換
 	CVector move = mInput_save;
@@ -57,7 +55,7 @@ void CPlayer::Update_Avoidance()
 					else
 					{
 						mState = EState::eMove;
-						ChangeAnimation(EAnimType::eRun);
+						ChangeAnimation(EAnimType::eRollEnd_run);
 					}
 				}
 			}
@@ -78,5 +76,7 @@ void CPlayer::Update_Avoidance()
 		}
 		// 一時的に保存した入力ベクトルを初期値に戻す
 		mInput_save = CVector::zero;
+		// 回避フラグを元に戻す
+		mIsAvoid = false;
 	}
 }

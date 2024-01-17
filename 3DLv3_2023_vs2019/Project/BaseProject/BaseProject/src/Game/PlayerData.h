@@ -98,9 +98,11 @@ enum class EAnimType
 
 #define PLAYER_STATAS	0		// プレイヤーデータテーブル
 #define PLAYER_MAX_HP	100		// HPの最大値
-#define PLAYER_MAX_SP	100		// スタミナの最大値
-#define PLAYER_TOUKI	0		// 闘気ゲージ
-#define PLAYER_MAX_TOUKI300		// 闘気ゲージの最大値
+#define PLAYER_MIN_HP	0		// HPの最小値
+#define PLAYER_MAX_SP	100.0f	// スタミナの最大値
+#define PLAYER_MIN_SP	0.0f	// スタミナの最小値
+#define PLAYER_MAX_TOUKI 300	// 闘気ゲージの最大値
+#define PLAYER_MIN_TOUKI 0		// 闘気ゲージの最小値
 #define ATTACKSTEP_END -1		// 攻撃終了の段階
 #define ATTACKSTEP_COUNTER 3	// カウンターの段階
 

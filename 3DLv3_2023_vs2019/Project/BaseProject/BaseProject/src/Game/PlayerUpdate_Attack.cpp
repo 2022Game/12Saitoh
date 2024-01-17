@@ -13,14 +13,11 @@ void CPlayer::Update_AttackAngleVec(CVector *direction)
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
 
-	CCamera* mainCamera = CCamera::MainCamera();
-	CVector camForward = mainCamera->VectorZ();
-	CVector camSide = CVector::Cross(CVector::up, camForward);
 	// 仮保存の入力ベクトルが初期値の場合
 	if (mIsUpdateInput && input.LengthSqr() > 0.0f) 
 	{
 		// 入力ベクトルデータを一時的に保存
-		mInput_save = camForward * input.Z() + camSide * input.X();
+		mInput_save = mCamForward * input.Z() + mCamSide * input.X();
 		mIsUpdateInput = false;
 	}
 	// 攻撃アニメーションが終了したら
