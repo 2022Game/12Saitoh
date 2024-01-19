@@ -239,7 +239,7 @@ void CEnemy::Render()
 	Primitive::DrawSector
 	(
 		Position() + CVector(0.0f, 1.5f, 0.0f),
-		EulerAngles(),
+		-EulerAngles(),
 		-FOV_ANGLE,
 		FOV_ANGLE,
 		FOV_LANGE,
