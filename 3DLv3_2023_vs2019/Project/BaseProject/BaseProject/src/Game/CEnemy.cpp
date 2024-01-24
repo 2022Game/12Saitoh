@@ -91,15 +91,24 @@ CEnemy::CEnemy()
 		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
 	);
 	// コライダーの生成
-	mpHeadCol = new CColliderSphere(this, ELayer::eDamageCol, 0.2);
+	mpHeadCol = new CColliderSphere(this, ELayer::eDamageCol, 0.2f);
 	mpHeadCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpHeadCol->SetCollisionTags({ ETag::ePlayer });
-	mpBodyCol = new CColliderSphere(this, ELayer::eDamageCol, 0.4);
+
+	mpBodyCol = new CColliderSphere(this, ELayer::eDamageCol, 0.4f);
 	mpBodyCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpBodyCol->SetCollisionTags({ ETag::ePlayer });
 
+	mpTailCol = new CColliderSphere(this, ELayer::eDamageCol, 0.2f);
+	mpBodyCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpTailCol->SetCollisionTags({ ETag::ePlayer });
+
 	const CMatrix* headcol = GetFrameMtx("Bip01_Bip01_Head");
 	mpHeadCol->SetAttachMtx(headcol);
+	const CMatrix* bodycol = GetFrameMtx("Bip01_Bip01_Spine1");
+	mpBodyCol->SetAttachMtx(bodycol);
+	const CMatrix* tailcol = GetFrameMtx("Bip01_Bip01_Tail4");
+	mpTailCol->SetAttachMtx(tailcol);
 }
 
 // アニメーションの切り替え
@@ -114,6 +123,8 @@ void CEnemy::ChangeAnimation(EAnimType type)
 void CEnemy::ColliderUpdate()
 {
 	mpHeadCol->Update();
+	mpBodyCol->Update();
+	mpTailCol->Update();
 }
 
 // プレイヤーを見つけたかどうか
