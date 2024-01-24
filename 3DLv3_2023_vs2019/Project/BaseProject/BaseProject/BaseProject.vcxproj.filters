@@ -95,6 +95,9 @@
     <Filter Include="ソース ファイル\Game\System">
       <UniqueIdentifier>{96d90b88-1a47-4b11-9edf-3fe790f257ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\BaseSystem\Sound">
+      <UniqueIdentifier>{3e2c843f-460e-45d8-987d-57656edcc73b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -143,9 +146,6 @@
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CInput.cpp">
-      <Filter>ソース ファイル\BaseSystem\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BaseSystem\CSound.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CTexture.cpp">
@@ -364,6 +364,21 @@
     <ClCompile Include="src\Game\CGameMenu.cpp">
       <Filter>ソース ファイル\Game\System</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\BGMData.cpp">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBGMManager.cpp">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CSoundManager.cpp">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CSound.cpp">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CFade.cpp">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -412,9 +427,6 @@
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CInput.h">
-      <Filter>ソース ファイル\BaseSystem\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BaseSystem\CSound.h">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CTexture.h">
@@ -632,6 +644,21 @@
     </ClInclude>
     <ClInclude Include="src\Game\CGameMenu.h">
       <Filter>ソース ファイル\Game\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\BGMData.h">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBGMManager.h">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CSoundManager.h">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CSound.h">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CFade.h">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

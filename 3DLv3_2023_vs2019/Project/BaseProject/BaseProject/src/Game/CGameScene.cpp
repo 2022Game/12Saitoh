@@ -6,6 +6,8 @@
 #include "CGameCamera.h"
 #include "CInput.h"
 #include "CGameMenu.h"
+#include "CGameMenu.h"
+#include "CBGMManager.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -35,6 +37,10 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
 	CResourceManager::Load<CModelX>("Enemy", "Character\\Enemy\\Dragon.x");
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
+
+	// ゲームBGMを読み込み
+	CBGMManager::Instance()->Play(EBGMType::eGame);
 
 	//フィールドを生成
 	CField * field = new CField();
@@ -82,6 +88,12 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
+	// BGM再生中でなければ、BGMを再生
+//if (!mpGameBGM->IsPlaying())
+//{
+//	mpGameBGM->PlayLoop(-1, 1.0f, false, 1.0f);
+//}
+
 	if (CInput::PushKey('T'))
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);

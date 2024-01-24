@@ -1,6 +1,7 @@
 #pragma once
 #include "CSceneBase.h"
 class CGameMenu;
+class CSound;
 
 //タイトルシーン
 class CGameScene :public CSceneBase

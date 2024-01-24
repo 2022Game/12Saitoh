@@ -2,8 +2,9 @@
 #include "CSceneManager.h"
 #include "CGameScene.h"
 #include "CCamera.h"
+#include "CSound.h"
+#include "CBGMManager.h"
 
-#include "CCharaBase.h"
 //コンストラクタ
 CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
@@ -24,6 +25,10 @@ void CTitleScene::Load()
 
 	//ここでタイトル画面に必要な
 	//リソースの読み込みやクラスの生成を行う
+
+	// タイトルBGMを再生
+	CBGMManager::Instance()->Play(EBGMType::eTitle);
+
 	//mBgImage = new CImage("white.png");
 	//mBgImage->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//mBgImage->SetPos(0.0f, 0.0f);

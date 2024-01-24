@@ -1,4 +1,5 @@
 #include "CXCharacter.h"
+#include "Maths.h"
 
 //コンストラクタ
 CXCharacter::CXCharacter(ETag tag, ETaskPriority prio, int sortOrder, ETaskPauseType pause)
@@ -163,6 +164,13 @@ const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
 float CXCharacter::GetAnimationFrame() const
 {
 	return mAnimationFrame;
+}
+
+// 再生中のアニメーションの進行度を取得
+float CXCharacter::GetAnimationFrameRatio() const
+{
+	if (mAnimationFrameSize == 0.0f) return 0.0f;
+	return Math::Clamp01(mAnimationFrame / mAnimationFrameSize);
 }
 
 // アニメーションのモーション値を取得

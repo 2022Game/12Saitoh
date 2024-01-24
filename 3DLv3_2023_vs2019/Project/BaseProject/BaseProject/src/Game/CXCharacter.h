@@ -29,9 +29,12 @@ public:
 
 	int AnimationIndex();	//アニメーションの番号の取得
 
-	float GetAnimationFrame() const;// 再生中のフレームを取得
-	float GetMotionValue() const;	// アニメーションのモーション値を取得
-
+	// 再生中のフレームを取得
+	float GetAnimationFrame() const;
+	// 再生中のアニメーションの進行度を取得
+	float GetAnimationFrameRatio() const;
+	// アニメーションのモーション値を取得
+	float GetMotionValue() const;
 	//指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
 
