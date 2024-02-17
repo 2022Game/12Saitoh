@@ -30,6 +30,7 @@ private:
 	{
 		None = -1,
 		
+		eTpose,		// Tポーズ
 		eIdle1,		// 待機
 		
 		Num
