@@ -70,6 +70,7 @@
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
     <ClCompile Include="src\Game\CCutInTest.cpp" />
     <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp" />
+    <ClCompile Include="src\Game\CDragon.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CGameCamera.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\Game\CCutInCamera.h" />
     <ClInclude Include="src\Game\CCutInTest.h" />
     <ClInclude Include="src\Game\CCutIn_PowerAttack.h" />
+    <ClInclude Include="src\Game\CDragon.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CField.h" />
     <ClInclude Include="src\Game\CGameCamera.h" />

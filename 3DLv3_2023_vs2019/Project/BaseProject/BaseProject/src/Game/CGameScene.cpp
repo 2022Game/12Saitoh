@@ -3,6 +3,7 @@
 #include "CField.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "CDragon.h"
 #include "CGameCamera.h"
 #include "CInput.h"
 #include "CGameMenu.h"
@@ -35,7 +36,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
-	CResourceManager::Load<CModelX>("Enemy", "Character\\Enemy\\Dragon.x");
+	//CResourceManager::Load<CModelX>("Enemy", "Character\\Enemy\\Dragon.x");
+	CResourceManager::Load<CModelX>("Dragon", "Character\\Dragon\\Dragon.x");
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
 	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
 
@@ -50,10 +52,14 @@ void CGameScene::Load()
 	player->Scale(10.0f, 10.0f, 10.0f);
 	player->Rotate(0.0f, 180.0f, 0.0f);
 
+	// ÉhÉâÉSÉì(ìG)Çê∂ê¨
+	CDragon* dragon = new CDragon();
+	dragon->Position(-50.0f, 0.0f, -50.0f);
+
 	// ìGÇê∂ê¨
-	CEnemy* enemy = new CEnemy();
-	enemy->Position(-50.0f, 0.0f, -50.0f);
-	enemy->Scale(20.0f, 20.0f, 20.0f);
+	//CEnemy* enemy = new CEnemy();
+	//enemy->Position(-50.0f, 0.0f, -50.0f);
+	//enemy->Scale(20.0f, 20.0f, 20.0f);
 
 	////ÉJÉÅÉâÉZÉbÉg
 	//CGameCamera* mainCamera = new CGameCamera

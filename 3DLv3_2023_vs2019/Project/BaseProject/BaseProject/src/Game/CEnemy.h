@@ -4,6 +4,7 @@
 #include "CCollider.h"
 #include "CColliderLine.h"
 #include "CModel.h"
+#define STOP_LENGE		60.0f
 
 /*
 エネミークラス
@@ -12,20 +13,18 @@
 class CEnemy : public CXCharacter
 {
 public:
-	// インスタンスを取得
-	static CEnemy* Instance();
 	// コンストラクタ
 	CEnemy();
 
 	// 更新処理
 	void Update();
-
 	// 衝突処理
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
-
 	// 描画処理
 	void Render();
 
+	// インスタンスを取得
+	static CEnemy* Instance();
 private:
 	// 待機状態
 	void Update_Idle();
@@ -36,6 +35,8 @@ private:
 	// 死亡状態
 	void Update_Death();
 
+	// 攻撃パターン1
+	void AttackPattern1();
 	// コライダーの更新処理
 	void ColliderUpdate();
 
@@ -106,6 +107,7 @@ private:
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
 	int mIdleTime;		// アイドル管理用の時間
+	int mAttackStep;	// 攻撃パターン進行度
 	float mElapsedTime;	// 経過時間計測長
 };
 #endif

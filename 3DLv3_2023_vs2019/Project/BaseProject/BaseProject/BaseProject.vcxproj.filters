@@ -98,6 +98,9 @@
     <Filter Include="ソース ファイル\BaseSystem\Sound">
       <UniqueIdentifier>{3e2c843f-460e-45d8-987d-57656edcc73b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Dragon">
+      <UniqueIdentifier>{d6fb0a17-0af6-42c9-8f58-546eb7dce9af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -379,6 +382,9 @@
     <ClCompile Include="src\BaseSystem\CFade.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CDragon.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -659,6 +665,9 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CFade.h">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CDragon.h">
+      <Filter>ソース ファイル\Game\Character\Dragon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

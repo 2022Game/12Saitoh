@@ -42,8 +42,11 @@ const CEnemy::AnimData CEnemy::ANIM_DATA[] =
 // コンストラクタ
 CEnemy::CEnemy()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
-	, mElapsedTime(0.0f)
+	, mIsGrounded(true)
 	, mIdleTime(0)
+	, mAttackStep(0)
+	, mElapsedTime(0.0f)
+
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -255,6 +258,17 @@ void CEnemy::Render()
 		FOV_ANGLE,
 		FOV_LANGE,
 		CColor::red,
+		45
+	);
+	
+	Primitive::DrawSector
+	(
+		Position() + CVector(0.0f, 1.6f, 0.0f),
+		-EulerAngles(),
+		0,
+		360,
+		STOP_LENGE,
+		CColor::yellow,
 		45
 	);
 }

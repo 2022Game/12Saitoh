@@ -5,8 +5,11 @@
 
 void CEnemy::Update_Idle()
 {
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+	float distance = (playerPos - enemyPos).Length();
 	// 敵がプレイヤーを見つけた場合、戦闘状態に移行する
-	if (IsFoundPlayer())
+	if (IsFoundPlayer() && distance > STOP_LENGE)
 	{
 		mState = EState::eMove;
 		ChangeAnimation(EAnimType::eWalk);
