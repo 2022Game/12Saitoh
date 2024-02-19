@@ -14,7 +14,7 @@ const CharaStatus PLAYER_STATUS[] =
 };
 
 // 敵ステータス
-const CharaStatus ENEMY_STATUS[ENEMY_LEVEL_MAX] = 
+const CharaStatus ENEMY_STATUS[] = 
 {
 	//レベル	  HP		攻撃力		防御力
 	{1,			10000,		100,		100},

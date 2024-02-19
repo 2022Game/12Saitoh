@@ -54,7 +54,7 @@ void CGameScene::Load()
 
 	// ƒhƒ‰ƒSƒ“(“G)‚ğ¶¬
 	CDragon* dragon = new CDragon();
-	dragon->Position(-50.0f, 0.0f, -50.0f);
+	dragon->Position(0.0f, 0.0f, -150.0f);
 	dragon->Scale(0.2f, 0.2f, 0.2f);
 	// “G‚ğ¶¬
 	//CEnemy* enemy = new CEnemy();

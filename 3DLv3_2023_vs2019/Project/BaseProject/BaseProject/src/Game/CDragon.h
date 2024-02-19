@@ -30,8 +30,24 @@ private:
 	{
 		None = -1,
 		
-		eIdle1,		// 待機
-		
+		eIdle1,			// 待機1
+		eIdle2,			// 待機2
+		eLand,			// 着地
+		eRun,			// 走り
+		eWalk,			// 歩き
+		eScream,		// 咆哮
+		eSleep,			// 寝る
+		eTakeOff,		// 離陸
+		eAttackFlame,	// ブレス攻撃
+		eAttackHand,	// 飛び掛かり攻撃
+		eAttackMouth,	// 噛みつき攻撃
+		eDie,			// 死亡
+		eFlyFlame,		// 空中ブレス攻撃
+		eFlyForward,	// 空中前進
+		eFlyGlide,		// 空中滑空
+		eFlyIdle,		// 空中アイドル
+		eGetHit,		// のけ反り
+
 		Num
 	};
 	// アニメーションの切り替え
