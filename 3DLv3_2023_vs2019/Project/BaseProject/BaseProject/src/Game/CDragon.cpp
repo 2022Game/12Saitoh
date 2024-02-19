@@ -5,8 +5,7 @@ CDragon* CDragon::spInstance = nullptr;
 // 敵のアニメーションデータテーブル
 const CDragon::AnimData CDragon::ANIM_DATA[] =
 {
-	{ "",											true,	0.0f,	0.0f	},	// Tポーズ
-	{ "Character\\Dragon\\anim\\Idle1.x",			true,	40.0f,	0.0f	},	// アイドル
+	{ "Character\\Dragon\\anim\\idle1.x",			true,	41.0f,	0.0f	},	// アイドル
 };
 
 // コンストラクタ
