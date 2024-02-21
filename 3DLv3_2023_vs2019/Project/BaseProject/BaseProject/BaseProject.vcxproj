@@ -87,6 +87,7 @@
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CWeapon.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
+    <ClCompile Include="src\Game\DragonUpdate_Idle.cpp" />
     <ClCompile Include="src\Game\PlayerData.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Attack.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Avoidance.cpp" />

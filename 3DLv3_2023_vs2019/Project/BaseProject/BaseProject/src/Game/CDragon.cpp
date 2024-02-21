@@ -1,5 +1,10 @@
 #include "CDragon.h"
 #include "Maths.h"
+#include "CPlayer.h"
+#include "Primitive.h"
+
+#define FOV_LANGE	170.0f
+#define FOV_ANGLE	60.0f
 
 CDragon* CDragon::spInstance = nullptr;
 
@@ -71,9 +76,55 @@ void CDragon::ChangeAnimation(EAnimType type)
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.motionValue);
 }
 
+// プレイヤーを見つけたかどうか
+bool CDragon::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	// 視野角度の判定
+	// 自身からプレイヤーまでのベクトルを取得
+	CVector EP = (playerPos - enemyPos).Normalized();
+	// 自身の正面方向のベクトルを取得
+	CVector forward = VectorZ().Normalized();
+	// 正面方向のベクトルとプレイヤーまでの
+	// 内積から角度を求める
+	float dotZ = forward.Dot(EP);
+
+	// 求めた角度が視野角度外の場合、falseを返す
+	if (dotZ <= cosf(FOV_ANGLE * M_PI / 180.0f)) return false;
+
+	// 距離の判定
+	// 自身からプレイヤーまでの距離を求める
+	float distance = (playerPos - enemyPos).Length();
+	// 求めた距離が視野距離よりも遠い場合、falseを返す
+	if (distance > FOV_LANGE) return false;
+
+	// 視野判定と距離判定を通ったのでtrueを返す
+	return true;
+}
+
 // 更新処理
 void CDragon::Update()
 {
+	// 状態に合わせて更新処理を切り替える
+	switch (mState)
+	{
+		// 待機状態
+	case EState::eIdle:
+		UpdateIdle();
+		break;
+		// 移動状態
+	case EState::eMove:
+		break;
+		// 攻撃状態
+	case EState::eAttack:
+		break;
+		// 死亡状態
+	case EState::eDeath:
+		break;
+	}
+
 	CXCharacter::Update();
 }
 
@@ -87,6 +138,16 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 void CDragon::Render()
 {
 	CXCharacter::Render();
+
+	Primitive::DrawSector(
+		Position() + CVector(0.0f, 1.0, 0.0f),
+		-EulerAngles(),
+		-FOV_ANGLE,
+		FOV_ANGLE,
+		FOV_LANGE,
+		CColor::red,
+		45
+	);
 }
 
 // インスタンスを取得

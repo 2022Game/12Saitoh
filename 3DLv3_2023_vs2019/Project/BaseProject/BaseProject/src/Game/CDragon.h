@@ -25,6 +25,12 @@ public:
 	// 描画処理
 	void Render();
 private:
+	// 待機状態
+	void UpdateIdle();
+
+	// プレイヤーを見つけたかどうか
+	bool IsFoundPlayer() const;
+
 	// アニメーションの種類
 	enum class EAnimType
 	{

@@ -101,6 +101,9 @@
     <Filter Include="ソース ファイル\Game\Character\Dragon">
       <UniqueIdentifier>{d6fb0a17-0af6-42c9-8f58-546eb7dce9af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Dragon\Dragon_Update">
+      <UniqueIdentifier>{341bef2c-8191-4f2d-96a5-1ab1ff92a511}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -384,6 +387,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CDragon.cpp">
       <Filter>ソース ファイル\Game\Character\Dragon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\DragonUpdate_Idle.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Dragon_Update</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
