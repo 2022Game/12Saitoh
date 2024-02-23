@@ -2,9 +2,14 @@
 #include "Maths.h"
 #include "CPlayer.h"
 #include "Primitive.h"
+#include "CColliderSphere.h"
+#include "CColliderLine.h"
+#include "CDebugPrint.h"
 
-#define FOV_LANGE	170.0f
-#define FOV_ANGLE	60.0f
+#define GRAVITY			0.0625f	// 重力
+#define ENEMY_HEIGHT	400.0f
+#define FOV_LANGE		170.0f
+#define FOV_ANGLE		60.0f
 
 CDragon* CDragon::spInstance = nullptr;
 
@@ -33,6 +38,8 @@ const CDragon::AnimData CDragon::ANIM_DATA[] =
 // コンストラクタ
 CDragon::CDragon()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
+	, mMoveSpeed(CVector::zero)
+	, mIsGrounded(true)
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -60,6 +67,23 @@ CDragon::CDragon()
 
 	// 状態の設定
 	mState = EState::eIdle;
+
+	// 接地判定用の線分コライダの設定
+	mpColliderLine = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
+	);
+
+	// コライダーの生成
+	mpColliderSphere = new CColliderSphere(this, ELayer::eEnemy, 200.0f);
+	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer });
+	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
+
+	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 500.0f);
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	//mpDamageCol->SetCollisionTags({ ETag::eSowrd });
 }
 
 // デストラクタ
@@ -125,13 +149,58 @@ void CDragon::Update()
 		break;
 	}
 
+	// 重力の設定
+	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+
+	// 移動
+	Position(Position() + mMoveSpeed);
+
+	// 移動方向へ向ける
+	CVector current = VectorZ();
+	CVector target = mMoveSpeed;
+	target.Y(0.0f);
+	target.Normalize();
+	CVector forward = CVector::Slerp(current, target, 0.0f);
+	Rotation(CQuaternion::LookRotation(forward));
+
 	CXCharacter::Update();
+
+#ifdef _DEBUG
+	// ドラゴンのステータスを表示
+	CDebugPrint::Print("敵ステータス\n");
+	CDebugPrint::Print("レベル : %d\nHP : %d\n攻撃力 : %d\n防御力 : %d",
+		mStatus.level, mStatus.hp, mStatus.atk, mStatus.def);
+#endif
 }
 
 // 衝突処理
 void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
+	// 地面との当たり判定
+	if (self == mpColliderLine)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Y(0.0f);
+			// めり込まないように調整
+			Position(Position() + hit.adjust);
+			mIsGrounded = true;
+		}
+	}
+}
 
+// ダメージ処理
+void CDragon::TakeDamage(int damage)
+{
+	mStatus.hp -= damage;
+	if (mStatus.hp <= 0)
+	{
+		// 死亡処理
+	}
+	else
+	{
+		// のけ反りなどの被弾処理
+	}
 }
 
 // 描画処理

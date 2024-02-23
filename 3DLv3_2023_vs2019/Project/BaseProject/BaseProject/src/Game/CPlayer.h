@@ -1,7 +1,6 @@
 #pragma once
 //キャラクタクラスのインクルード
 #include "CXCharacter.h"
-#include "CColliderLine.h"
 #include "CRideableObject.h"
 #include "CSword.h"
 #include "PlayerData.h"
@@ -10,6 +9,7 @@
 #include "CCutIn_PowerAttack.h"
 class CSPGauge;
 class CHPGauge;
+class CSword;
 
 /*
 プレイヤークラス
@@ -129,10 +129,11 @@ private:
 	bool mIsUpdateInput;// 入力情報を更新するフラグ
 
 	int mAttackStep;	// 攻撃の段階
+	int mSPAttackStep;	// 強闘技の攻撃段階
 
 	float mHPRecoveryTime;	// HP回復調整用
 
-	CColliderLine* mpColliderLine;
+	CColliderLine* mpColliderLine; // 接地判定用線分コライダ
 	CColliderSphere* mpBodyCol;
 
 	CTransform* mpRideObject;
@@ -140,4 +141,6 @@ private:
 
 	CHPGauge* mpHPGauge;	// HPゲージ
 	CSPGauge* mpSPGauge;	// SPゲージ
+	CSword* mpSword;		// 剣
+
 };

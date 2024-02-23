@@ -19,7 +19,9 @@ int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float moti
 	// ダメージ  = ((攻撃力 × モーション値) - (防御力/2)) × 肉質倍率
 	float damage = ((atk * motionvalue) - (def / 2)) * multiplier;
 	mDamage = static_cast<int>(damage);
-	
+	// 正数に変換
+	if (mDamage < 0) mDamage = -mDamage;
+
 	return mDamage;
 }
 
@@ -34,6 +36,8 @@ int CCharaBase::TakePlayerToDamage(const int atk, const int def, const float mot
 	// 被ダメージから暫定ダメージを計算
 	float temporarydamage = mDamage * 0.5f;
 	mTemporaryDamage = static_cast<int>(temporarydamage);
+	// 正数に変換
+	if (mDamage < 0) mDamage = -mDamage;
 
 	return mDamage;
 }

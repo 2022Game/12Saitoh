@@ -8,6 +8,7 @@ enum class ELayer
 	eTest,
 	eField,
 	ePlayer,
+	eEnemy,
 	eAttackCol, // 攻撃用のコリジョン
 	eDamageCol, // ダメージを受ける用のコリジョン
 };

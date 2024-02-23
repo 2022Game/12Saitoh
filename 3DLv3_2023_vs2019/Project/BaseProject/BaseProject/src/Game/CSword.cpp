@@ -1,24 +1,30 @@
 #include "CSword.h"
-#include "CCollisionManager.h"
 #include "CPlayer.h"
+#include "CDragon.h"
+#include "CColliderSphere.h"
 
+// コンストラクタ
 CSword::CSword()
 {
 	mpSword = CResourceManager::Get<CModel>("Sword");
 
+	mpSwordCollider = new CColliderSphere(this, ELayer::eAttackCol, 10.0f);
+	mpSwordCollider->SetCollisionLayers({ ELayer::eDamageCol });
+	//mpSwordCollider->SetCollisionTags({ ETag::eEnemy });
+
+	// 最初は攻撃判定用のコライダーをオフにしておく
+	mpSwordCollider->SetEnable(false);
 }
 
+// デストラクタ
 CSword::~CSword()
 {
 }
 
-void CSword::CreateFieldObjects()
-{
-}
-
+// 更新処理
 void CSword::Update()
 {
-	// 納刀状態と抜刀状態で親のボーンを変更
+	// 納刀状態と抜刀状態で親のボーンを変更疑問
 	if (CPlayer::Instance()->IsDrawn())
 	{
 		SetAttachMtx(CPlayer::Instance()->GetFrameMtx("Armature_weapon_r"));
@@ -29,13 +35,54 @@ void CSword::Update()
 	}
 }
 
+// 衝突処理
+void CSword::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+{
+	// 衝突した自分のコライダーが攻撃判定用のコライダーであれば
+	if (self == mpSwordCollider)
+	{
+		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
+		// 相手のコライダーの持ち主がキャラであれば
+		if (chara != nullptr)
+		{
+			// ダメージを与える
+			CPlayer* player = CPlayer::Instance();
+			CDragon* dragon = CDragon::Instance();
+			int atk = player->Status().atk;
+			int def = dragon->Status().def;
+			float motionvalue = player->GetMotionValue();
+			// 肉質倍率については今後追加
+			int damage = dragon->TakeEnemyToDamage(atk, def,motionvalue, 1.0f);
+
+			// 既に攻撃済みのキャラでなければ、
+			if (!IsAttackHitObj(chara))
+			{
+				// ダメージを与える
+				chara->TakeDamage(damage);
+
+				// 攻撃済みリストに追加
+				AddAttackHitObj(chara);
+			}
+		}
+	}
+}
+
+// 描画処理
 void CSword::Render()
 {
+	mpSword->Render(Matrix());
+}
+
+// 武器の行列取得
+CMatrix CSword::Matrix() const
+{
+	// 手に持っていない時は、自分自身の行列を返す
 	if (mpAttachMtx == nullptr)
 	{
-		mpSword->Render(Matrix());
+		return CTransform::Matrix();
 	}
-	else
+	// 手に持っている時は、アタッチしている行列を返す
+	else 
 	{
 		CMatrix sm;
 		CMatrix rm;
@@ -45,12 +92,28 @@ void CSword::Render()
 		{
 			//rm.RotateZ(180.0f);
 			rm = rm.RotateY(-90.0f);
-			mpSword->Render( rm *  sm * (*mpAttachMtx));
+			return rm * sm * (*mpAttachMtx);
 		}
 		else //納刀
 		{
 			rm.RotateX(-90.0f);
-			mpSword->Render(rm * sm * (*mpAttachMtx));
+			return rm * sm * (*mpAttachMtx);
 		}
 	}
+}
+
+// 攻撃開始
+void CSword::AttackStart()
+{
+	CWeapon::AttackStart();
+	// 攻撃が始まったら、攻撃判定用のコライダーをオンにする
+	mpSwordCollider->SetEnable(true);
+}
+
+// 攻撃終了
+void CSword::AttackEnd()
+{
+	CWeapon::AttackEnd();
+	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
+	mpSwordCollider->SetEnable(false);
 }

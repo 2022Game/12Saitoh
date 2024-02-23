@@ -2,7 +2,6 @@
 #define CDRAGON_H
 #include "CXCharacter.h"
 #include "CCollider.h"
-
 /*
 ドラゴンクラス
 キャラクタクラスを継承
@@ -24,6 +23,9 @@ public:
 
 	// 描画処理
 	void Render();
+
+	// ダメージ処理
+	void TakeDamage(int damage)override;
 private:
 	// 待機状態
 	void UpdateIdle();
@@ -35,7 +37,7 @@ private:
 	enum class EAnimType
 	{
 		None = -1,
-		
+
 		eIdle1,			// 待機1
 		eIdle2,			// 待機2
 		eLand,			// 着地
@@ -80,6 +82,16 @@ private:
 
 	// アニメーションデータテーブル
 	static const AnimData ANIM_DATA[];
+	// インスタンス
 	static CDragon* spInstance;
+
+	CColliderLine* mpColliderLine;	// 地面との当たり判定用
+	CColliderSphere* mpColliderSphere;
+	CColliderSphere* mpDamageCol;
+
+
+
+	CVector mMoveSpeed;	// 移動速度
+	bool mIsGrounded;	// 接地しているかどうか
 };
 #endif

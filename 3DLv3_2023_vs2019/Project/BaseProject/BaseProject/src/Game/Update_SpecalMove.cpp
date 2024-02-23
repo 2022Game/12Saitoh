@@ -66,7 +66,7 @@ void CPlayer::Update_Weak_SpecalMove()
 		if (mIsCounter)
 		{
 			// カウンター攻撃を実行
-			mAttackStep = ATTACKSTEP_COUNTER;
+			mAttackStep = 2;
 			ChangeAnimation(EAnimType::eParryAttack);
 		}
 		if (IsAnimationFinished())
@@ -79,7 +79,7 @@ void CPlayer::Update_Weak_SpecalMove()
 		if (mIsCounter)
 		{
 			// カウンター攻撃を実行
-			mAttackStep = ATTACKSTEP_COUNTER;
+			mAttackStep = 2;
 			ChangeAnimation(EAnimType::eParryAttack);
 		}
 		if (IsAnimationFinished())
@@ -88,13 +88,20 @@ void CPlayer::Update_Weak_SpecalMove()
 			ChangeAnimation(EAnimType::eCounter_End);
 		}
 		break;
-	case ATTACKSTEP_COUNTER:// カウンター攻撃
+	case 2:
+		// 武器に攻撃開始を使える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 3:// カウンター攻撃
 		// カウンター攻撃が終了
 		if (IsAnimationFinished())
 		{
 			mIsCounter = false;
 			mAttackStep = ATTACKSTEP_END;
 			ChangeAnimation(EAnimType::eParryAttack_End);
+			// 武器に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		break;
 	}
@@ -120,14 +127,19 @@ void CPlayer::Update_Strong_SpecalMove()
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::ePowerAttack);
+			Strong_SpecalMove_Move();
 		}
 		break;
 	case 2:// 強闘技
 		// 攻撃に合わせてプレイヤーを移動
 		Strong_SpecalMove_Move();
+		// 強闘技終了
 		if (IsAnimationFinished())
 		{
+			// 武器に攻撃終了を伝える
+			mpSword->AttackEnd();
 			mAttackStep = ATTACKSTEP_END;
+			mSPAttackStep = 0;
 		}
 		break;
 	}
@@ -136,46 +148,120 @@ void CPlayer::Update_Strong_SpecalMove()
 // 強闘技中のプレイヤーの移動処理
 void CPlayer::Strong_SpecalMove_Move()
 {
-	// 一度目の移動処理
-	if (POWERATTACK1_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK1_END)
+	switch (mSPAttackStep)
 	{
-		mMoveSpeed += POWERATTACK1_VEC * POWERATTACK_MOVESPEED;
-	}
-	// 二度目の移動処理
-	if (POWERATTACK2_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK2_END)
-	{
-		mMoveSpeed += POWERATTACK2_VEC * POWERATTACK_MOVESPEED;
-	}
-	// 三度目の移動処理
-	if (POWERATTACK3_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK3_END)
-	{
-		mMoveSpeed += POWERATTACK3_VEC * POWERATTACK_MOVESPEED;
-	}
-	// 四度目の移動処理
-	if (POWERATTACK4_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK4_END)
-	{
-		mMoveSpeed += POWERATTACK4_VEC * POWERATTACK_MOVESPEED;
-	}
-	// 五度目の移動処理
-	if (POWERATTACK5_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK5_END)
-	{
-		mMoveSpeed += POWERATTACK5_VEC * POWERATTACK_MOVESPEED;
-	}
-	// 六度目の移動処理
-	if (POWERATTACK6_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK6_END)
-	{
-		mMoveSpeed += POWERATTACK6_VEC * POWERATTACK_MOVESPEED;
-	}
-	// 七度目の移動処理
-	if (POWERATTACK7_START <= GetAnimationFrame() &&
-		GetAnimationFrame() <= POWERATTACK7_END)
-	{
-		mMoveSpeed -= POWERATTACL7_VEC;
+	case 0:// 一度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK1_START) mpSword->AttackStart();
+
+		if (POWERATTACK1_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK1_END)
+		{
+			mMoveSpeed += POWERATTACK1_VEC * POWERATTACK_MOVESPEED;
+		}
+		// 移動が終了したら次のステップに移行
+		else if (GetAnimationFrame() > POWERATTACK1_END)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+			mSPAttackStep++;
+		}
+		break;
+	case 1:// 二度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK2_START) mpSword->AttackStart();
+
+		if (POWERATTACK2_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK2_END)
+		{
+			mMoveSpeed += POWERATTACK2_VEC * POWERATTACK_MOVESPEED;
+		}
+		// 移動が終了したら次のステップに移行
+		else if (GetAnimationFrame() > POWERATTACK2_END)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+			mSPAttackStep++;
+		}
+		break;
+	case 2:// 三度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK3_START) mpSword->AttackStart();
+
+		if (POWERATTACK3_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK3_END)
+		{
+			mMoveSpeed += POWERATTACK3_VEC * POWERATTACK_MOVESPEED;
+		}
+		// 移動が終了したら次のステップに移行
+		else if (GetAnimationFrame() > POWERATTACK3_END)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+			mSPAttackStep++;
+		}
+		break;
+	case 3:// 四度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK4_START) mpSword->AttackStart();
+
+		if (POWERATTACK4_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK4_END)
+		{
+			mMoveSpeed += POWERATTACK4_VEC * POWERATTACK_MOVESPEED;
+		}
+		// 移動が終了したら次のステップに移行
+		else if (GetAnimationFrame() > POWERATTACK4_END)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+			mSPAttackStep++;
+		}
+		break;
+	case 4:// 五度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK5_START) mpSword->AttackStart();
+
+		if (POWERATTACK5_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK5_END)
+		{
+			mMoveSpeed += POWERATTACK5_VEC * POWERATTACK_MOVESPEED;
+		}
+		// 移動が終了したら次のステップに移行
+		else if (GetAnimationFrame() > POWERATTACK5_END)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+			mSPAttackStep++;
+		}
+		break;
+	case 5:// 六度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK6_START) mpSword->AttackStart();
+
+		if (POWERATTACK6_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK6_END)
+		{
+			mMoveSpeed += POWERATTACK6_VEC * POWERATTACK_MOVESPEED;
+		}
+		// 移動が終了したら次のステップに移行
+		else if (GetAnimationFrame() >= POWERATTACK6_END)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+			mSPAttackStep++;
+		}
+		break;
+	case 6:// 七度目の移動処理
+		// 始めの1フレーム目に剣に攻撃開始を伝える
+		if (GetAnimationFrame() == POWERATTACK7_START) mpSword->AttackStart();
+
+		if (POWERATTACK7_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= POWERATTACK7_END)
+		{
+			mMoveSpeed -= POWERATTACL7_VEC;
+		}
+		if (GetAnimationFrame() == POWERATTACK7_END) mpSword->AttackEnd();
+		break;
 	}
 }

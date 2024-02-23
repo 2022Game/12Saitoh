@@ -3,9 +3,9 @@
 #include "CDebugPrint.h"
 #include "CHPGauge.h"
 #include "CSPGauge.h"
-#include "CSword.h"
 #include "CEnemy.h"
 #include "CColliderSphere.h"
+#include "CSword.h"
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -28,9 +28,9 @@ CPlayer::CPlayer()
 	, mSPZeroFlag(false)
 	, mIsUpdateInput(false)
 	, mAttackStep(0)
-	, mpRideObject(nullptr)
+	, mSPAttackStep()
 	, mHPRecoveryTime(0.0f)
-
+	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -64,6 +64,7 @@ CPlayer::CPlayer()
 	// 球コライダの生成
 	mpBodyCol = new CColliderSphere(this, ELayer::ePlayer, 0.5f);
 	mpBodyCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpBodyCol->SetCollisionLayers({ ELayer::eEnemy });
 	mpBodyCol->SetCollisionTags({ ETag::eEnemy });
 	mpBodyCol->Position(0.0f, 1.0f, 0.0f);
 
@@ -83,9 +84,9 @@ CPlayer::CPlayer()
 	mpSPGauge->SetPos(10.0f, 40.0f);
 	mpSPGauge->SetMaxValue(mStatus.sp);
 
-	//剣を生成
-	CSword* sword = new CSword();
-	sword->Rotate(CVector(0.0f, 0.0f, 0.0f));
+	//剣を作成
+	mpSword = new CSword();
+	mpSword->Rotate(CVector(0.0f, 0.0f, 0.0f));
 }
 
 CPlayer::~CPlayer()
@@ -397,6 +398,17 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
+
+	// 敵との衝突処理
+	if (self == mpBodyCol)
+	{
+		if (other->Layer() == ELayer::eEnemy)
+		{
+			Position(Position() +
+				CVector(hit.adjust.X(), 0.0f, hit.adjust.Z()) * hit.weight);
+		}
+	}
+
 }
 
 // 描画

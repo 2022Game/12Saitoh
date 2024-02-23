@@ -51,10 +51,17 @@ void CPlayer::Update_NormalAttack1()
 	switch (mAttackStep)
 	{
 	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalWait1_1);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_1_START_FRAME <= GetAnimationFrame() &&
@@ -63,7 +70,7 @@ void CPlayer::Update_NormalAttack1()
 			mMoveSpeed += anglevec * NORMALATTACK1_1_MOVESPEED;
 		}
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-2へ切り替え
@@ -105,10 +112,17 @@ void CPlayer::Update_NormalAttack2()
 	switch (mAttackStep)
 	{
 	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalWait1_2);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_2_START_FRAME <= GetAnimationFrame() &&
@@ -117,7 +131,7 @@ void CPlayer::Update_NormalAttack2()
 			mMoveSpeed += anglevec * NORMALATTACK1_2_MOVESPEED;
 		}
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-3へ切り替え
@@ -157,11 +171,18 @@ void CPlayer::Update_NormalAttack3()
 	Update_AttackAngleVec(&anglevec);
 	switch (mAttackStep)
 	{
-	case 0:
+	case 0:		
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eNormalWait1_3);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
@@ -170,7 +191,7 @@ void CPlayer::Update_NormalAttack3()
 			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
 		}
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-1へ切り替え
@@ -211,11 +232,18 @@ void CPlayer::Update_AttackUp()
 	switch (mAttackStep)
 	{
 	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eIdleAir_Combat);
 			mMoveSpeed = CVector::zero;
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃に合わせてプレイヤーを移動
 		if (ATTACK_UP_START_FRAME <= GetAnimationFrame() &&
@@ -229,8 +257,9 @@ void CPlayer::Update_AttackUp()
 			mMoveSpeed += CVector(0.0f, ATTACK_UP_JUMP_SPEED, 0.0f);
 			mIsGrounded = false;
 		}
+
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 空中攻撃1-1へ切り替え
@@ -251,15 +280,22 @@ void CPlayer::Update_AirAttack1()
 	switch (mAttackStep)
 	{
 	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackWait1_1);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃中は落下しない
 		mMoveSpeed += -mMoveSpeed;
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 空中攻撃1-2へ切り替え
@@ -285,15 +321,22 @@ void CPlayer::Update_AirAttack2()
 	switch (mAttackStep)
 	{
 	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackWait1_2);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃中は落下しない
 		mMoveSpeed += -mMoveSpeed;
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 空中攻撃1-3へ切り替え
@@ -319,15 +362,22 @@ void CPlayer::Update_AirAttack3()
 	switch (mAttackStep)
 	{
 	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
 			ChangeAnimation(EAnimType::eAirAttackWait1_3);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 		// 攻撃中は落下しない
 		mMoveSpeed += -mMoveSpeed;
 		break;
-	case 1:
+	case 2:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 空中攻撃1-4に切り替え
@@ -347,15 +397,27 @@ void CPlayer::Update_AirAttack3()
 // 空中攻撃1-4処理
 void CPlayer::Update_AirAttack4()
 {
-	CVector anglevec;
-	Update_AttackAngleVec(&anglevec);
-	if (IsAnimationFinished())
+	switch (mAttackStep)
 	{
-		mAttackStep = ATTACKSTEP_END;
-		ChangeAnimation(EAnimType::eAirAttackEnd1_4);
+	case 0:
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mAttackStep++;
+		break;
+	case 1:
+		CVector anglevec;
+		Update_AttackAngleVec(&anglevec);
+		if (IsAnimationFinished())
+		{
+			mAttackStep = ATTACKSTEP_END;
+			ChangeAnimation(EAnimType::eAirAttackEnd1_4);
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
+		}
+		// 攻撃中は落下しない
+		mMoveSpeed += -mMoveSpeed;
+		break;
 	}
-	// 攻撃中は落下しない
-	mMoveSpeed += -mMoveSpeed;
 }
 
 // 攻撃待ち

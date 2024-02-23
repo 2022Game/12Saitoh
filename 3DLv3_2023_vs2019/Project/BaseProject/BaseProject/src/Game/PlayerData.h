@@ -187,7 +187,7 @@ enum class EAnimType
 // 六度目の移動するフレーム区間(始め)
 #define POWERATTACK6_START 48
 // 六度目の移動するフレーム区間(終わり)
-#define POWERATTACK6_END 57
+#define POWERATTACK6_END 56
 // 六度目の移動方向ベクトル
 #define POWERATTACK6_VEC CVector(-1.0f, 0.1f, 1.0f)
 
