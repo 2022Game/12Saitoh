@@ -178,3 +178,15 @@ float CXCharacter::GetMotionValue() const
 {
 	return mMotionValue;
 }
+
+// キャラの最大ステータスを取得
+const CharaStatus& CXCharacter::MaxStatus() const
+{
+	return mMaxStatus;
+}
+
+// キャラの現在ステータスを取得
+const CharaStatus& CXCharacter::Status() const
+{
+	return mStatus;
+}

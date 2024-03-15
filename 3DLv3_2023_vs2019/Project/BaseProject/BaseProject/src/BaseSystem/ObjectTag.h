@@ -13,9 +13,9 @@ enum class ETag
 	ePlayer,// プレイヤー
 	eEnemy,	// エネミー
 
+	eWeapon,// 装備
+	eSword, // 剣
 	eBullet,// 銃弾
-	eSowrd, // 剣
-
 	eCamera,// カメラ
 
 	Num

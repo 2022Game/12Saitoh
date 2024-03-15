@@ -38,15 +38,38 @@ public:
 	// 暫定ダメージ値の取得
 	int GetTemporaryDamage() const;
 
-	// キャラの現在ステータスを取得
-	const CharaStatus& Status() const;
-
 	// ダメージ処理
 	virtual void TakeDamage(int damage);
+
+	/// <summary>
+	/// 攻撃開始
+	/// </summary>
+	virtual void AttackStart();
+	/// <summary>
+	/// 攻撃終了
+	/// </summary>
+	virtual void AttackEnd();
+
 private:
 	int mDamage; // ダメージ値
 
 protected:
-	CharaStatus mStatus;	// キャラクターステータス
+	/// <summary>
+	/// 攻撃がヒットしたオブジェクトを追加
+	/// </summary>
+	/// <param name="obj"></param>
+	void AddAttackHitObj(CObjectBase* obj);
+	/// <summary>
+	/// 既に攻撃がヒットしているオブジェクトかどうか
+	/// </summary>
+	/// <param name="obj"></param>
+	/// <returns></returns>
+	bool IsAttackHitObj(CObjectBase* obj) const;
+
+	std::list<CObjectBase*> mAttackHitObjects;
+
+	CharaStatus mMaxStatus;		// キャラの最大ステータス
+	CharaStatus mStatus;		// キャラの現在のステータス
+
 	int mTemporaryDamage;	// 暫定ダメージ
 };

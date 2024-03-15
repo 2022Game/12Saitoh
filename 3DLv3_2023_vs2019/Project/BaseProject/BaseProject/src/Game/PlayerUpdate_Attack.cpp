@@ -184,6 +184,10 @@ void CPlayer::Update_NormalAttack3()
 			// 剣に攻撃終了を伝える
 			mpSword->AttackEnd();
 		}
+		if (GetAnimationFrame() == NORMALATTACK1_3_COLLIDER)
+		{
+			mpSword->AttackStart();
+		}
 		// 攻撃に合わせてプレイヤーを移動
 		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
 			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)

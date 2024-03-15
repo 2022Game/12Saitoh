@@ -10,7 +10,7 @@ const CharaStatus DEFAULT[] =
 const CharaStatus PLAYER_STATUS[] =
 {
 	//レベル	  HP		攻撃力		防御力	スタミナ	闘気ゲージ
-	{0,			 100,		 100,		100,	  100,		0},
+	{0,			 100,		 100,		100,	  100,		300},
 };
 
 // 敵ステータス

@@ -391,6 +391,12 @@
     <ClCompile Include="src\Game\DragonUpdate_Idle.cpp">
       <Filter>ソース ファイル\Game\Character\Dragon\Dragon_Update</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\DragonUpdate_Battle.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Dragon_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\DragonData.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -673,6 +679,9 @@
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CDragon.h">
+      <Filter>ソース ファイル\Game\Character\Dragon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\DragonData.h">
       <Filter>ソース ファイル\Game\Character\Dragon</Filter>
     </ClInclude>
   </ItemGroup>

@@ -61,18 +61,26 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
-	// 球コライダの生成
+	// コライダの生成
+	// 押し戻し用コライダ
 	mpBodyCol = new CColliderSphere(this, ELayer::ePlayer, 0.5f);
-	mpBodyCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpBodyCol->SetCollisionLayers({ ELayer::eEnemy });
 	mpBodyCol->SetCollisionTags({ ETag::eEnemy });
 	mpBodyCol->Position(0.0f, 1.0f, 0.0f);
+
+	// ダメージ用コライダ
+	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemy });
+	mpDamageCol->Position(0.0f, 1.0f, 0.0f);
 
 	// カットインカメラの生成
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
 
 	// プレイヤーのステータスを取得
 	mStatus = PLAYER_STATUS[PLAYER_STATAS];
+	mMaxStatus = mStatus;
+	mStatus.touki = 0;
 
 	// HPゲージを作成
 	mpHPGauge = new CHPGauge();
@@ -218,13 +226,13 @@ void CPlayer::Update()
 
 	// 各ステータスの上限値と下限値を設定
 	// 上限
-	if (mStatus.hp >= PLAYER_MAX_HP) mStatus.hp = 100; // HP
-	if (mStatus.sp >= PLAYER_MAX_SP) mStatus.sp = 100.0f; // SP
-	if (mStatus.touki > PLAYER_MAX_TOUKI) mStatus.touki = 300;// 闘気
+	if (mStatus.hp >= mMaxStatus.hp) mStatus.hp = mMaxStatus.hp; // HP
+	if (mStatus.sp >= mMaxStatus.sp) mStatus.sp = mMaxStatus.sp; // SP
+	if (mStatus.touki >= mMaxStatus.touki) mStatus.touki = mMaxStatus.touki;// 闘気
 	// 下限
-	if (mStatus.hp <= PLAYER_MIN_HP) mStatus.hp = 0; // HP
-	if (mStatus.sp <= PLAYER_MIN_SP) mStatus.sp = 0; // SP
-	if (mStatus.touki < PLAYER_MIN_TOUKI) mStatus.touki = 0;// 闘気
+	if (mStatus.hp <= PLAYER_MIN_HP) mStatus.hp = PLAYER_MIN_HP; // HP
+	if (mStatus.sp <= PLAYER_MIN_SP) mStatus.sp = PLAYER_MIN_SP; // SP
+	if (mStatus.touki <= PLAYER_MIN_TOUKI) mStatus.touki = PLAYER_MIN_TOUKI;// 闘気
 
 	if (mpCutIn_PowerAttack->IsPlaying())
 	{
@@ -286,12 +294,12 @@ void CPlayer::Update()
 
 	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
 	
-	// カウンター攻撃フラグの変更
-	if (CInput::PushKey('Q')) mIsCounter = true;
-	
-	CDebugPrint::Print("カウンターフラグ : ");
-	if (mIsCounter) CDebugPrint::Print("ture\n");
-	else CDebugPrint::Print("false\n");
+	//// カウンター攻撃フラグの変更
+	//if (CInput::PushKey('Q')) mIsCounter = true;
+	//
+	//CDebugPrint::Print("カウンターフラグ : ");
+	//if (mIsCounter) CDebugPrint::Print("ture\n");
+	//else CDebugPrint::Print("false\n");
 
 	//  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
 	if (CInput::Key('1'))
@@ -307,20 +315,7 @@ void CPlayer::Update()
 	}
 
 	CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
-	if (CInput::Key('1'))
-	{
-		if (CInput::PushKey(VK_RIGHT))
-		{
-			//CEnemy* enemy = new CEnemy();
-			//int damage = TakePlayerToDamage(
-			//	enemy->Instance()->Status().atk,
-			//	mStatus.def,
-			//	1.6);
-			int damage = TakePlayerToDamage(100, mStatus.def, 1.5);
-			mStatus.hp -= damage; 
-			printf("%d\n", damage);
-		}
-	}
+
 	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
 	if (mTemporaryDamage > 0)
 	{
@@ -402,11 +397,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	// 敵との衝突処理
 	if (self == mpBodyCol)
 	{
-		if (other->Layer() == ELayer::eEnemy)
-		{
-			Position(Position() +
-				CVector(hit.adjust.X(), 0.0f, hit.adjust.Z()) * hit.weight);
-		}
+		Position(Position() +
+			CVector(hit.adjust.X(), 0.0f, hit.adjust.Z()) * hit.weight);
 	}
 
 }

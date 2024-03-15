@@ -87,8 +87,6 @@ enum class EAnimType
 	eLandin_Combat,			// 着地動作(抜刀)
 	Num
 };
-// プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Player\\player.x"
 
 #define PLAYER_HEIGHT	1.8f	
 #define MOVE_SPEED		1.0f	// 走る速度
@@ -135,6 +133,8 @@ enum class EAnimType
 #define NORMALATTACK1_3_END_FRAME 30
 // プレイヤー通常攻撃1-3の移動速度
 #define NORMALATTACK1_3_MOVESPEED 0.7f
+// プレイヤー通常攻撃1-3のコライダー用フレーム
+#define NORMALATTACK1_3_COLLIDER 35
 
 /* ジャンプ攻撃 */
 // ジャンプ攻撃の移動するフレーム区間(始め)

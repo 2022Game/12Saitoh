@@ -1,5 +1,6 @@
 #ifndef CDRAGON_H
 #define CDRAGON_H
+#include "DragonData.h"
 #include "CXCharacter.h"
 #include "CCollider.h"
 /*
@@ -26,72 +27,58 @@ public:
 
 	// ダメージ処理
 	void TakeDamage(int damage)override;
+	/// <summary>
+	/// 攻撃開始
+	/// </summary>
+	void AttackStart() override;
+	/// <summary>
+	/// 攻撃終了
+	/// </summary>
+	void AttackEnd() override;
+
 private:
 	// 待機状態
 	void UpdateIdle();
+	// 戦闘状態
+	void UpdateBattle();
+	// 攻撃処理
+	// UpdateBattleの中で行う
+	void UpdateAttack();
+
+	// アニメーションの切り替え
+	void ChangeAnimation(EDragonAnimType type);
 
 	// プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
 
-	// アニメーションの種類
-	enum class EAnimType
-	{
-		None = -1,
-
-		eIdle1,			// 待機1
-		eIdle2,			// 待機2
-		eLand,			// 着地
-		eRun,			// 走り
-		eWalk,			// 歩き
-		eScream,		// 咆哮
-		eSleep,			// 寝る
-		eTakeOff,		// 離陸
-		eAttackFlame,	// ブレス攻撃
-		eAttackHand,	// 飛び掛かり攻撃
-		eAttackMouth,	// 噛みつき攻撃
-		eDie,			// 死亡
-		eFlyFlame,		// 空中ブレス攻撃
-		eFlyForward,	// 空中前進
-		eFlyGlide,		// 空中滑空
-		eFlyIdle,		// 空中アイドル
-		eGetHit,		// のけ反り
-
-		Num
-	};
-	// アニメーションの切り替え
-	void ChangeAnimation(EAnimType type);
-	// アニメーションのデータテーブル
-	struct AnimData
-	{
-		std::string path;	// アニメーションデータパス
-		bool loop;			// ループするかどうか
-		float frameLength;	// アニメーションのフレーム数
-		float motionValue;	// モーション値
-	};
 	// 敵の状態
 	enum class EState
 	{
 		None = -1,
 
 		eIdle,	// 待機
-		eMove,	// 移動
-		eAttack,// 攻撃
+		eBattle,// 戦闘
 		eDeath,	// 死亡
 	};
 	EState mState;	// 敵の状態
 
-	// アニメーションデータテーブル
-	static const AnimData ANIM_DATA[];
 	// インスタンス
 	static CDragon* spInstance;
 
 	CColliderLine* mpColliderLine;	// 地面との当たり判定用
-	CColliderSphere* mpColliderSphere;
-	CColliderSphere* mpDamageCol;
-
-
+	CColliderSphere* mpBodyCol;		//押し戻し用コライダー
+	CColliderSphere* mpDamageCol;	// ダメージ用コライダー
+	CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
 
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
+	bool mIsAngry;		// 怒り状態かどうか
+
+	int mAngryStandardValue;// 怒り値の基準値
+	int mAngryValue;	// 怒り値
+
+	float mAngryElapsedTime;// 怒り経過時間計測長
+	float mElapsedTime;		// 経過時間計測長
+
 };
 #endif

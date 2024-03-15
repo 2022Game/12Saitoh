@@ -2,9 +2,9 @@
 
 CCharaBase::CCharaBase(ETag tag, ETaskPriority prio, int sortOrder, ETaskPauseType pause)
 	: CObjectBase(tag, prio, sortOrder, pause)
+	, mStatus(DEFAULT[0])
 	, mDamage(0)
 	, mTemporaryDamage(0)
-	, mStatus(DEFAULT[0])
 {
 }
 
@@ -19,8 +19,8 @@ int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float moti
 	// ダメージ  = ((攻撃力 × モーション値) - (防御力/2)) × 肉質倍率
 	float damage = ((atk * motionvalue) - (def / 2)) * multiplier;
 	mDamage = static_cast<int>(damage);
-	// 正数に変換
-	if (mDamage < 0) mDamage = -mDamage;
+	// ダメージが0以下の場合、最低保障ダメージを返す
+	if (mDamage < 0) return 10;
 
 	return mDamage;
 }
@@ -63,12 +63,6 @@ int CCharaBase::GetTemporaryDamage() const
 	return mTemporaryDamage;
 }
 
-// キャラの現在ステータスを取得
-const CharaStatus& CCharaBase::Status() const
-{
-	return mStatus;
-}
-
 void CCharaBase::TakeDamage(int damage)
 {
 	mStatus.hp -= damage;
@@ -76,4 +70,35 @@ void CCharaBase::TakeDamage(int damage)
 	{
 		// 死亡処理
 	}
+}
+
+// 攻撃開始
+void CCharaBase::AttackStart()
+{
+	mAttackHitObjects.clear();
+}
+
+// 攻撃終了
+void CCharaBase::AttackEnd()
+{
+
+}
+
+// 攻撃がヒットしたオブジェクトを追加
+void CCharaBase::AddAttackHitObj(CObjectBase* obj)
+{
+	mAttackHitObjects.push_back(obj);
+}
+
+// 既に攻撃がヒットしているオブジェクトかどうか
+bool CCharaBase::IsAttackHitObj(CObjectBase* obj) const
+{
+	// 既にリストに追加しているかを確認する
+	auto find = std::find
+	(
+		mAttackHitObjects.begin(),
+		mAttackHitObjects.end(),
+		obj
+	);
+	return find != mAttackHitObjects.end();
 }

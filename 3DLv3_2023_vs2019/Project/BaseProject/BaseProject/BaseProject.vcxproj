@@ -87,6 +87,8 @@
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CWeapon.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
+    <ClCompile Include="src\Game\DragonData.cpp" />
+    <ClCompile Include="src\Game\DragonUpdate_Battle.cpp" />
     <ClCompile Include="src\Game\DragonUpdate_Idle.cpp" />
     <ClCompile Include="src\Game\PlayerData.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Attack.cpp" />
@@ -193,6 +195,7 @@
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CWeapon.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
+    <ClInclude Include="src\Game\DragonData.h" />
     <ClInclude Include="src\Game\PlayerData.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />

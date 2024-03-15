@@ -1,7 +1,7 @@
 #include "CWeapon.h"
 
 CWeapon::CWeapon()
-	: CObjectBase(ETag::eItem, ETaskPriority::eWeapon)
+	: CObjectBase(ETag::eWeapon, ETaskPriority::eWeapon)
 	, mpAttachMtx(nullptr)
 {
 }

@@ -6,40 +6,18 @@
 #include "CColliderLine.h"
 #include "CDebugPrint.h"
 
-#define GRAVITY			0.0625f	// 重力
-#define ENEMY_HEIGHT	400.0f
-#define FOV_LANGE		170.0f
-#define FOV_ANGLE		60.0f
-
 CDragon* CDragon::spInstance = nullptr;
-
-// 敵のアニメーションデータテーブル
-const CDragon::AnimData CDragon::ANIM_DATA[] =
-{
-	{ "Character\\Dragon\\anim\\idle1.x",			true,	102.0f,		0.0f },	// アイドル1
-	{ "Character\\Dragon\\anim\\idle2.x",			true,	151.0f,		0.0f },	// アイドル2
-	{ "Character\\Dragon\\anim\\land.x",			false,	200.0f,		0.0f },	// 着地
-	{ "Character\\Dragon\\anim\\run.x",				true,	40.0f,		0.0f },	// 走り
-	{ "Character\\Dragon\\anim\\walk.x",			true,	80.0f,		0.0f },	// 歩き
-	{ "Character\\Dragon\\anim\\scream.x",			true,	202.0f,		0.0f },	// 咆哮
-	{ "Character\\Dragon\\anim\\sleep.x",			true,	162.0f,		0.0f },	// 寝る
-	{ "Character\\Dragon\\anim\\takeOff.x",			false,	121.0f,		0.0f },	// 離陸
-	{ "Character\\Dragon\\anim\\attackflame.x",		false,	241.0f,		0.0f },	// ブレス攻撃
-	{ "Character\\Dragon\\anim\\attackHand.x",		false,	182.0f,		0.0f },	// 飛び掛かり攻撃
-	{ "Character\\Dragon\\anim\\attackMouth.x",		false,	86.0f,		0.0f },	// 噛みつき攻撃
-	{ "Character\\Dragon\\anim\\die.x",				false,	260.0f,		0.0f },	// 死亡
-	{ "Character\\Dragon\\anim\\flyFlame.x",		false,	182.0f,		0.0f },	// 空中ブレス攻撃
-	{ "Character\\Dragon\\anim\\flyforward.x",		true,	80.0f,		0.0f },	// 空中前進
-	{ "Character\\Dragon\\anim\\flyGlide.x",		true,	102.0f,		0.0f },	// 空中滑空
-	{ "Character\\Dragon\\anim\\flyIdle.x",			true,	102.0f,		0.0f },	// 空中アイドル
-	{ "Character\\Dragon\\anim\\getHit.x",			true,	86.0f,		0.0f },	// のけ反り
-};
 
 // コンストラクタ
 CDragon::CDragon()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mMoveSpeed(CVector::zero)
 	, mIsGrounded(true)
+	, mIsAngry(false)
+	, mAngryStandardValue(0)
+	, mAngryValue(0)
+	, mAngryElapsedTime(0.0f)
+	, mElapsedTime(0.0f)
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -48,10 +26,10 @@ CDragon::CDragon()
 	CModelX* model = CResourceManager::Get<CModelX>("Dragon");
 
 	// テーブル内のアニメーションデータを読み込み
-	int size = ARRAY_SIZE(ANIM_DATA);
+	int size = DragonData::GetAnimDataSize();
 	for (int i = 0; i < size; i++)
 	{
-		const AnimData& data = ANIM_DATA[i];
+		const DragonData::AnimData& data = DragonData::GetAnimData(i);
 		if (data.path.empty()) continue;
 		model->AddAnimationSet(data.path.c_str());
 	}
@@ -59,11 +37,16 @@ CDragon::CDragon()
 	Init(model);
 
 	// 最初は待機のアニメーションを再生
-	ChangeAnimation(EAnimType::eIdle1);
+	ChangeAnimation(EDragonAnimType::eIdle1);
 
 	// ランダム値を生成して取得した値によりステータスを設定
-	int rand = Math::Rand(0.0f, 4.0f);
+	int rand = Math::Rand(0.0f, 5.0f);
 	mStatus = ENEMY_STATUS[rand];
+	mMaxStatus = mStatus;
+
+	// 怒り値の最大値を設定
+	// 最大値は最大HPの１割を基準として設定
+	mAngryStandardValue = mMaxStatus.hp / 10;
 
 	// 状態の設定
 	mState = EState::eIdle;
@@ -77,13 +60,26 @@ CDragon::CDragon()
 	);
 
 	// コライダーの生成
-	mpColliderSphere = new CColliderSphere(this, ELayer::eEnemy, 200.0f);
-	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer });
-	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
+	// プレイヤーとの押し戻し用コライダー
+	mpBodyCol = new CColliderSphere(this, ELayer::eEnemy, 200.0f);
+	mpBodyCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpBodyCol->SetCollisionTags({ ETag::ePlayer });
 
+	// ダメージを受ける用のコライダー
 	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 500.0f);
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	//mpDamageCol->SetCollisionTags({ ETag::eSowrd });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
+
+	// 攻撃用のコライダー
+	mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);
+	mpAttackMouthCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpAttackMouthCol->SetCollisionTags({ ETag::ePlayer });
+	// コライダーをアタッチ
+	const CMatrix* attackcol = GetFrameMtx("Armature_Tongue02");
+	mpAttackMouthCol->SetAttachMtx(attackcol);
+
+	// 最初は攻撃判定用のコライダーはオフにしておく
+	mpAttackMouthCol->SetEnable(false);
 }
 
 // デストラクタ
@@ -92,11 +88,17 @@ CDragon::~CDragon()
 
 }
 
-// アニメーションの切り替え
-void CDragon::ChangeAnimation(EAnimType type)
+// インスタンスを取得
+CDragon* CDragon::Instance()
 {
-	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
-	AnimData data = ANIM_DATA[(int)type];
+	return spInstance;
+}
+
+// アニメーションの切り替え
+void CDragon::ChangeAnimation(EDragonAnimType type)
+{
+	if (!(EDragonAnimType::None < type && type < EDragonAnimType::Num)) return;
+	DragonData::AnimData data = DragonData::GetAnimData((int)type);
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.motionValue);
 }
 
@@ -138,11 +140,9 @@ void CDragon::Update()
 	case EState::eIdle:
 		UpdateIdle();
 		break;
-		// 移動状態
-	case EState::eMove:
-		break;
-		// 攻撃状態
-	case EState::eAttack:
+		// 戦闘状態
+	case EState::eBattle:
+		UpdateBattle();
 		break;
 		// 死亡状態
 	case EState::eDeath:
@@ -164,6 +164,7 @@ void CDragon::Update()
 	Rotation(CQuaternion::LookRotation(forward));
 
 	CXCharacter::Update();
+	mpAttackMouthCol->Update();
 
 #ifdef _DEBUG
 	// ドラゴンのステータスを表示
@@ -187,19 +188,32 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			mIsGrounded = true;
 		}
 	}
-}
 
-// ダメージ処理
-void CDragon::TakeDamage(int damage)
-{
-	mStatus.hp -= damage;
-	if (mStatus.hp <= 0)
+	// 衝突したコライダーが攻撃判定用のコライダーであれば
+	if (self == mpAttackMouthCol)
 	{
-		// 死亡処理
-	}
-	else
-	{
-		// のけ反りなどの被弾処理
+		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
+		// 相手のコライダーの持ち主がキャラであれば
+		if (chara != nullptr)
+		{
+			// ダメージを与える
+			CPlayer* player = CPlayer::Instance();
+			int atk = Status().atk;
+			int def = player->Status().def;
+			float motionvalue = GetMotionValue();
+			// ダメージ計算
+			int damage = player->TakePlayerToDamage(atk, def, motionvalue);
+
+			// 既に攻撃済みのキャラでなければ
+			if (!IsAttackHitObj(chara))
+			{
+				// ダメージを与える
+				chara->TakeDamage(damage);
+
+				// 攻撃済みのリストに追加
+				AddAttackHitObj(chara);
+			}
+		}
 	}
 }
 
@@ -219,8 +233,65 @@ void CDragon::Render()
 	);
 }
 
-// インスタンスを取得
-CDragon* CDragon::Instance()
+// ダメージ処理
+void CDragon::TakeDamage(int damage)
 {
-	return spInstance;
+	// ダメージ分HPを減少
+	mStatus.hp -= damage;
+
+	// 怒り状態で無ければ、ダメージ分怒り値増加
+	if (!mIsAngry)
+	{
+		mAngryValue += damage;
+		// 怒り値が基準より大きくなった場合、怒り状態へ移行
+		if (mAngryValue >= mAngryStandardValue)
+		{
+			mIsAngry = true;
+			mAngryValue = mAngryStandardValue;
+			ChangeAnimation(EDragonAnimType::eScream);
+		}
+	}
+	// 怒り状態で有れば、ダメージの半分の値だけ怒り値を減少
+	else
+	{
+		mAngryValue -= damage / 2;
+		// 怒り値が0以下になった場合、怒り状態を解除
+		if (mAngryValue <= 0)
+		{
+			mIsAngry = false;
+			mAngryValue = 0;
+		}
+	}
+
+	if (mStatus.hp <= 0)
+	{
+		// 死亡処理
+	}
+	else
+	{
+		// のけ反りなどの被弾処理
+	}
+}
+
+// 攻撃開始
+void CDragon::AttackStart()
+{
+	CCharaBase::AttackStart();
+	// 攻撃が始まったら、攻撃判定用のコライダーをオンにする
+	switch (AnimationIndex())
+	{
+	case (int)EDragonAnimType::eAttackMouth:// 噛みつき攻撃
+		mpAttackMouthCol->SetEnable(true);
+		break;
+	case (int)EDragonAnimType::eAttackHand:// 飛び掛かり攻撃
+		break;
+	}
+}
+
+// 攻撃終了
+void CDragon::AttackEnd()
+{
+	CCharaBase::AttackEnd();
+	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
+	mpAttackMouthCol->SetEnable(false);
 }

@@ -10,7 +10,7 @@ CSword::CSword()
 
 	mpSwordCollider = new CColliderSphere(this, ELayer::eAttackCol, 10.0f);
 	mpSwordCollider->SetCollisionLayers({ ELayer::eDamageCol });
-	//mpSwordCollider->SetCollisionTags({ ETag::eEnemy });
+	mpSwordCollider->SetCollisionTags({ ETag::eEnemy });
 
 	// 最初は攻撃判定用のコライダーをオフにしておく
 	mpSwordCollider->SetEnable(false);
