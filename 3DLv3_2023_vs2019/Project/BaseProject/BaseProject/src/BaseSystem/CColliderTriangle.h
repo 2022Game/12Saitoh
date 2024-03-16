@@ -15,11 +15,12 @@ public:
 	/// <param name="v0">三角形の頂点 0</param>
 	/// <param name="v1">三角形の頂点 1</param>
 	/// <param name="v2">三角形の頂点 2</param>
+	/// <param name="multiplier">肉質</param>
 	/// <param name="isKinematic">trueならば、衝突時に押し戻しの影響を受けない</param>
 	/// <param name="weight">コライダーの重量</param>
 	CColliderTriangle(CObjectBase* owner, ELayer layer,
 		const CVector& v0, const CVector& v1, const CVector& v2,
-		bool isKinematic = false, float weight = 1.0f);
+		int multiplier = 0, bool isKinematic = false, float weight = 1.0f);
 
 	/// <summary>
 	/// 三角形コライダーの設定

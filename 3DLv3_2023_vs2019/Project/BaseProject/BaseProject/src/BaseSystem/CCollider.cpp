@@ -9,13 +9,14 @@
 
 // コンストラクタ
 CCollider::CCollider(CObjectBase* owner, ELayer layer, EColliderType type,
-	bool isKinematic, float weight)
+	int multiplier, bool isKinematic, float weight)
 	: mLayer(layer)
 	, mType(type)
 	, mpOwner(owner)
 	, mIsEnable(true)
 	, mIsKinematic(isKinematic)
 	, mWeight(weight)
+	, mMultiplier(multiplier)
 	, mCollisionLayers(~0)
 	, mCollisionTags(~0)
 	, mpAttachMtx(nullptr)
@@ -91,6 +92,12 @@ void CCollider::SetWeight(float weight)
 float CCollider::GetWeight() const
 {
 	return mWeight;
+}
+
+// 肉質倍率を取得
+int CCollider::GetMultiplier() const
+{
+	return mMultiplier;
 }
 
 // 指定したコライダーと衝突判定を行うかどうかを取得

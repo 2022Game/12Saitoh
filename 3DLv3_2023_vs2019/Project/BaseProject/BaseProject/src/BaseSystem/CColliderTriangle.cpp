@@ -6,8 +6,8 @@
 // コンストラクタ
 CColliderTriangle::CColliderTriangle(CObjectBase* owner, ELayer layer,
 	const CVector& v0, const CVector& v1, const CVector& v2,
-	bool isKinematic, float weight)
-	: CCollider(owner, layer, EColliderType::eTriangle, isKinematic, weight)
+	int  multiplier, bool isKinematic, float weight)
+	: CCollider(owner, layer, EColliderType::eTriangle, multiplier, isKinematic, weight)
 {
 	// 三角形の頂点を設定
 	mV[0] = v0;

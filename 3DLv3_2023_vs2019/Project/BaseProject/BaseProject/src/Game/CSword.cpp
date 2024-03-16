@@ -52,7 +52,7 @@ void CSword::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			int def = dragon->Status().def;
 			float motionvalue = player->GetMotionValue();
 			// “÷¿”{—¦‚É‚Â‚¢‚Ä‚Í¡Œã’Ç‰Á
-			int damage = dragon->TakeEnemyToDamage(atk, def,motionvalue, 1.0f);
+			int damage = dragon->TakeEnemyToDamage(atk, def,motionvalue, other->GetMultiplier());
 
 			// Šù‚ÉUŒ‚Ï‚İ‚ÌƒLƒƒƒ‰‚Å‚È‚¯‚ê‚ÎA
 			if (!IsAttackHitObj(chara))

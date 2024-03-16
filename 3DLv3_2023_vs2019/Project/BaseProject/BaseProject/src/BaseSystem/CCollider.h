@@ -35,7 +35,8 @@ public:
 	/// <param name="owner">コライダーの持ち主</param>
 	/// <param name="layer">衝突判定用のレイヤー</param>
 	/// <param name="type">コライダーの種類</param>
-	CCollider(CObjectBase* owner, ELayer layer, EColliderType type, bool isKinematic, float weight);
+	/// <param name="multiplier">肉質</param>
+	CCollider(CObjectBase* owner, ELayer layer, EColliderType type,int multiplier, bool isKinematic, float weight);
 	// デストラクタ
 	virtual ~CCollider();
 
@@ -80,6 +81,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	float GetWeight() const;
+
+	/// <summary>
+	/// 肉質の数値を取得
+	/// </summary>
+	int GetMultiplier() const;
 
 	/// <summary>
 	/// 指定したコライダーと衝突判定を行うかどうかを取得
@@ -326,6 +332,7 @@ private:
 	bool mIsEnable;			// 有効かどうか
 	bool mIsKinematic;		// 衝突時の押し戻しの影響を受けないかどうか
 	float mWeight;			// コライダーの重量
+	int mMultiplier;		// 肉質
 	int mCollisionLayers;	// 衝突判定を行うレイヤーのビットフラグ
 	int mCollisionTags;		// 衝突判定を行うオブジェクトタグのビットフラグ
 

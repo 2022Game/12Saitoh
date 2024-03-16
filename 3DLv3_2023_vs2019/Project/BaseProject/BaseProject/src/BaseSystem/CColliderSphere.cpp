@@ -4,8 +4,8 @@
 
 // コンストラクタ
 CColliderSphere::CColliderSphere(CObjectBase* owner, ELayer layer, float radius,
-	bool isKinematic, float weight)
-	: CCollider(owner, layer, EColliderType::eSphere, isKinematic, weight)
+	int multiplier, bool isKinematic, float weight)
+	: CCollider(owner, layer, EColliderType::eSphere, multiplier, isKinematic, weight)
 	, mRadius(radius)
 {
 }

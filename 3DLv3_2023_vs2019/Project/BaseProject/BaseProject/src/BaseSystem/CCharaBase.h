@@ -18,9 +18,9 @@ public:
 	/// <param name="atk">プレイヤーの攻撃力</param>
 	/// <param name="def">敵の防御力</param>
 	/// <param name="motionvalue">モーション値</param>
-	/// <param name="multiplier">肉質倍率</param>
+	/// <param name="multiplier">肉質</param>
 	/// <returns>ダメージ</returns>
-	int TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const float multiplier);
+	int TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const int multiplier);
 	/// <summary>
 	/// 敵がプレイヤーに与えるダメージ
 	/// </summary>

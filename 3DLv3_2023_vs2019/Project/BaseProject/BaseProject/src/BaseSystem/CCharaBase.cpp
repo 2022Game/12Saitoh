@@ -13,11 +13,13 @@ CCharaBase::~CCharaBase()
 }
 
 // プレイヤーが敵に与えるダメージ計算
-int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float motionvalue, float const multiplier)
+int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const int multiplier)
 {
+	// 肉質を小数値に変換
+	float meetvalue = multiplier / 100.0f;
 	// ダメージ計算
 	// ダメージ  = ((攻撃力 × モーション値) - (防御力/2)) × 肉質倍率
-	float damage = ((atk * motionvalue) - (def / 2)) * multiplier;
+	float damage = ((atk * motionvalue) - (def / 2)) * meetvalue;
 	mDamage = static_cast<int>(damage);
 	// ダメージが0以下の場合、最低保障ダメージを返す
 	if (mDamage < 0) return 10;
