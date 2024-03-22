@@ -13,6 +13,7 @@ enum class ETaskPriority
 	eWeapon,	// 装備
 
 	eEffect,	// エフェクト
+	eBillboard,	// ビルボードイメージ
 
 	eCamera,	// カメラ
 

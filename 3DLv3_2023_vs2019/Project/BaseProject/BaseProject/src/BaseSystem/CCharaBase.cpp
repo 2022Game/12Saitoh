@@ -13,10 +13,10 @@ CCharaBase::~CCharaBase()
 }
 
 // プレイヤーが敵に与えるダメージ計算
-int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const int multiplier)
+int CCharaBase::TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const int meat)
 {
 	// 肉質を小数値に変換
-	float meetvalue = multiplier / 100.0f;
+	float meetvalue = meat / 100.0f;
 	// ダメージ計算
 	// ダメージ  = ((攻撃力 × モーション値) - (防御力/2)) × 肉質倍率
 	float damage = ((atk * motionvalue) - (def / 2)) * meetvalue;

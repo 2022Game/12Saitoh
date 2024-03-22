@@ -3,6 +3,7 @@
 #include <list>
 #include "CModel.h"
 #include "CCollider.h"
+
 /*
 モデルデータから三角コライダの生成
 */
@@ -15,22 +16,26 @@ public:
 	/// <param name="owner">コライダーの持ち主</param>
 	/// <param name="layer">衝突判定用レイヤー</param>
 	/// <param name="model">モデルデータ</param>
-	/// <param name="multiplier">肉質</param>
 	/// <param name="isKinematic">trueならば、衝突時に押し戻しの影響を受けない</param>
 	/// <param name="weight">コライダーの重量</param>
 	CColliderMesh(CObjectBase* owner, ELayer layer, CModel* model,
-		int  multiplier = 0, bool isKinematic = false, float weight = 1.0f);
+		bool isKinematic = false, float weight = 1.0f);
 	// デストラクタ
 	~CColliderMesh();
 
 	void Set(CModel* model);
-	void Get(std::list<STVertex>* tris) const;
+	const std::list<STVertexData>& Get() const;
 
 	// コライダー描画
-	void Render();
+	void Render() override;
+
+protected:
+	// コライダーの情報を更新
+	void UpdateCol() override;
 
 private:
 	//三角コライダの配列作成
-	std::list<STVertex> mVertices;
+	std::list<STVertexData> mVertices;
 };
+
 #endif

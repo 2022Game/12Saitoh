@@ -3,8 +3,9 @@
 // コライダーの種類
 enum class EColliderType
 {
-	eLine,		// 線分コライダ
-	eSphere,	// 球コライダ
-	eTriangle,	// 三角コライダ
-	eMesh,		// メッシュコライダ
+	eLine,		// 線分コライダー
+	eSphere,	// 球コライダー
+	eTriangle,	// 三角コライダー
+	eCapsule,	// カプセルコライダー
+	eMesh,		// メッシュコライダー
 };

@@ -82,9 +82,10 @@ CDragon::CDragon()
 	mpBodyCol->SetCollisionTags({ ETag::ePlayer });
 
 	// ダメージを受ける用のコライダー
-	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 500.0f, 100);
+	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 500.0f);
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
+	mpDamageCol->SetMeat(100);
 
 	// 攻撃用のコライダー
 	mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);

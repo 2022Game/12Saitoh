@@ -104,6 +104,9 @@
     <Filter Include="ソース ファイル\Game\Character\Dragon\Dragon_Update">
       <UniqueIdentifier>{341bef2c-8191-4f2d-96a5-1ab1ff92a511}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Dragon\Flame">
+      <UniqueIdentifier>{d25fea82-da1f-4c62-8b62-d1afc1cfcd38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -397,6 +400,24 @@
     <ClCompile Include="src\Game\DragonData.cpp">
       <Filter>ソース ファイル\Game\Character\Dragon</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CColliderCapsule.cpp">
+      <Filter>ソース ファイル\BaseSystem\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CColCapsule.cpp">
+      <Filter>ソース ファイル\Test\CollisionTest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\Easing.cpp">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFlame.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFlamethrower.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBounds.cpp">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -683,6 +704,24 @@
     </ClInclude>
     <ClInclude Include="src\Game\DragonData.h">
       <Filter>ソース ファイル\Game\Character\Dragon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CColliderCapsule.h">
+      <Filter>ソース ファイル\BaseSystem\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CColCapsule.h">
+      <Filter>ソース ファイル\Test\CollisionTest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\Easing.h">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFlame.h">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFlamethrower.h">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBounds.h">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

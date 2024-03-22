@@ -7,6 +7,7 @@
 #include "CColliderSphere.h"
 #include "CSword.h"
 
+#include "CFlamethrower.h"
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
@@ -109,6 +110,12 @@ CPlayer::CPlayer()
 	//剣を作成
 	mpSword = new CSword();
 	mpSword->Rotate(CVector(0.0f, 0.0f, 0.0f));
+
+	mpFlamethrower = new CFlamethrower
+	(
+		this, nullptr,
+		CVector(0.0f, 14.0f, -1.0f)
+	);
 }
 
 CPlayer::~CPlayer()
@@ -346,6 +353,17 @@ void CPlayer::Update()
 		}
 	}
 
+	//if (CInput::PushKey(VK_RBUTTON))
+	//{
+	//	if (!mpFlamethrower->IsThrowing())
+	//	{
+	//		mpFlamethrower->Start();
+	//	}
+	//	else
+	//	{
+	//		mpFlamethrower->Stop();
+	//	}
+	//}
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);

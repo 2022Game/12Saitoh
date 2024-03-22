@@ -11,6 +11,7 @@ class CSPGauge;
 class CHPGauge;
 class CSword;
 
+class CFlamethrower;
 /*
 プレイヤークラス
 キャラクタクラスを継承
@@ -146,4 +147,5 @@ private:
 	CSPGauge* mpSPGauge;	// SPゲージ
 	CSword* mpSword;		// 剣
 
+	CFlamethrower* mpFlamethrower;
 };

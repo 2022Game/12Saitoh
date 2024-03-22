@@ -16,6 +16,8 @@ enum class ETag
 	eWeapon,// ‘•”õ
 	eSword, // Œ•
 	eBullet,// e’e
+	eFlame,	// ‰Š
+
 	eCamera,// ƒJƒƒ‰
 
 	Num

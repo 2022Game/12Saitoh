@@ -55,6 +55,24 @@ namespace Primitive
 	void DrawQuad(const CMatrix& m, const CVector2& size, const CColor& color);
 
 	/// <summary>
+	/// カプセルを描画
+	/// </summary>
+	/// <param name="sp">カプセルを構成する線分の始点</param>
+	/// <param name="ep">カプセルを構成する線分の終点</param>
+	/// <param name="rad">カプセルの半径</param>
+	/// <param name="color">色</param>
+	void DrawCapsule(const CVector& sp, const CVector& ep, float rad, const CColor& color);
+
+	/// <summary>
+	/// ワイヤーフレームのカプセルを描画
+	/// </summary>
+	/// <param name="sp">カプセルを構成する線分の始点</param>
+	/// <param name="ep">カプセルを構成する線分の終点</param>
+	/// <param name="rad">カプセルの半径</param>
+	/// <param name="color">色</param>
+	void DrawWireCapsule(const CVector& sp, const CVector& ep, float rad, const CColor& color);
+
+	/// <summary>
 	/// 扇形の円を描画
 	/// </summary>
 	/// <param name="pos">位置</param>

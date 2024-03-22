@@ -6,8 +6,8 @@
 // コンストラクタ
 CColliderTriangle::CColliderTriangle(CObjectBase* owner, ELayer layer,
 	const CVector& v0, const CVector& v1, const CVector& v2,
-	int  multiplier, bool isKinematic, float weight)
-	: CCollider(owner, layer, EColliderType::eTriangle, multiplier, isKinematic, weight)
+	bool isKinematic, float weight)
+	: CCollider(owner, layer, EColliderType::eTriangle, isKinematic, weight)
 {
 	// 三角形の頂点を設定
 	mV[0] = v0;
@@ -30,10 +30,9 @@ void CColliderTriangle::Set(CObjectBase* owner, ELayer layer,
 // 三角形の頂点を取得
 void CColliderTriangle::Get(CVector* v0, CVector* v1, CVector* v2) const
 {
-	CMatrix m = Matrix();
-	*v0 = mV[0] * m;
-	*v1 = mV[1] * m;
-	*v2 = mV[2] * m;
+	*v0 = mWV[0];
+	*v1 = mWV[1];
+	*v2 = mWV[2];
 }
 
 // コライダー描画
@@ -73,4 +72,17 @@ void CColliderTriangle::Render()
 
 	// 描画前の行列に戻す
 	glPopMatrix();
+}
+
+// コライダーの情報を更新
+void CColliderTriangle::UpdateCol()
+{
+	// 行列を反映した各頂点の座標を計算
+	CMatrix m = Matrix();
+	mWV[0] = mV[0] * m;
+	mWV[1] = mV[1] * m;
+	mWV[2] = mV[2] * m;
+
+	// バウンディングボックスを更新
+	mBounds = CBounds::GetTriangleBounds(mWV[0], mWV[1], mWV[2]);
 }

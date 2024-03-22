@@ -20,13 +20,13 @@ public:
 	/// <param name="motionvalue">モーション値</param>
 	/// <param name="multiplier">肉質</param>
 	/// <returns>ダメージ</returns>
-	int TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const int multiplier);
+	int TakeEnemyToDamage(const int atk, const int def, const float motionvalue, const int meat);
 	/// <summary>
 	/// 敵がプレイヤーに与えるダメージ
 	/// </summary>
 	/// <param name="atk">敵の攻撃力</param>
 	/// <param name="def">プレイヤーの防御力</param>
-	/// <param name="motionvalue">モーション値</param>
+	/// <param name="meat">モーション値</param>
 	/// <returns>被ダメージ値</returns>
 	int TakePlayerToDamage(const int atk, const int def, const float motionvalue);
 
