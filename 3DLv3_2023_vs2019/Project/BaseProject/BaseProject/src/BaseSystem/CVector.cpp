@@ -266,6 +266,21 @@ CVector CVector::Slerp(const CVector& a, const CVector& b, float t)
 	CVector v1 = b.Normalized();
 
 	float d = Math::Clamp(CVector::Dot(v0, v1), -1.0f, 1.0f);
+	if (d >= 1.0f - EPSILON) return v1;
+	else if (d <= -(1.0f - EPSILON))
+	{
+		d = 0.0f;
+		if (t <= 0.5f)
+		{
+			v1 = CVector::Cross(v0, CVector::up);
+			t = t / 0.5f;
+		}
+		else
+		{
+			v0 = CVector::Cross(v1, CVector::up);
+			t = (t - 0.5f) / 0.5f;
+		}
+	}
 	float theta = acosf(d);
 	float sinTheta = sinf(theta);
 	if (sinTheta == 0.0f) return v1;
@@ -273,20 +288,8 @@ CVector CVector::Slerp(const CVector& a, const CVector& b, float t)
 	float from = sinf(theta * (1.0f - t));
 	float to = sinf(theta * t);
 
-	//float lengthLerp = Math::Lerp(a.Length(), b.Length(), t);
 	CVector v = (v0 * from + v1 * to) * (1.0f / sinTheta);
 	return v.Normalized();
-
-	//float d = Math::Clamp01(CVector::Dot(v0, v1));
-	//float angle = acosf(d);
-	//float sinth = sinf(angle);
-	//if (sinth == 0.0f) return v1;
-
-	//float p1 = sinf(angle * (1.0f - t));
-	//float p2 = sinf(angle * t);
-
-	//CVector ret = (v0 * p1 + v1 * p2) * (1.0f / sinth);
-	//return ret.Normalized();
 }
 
 //------------------------------

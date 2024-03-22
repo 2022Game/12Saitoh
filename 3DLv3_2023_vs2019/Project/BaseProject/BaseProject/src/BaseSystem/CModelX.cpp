@@ -100,7 +100,6 @@ CModelX::CModelX()
 	, mLoaded(false)
 	, mFilePath("")
 	, mDirPath("")
-	, mColor(CColor::white)
 {
 	//mTokenを初期化
 	memset(mToken, 0, sizeof(mToken));
@@ -199,7 +198,6 @@ void CModelX::RenderShader(CMatrix* pCombinedMatrix)
 {
 	// 完全に透明な状態であれば、描画しない
 	if (mColor.A() == 0.0f) return;
-
 	mShader.Render(this, pCombinedMatrix);
 }
 
@@ -211,6 +209,7 @@ bool CModelX::IsAddAnimationSet(std::string path) const
 	}
 	return false;
 }
+
 
 void CModelX::AddAnimationSet(const char* file)
 {
@@ -563,6 +562,7 @@ bool CModelX::Load(std::string path, bool dontDelete)
 	mShader.Load("Shader\\skinmesh.vert", "Shader\\skinmesh.flag");
 
 	return true;
+
 }
 
 /*
@@ -573,7 +573,6 @@ void CModelX::Render()
 {
 	// 完全に透明な状態であれば、描画しない
 	if (mColor.A() == 0.0f) return;
-
 	for (size_t i = 0; i < mFrame.size(); i++)
 	{
 		mFrame[i]->Render(mColor);
@@ -1307,7 +1306,12 @@ void CAnimationSet::AnimateMarix(CModelX* model)
 
 void CAnimationSet::Time(float time)
 {
-	mTime = time;
+	mTime = Math::Clamp(time, 0.0f, mMaxTime);
+}
+
+void CAnimationSet::TimeProgress(float progress)
+{
+	mTime = mMaxTime * Math::Clamp01(progress);
 }
 
 void CAnimationSet::Weight(float weight)

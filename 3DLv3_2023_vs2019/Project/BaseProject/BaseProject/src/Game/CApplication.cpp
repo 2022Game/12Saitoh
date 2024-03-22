@@ -9,6 +9,7 @@
 #include "CGamePause.h"
 #include "CFade.h"
 
+#include "CDebugProfiler.h"
 CApplication::~CApplication()
 {
 }
@@ -52,18 +53,30 @@ void CApplication::Update()
 {
 	CTaskManager::Instance()->Delete();
 	// タスクの更新処理
+	CDebugProfiler::StartTimer("更新処理");
 	CTaskManager::Instance()->Update();
+	CDebugProfiler::EndTimer("更新処理");
 	// 衝突処理
+	CDebugProfiler::StartTimer("衝突処理");
 	CCollisionManager::Instance()->CollisionAll();
+	CDebugProfiler::EndTimer("衝突処理");
 
 	// サウンドの更新
+	CDebugProfiler::StartTimer("サウンド処理");
 	CSoundManager::Instance()->Update();
+	CDebugProfiler::EndTimer("サウンド処理");
 
 	// シーンの更新
+	CDebugProfiler::StartTimer("シーン処理");
 	CSceneManager::Instance()->Update();
+	CDebugProfiler::EndTimer("シーン処理");
 
 	// タスクの描画処理
+	CDebugProfiler::StartTimer("描画処理");
 	CTaskManager::Instance()->Render();
+	CDebugProfiler::EndTimer("描画処理");
 	// コライダの描画
+	CDebugProfiler::StartTimer("コライダ描画処理");
 	CCollisionManager::Instance()->Render();
+	CDebugProfiler::EndTimer("コライダ描画処理");
 }

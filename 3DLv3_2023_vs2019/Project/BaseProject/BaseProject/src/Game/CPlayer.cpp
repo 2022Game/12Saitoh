@@ -433,7 +433,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		Position(Position() +
 			CVector(hit.adjust.X(), 0.0f, hit.adjust.Z()) * hit.weight);
 	}
-
 }
 
 // •`‰æ

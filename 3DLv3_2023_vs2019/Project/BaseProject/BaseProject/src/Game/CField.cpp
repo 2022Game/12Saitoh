@@ -9,7 +9,7 @@ CField::CField()
 	mpModel = CResourceManager::Get<CModel>("Field");
 
 	mpColModel = CResourceManager::Get<CModel>("Cylinder");
-	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpColModel, true);
+	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpColModel,0, true);
 }
 
 CField::~CField()
@@ -34,5 +34,4 @@ void CField::Update()
 void CField::Render()
 {
 	mpModel->Render(Matrix());
-	//mpColModel->Render(Matrix());
 }
