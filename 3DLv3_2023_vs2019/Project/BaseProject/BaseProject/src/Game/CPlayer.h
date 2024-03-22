@@ -134,6 +134,8 @@ private:
 	float mHPRecoveryTime;	// HP回復調整用
 
 	CColliderLine* mpColliderLine;	// 接地判定用線分コライダ
+	CColliderLine* mpColliderLine2;	// 壁との当たり判定用
+	CColliderLine* mpColliderLine3;	// 壁との当たり判定用
 	CColliderSphere* mpBodyCol;		// 推し戻り用コライダ
 	CColliderSphere* mpDamageCol;	// ダメージ用コライダ
 

@@ -10,17 +10,19 @@ void CDragon::UpdateBattle()
 	// 怒り状態かどうか
 	if (!mIsAngry)// 通常状態
 	{
-		// 5秒ごとに攻撃を実行
+		// 攻撃が終わったらアイドルに戻す
 		if (IsAnimationFinished())
 		{
 			ChangeAnimation(EDragonAnimType::eIdle1);
 		}
 
 		int index = AnimationIndex();
-		if (index == (int)EDragonAnimType::eIdle1) 		
+		if (index != (int)EDragonAnimType::eAttackHand &&
+			index != (int)EDragonAnimType::eAttackFlame) 		
 			mElapsedTime += Time::DeltaTime();
 
-		if (mElapsedTime >= 4.0f)
+		// 5秒ごとに攻撃を行う
+		if (mElapsedTime >= 5.0f)
 		{
 			// 経過時間を初期化
 			mElapsedTime = 0.0f;
@@ -140,15 +142,16 @@ void CDragon::UpdateAttack()
 	default:// 攻撃中以外は、プレイヤーのいる方向へ回転(仮)
 
 		CVector playerPos = CPlayer::Instance()->Position();
+		CVector enemyPos = Position();
 		// 自身からプレイヤーまでのベクトルを取得
-		CVector EP = (playerPos - Position()).Normalized();
+		CVector EP = (playerPos - enemyPos).Normalized();
 
 		// プレイヤーの方向へ向ける
 		CVector current = VectorZ();
 		CVector target = EP;
 		target.Y(0.0f);
 
-		CVector angle = CVector::Slerp(current, target, 0.05f);
+		CVector angle = CVector::Slerp(current, target, 0.02f);
 		Rotation(CQuaternion::LookRotation(angle));
 		break;
 	}

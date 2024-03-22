@@ -58,6 +58,22 @@ CDragon::CDragon()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
 	);
+	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+	// 壁との当たり判定用コライダの設定
+	mpColliderLine2 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(-150.0f, 200.0f, 0.0f),
+		CVector(150.0f, 200.0f, 0.0f)
+	);
+	mpColliderLine2->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine3 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 200.0f, -300.0f),
+		CVector(0.0f, 200.0f, 500.0f)
+	);
+	mpColliderLine3->SetCollisionLayers({ ELayer::eField });
 
 	// コライダーの生成
 	// プレイヤーとの押し戻し用コライダー
@@ -85,7 +101,10 @@ CDragon::CDragon()
 // デストラクタ
 CDragon::~CDragon()
 {
-
+	SAFE_DELETE(mpColliderLine);
+	SAFE_DELETE(mpBodyCol);
+	SAFE_DELETE(mpDamageCol);
+	SAFE_DELETE(mpAttackMouthCol);
 }
 
 // インスタンスを取得
@@ -186,6 +205,25 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			// めり込まないように調整
 			Position(Position() + hit.adjust);
 			mIsGrounded = true;
+		}
+	}
+	// 壁との当たり判定
+	if (self == mpColliderLine2)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.X(0.0f);
+			// めり込まないように調整
+			Position(Position() + hit.adjust);
+		}
+	}
+	if (self == mpColliderLine2)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Z(0.0f);
+			// めり込まないように調整
+			Position(Position() + hit.adjust);
 		}
 	}
 

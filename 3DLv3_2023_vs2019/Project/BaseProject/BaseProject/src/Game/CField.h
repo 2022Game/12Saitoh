@@ -14,12 +14,9 @@ public:
 	void Render();
 
 private:
-	void CreateFieldObjects();
-
 	CModel* mpModel;
-	CColliderMesh* mpColliderMesh;
-	CColliderMesh* mpCamColliderMesh;
 
-	CModel* mpCubeModel;
-	CModel* mpCylinderModel;
+	CModel* mpColModel;
+	CColliderMesh* mpColliderMesh;
+
 };

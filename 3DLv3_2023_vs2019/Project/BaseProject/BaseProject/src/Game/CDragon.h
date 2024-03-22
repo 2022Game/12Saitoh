@@ -66,6 +66,8 @@ private:
 	static CDragon* spInstance;
 
 	CColliderLine* mpColliderLine;	// 地面との当たり判定用
+	CColliderLine* mpColliderLine2;	// 壁との当たり判定用
+	CColliderLine* mpColliderLine3;	// 壁との当たり判定用
 	CColliderSphere* mpBodyCol;		//押し戻し用コライダー
 	CColliderSphere* mpDamageCol;	// ダメージ用コライダー
 	CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー

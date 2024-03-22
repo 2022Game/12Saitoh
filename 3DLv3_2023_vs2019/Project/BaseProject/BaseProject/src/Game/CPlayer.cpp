@@ -60,6 +60,20 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine2 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(-0.5f,1.0f,0.0f),
+		CVector(0.5f, 1.0f, 0.0f)
+	);
+	mpColliderLine2->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine3 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 1.0f, -0.5f),
+		CVector(0.0f, 1.0f, 0.5f)
+	);
+	mpColliderLine3->SetCollisionLayers({ ELayer::eField });
 
 	// コライダの生成
 	// 押し戻し用コライダ
@@ -100,6 +114,8 @@ CPlayer::CPlayer()
 CPlayer::~CPlayer()
 {
 	SAFE_DELETE(mpColliderLine);
+	SAFE_DELETE(mpColliderLine2);
+	SAFE_DELETE(mpColliderLine3);
 	SAFE_DELETE(mpBodyCol);
 
 	mpCutIn_PowerAttack->Kill();
@@ -391,6 +407,23 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				mpRideObject = other->Owner();
 			}
+		}
+	}
+	// 壁との衝突処理
+	if (self == mpColliderLine2)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.X(0.0f);
+			Position(Position() + hit.adjust);
+		}
+	}
+	if (self == mpColliderLine3)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Z(0.0f);
+			Position(Position() + hit.adjust);
 		}
 	}
 
