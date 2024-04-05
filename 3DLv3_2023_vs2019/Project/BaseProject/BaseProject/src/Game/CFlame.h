@@ -2,6 +2,7 @@
 #include "CBillBoardImage.h"
 #include "CColliderSphere.h"
 
+class CObjectBase;
 // 炎のエフェクト
 class CFlame : public CBillBoardImage
 {
@@ -39,6 +40,20 @@ public:
 	void Update() override;
 
 private:
+	/// <summary>
+	/// 攻撃がヒットしたオブジェクトを追加
+	/// </summary>
+	/// <param name="obj"></param>
+	void AddAttackHitObj(CObjectBase* obj);
+	/// <summary>
+	/// 既に攻撃がヒットしているオブジェクトかどうか
+	/// </summary>
+	/// <param name="obj"></param>
+	/// <returns></returns>
+	bool IsAttackHitObj(CObjectBase* obj) const;
+
+	std::list<CObjectBase*> mAttackHitObjects;
+
 	// アニメーションデータ
 	static TexAnimData msAnimData;
 	CVector mMoveSpeed;	// 移動速度

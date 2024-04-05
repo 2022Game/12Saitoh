@@ -5,6 +5,7 @@
 #include "CColliderSphere.h"
 #include "CColliderLine.h"
 #include "CDebugPrint.h"
+#include "CFlamethrower.h"
 
 CDragon* CDragon::spInstance = nullptr;
 
@@ -14,8 +15,11 @@ CDragon::CDragon()
 	, mMoveSpeed(CVector::zero)
 	, mIsGrounded(true)
 	, mIsAngry(false)
+	, mIsAttack(false)
+	, mIdleFlag(true)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
+	, mRandSave(0)
 	, mAngryElapsedTime(0.0f)
 	, mElapsedTime(0.0f)
 {
@@ -97,6 +101,13 @@ CDragon::CDragon()
 
 	// 最初は攻撃判定用のコライダーはオフにしておく
 	mpAttackMouthCol->SetEnable(false);
+
+	const CMatrix* flamemtx = GetFrameMtx("Armature_Eye_L");
+	mpFlamethrower = new CFlamethrower
+	(
+		this, flamemtx,
+		CVector(0.0f, 0.0f, 0.0f)
+	);
 }
 
 // デストラクタ
@@ -150,6 +161,23 @@ bool CDragon::IsFoundPlayer() const
 	return true;
 }
 
+//プレイヤーとの距離を取得
+CDragon::EDistanceType CDragon::PlayerFromDistance()
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	// 距離の判定
+	float distance = (playerPos - enemyPos).Length();
+	// 距離と判別用の値を比べて、距離を判別
+	if (distance >= 280.0f) mDistanceType = EDistanceType::eFar;// 遠距離
+	else if (distance > 230.0f) mDistanceType = EDistanceType::eMedium;// 中距離
+	else mDistanceType = EDistanceType::eNear;// 近距離
+
+	// 判別した距離を返す
+	return mDistanceType;
+}
+
 // 更新処理
 void CDragon::Update()
 {
@@ -189,8 +217,14 @@ void CDragon::Update()
 #ifdef _DEBUG
 	// ドラゴンのステータスを表示
 	CDebugPrint::Print("敵ステータス\n");
-	CDebugPrint::Print("レベル : %d\nHP : %d\n攻撃力 : %d\n防御力 : %d",
+	CDebugPrint::Print("レベル : %d\nHP : %d\n攻撃力 : %d\n防御力 : %d\n",
 		mStatus.level, mStatus.hp, mStatus.atk, mStatus.def);
+
+	// プレイヤーとの距離を表示
+	CVector pPos = CPlayer::Instance()->Position();
+	CVector ePos = Position();
+	float distance = (pPos - ePos).Length();
+	CDebugPrint::Print("プレイヤーとの距離 : %.1f\n", distance);
 #endif
 }
 

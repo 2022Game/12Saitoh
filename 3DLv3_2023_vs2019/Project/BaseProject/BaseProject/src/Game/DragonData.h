@@ -56,24 +56,25 @@ enum class EDragonAnimType
 #define FOV_LANGE		170.0f	// 視野判定用の半径
 #define FOV_ANGLE		60.0f	// 視野判定用の角度
 
+// 噛みつき攻撃関連
 // 噛みつき攻撃のコライダーを切り替えるフレーム(始め)
 #define ATTACKMOUTH_COL_START 20.0f
-// 噛みつき攻撃のコライダーを切り替えるフレーム(終わり
+// 噛みつき攻撃のコライダーを切り替えるフレーム(終わり)
 #define ATTACKMOUTH_COL_END 50.0f
 
+// 飛び掛かり攻撃関連
 // 飛び掛かり攻撃の移動開始フレーム
 #define ATTACKHAND_START_FRAME 74.0f
 // 飛び掛かり攻撃の移動終了フレーム
 #define ATTACKHAND_END_FRAME 106.0f
 // 飛び掛かり攻撃の移動速度
-#define ATTACKHAND_MOVESPEED 3.5f
+#define ATTACKHAND_MOVESPEED 4.0f
 // バックステップの移動開始フレーム(飛び掛かり攻撃アニメーション中)
 #define BACKSTEP_START_FRAME 148.0f
 // バックステップの移動終了フレーム(飛び掛かり攻撃アニメーション中)
 #define BACKSTEP_END_FRAME 180.0f
 // バックステップの移動速度
-#define BACKSTEP_MOVESPEED 3.4f
-// 飛び掛かり攻撃のジャンプ処理関連
+#define BACKSTEP_MOVESPEED 3.9f
 // ジャンプ始めのフレーム
 #define JUMP_START_FRAME 74.0f
 // バックステップ時のジャンプ始めのフレーム
@@ -86,3 +87,9 @@ enum class EDragonAnimType
 #define FALLING_FRAME2_START 170.0f
 // 落下時の調整フレーム2(終わり)
 #define FALLING_FRAME2_END 182.0f
+
+// ブレス攻撃関連
+// ブレス攻撃開始フレーム
+#define FLAME_START_FRAME 50.0f
+// ブレス攻撃終了フレーム
+#define FLAME_END_FRAME 200.0f

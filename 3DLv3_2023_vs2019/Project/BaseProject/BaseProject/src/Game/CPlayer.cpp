@@ -86,7 +86,7 @@ CPlayer::CPlayer()
 	// ダメージ用コライダ
 	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemy });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemy, ETag::eFlame });
 	mpDamageCol->Position(0.0f, 1.0f, 0.0f);
 
 	// カットインカメラの生成
@@ -337,33 +337,22 @@ void CPlayer::Update()
 		else if (CInput::Key(VK_DOWN)) mStatus.sp--;
 	}
 
-	CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
+	//CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
 
-	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
-	if (mTemporaryDamage > 0)
-	{
-		if (mHPRecoveryTime >= 2)
-		{
-			mTemporaryDamage--;
-			mStatus.hp++;
-			mHPRecoveryTime = 0;
-		}
-		else {
-			mHPRecoveryTime += 0.016666f;
-		}
-	}
-
-	//if (CInput::PushKey(VK_RBUTTON))
+	//CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
+	//if (mTemporaryDamage > 0)
 	//{
-	//	if (!mpFlamethrower->IsThrowing())
+	//	if (mHPRecoveryTime >= 2)
 	//	{
-	//		mpFlamethrower->Start();
+	//		mTemporaryDamage--;
+	//		mStatus.hp++;
+	//		mHPRecoveryTime = 0;
 	//	}
-	//	else
-	//	{
-	//		mpFlamethrower->Stop();
+	//	else {
+	//		mHPRecoveryTime += 0.016666f;
 	//	}
 	//}
+
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);

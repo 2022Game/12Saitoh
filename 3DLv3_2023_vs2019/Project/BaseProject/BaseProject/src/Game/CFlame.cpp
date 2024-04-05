@@ -1,5 +1,8 @@
 #include "CFlame.h"
 #include "Easing.h"
+#include "CCharaBase.h"
+#include "CPlayer.h"
+#include "CDragon.h"
 
 // 炎のスケール値の最大値
 #define FLAME_SCALE 10.0f
@@ -26,8 +29,8 @@ CFlame::CFlame(ETag tag)
 		ELayer::eAttackCol,
 		1.0f
 	);
-	mpCollider->SetCollisionTags({ ETag::eField, ETag::eRideableObject });
-	mpCollider->SetCollisionLayers({ ELayer::eField });
+	mpCollider->SetCollisionTags({ ETag::eField, ETag::eRideableObject, ETag::ePlayer});
+	mpCollider->SetCollisionLayers({ ELayer::eField, ELayer::eDamageCol });
 }
 
 // デストラクタ
@@ -76,6 +79,33 @@ void CFlame::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		mMoveSpeed = (mMoveSpeed - n * d).Normalized() * length;
 		Position(Position() + hit.adjust * hit.weight);
 	}
+
+	if (other->Layer() == ELayer::eDamageCol)
+	{
+		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
+		// 相手のコライダーの持ち主がキャラであれば
+		if (chara != nullptr)
+		{
+			// ダメージを与える
+			CPlayer* player = CPlayer::Instance();
+			CDragon* dragon = CDragon::Instance();
+			int atk = dragon->Status().atk;
+			int def = player->Status().def;
+			float motionvalue = dragon->GetMotionValue();
+			// ダメージ計算
+			int damage = player->TakePlayerToDamage(atk, def, motionvalue);
+
+			// 既に攻撃済みのキャラでなければ
+			if (!IsAttackHitObj(chara))
+			{
+				// ダメージを与える
+				chara->TakeDamage(damage);
+
+				// 攻撃済みのリストに追加
+				AddAttackHitObj(chara);
+			}
+		}
+	}
 }
 
 // 更新
@@ -116,4 +146,23 @@ void CFlame::Update()
 	{
 		mIsDeath = true;
 	}
+}
+
+// 攻撃がヒットしたオブジェクトを追加
+void CFlame::AddAttackHitObj(CObjectBase* obj)
+{
+	mAttackHitObjects.push_back(obj);
+}
+
+// 既に攻撃がヒットしているオブジェクトかどうか
+bool CFlame::IsAttackHitObj(CObjectBase* obj) const
+{
+	// 既にリストに追加しているかを確認する
+	auto find = std::find
+	(
+		mAttackHitObjects.begin(),
+		mAttackHitObjects.end(),
+		obj
+	);
+	return find != mAttackHitObjects.end();
 }
