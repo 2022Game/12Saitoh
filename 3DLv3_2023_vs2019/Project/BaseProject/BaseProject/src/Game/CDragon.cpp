@@ -102,11 +102,12 @@ CDragon::CDragon()
 	// 最初は攻撃判定用のコライダーはオフにしておく
 	mpAttackMouthCol->SetEnable(false);
 
-	const CMatrix* flamemtx = GetFrameMtx("Armature_Eye_L");
+	const CMatrix* flamemtx = GetFrameMtx("Armature_UpperMouth01");
 	mpFlamethrower = new CFlamethrower
 	(
 		this, flamemtx,
-		CVector(0.0f, 0.0f, 0.0f)
+		CVector(0.0f, -20.0f, 0.0f),
+		CQuaternion(0.0f, 90.0f,0.0f).Matrix()
 	);
 }
 

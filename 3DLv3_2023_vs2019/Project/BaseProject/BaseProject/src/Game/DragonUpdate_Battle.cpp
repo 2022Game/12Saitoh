@@ -68,7 +68,7 @@ void CDragon::UpdateBattle()
 			case EDistanceType::eMedium:// 中距離
 				// ランダム値を生成して、行う攻撃を選択
 				// 飛び掛かり攻撃が多めになるよう調整
-				switch (Math::Rand(0, 5))
+				switch (Math::Rand(0, 1))
 				{
 				case 0:
 				case 1:// ブレス攻撃
@@ -104,7 +104,7 @@ void CDragon::UpdateBattle()
 						// 自身からプレイヤーまでのベクトルを取得
 						CVector EP = (playerPos - enemyPos).Normalized();
 						// 噛みつき攻撃の範囲まで移動する
-						mMoveSpeed += EP * 0.01f;
+						mMoveSpeed += EP * 0.1f;
 						ChangeAnimation(EDragonAnimType::eWalk);
 					}
 					// 一定の範囲まで移動したら

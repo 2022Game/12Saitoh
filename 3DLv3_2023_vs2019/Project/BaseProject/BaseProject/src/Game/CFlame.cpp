@@ -8,9 +8,11 @@
 #define FLAME_SCALE 10.0f
 // 炎のスケール値が最大値になるまでの時間
 #define FLAME_SCALE_ANIM_TIME 3.0f
-
 // アニメーションの1コマ表示時間
 #define ANIM_TIME 0.0625f
+// 炎用の重力
+#define FLAME_GRAVITY 50.0f
+
 // 炎のエフェクトのアニメーションデータ
 TexAnimData CFlame::msAnimData = TexAnimData(8, 8, false, 64, ANIM_TIME);
 
@@ -113,6 +115,9 @@ void CFlame::Update()
 {
 	// 基底クラスの更新処理
 	CBillBoardImage::Update();
+
+	// 重力を掛けることで炎が地面を沿って移動するようにする
+	mMoveSpeed.Y(mMoveSpeed.Y() - FLAME_GRAVITY * Time::DeltaTime());
 
 	// 炎のエフェクトを移動
 	CVector move = mMoveSpeed * Time::DeltaTime();

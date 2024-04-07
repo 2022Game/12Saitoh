@@ -4,7 +4,7 @@
 #include "Maths.h"
 
 // 炎の発射間隔時間
-#define THROW_INTERVAL 0.15f
+#define THROW_INTERVAL 0.08f
 // 炎の発射方向のブレ幅
 #define FLAME_DIR_RAND 0.02f
 // 炎の移動速度
@@ -114,7 +114,7 @@ void CFlamethrower::CreateFlame()
 	CVector dir = GetThrowDir();// + CVector(0.0f, -1.0f, 0.0f);
 	// 発射方向をランダムでブラす
 	dir.X(dir.X() + Math::Rand(-FLAME_DIR_RAND, FLAME_DIR_RAND));
-	dir.Y(dir.Y() + Math::Rand(-FLAME_DIR_RAND, FLAME_DIR_RAND));
+	//dir.Y(dir.Y() + Math::Rand(-FLAME_DIR_RAND, FLAME_DIR_RAND));
 	dir.Z(dir.Z() + Math::Rand(-FLAME_DIR_RAND, FLAME_DIR_RAND));
 	dir.Normalize();
 	// 発射位置、方向、移動速度を設定
@@ -132,6 +132,7 @@ void CFlamethrower::CreateFlame()
 // 更新
 void CFlamethrower::Update()
 {
+
 	// 炎を発射していたら
 	if (mIsThrowing)
 	{

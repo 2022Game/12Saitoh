@@ -90,6 +90,6 @@ enum class EDragonAnimType
 
 // ブレス攻撃関連
 // ブレス攻撃開始フレーム
-#define FLAME_START_FRAME 50.0f
+#define FLAME_START_FRAME 60.0f
 // ブレス攻撃終了フレーム
 #define FLAME_END_FRAME 200.0f
