@@ -15,13 +15,13 @@ CDragon::CDragon()
 	, mMoveSpeed(CVector::zero)
 	, mIsGrounded(true)
 	, mIsAngry(false)
-	, mIsAttack(false)
-	, mIdleFlag(true)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
 	, mRandSave(0)
-	, mAngryElapsedTime(0.0f)
+	, mBatteleStep(0)
 	, mElapsedTime(0.0f)
+	, mAngryElapsedTime(0.0f)
+	, mChaseElapsedTime(0.0f)
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -172,7 +172,7 @@ CDragon::EDistanceType CDragon::PlayerFromDistance()
 	float distance = (playerPos - enemyPos).Length();
 	// 距離と判別用の値を比べて、距離を判別
 	if (distance >= 280.0f) mDistanceType = EDistanceType::eFar;// 遠距離
-	else if (distance > 230.0f) mDistanceType = EDistanceType::eMedium;// 中距離
+	else if (distance >= 230.0f) mDistanceType = EDistanceType::eMedium;// 中距離
 	else mDistanceType = EDistanceType::eNear;// 近距離
 
 	// 判別した距離を返す
@@ -204,13 +204,17 @@ void CDragon::Update()
 	// 移動
 	Position(Position() + mMoveSpeed);
 
-	// 移動方向へ向ける
-	CVector current = VectorZ();
-	CVector target = mMoveSpeed;
-	target.Y(0.0f);
-	target.Normalize();
-	CVector forward = CVector::Slerp(current, target, 0.0f);
-	Rotation(CQuaternion::LookRotation(forward));
+	// 攻撃中または、バックステップ以外の時は移動方向へ向ける
+	if (mBatteleStep != 2 &&
+		AnimationIndex() != (int)EDragonAnimType::eBackStep)
+	{
+		CVector current = VectorZ();
+		CVector target = mMoveSpeed;
+		target.Y(0.0f);
+		target.Normalize();
+		CVector forward = CVector::Slerp(current, target, 0.02f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
 
 	CXCharacter::Update();
 	mpAttackMouthCol->Update();
@@ -226,6 +230,16 @@ void CDragon::Update()
 	CVector ePos = Position();
 	float distance = (pPos - ePos).Length();
 	CDebugPrint::Print("プレイヤーとの距離 : %.1f\n", distance);
+
+	if (mDistanceType == EDistanceType::eNear) CDebugPrint::Print("近距離\n");
+	else if (mDistanceType == EDistanceType::eMedium) CDebugPrint::Print("中距離\n");
+	else CDebugPrint::Print("遠距離\n");
+
+	if (CInput::PushKey('1'))
+	{
+		int p = GetHPPercent();
+		printf("%d\n", p);
+	}
 #endif
 }
 
@@ -295,7 +309,9 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 void CDragon::Render()
 {
 	CXCharacter::Render();
+#ifdef _DEBUG
 
+	// 視野判定用
 	Primitive::DrawSector(
 		Position() + CVector(0.0f, 1.0, 0.0f),
 		-EulerAngles(),
@@ -305,6 +321,7 @@ void CDragon::Render()
 		CColor::red,
 		45
 	);
+#endif
 }
 
 // ダメージ処理

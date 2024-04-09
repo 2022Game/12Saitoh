@@ -47,6 +47,7 @@ enum class EDragonAnimType
 	eFlyGlide,		// 空中滑空
 	eFlyIdle,		// 空中アイドル
 	eGetHit,		// のけ反り
+	eBackStep,		// バックステップ
 
 	Num
 };

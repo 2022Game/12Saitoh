@@ -43,8 +43,11 @@ private:
 	void UpdateIdle();
 	// 戦闘状態
 	void UpdateBattle();
+	// 戦闘中のアイドル処理
+	void UpdateBattele_Idle();
+	// 戦闘中の追跡処理
+	void UpdateBattle_Chase();
 	// 攻撃処理
-	// UpdateBattleの中で行う
 	void UpdateAttack();
 
 	// アニメーションの切り替え
@@ -52,6 +55,12 @@ private:
 
 	// プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
+
+	// 残りHPの割合を取得
+	int GetHPPercent() const;
+	// 戦闘アイドル時のランダム値生成用
+	// 1～3までの乱数を返す
+	int BattleIdleRand() const;
 
 	// プレイヤーとの距離
 	enum class EDistanceType
@@ -91,14 +100,14 @@ private:
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか
-	bool mIsAttack;		// 攻撃中かどうか
-	bool mIdleFlag;		// 攻撃後のアイドル状態かどうか
 
 	int mAngryStandardValue;// 怒り値の基準値
 	int mAngryValue;	// 怒り値
 	int mRandSave;		// 乱数保存用
+	int mBatteleStep;	// 戦闘の段階
 
-	float mAngryElapsedTime;// 怒り経過時間計測長
 	float mElapsedTime;		// 経過時間計測長
+	float mAngryElapsedTime;// 怒り経過時間計測長
+	float mChaseElapsedTime;// 移動経過時間計測長
 };
 #endif
