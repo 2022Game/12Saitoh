@@ -35,3 +35,35 @@ void CField::Render()
 {
 	mpModel->Render(Matrix());
 }
+
+// フィールドとレイの衝突処理
+bool CField::CollisionRay(const CVector start, const CVector end, float* outDistance)
+{
+	CHitInfo hit;
+	CMatrix m = Matrix();
+	float length = 0.0f;
+	std::vector<CTriangle> tris = mpColModel->Triangles();
+	for (CTriangle tri : tris)
+	{
+		// 三角形のそれぞれの頂点を取得
+		CVector tv[3] = { tri.V0() * m, tri.V1() * m, tri.V2() * m };
+		// 線分(レイ)と三角形の衝突処理
+		if (CCollider::CollisionTriangleLine(tv[1], tv[2], tv[3], start, end, &hit, false))
+		{
+			// 衝突した地点との距離を取得
+			length = hit.dist;
+		}
+	}
+
+	if (length > 0.0f)
+	{
+		// 衝突位置までの距離を取得
+		*outDistance = length;
+		CDebugPrint::Print("%.1f\n", length);
+		return true;
+	}
+
+	// レイが衝突していなかった場合は、元のレイの長さを取得
+	*outDistance = end.Length();
+	return false;
+}

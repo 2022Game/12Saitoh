@@ -6,6 +6,7 @@
 #include "CColliderLine.h"
 #include "CDebugPrint.h"
 #include "CFlamethrower.h"
+#include "Global.h"
 
 CDragon* CDragon::spInstance = nullptr;
 
@@ -162,6 +163,25 @@ bool CDragon::IsFoundPlayer() const
 	return true;
 }
 
+// バックステップできるかどうか
+bool CDragon::IsBackStep() const
+{
+	// レイの開始地点
+	CVector startPos = Position() + CVector(0.0f,50.0f,0.0f);
+	// レイの終了地点
+	CVector endPos = -VectorZ().Normalized() * FIELD_RADIUS;
+
+	float outDist = 0.0f;
+	// フィールドとレイの当たり判定を行う
+	gField->CollisionRay(startPos, endPos, &outDist);
+	
+	// バックステップをする範囲がある
+	if (outDist > 150.0f) return true;
+
+	return false;
+}
+
+
 //プレイヤーとの距離を取得
 CDragon::EDistanceType CDragon::PlayerFromDistance()
 {
@@ -240,6 +260,10 @@ void CDragon::Update()
 		int p = GetHPPercent();
 		printf("%d\n", p);
 	}
+
+	if (IsBackStep()) CDebugPrint::Print("true\n");
+	else CDebugPrint::Print("false\n");
+
 #endif
 }
 
@@ -267,7 +291,7 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			Position(Position() + hit.adjust);
 		}
 	}
-	if (self == mpColliderLine2)
+	if (self == mpColliderLine3)
 	{
 		if (other->Layer() == ELayer::eField)
 		{

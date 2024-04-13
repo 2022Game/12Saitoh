@@ -1,14 +1,16 @@
 #include "CGameScene.h"
 #include "CSceneManager.h"
-#include "CField.h"
-#include "CPlayer.h"
-#include "CEnemy.h"
-#include "CDragon.h"
 #include "CGameCamera.h"
+#include "CPlayer.h"
+#include "CDragon.h"
+#include "CField.h"
 #include "CInput.h"
 #include "CGameMenu.h"
 #include "CGameMenu.h"
 #include "CBGMManager.h"
+#include "Global.h"
+
+CField* gField = nullptr;
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -45,22 +47,18 @@ void CGameScene::Load()
 	CBGMManager::Instance()->Play(EBGMType::eGame);
 
 	//フィールドを生成
-	CField * field = new CField();
+	gField = new CField();
 
 	//プレイヤーを生成
-	CPlayer* player = new CPlayer();
+	CPlayer* player= new CPlayer();
 	player->Scale(10.0f, 10.0f, 10.0f);
 	player->Rotate(0.0f, 180.0f, 0.0f);
-	player->Position(0.0f, 50.0f, 0.0f);
+	player->Position(0.0f, 50.0f, 200.0f);
 
 	// ドラゴン(敵)を生成
 	CDragon* dragon = new CDragon();
-	dragon->Position(0.0f, 50.0f, -250.0f);
+	dragon->Position(0.0f, 50.0f, 0.0f);
 	dragon->Scale(0.15f, 0.15f, 0.15f);
-	// 敵を生成
-	//CEnemy* enemy = new CEnemy();
-	//enemy->Position(-50.0f, 0.0f, -50.0f);
-	//enemy->Scale(20.0f, 20.0f, 20.0f);
 
 	////カメラセット
 	//CGameCamera* mainCamera = new CGameCamera
@@ -80,7 +78,7 @@ void CGameScene::Load()
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	mainCamera->SetFollowTargetTf(player);
 	// メインカメラの衝突判定にフィールドのコライダーを追加
-	mainCamera->AddCollider(field->GetFieldCol());
+	mainCamera->AddCollider(gField->GetFieldCol());
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
 

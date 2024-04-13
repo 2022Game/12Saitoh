@@ -130,7 +130,7 @@ void CDragon::UpdateBattle_Chase()
 				mChaseElapsedTime += Time::DeltaTime();
 			}
 			// 5秒以上移動した場合、中距離攻撃に移行する
-			if (mChaseElapsedTime >= 5.0f)
+			if (mChaseElapsedTime >= 4.0f)
 			{
 				mChaseElapsedTime = 0.0f;
 				mDistanceType = EDistanceType::eMedium;
@@ -230,14 +230,9 @@ void CDragon::UpdateBattle_Chase()
 		// 内積から角度を求める
 		float dotZ = forward.Dot(EP);
 
-		// 求めた角度が視野角度外の場合、
-		// プレイヤーのいる方向へ回転させる
-		if (dotZ <= cosf(10 * M_PI / 180.0f))
-		{
-			mMoveSpeed += EP * 0.2f;
-			ChangeAnimation(EDragonAnimType::eWalk);
-		}
-		else// 視野角度内
+		// 求めた角度が視野角度内
+		// もしくは、2秒以上経過で攻撃
+		if (mChaseElapsedTime >= 2.0f || !(dotZ <= cosf(10 * M_PI / 180.0f)))
 		{
 			// ランダム値を生成して、行う攻撃を選択
 			// 飛び掛かり攻撃が多めになるよう調整
@@ -247,15 +242,23 @@ void CDragon::UpdateBattle_Chase()
 			case 1:// ブレス攻撃
 				ChangeAnimation(EDragonAnimType::eAttackFlame);
 				mBatteleStep++;
+				mChaseElapsedTime = 0.0f;
 				break;
 			default:// 飛び掛かり攻撃
 				ChangeAnimation(EDragonAnimType::eAttackHand);
 				mBatteleStep++;
+				mChaseElapsedTime = 0.0f;
 				break;
 			}
 		}
-
-
+		// 視野範囲外
+		else
+		{
+			// プレイヤーの方向を向く
+			mMoveSpeed += EP * 0.2f;
+			mChaseElapsedTime += Time::DeltaTime();
+			ChangeAnimation(EDragonAnimType::eWalk);
+		}
 
 		break;
 	}

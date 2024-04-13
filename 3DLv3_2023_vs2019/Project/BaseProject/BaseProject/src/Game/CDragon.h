@@ -55,6 +55,8 @@ private:
 
 	// プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
+	// バックステップできるかどうか
+	bool IsBackStep() const;
 
 	// 残りHPの割合を取得
 	int GetHPPercent() const;

@@ -723,5 +723,8 @@
     <ClInclude Include="src\BaseSystem\CBounds.h">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClInclude>
+    <ClInclude Include="src\Global.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
