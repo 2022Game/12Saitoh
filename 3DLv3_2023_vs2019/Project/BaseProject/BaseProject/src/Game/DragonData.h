@@ -89,6 +89,9 @@ enum class EDragonAnimType
 // 落下時の調整フレーム2(終わり)
 #define FALLING_FRAME2_END 182.0f
 
+// バックステップのレイの長さ
+#define BACKSTEP_RAY 150.0f
+
 // ブレス攻撃関連
 // ブレス攻撃開始フレーム
 #define FLAME_START_FRAME 60.0f

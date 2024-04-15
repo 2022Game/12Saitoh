@@ -295,9 +295,9 @@ void CPlayer::Update()
 	CDebugPrint::Print("プレイヤー情報:\n");
 	CDebugPrint::Print("座標(X:%f, Y:%f, Z:%f)\n", pos.X(), pos.Y(), pos.Z());
 
-	CVector angles = EulerAngles();
-	CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
-	CDebugPrint::Print("アニメーションフレーム : %.1f\n",GetAnimationFrame());
+	//CVector angles = EulerAngles();
+	//CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
+	//CDebugPrint::Print("アニメーションフレーム : %.1f\n",GetAnimationFrame());
 	if (mIsDrawn) CDebugPrint::Print("抜刀\n");
 	else CDebugPrint::Print("納刀\n");
 	

@@ -169,16 +169,23 @@ bool CDragon::IsBackStep() const
 	// レイの開始地点
 	CVector startPos = Position() + CVector(0.0f,50.0f,0.0f);
 	// レイの終了地点
-	CVector endPos = -VectorZ().Normalized() * FIELD_RADIUS;
-
+	CVector endPos = Position() + -VectorZ().Normalized() * BACKSTEP_RAY + CVector(0.0f, 50.0f, 0.0f);
+	// 衝突位置までの距離返却用
 	float outDist = 0.0f;
-	// フィールドとレイの当たり判定を行う
-	gField->CollisionRay(startPos, endPos, &outDist);
-	
-	// バックステップをする範囲がある
-	if (outDist > 150.0f) return true;
 
-	return false;
+	// フィールドとレイの当たり判定行う
+	if (gField->CollisionRay(startPos, endPos, &outDist))
+	{
+		// 衝突位置までの長さを表示(デバッグ)
+		CDebugPrint::Print("%.0f\n", outDist);
+		return false;
+	};
+
+	// レイの長さを表示
+	CDebugPrint::Print("%.0f\n", outDist);
+	// 後ろに十分なスペースがあるので
+	// バックステップが可能
+	return true;
 }
 
 

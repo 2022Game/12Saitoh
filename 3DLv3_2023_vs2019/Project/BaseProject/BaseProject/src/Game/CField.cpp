@@ -55,15 +55,15 @@ bool CField::CollisionRay(const CVector start, const CVector end, float* outDist
 		}
 	}
 
+	// レイが衝突していた場合
 	if (length > 0.0f)
 	{
 		// 衝突位置までの距離を取得
 		*outDistance = length;
-		CDebugPrint::Print("%.1f\n", length);
 		return true;
 	}
 
-	// レイが衝突していなかった場合は、元のレイの長さを取得
-	*outDistance = end.Length();
+	// 衝突していなかった場合、レイの長さをそのまま取得
+	*outDistance = (end - start).Length();
 	return false;
 }
