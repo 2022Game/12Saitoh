@@ -14,15 +14,19 @@ CDragon* CDragon::spInstance = nullptr;
 CDragon::CDragon()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mMoveSpeed(CVector::zero)
+	, mSaveVec(CVector::zero)
 	, mIsGrounded(true)
 	, mIsAngry(false)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
 	, mRandSave(0)
 	, mBatteleStep(0)
+	, mSpAttackStep(0)
+	, mSpAttackNum(0)
 	, mElapsedTime(0.0f)
 	, mAngryElapsedTime(0.0f)
 	, mChaseElapsedTime(0.0f)
+	, mAngle(0.0f)
 {
 	// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìİ’è
 	spInstance = this;
@@ -220,6 +224,10 @@ void CDragon::Update()
 	case EState::eBattle:
 		UpdateBattle();
 		break;
+		// •KE‹ZUŒ‚
+	case EState::eSpAttack:
+		UpdateSpecalAttack();
+		break;
 		// €–Só‘Ô
 	case EState::eDeath:
 		break;
@@ -270,6 +278,7 @@ void CDragon::Update()
 
 	if (IsBackStep()) CDebugPrint::Print("true\n");
 	else CDebugPrint::Print("false\n");
+
 
 #endif
 }

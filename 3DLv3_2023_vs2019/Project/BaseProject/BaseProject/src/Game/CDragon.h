@@ -49,6 +49,23 @@ private:
 	void UpdateBattle_Chase();
 	// 攻撃処理
 	void UpdateAttack();
+	// 空中ブレス攻撃処理
+	void UpdateSpecalAttack();
+	/* 空中ブレス攻撃各処理 */
+	// 咆哮処理
+	void UpdateSpAttack_Step0();
+	//離陸処理
+	void UpdateSpAttack_Step1();
+	// 空中移動に必要な情報をそれぞれ取得
+	void UpdateSpAttack_Step2();
+	// 空中移動処理1
+	void UpdateSpAttack_Step3();
+	// 空中ブレス攻撃処理
+	void UpdateSpAttack_Step4();
+	//空中移動処理2
+	void UpdateSpAttack_Step5();
+	//  着陸処理
+	void UpdateSpAttack_Step6();
 
 	// アニメーションの切り替え
 	void ChangeAnimation(EDragonAnimType type);
@@ -81,9 +98,10 @@ private:
 	{
 		None = -1,
 
-		eIdle,	// 待機
-		eBattle,// 戦闘
-		eDeath,	// 死亡
+		eIdle,		// 待機
+		eBattle,	// 戦闘
+		eSpAttack,	// 必殺技攻撃
+		eDeath,		// 死亡
 	};
 	EState mState;	// 敵の状態
 
@@ -99,6 +117,7 @@ private:
 
 	CFlamethrower* mpFlamethrower; // 火炎放射
 	CVector mMoveSpeed;	// 移動速度
+	CVector mSaveVec;	// ベクトル保存用
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか
@@ -107,9 +126,12 @@ private:
 	int mAngryValue;	// 怒り値
 	int mRandSave;		// 乱数保存用
 	int mBatteleStep;	// 戦闘の段階
+	int mSpAttackStep;	// 必殺技攻撃の攻撃段階
+	int mSpAttackNum;	// 必殺技攻撃を行った回数を記憶
 
 	float mElapsedTime;		// 経過時間計測長
 	float mAngryElapsedTime;// 怒り経過時間計測長
 	float mChaseElapsedTime;// 移動経過時間計測長
+	float mAngle;
 };
 #endif

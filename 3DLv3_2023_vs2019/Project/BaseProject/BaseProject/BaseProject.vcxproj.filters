@@ -418,6 +418,9 @@
     <ClCompile Include="src\BaseSystem\CBounds.cpp">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\DragonUpdate_SpecalAttack.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">

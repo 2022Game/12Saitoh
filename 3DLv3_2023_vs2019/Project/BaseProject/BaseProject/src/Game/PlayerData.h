@@ -146,7 +146,7 @@ enum class EAnimType
 // ジャンプ攻撃のジャンプを始めるフレーム
 #define ATTACK_UP_JUMPSTART_FRAME 26
 // ジャンプ攻撃のジャンプ初速度
-#define ATTACK_UP_JUMP_SPEED 2.5f
+#define ATTACK_UP_JUMP_SPEED 3.5f
 
 /* 強闘技 */
 // 一度目の移動するフレーム区間(始め)

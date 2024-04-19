@@ -43,6 +43,24 @@ void CDragon::UpdateBattle()
 // 戦闘中のアイドル処理
 void CDragon::UpdateBattele_Idle()
 {
+	// 必殺技攻撃への移行処理
+	// HPが50%以下かつ、一度も必殺技を撃っていない
+	if (GetHPPercent() <= HPPER_50 && mSpAttackNum == 0)
+	{
+		mSpAttackNum++;
+		mState = EState::eSpAttack;
+		ChangeAnimation(EDragonAnimType::eScream);
+		return;
+	}
+	// HPが25%以下になったらもう一度撃つ
+	else if (GetHPPercent() <= HPPER_25 && mSpAttackNum == 1)
+	{
+		mSpAttackNum++;
+		mState = EState::eSpAttack;
+		ChangeAnimation(EDragonAnimType::eScream);
+		return;
+	}
+
 	// 経過時間を加算する
 	mElapsedTime += Time::DeltaTime();
 	// 3秒ごとに攻撃を行う
@@ -81,6 +99,7 @@ void CDragon::UpdateBattele_Idle()
 		break;
 
 	case 3:// 攻撃を行う
+
 		// 各変数を初期化
 		mElapsedTime = 0.0f;
 		mRandSave = 0;
@@ -318,10 +337,7 @@ void CDragon::UpdateBattle_Chase()
 			}
 		}
 		break;
-		case 3:
-			break;
 		}
-		break;
 	}
 	}
 }

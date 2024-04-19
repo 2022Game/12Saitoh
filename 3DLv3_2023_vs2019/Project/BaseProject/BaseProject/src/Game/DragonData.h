@@ -90,10 +90,16 @@ enum class EDragonAnimType
 #define FALLING_FRAME2_END 182.0f
 
 // バックステップのレイの長さ
-#define BACKSTEP_RAY 150.0f
+#define BACKSTEP_RAY 250.0f
 
 // ブレス攻撃関連
 // ブレス攻撃開始フレーム
 #define FLAME_START_FRAME 60.0f
 // ブレス攻撃終了フレーム
 #define FLAME_END_FRAME 200.0f
+
+// 空中ブレス攻撃関連
+// 残りのHP割合(50%)
+#define HPPER_50 50
+// 残りのHP割合(25%)
+#define HPPER_25 25
