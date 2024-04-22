@@ -74,6 +74,7 @@ void CDragon::UpdateSpAttack_Step2()
 	// 目的値を保存
 	mSaveVec = targetPos;
 	mSpAttackStep++;
+	mAngle = 0.0f;
 }
 
 #include "Maths.h"
@@ -83,7 +84,6 @@ void CDragon::UpdateSpAttack_Step3()
 	// 目的地までのベクトルを取得
 	CVector myPos = Position();
 	myPos.Y(0.0f);
-	//CVector targetVec = (mSaveVec - myPos).Normalized();
 
 	// 0度の角度までのベクトルを取得
 	float dist = FIELD_RADIUS * 0.6f;
@@ -115,10 +115,20 @@ void CDragon::UpdateSpAttack_Step4()
 	pos.X(cosf(Math::DegreeToRadian(mAngle)) * dist);
 	pos.Z(sinf(Math::DegreeToRadian(mAngle)) * dist);
 
+	// 0度のベクトル
+	CVector zeropos = CVector::zero;
+	zeropos.X(cosf(Math::DegreeToRadian(0.0f)) * dist);
+	zeropos.Z(sinf(Math::DegreeToRadian(0.0f)) * dist);
+
+	float angle = CVector::Angle(zeropos, pos);
+	angle = Math::RadianToDegree(angle);
+	CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+
 	CVector myPos = Position();
 	myPos.Y(0.0f);
 	CVector targetVec = (pos - myPos).Normalized();
 
+	
 	mMoveSpeed += targetVec * 4.0f;
 	mAngle += 0.6;
 	if (mAngle > 360.0f)

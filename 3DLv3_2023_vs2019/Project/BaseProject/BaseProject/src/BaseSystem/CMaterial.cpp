@@ -166,7 +166,12 @@ void CMaterial::Enabled(const CColor& color)
 {
 	glColor4fv((GLfloat*)&color);
 	//ŠgUŒõ‚Ìİ’è
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, mDiffuse);
+	float diffuse[4];
+	diffuse[0] = mDiffuse[0] * color.R();
+	diffuse[1] = mDiffuse[1] * color.G();
+	diffuse[2] = mDiffuse[2] * color.B();
+	diffuse[3] = mDiffuse[3] * color.A();
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
 
 	//ƒuƒŒƒ“ƒhˆ—‚ğ—LŒø‚É‚·‚é
 	EnableBlend();

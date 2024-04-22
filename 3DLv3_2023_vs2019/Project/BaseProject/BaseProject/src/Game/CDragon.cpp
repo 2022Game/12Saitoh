@@ -266,9 +266,9 @@ void CDragon::Update()
 	float distance = (pPos - ePos).Length();
 	CDebugPrint::Print("ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£ : %.1f\n", distance);
 
-	if (mDistanceType == EDistanceType::eNear) CDebugPrint::Print("‹ß‹——£\n");
-	else if (mDistanceType == EDistanceType::eMedium) CDebugPrint::Print("’†‹——£\n");
-	else CDebugPrint::Print("‰“‹——£\n");
+	//if (mDistanceType == EDistanceType::eNear) CDebugPrint::Print("‹ß‹——£\n");
+	//else if (mDistanceType == EDistanceType::eMedium) CDebugPrint::Print("’†‹——£\n");
+	//else CDebugPrint::Print("‰“‹——£\n");
 
 	if (CInput::PushKey('1'))
 	{
