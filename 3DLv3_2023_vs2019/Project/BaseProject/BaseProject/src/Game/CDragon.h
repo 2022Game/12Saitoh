@@ -72,7 +72,7 @@ private:
 	// 目的地を取得
 	CVector GetDestination() const;
 	// 角度の取得
-	float GetAngle(CVector vec) const;
+	float GetAngle() const;
 
 	// アニメーションの切り替え
 	void ChangeAnimation(EDragonAnimType type);

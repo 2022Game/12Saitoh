@@ -65,8 +65,6 @@ void CDragon::UpdateSpAttack_Step1()
 		ChangeAnimation(EDragonAnimType::eFlyForward);
 
 		// 次のステップで移動する目的地を設定
-		CVector myPos = Position();
-		myPos.Y(0.0f);
 		CVector pPos = CPlayer::Instance()->Position();
 		CVector fPos = gField->Position();
 		CVector FP = pPos - fPos;
@@ -93,7 +91,7 @@ void CDragon::UpdateSpAttack_Step2()
 	if (targetLength <= 100.0f)
 	{
 		// 角度の設定
-		mAngle = GetAngle(mSaveDestination);
+		mAngle = GetAngle();
 
 		// 目的地の更新
 		mSaveDestination = GetDestination();
@@ -117,7 +115,6 @@ void CDragon::UpdateSpAttack_Step3()
 	pos.X(cosf(Math::DegreeToRadian(mAngle)) * dist);
 	pos.Z(sinf(Math::DegreeToRadian(mAngle)) * dist);
 
-
 	CVector myPos = Position();
 	myPos.Y(0.0f);
 	CVector targetVec = (pos - myPos).Normalized();
@@ -131,6 +128,9 @@ void CDragon::UpdateSpAttack_Step3()
 	}
 	// 重力で落ちないように調整
 	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+
+	// デバッグ表示用
+	GetAngle();
 }
 
 // 空中アイドル及び高さ調整
@@ -180,7 +180,7 @@ CVector CDragon::GetDestination() const
 }
 
 // 外周の自身のいる位置の中心からみた角度を取得
-float CDragon::GetAngle(CVector vec) const
+float CDragon::GetAngle() const
 {
 	float dist = FIELD_RADIUS;
 	// 0度のベクトル
@@ -188,15 +188,21 @@ float CDragon::GetAngle(CVector vec) const
 	zeropos.X(cosf(Math::DegreeToRadian(0.0f)) * dist);
 	zeropos.Z(sinf(Math::DegreeToRadian(0.0f)) * dist);
 
+	// 原点から自身の角度のベクトル
+	CVector dPos = Position();
+	CVector fPos = gField->Position();
+	CVector DP = dPos - fPos;
+	DP.Y(0.0f);
+	CVector targetPos = DP.Normalized() * FIELD_RADIUS;
 
 	// 角度の計算
-	vec.Normalized();
-	float angle = Math::RadianToDegree(CVector::Angle(zeropos, vec));
+	targetPos.Normalized();
+	float angle = Math::RadianToDegree(CVector::Angle(zeropos, targetPos));
 	// Xがプラス域
-	if (vec.X() >= 0)
+	if (targetPos.X() >= 0)
 	{
 		// Yがプラス域
-		if (vec.Z() >= 0)
+		if (targetPos.Z() >= 0)
 		{
 			// 第一象限
 			CDebugPrint::Print("第一象限\n");
@@ -212,7 +218,7 @@ float CDragon::GetAngle(CVector vec) const
 	}
 	else // Xがマイナス域
 	{
-		if (vec.Z() >= 0)
+		if (targetPos.Z() >= 0)
 		{
 			// 第二象限
 			CDebugPrint::Print("第二象限\n");
