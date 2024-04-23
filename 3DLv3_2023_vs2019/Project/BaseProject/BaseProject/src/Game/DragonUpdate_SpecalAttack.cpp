@@ -92,6 +92,9 @@ void CDragon::UpdateSpAttack_Step2()
 	float targetLength = (mSaveDestination - myPos).Length();
 	if (targetLength <= 100.0f)
 	{
+		// 角度の設定
+		mAngle = GetAngle(mSaveDestination);
+
 		// 目的地の更新
 		mSaveDestination = GetDestination();
 		mSaveVec = CVector::zero;
@@ -114,17 +117,13 @@ void CDragon::UpdateSpAttack_Step3()
 	pos.X(cosf(Math::DegreeToRadian(mAngle)) * dist);
 	pos.Z(sinf(Math::DegreeToRadian(mAngle)) * dist);
 
-	// 0度のベクトル
-	CVector zeropos = CVector::zero;
-	zeropos.X(cosf(Math::DegreeToRadian(0.0f)) * dist);
-	zeropos.Z(sinf(Math::DegreeToRadian(0.0f)) * dist);
 
 	CVector myPos = Position();
 	myPos.Y(0.0f);
 	CVector targetVec = (pos - myPos).Normalized();
 
-
 	mMoveSpeed += targetVec * 4.0f;
+
 	mAngle += 0.6;
 	if (mAngle > 360.0f)
 	{
@@ -132,46 +131,6 @@ void CDragon::UpdateSpAttack_Step3()
 	}
 	// 重力で落ちないように調整
 	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
-
-
-	// 角度の計算
-	pos.Normalized();
-	float angle = Math::RadianToDegree(CVector::Angle(zeropos, pos));
-	// Xがプラス域
-	if (pos.X() >= 0)
-	{
-		// Yがプラス域
-		if (pos.Z() >= 0)
-		{
-			// 第一象限
-			CDebugPrint::Print("第一象限\n");
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
-		}
-		else // Zがマイナス域
-		{
-			// 第四象限
-			CDebugPrint::Print("第四象限\n");
-			angle = 180.0f + (180.0f - angle);
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
-		}
-	}
-	else // Xがマイナス域
-	{
-		if (pos.Z() >= 0)
-		{
-			// 第二象限
-			CDebugPrint::Print("第二象限\n");
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
-		}
-		// Zがマイナス域
-		else
-		{
-			// 第三象限
-			CDebugPrint::Print("第三象限\n");
-			angle = 180.0f + (180.0f - angle);
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
-		}
-	}
 }
 
 // 空中アイドル及び高さ調整
@@ -218,4 +177,55 @@ CVector CDragon::GetDestination() const
 
 	// 目的値を保存
 	return targetPos;
+}
+
+// 外周の自身のいる位置の中心からみた角度を取得
+float CDragon::GetAngle(CVector vec) const
+{
+	float dist = FIELD_RADIUS;
+	// 0度のベクトル
+	CVector zeropos = CVector::zero;
+	zeropos.X(cosf(Math::DegreeToRadian(0.0f)) * dist);
+	zeropos.Z(sinf(Math::DegreeToRadian(0.0f)) * dist);
+
+
+	// 角度の計算
+	vec.Normalized();
+	float angle = Math::RadianToDegree(CVector::Angle(zeropos, vec));
+	// Xがプラス域
+	if (vec.X() >= 0)
+	{
+		// Yがプラス域
+		if (vec.Z() >= 0)
+		{
+			// 第一象限
+			CDebugPrint::Print("第一象限\n");
+			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+		}
+		else // Zがマイナス域
+		{
+			// 第四象限
+			CDebugPrint::Print("第四象限\n");
+			angle = 180.0f + (180.0f - angle);
+			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+		}
+	}
+	else // Xがマイナス域
+	{
+		if (vec.Z() >= 0)
+		{
+			// 第二象限
+			CDebugPrint::Print("第二象限\n");
+			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+		}
+		// Zがマイナス域
+		else
+		{
+			// 第三象限
+			CDebugPrint::Print("第三象限\n");
+			angle = 180.0f + (180.0f - angle);
+			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+		}
+	}
+	return angle;
 }

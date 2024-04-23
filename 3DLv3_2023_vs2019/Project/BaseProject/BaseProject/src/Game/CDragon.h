@@ -69,8 +69,10 @@ private:
 	void UpdateSpAttack_Step6();
 	// 着陸処理
 	void UpdateSpAttack_Step7();
-	// 空中ブレス攻撃を行う位置(目的地)の設定
+	// 目的地を取得
 	CVector GetDestination() const;
+	// 角度の取得
+	float GetAngle(CVector vec) const;
 
 	// アニメーションの切り替え
 	void ChangeAnimation(EDragonAnimType type);
