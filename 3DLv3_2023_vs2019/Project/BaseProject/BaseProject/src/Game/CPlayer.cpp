@@ -5,6 +5,7 @@
 #include "CSPGauge.h"
 #include "CEnemy.h"
 #include "CColliderSphere.h"
+#include "CColliderCapsule.h"
 #include "CSword.h"
 
 #include "CFlamethrower.h"

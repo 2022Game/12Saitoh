@@ -51,21 +51,26 @@ private:
 	void UpdateAttack();
 	// 空中ブレス攻撃処理
 	void UpdateSpecalAttack();
+
 	/* 空中ブレス攻撃各処理 */
 	// 咆哮処理
 	void UpdateSpAttack_Step0();
-	//離陸処理
+	// 離陸処理
 	void UpdateSpAttack_Step1();
-	// 空中移動に必要な情報をそれぞれ取得
-	void UpdateSpAttack_Step2();
 	// 空中移動処理1
+	void UpdateSpAttack_Step2();
+	// 空中移動処理2
 	void UpdateSpAttack_Step3();
-	// 空中ブレス攻撃処理
+	// 空中アイドル及び高さ調整
 	void UpdateSpAttack_Step4();
-	//空中移動処理2
+	// 空中ブレス攻撃
 	void UpdateSpAttack_Step5();
-	//  着陸処理
+	//  空中移動処理3
 	void UpdateSpAttack_Step6();
+	// 着陸処理
+	void UpdateSpAttack_Step7();
+	// 空中ブレス攻撃を行う位置(目的地)の設定
+	CVector GetDestination() const;
 
 	// アニメーションの切り替え
 	void ChangeAnimation(EDragonAnimType type);
@@ -116,8 +121,9 @@ private:
 	CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
 
 	CFlamethrower* mpFlamethrower; // 火炎放射
-	CVector mMoveSpeed;	// 移動速度
-	CVector mSaveVec;	// ベクトル保存用
+	CVector mMoveSpeed;			// 移動速度
+	CVector mSaveDestination;	// 目的地の保存用
+	CVector mSaveVec;			// ベクトルの保存用
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか
