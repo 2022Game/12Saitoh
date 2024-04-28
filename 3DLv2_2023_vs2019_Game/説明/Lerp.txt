@@ -1,0 +1,27 @@
+CVector CVector::Lerp(const CVector& start, const CVector& end, float t)
+{
+	//経過フレーム数
+	int elapsedFrame = 0;
+	//移動に掛かるフレーム数
+	int moveFrame = 60;
+	//移動開始位置
+	CVector start;
+	//移動終了位置
+	CVector end;
+
+	//移動に掛かるフレーム数を経過していない
+	if (elapsedFrame < moveFrame)
+	{
+		//現在の進行度を取得
+		float t = (float)elapsedFrame / moveFrame;
+		//進行度で開始位置から終了位置で線形補間
+		CVector pos = CVector::Lerp(start, end, t);
+		//経過フレーム数進行
+		elapsedFrame++;
+	}
+	else
+	{
+		CVector pos = end;
+	}
+	return start + (end - start) * t;
+}

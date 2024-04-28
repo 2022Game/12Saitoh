@@ -1,0 +1,30 @@
+	//プレイヤーの座標
+	CVector playerPos = player->Position();
+	CVector enemyPos = Position();	//エネミー座標
+
+	//エネミーからプレイヤーまでのベクトルを求める
+	//目的地までのベクトル = 目的地　- 開始値
+	CVector EP = (playerPos - enemyPos).Normalize();
+
+	//エネミーの正面方向のベクトル
+	CVector forward = MatrixRotate().VectorZ().Normalize();
+
+	//正面方向までのベクトルとプレイヤーまでのベクトルの
+	//内積を取り、角度を求める
+	float dot = forward.Dot(EP);
+	if (dot >= cosf(45.0f * M_PI / 180.0f))
+	{
+		//プレイヤーが-45～45度の範囲にいる
+		//ディグリー	ラジアン
+		//180度		=	3.14ラジアン(π)
+		//360度		=	6.28ラジアン(2π)
+		//1度		=	0.0174ラジアン
+		//M_PI / 180.0fこれで1度のラジアンが求まる
+
+		//敵からプレイヤーまでの距離
+		float distance = (playerPos - enemyPos).Lenght();
+		if (distance <= 5.0f)
+		{
+			//敵からプレイヤーまでの距離が範囲内!
+		}
+	}
