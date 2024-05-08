@@ -2,6 +2,8 @@
 #include "Global.h"
 #include "CPlayer.h"
 #include "Maths.h"
+#include "CSPFlamethrower.h"
+#include "CColliderLine.h"
 
 // 必殺技(空中ブレス攻撃)処理
 void CDragon::UpdateSpecalAttack()
@@ -31,11 +33,14 @@ void CDragon::UpdateSpecalAttack()
 	case 5:// 空中ブレス攻撃
 		UpdateSpAttack_Step5();
 		break;
-	case 6:// 空中移動処理3
+	case 6:// 空中アイドル処理
 		UpdateSpAttack_Step6();
 		break;
-	case 7:// 着陸処理
+	case 7:// 空中移動処理3
 		UpdateSpAttack_Step7();
+		break;
+	case 8:// 着陸処理
+		UpdateSpAttack_Step8();
 		break;
 	}
 
@@ -100,7 +105,7 @@ void CDragon::UpdateSpAttack_Step2()
 	}
 
 	// 移動処理
-	mMoveSpeed += mSaveVec * 3.0f;
+	mMoveSpeed += mSaveVec * 3.3f;
 
 	// 重力で落ちないように調整
 	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
@@ -110,7 +115,7 @@ void CDragon::UpdateSpAttack_Step2()
 // 目的地まで外周を移動
 void CDragon::UpdateSpAttack_Step3()
 {
-	float dist = FIELD_RADIUS * 0.9f;
+	float dist = FIELD_RADIUS * 0.8f;
 	CVector pos = CVector::zero;
 	pos.X(cosf(Math::DegreeToRadian(mAngle)) * dist);
 	pos.Z(sinf(Math::DegreeToRadian(mAngle)) * dist);
@@ -129,6 +134,15 @@ void CDragon::UpdateSpAttack_Step3()
 	// 重力で落ちないように調整
 	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
 
+	// 目的地に着いたら次のステップに移行
+	float targetLength = (mSaveDestination - myPos).Length();
+	if (targetLength <= 130.0f)
+	{
+		mSpAttackStep++;
+		ChangeAnimation(EDragonAnimType::eFlyIdle);
+		mSaveDestination = CVector::zero;
+	}
+	CDebugPrint::Print("目的地までの距離 :  %.0f\n", targetLength);
 	// デバッグ表示用
 	GetAngle();
 }
@@ -136,31 +150,109 @@ void CDragon::UpdateSpAttack_Step3()
 // 空中アイドル及び高さ調整
 void CDragon::UpdateSpAttack_Step4()
 {
+	CVector dPos = Position();
+	CVector fPos = gField->Position();
+	CVector FD = (fPos - dPos).Normalized();
+	FD.Y(0.0f);
+	// ステージの中心に向ける
+	mMoveSpeed = FD * 0.0000000001;
 
+	mMoveSpeed -= CVector(0.0f, 0.5f, 0.0f);
+
+	// 2秒経過で次のステップへ移行
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTime >= 3.0f)
+	{
+		if (IsAnimationFinished())
+		{
+			mElapsedTime = 0.0f;
+			mSpAttackStep++;
+			ChangeAnimation(EDragonAnimType::eFlyFlame);
+
+			// 仮のブレスを発射
+			if (!mpSpFlamethrower->IsThrowing())
+			{
+				mpSpFlamethrower->Start();
+			}
+		}
+	}
 }
 
 // 空中ブレス攻撃
 void CDragon::UpdateSpAttack_Step5()
 {
+	// 重力で落ちないように調整
+	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+	// 攻撃が終わったら、次のステップへ移行
+	if (IsAnimationFinished())
+	{
+		mSpAttackStep++;
+		ChangeAnimation(EDragonAnimType::eFlyIdle);
+		if (mpSpFlamethrower->IsThrowing())
+		{
+			mpSpFlamethrower->Stop();
+		}
+	}
+}
 
+// 空中アイドル処理
+void CDragon::UpdateSpAttack_Step6()
+{
+	mElapsedTime += Time::DeltaTime();
+	// 2秒経過で次のステップへ移行
+	if (mElapsedTime >= 2.0f)
+	{
+		if (IsAnimationFinished())
+		{
+			mElapsedTime = 0.0f;
+			mSpAttackStep++;
+			ChangeAnimation(EDragonAnimType::eFlyForward);
+		}
+	}
+	// 重力で落ちないように調整
+	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
 }
 
 // 空中移動処理3
-void CDragon::UpdateSpAttack_Step6()
+void CDragon::UpdateSpAttack_Step7()
 {
+	// ステージ中央へ移動する
+	CVector fPos = gField->Position();
+	CVector dPos = Position();
+	CVector FD = fPos - dPos;
+	FD.Y(0.0f);
 
+	// 自身からステージの中心までの距離を取得
+	float targetLength = FD.Length();
+	mMoveSpeed += FD.Normalized() * 3.0f;
+
+	// 重力で落ちないように調整
+	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+
+	// ステージの中心まで移動したら
+	// 次のステップへ移行する
+	if (targetLength <= 30.0f)
+	{
+		mSpAttackStep++;
+		ChangeAnimation(EDragonAnimType::eLand);
+		mpColliderLine->Position(mpColliderLine->Position() + CVector(0.0f, 30.0f, 0.0f));
+	}
 }
 
 // 着陸処理
-void CDragon::UpdateSpAttack_Step7()
+void CDragon::UpdateSpAttack_Step8()
 {
 	// 着陸したら、戦闘状態へ移行
 	if (IsAnimationFinished())
 	{
 		mSpAttackStep = 0;
+		mBatteleStep = 0;
 		mState = EState::eBattle;
 		ChangeAnimation(EDragonAnimType::eIdle1);
+		mpColliderLine->Position(CVector::zero);
 	}
+
+	mMoveSpeed -= CVector(0.0f, GRAVITY+0.04, 0.0f);
 }
 
 // 空中ブレス攻撃を行う位置(目的地)の設定
@@ -174,6 +266,7 @@ CVector CDragon::GetDestination() const
 	CVector targetDir = -playerDir;
 	// 目的地
 	CVector targetPos = targetDir.Normalized() * FIELD_RADIUS * 0.8;
+	targetPos.Y(0.0f);
 
 	// 目的値を保存
 	return targetPos;
@@ -182,11 +275,10 @@ CVector CDragon::GetDestination() const
 // 外周の自身のいる位置の中心からみた角度を取得
 float CDragon::GetAngle() const
 {
-	float dist = FIELD_RADIUS;
 	// 0度のベクトル
 	CVector zeropos = CVector::zero;
-	zeropos.X(cosf(Math::DegreeToRadian(0.0f)) * dist);
-	zeropos.Z(sinf(Math::DegreeToRadian(0.0f)) * dist);
+	zeropos.X(cosf(0.0f));
+	zeropos.Z(sinf(0.0f));
 
 	// 原点から自身の角度のベクトル
 	CVector dPos = Position();

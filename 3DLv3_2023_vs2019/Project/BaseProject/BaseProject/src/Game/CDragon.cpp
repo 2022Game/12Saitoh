@@ -6,6 +6,7 @@
 #include "CColliderLine.h"
 #include "CDebugPrint.h"
 #include "CFlamethrower.h"
+#include "CSPFlamethrower.h"
 #include "Global.h"
 
 CDragon* CDragon::spInstance = nullptr;
@@ -113,6 +114,12 @@ CDragon::CDragon()
 		this, flamemtx,
 		CVector(0.0f, -20.0f, 0.0f),
 		CQuaternion(0.0f, 90.0f,0.0f).Matrix()
+	);
+	mpSpFlamethrower = new CSPFlamethrower
+	(
+		this, flamemtx,
+		CVector(0.0f, -30.0f, 0.0f),
+		CQuaternion(0.0f, 90.0f, 0.0f).Matrix()
 	);
 }
 
@@ -247,10 +254,19 @@ void CDragon::Update()
 		CVector target = mMoveSpeed;
 		target.Y(0.0f);
 		target.Normalize();
-		CVector forward = CVector::Slerp(current, target, 0.02f);
-		Rotation(CQuaternion::LookRotation(forward));
-	}
+		if (target.LengthSqr() > 0.0f)
+		{
+			float t = 0.02f;
+			// ‹ó’†ˆÚ“®‚ÌŽž‚Ì‚Ý•âŠ®Š„‡‚ð’²®
+			if (AnimationIndex() == (int)EDragonAnimType::eFlyForward)
+			{
+				t = 0.2f;
+			}
 
+			CVector forward = CVector::Slerp(current, target, t);
+			Rotation(CQuaternion::LookRotation(forward));
+		}
+	}
 	CXCharacter::Update();
 	mpAttackMouthCol->Update();
 

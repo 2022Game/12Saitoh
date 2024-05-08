@@ -5,6 +5,7 @@
 #include "CCollider.h"
 
 class CFlamethrower;
+class CSPFlamethrower;
 /*
 ドラゴンクラス
 キャラクタクラスを継承
@@ -65,10 +66,12 @@ private:
 	void UpdateSpAttack_Step4();
 	// 空中ブレス攻撃
 	void UpdateSpAttack_Step5();
-	//  空中移動処理3
+	// 空中アイドル処理
 	void UpdateSpAttack_Step6();
-	// 着陸処理
+	//  空中移動処理3
 	void UpdateSpAttack_Step7();
+	// 着陸処理
+	void UpdateSpAttack_Step8();
 	// 目的地を取得
 	CVector GetDestination() const;
 	// 角度の取得
@@ -122,7 +125,8 @@ private:
 	CColliderSphere* mpDamageCol;	// ダメージ用コライダー
 	CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
 
-	CFlamethrower* mpFlamethrower; // 火炎放射
+	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
+	CSPFlamethrower* mpSpFlamethrower; // 火炎放射(空中)
 	CVector mMoveSpeed;			// 移動速度
 	CVector mSaveDestination;	// 目的地の保存用
 	CVector mSaveVec;			// ベクトルの保存用

@@ -3,7 +3,7 @@
 #include "CObjectBase.h"
 #include <list>
 
-class CFlame;
+class CSPFlame;
 
 // 火炎放射クラス
 class CSPFlamethrower : public CTask
@@ -42,7 +42,7 @@ private:
 	CVector GetThrowDir() const;
 
 	// 発射した炎のエフェクトのリスト
-	std::list<CFlame*> mFlames;
+	std::list<CSPFlame*> mSpFlames;
 	CObjectBase* mpOwner;		// このエフェクトの持ち主
 	const CMatrix* mpAttachMtx;	// エフェクトをアタッチする行列
 	CVector mThrowOffsetPos;	// 発射時のオフセット位置

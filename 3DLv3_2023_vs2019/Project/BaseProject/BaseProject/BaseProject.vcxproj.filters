@@ -107,6 +107,12 @@
     <Filter Include="ソース ファイル\Game\Character\Dragon\Flame">
       <UniqueIdentifier>{d25fea82-da1f-4c62-8b62-d1afc1cfcd38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Dragon\Flame\NormalFlame">
+      <UniqueIdentifier>{7c6ab060-9b50-4103-aba8-970fc877e4f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame">
+      <UniqueIdentifier>{a48615a1-9a92-4c30-9887-dbe1fb3b8eec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -409,17 +415,23 @@
     <ClCompile Include="src\BaseSystem\Easing.cpp">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CFlame.cpp">
-      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CFlamethrower.cpp">
-      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseSystem\CBounds.cpp">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\DragonUpdate_SpecalAttack.cpp">
-      <Filter>ソース ファイル\Game\Character\Enemy\Enemy_Update</Filter>
+      <Filter>ソース ファイル\Game\Character\Dragon\Dragon_Update</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFlame.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\NormalFlame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFlamethrower.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\NormalFlame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSPFlame.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSPFlametrower.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -717,17 +729,23 @@
     <ClInclude Include="src\BaseSystem\Easing.h">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CFlame.h">
-      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CFlamethrower.h">
-      <Filter>ソース ファイル\Game\Character\Dragon\Flame</Filter>
-    </ClInclude>
     <ClInclude Include="src\BaseSystem\CBounds.h">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\Global.h">
       <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFlame.h">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\NormalFlame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFlamethrower.h">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\NormalFlame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSPFlame.h">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSPFlamethrower.h">
+      <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

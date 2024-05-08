@@ -5,17 +5,16 @@
 #include "CDragon.h"
 
 // 炎のスケール値の最大値
-#define FLAME_SCALE 1000.0f
+#define FLAME_SCALE 20.0f
 // 炎のスケール値が最大値になるまでの時間
 #define FLAME_SCALE_ANIM_TIME 2.0f
 // アニメーションの1コマ表示時間
-#define ANIM_TIME 1.0625f
+#define ANIM_TIME 0.0525f
 // 炎用の重力
-#define FLAME_GRAVITY 250.0f
+#define FLAME_GRAVITY 550.0f
 
 // 炎のエフェクトのアニメーションデータ
 TexAnimData CSPFlame::msAnimData = TexAnimData(8, 8, false, 64, ANIM_TIME);
-
 // コンストラクタ
 CSPFlame::CSPFlame(ETag tag)
 	: CBillBoardImage("Effect/flame.png", tag, ETaskPauseType::eGame)

@@ -4,7 +4,7 @@
 #include "Maths.h"
 
 // 炎の発射間隔時間
-#define THROW_INTERVAL 0.08f
+#define THROW_INTERVAL 0.15f
 // 炎の発射方向のブレ幅
 #define FLAME_DIR_RAND 0.02f
 // 炎の移動速度

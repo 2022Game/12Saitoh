@@ -92,7 +92,7 @@ void CDragon::UpdateBattele_Idle()
 		CVector enemyPos = Position();
 		// 自身からプレイヤーまでのベクトルを取得
 		CVector EP = (playerPos - enemyPos).Normalized();
-
+		EP.Y(0.0f);
 		mMoveSpeed += EP * 0.3f;
 		ChangeAnimation(EDragonAnimType::eWalk);
 	}
@@ -124,6 +124,7 @@ void CDragon::UpdateBattle_Chase()
 		CVector forward = VectorZ().Normalized();
 		// 自身からプレイヤーまでのベクトルを取得
 		CVector EP = (playerPos - enemyPos).Normalized();
+		EP.Y(0.0f);
 		// 正面方向のベクトルとプレイヤーまでの内積から角度を求める
 		float dotZ = forward.Dot(EP);
 		// 自身からプレイヤーまでのベクトルの長さを取得
@@ -244,6 +245,7 @@ void CDragon::UpdateBattle_Chase()
 	{
 		// 自身からプレイヤーまでのベクトルを取得
 		CVector EP = (playerPos - enemyPos).Normalized();
+		EP.Y(0.0f);
 		CVector forward = VectorZ().Normalized();
 		// 正面方向のベクトルとプレイヤーまでの
 		// 内積から角度を求める
@@ -300,6 +302,7 @@ void CDragon::UpdateBattle_Chase()
 			{
 				// 自身からプレイヤーまでのベクトルを取得
 				CVector EP = (playerPos - enemyPos).Normalized();
+				EP.Y(0.0f);
 				// 一定の範囲まで移動する
 				mMoveSpeed += EP * 0.8f;
 				ChangeAnimation(EDragonAnimType::eWalk);

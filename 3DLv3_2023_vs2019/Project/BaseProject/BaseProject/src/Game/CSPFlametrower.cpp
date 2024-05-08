@@ -1,14 +1,14 @@
 #include "CSPFlamethrower.h"
-#include "CFlame.h"
+#include "CSPFlame.h"
 #include "CInput.h"
 #include "Maths.h"
 
 // 炎の発射間隔時間
-#define THROW_INTERVAL 0.03f
+#define THROW_INTERVAL 0.005f
 // 炎の発射方向のブレ幅
-#define FLAME_DIR_RAND 0.09f
+#define FLAME_DIR_RAND 0.1f
 // 炎の移動速度
-#define FLAME_MOVE_SPEED 150.0f
+#define FLAME_MOVE_SPEED 200.0f
 // 炎の色
 #define FLAME_COLOR CColor(0.01f, 0.25f, 1.0f)
 
@@ -27,7 +27,7 @@ CSPFlamethrower::CSPFlamethrower(CObjectBase* owner, const CMatrix* attach,
 // デストラクタ
 CSPFlamethrower::~CSPFlamethrower()
 {
-	for (CFlame* flame : mFlames)
+	for (CSPFlame* flame : mSpFlames)
 	{
 		flame->Kill();
 	}
@@ -106,7 +106,7 @@ CVector CSPFlamethrower::GetThrowDir() const
 void CSPFlamethrower::CreateFlame()
 {
 	// 炎のエフェクトを作成
-	CFlame* flame = new CFlame(ETag::eFlame);
+	CSPFlame* flame = new CSPFlame(ETag::eFlame);
 
 	// 発射位置を取得
 	CVector pos = GetThrowPos();// + CVector(0.0f, 10.0f, 0.0f);
@@ -126,7 +126,7 @@ void CSPFlamethrower::CreateFlame()
 	flame->SetBlendType(EBlend::eAdd);
 
 	// 作成した炎のエフェクトをリストに追加
-	mFlames.push_back(flame);
+	mSpFlames.push_back(flame);
 }
 
 // 更新
@@ -146,15 +146,15 @@ void CSPFlamethrower::Update()
 	}
 
 	// 生成済みの炎のエフェクトの削除処理
-	auto itr = mFlames.begin();
-	auto end = mFlames.end();
+	auto itr = mSpFlames.begin();
+	auto end = mSpFlames.end();
 	while (itr != end)
 	{
-		CFlame* flame = *itr;
+		CSPFlame* flame = *itr;
 		// 削除フラグが立っていたら、削除
 		if (flame->IsDeath())
 		{
-			itr = mFlames.erase(itr);
+			itr = mSpFlames.erase(itr);
 			flame->Kill();
 		}
 		else
