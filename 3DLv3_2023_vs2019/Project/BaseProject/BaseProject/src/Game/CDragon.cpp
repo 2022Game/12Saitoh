@@ -292,8 +292,9 @@ void CDragon::Update()
 		printf("%d\n", p);
 	}
 
-	if (IsBackStep()) CDebugPrint::Print("true\n");
-	else CDebugPrint::Print("false\n");
+	// バックステップ判定用
+	//if (IsBackStep()) CDebugPrint::Print("true\n");
+	//else CDebugPrint::Print("false\n");
 
 
 #endif

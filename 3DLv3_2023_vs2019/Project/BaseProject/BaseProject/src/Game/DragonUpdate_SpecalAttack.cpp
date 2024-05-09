@@ -78,9 +78,14 @@ void CDragon::UpdateSpAttack_Step1()
 		CVector targetPos = FP.Normalized() * FIELD_RADIUS * 0.7;
 		targetPos.Y(0.0f);
 
+		// 目的地までのベクトルを設定
+		CVector dPos = Position();
+		dPos.Y(0.0f);
+		CVector targetVec = (targetPos - dPos).Normalized();
+
 		// 移動する目的地を保存
 		mSaveDestination = targetPos;
-		mSaveVec = targetPos.Normalized();
+		mSaveVec = targetVec;
 	}
 }
 

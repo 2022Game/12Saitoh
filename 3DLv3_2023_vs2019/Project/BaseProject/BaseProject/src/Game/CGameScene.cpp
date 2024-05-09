@@ -57,7 +57,7 @@ void CGameScene::Load()
 
 	// ドラゴン(敵)を生成
 	CDragon* dragon = new CDragon();
-	dragon->Position(0.0f, 50.0f, 0.0f);
+	dragon->Position(-2-0.0f, 50.0f, -100.0f);
 	dragon->Scale(0.15f, 0.15f, 0.15f);
 
 	////カメラセット
