@@ -205,7 +205,7 @@ void CDragon::UpdateSpAttack_Step6()
 {
 	mElapsedTime += Time::DeltaTime();
 	// 2秒経過で次のステップへ移行
-	if (mElapsedTime >= 2.0f)
+	if (mElapsedTime >= 4.0f)
 	{
 		if (IsAnimationFinished())
 		{

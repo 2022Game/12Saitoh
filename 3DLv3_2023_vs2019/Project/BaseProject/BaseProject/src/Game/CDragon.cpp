@@ -55,8 +55,8 @@ CDragon::CDragon()
 	mMaxStatus = mStatus;
 
 	// 怒り値の最大値を設定
-	// 最大値は最大HPの１割を基準として設定
-	mAngryStandardValue = mMaxStatus.hp / 10;
+	// 最大値は最大HPの2割を基準として設定
+	mAngryStandardValue = mMaxStatus.hp * 0.2;
 
 	// 状態の設定
 	mState = EState::eIdle;
@@ -276,6 +276,8 @@ void CDragon::Update()
 	CDebugPrint::Print("レベル : %d\nHP : %d\n攻撃力 : %d\n防御力 : %d\n",
 		mStatus.level, mStatus.hp, mStatus.atk, mStatus.def);
 
+	// 怒り状態かどうか
+	mIsAngry ? CDebugPrint::Print("怒り状態\n") : CDebugPrint::Print("非怒り状態\n");
 	// プレイヤーとの距離を表示
 	CVector pPos = CPlayer::Instance()->Position();
 	CVector ePos = Position();
@@ -397,6 +399,9 @@ void CDragon::TakeDamage(int damage)
 			mIsAngry = true;
 			mAngryValue = mAngryStandardValue;
 			ChangeAnimation(EDragonAnimType::eScream);
+			// 各ステータスを強化
+			mStatus.atk += 10;
+			mStatus.def += 10;
 		}
 	}
 	// 怒り状態で有れば、ダメージの半分の値だけ怒り値を減少
@@ -408,6 +413,9 @@ void CDragon::TakeDamage(int damage)
 		{
 			mIsAngry = false;
 			mAngryValue = 0;
+			// 各ステータスを元に戻す
+			mStatus.atk = mMaxStatus.atk;
+			mStatus.def = mMaxStatus.def;
 		}
 	}
 
