@@ -23,6 +23,9 @@ public:
 	void Update();
 	//描画処理
 	void Render();
+	// アニメーションの再生速度を設定
+	void SetAnimationSpeed(float speed);
+
 	//アニメーションの再生終了判定
 	//true:終了 false:再生中
 	bool IsAnimationFinished();
@@ -35,13 +38,18 @@ public:
 	float GetAnimationFrameRatio() const;
 	// アニメーションのモーション値を取得
 	float GetMotionValue() const;
+	// アニメーションの再生速度を取得
+	float GetAnimationSpeed() const;
+
 	//指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
-
 	// キャラの最大ステータスを取得
 	const CharaStatus& MaxStatus() const;
 	// キャラの現在ステータスを取得
 	const CharaStatus& Status() const;
+
+
+
 
 protected:
 	CModelX* mpModel;			//モデルデータ
@@ -54,5 +62,6 @@ protected:
 	float mAnimationFrame;		//アニメーションの再生フレーム
 	float mAnimationFrameSize;	//アニメーションの再生フレーム数
 	float  mMotionValue;		// モーション値
+	float mAnimationSpeed;		//アニメーションの再生速度
 };
 #endif

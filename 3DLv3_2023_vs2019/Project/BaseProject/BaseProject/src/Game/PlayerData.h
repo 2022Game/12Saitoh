@@ -91,7 +91,7 @@ enum class EAnimType
 #define PLAYER_HEIGHT	1.8f	
 #define MOVE_SPEED		1.0f	// 走る速度
 #define FASTMOVE_SPEED	1.5f	// ダッシュ速度
-#define ROLL_SPEED		1.3f	// 回避速度
+#define ROLL_SPEED		1.5f	// 回避速度
 #define GRAVITY			0.0625f	// 重力
 
 #define PLAYER_STATAS	0		// プレイヤーデータテーブル

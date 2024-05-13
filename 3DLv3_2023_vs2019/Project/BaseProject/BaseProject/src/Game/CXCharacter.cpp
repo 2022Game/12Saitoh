@@ -10,6 +10,8 @@ CXCharacter::CXCharacter(ETag tag, ETaskPriority prio, int sortOrder, ETaskPause
 	, mAnimationIndex(0)
 	, mAnimationFrame(0.0f)
 	, mAnimationFrameSize(0.0f)
+	, mMotionValue(0.0f)
+	, mAnimationSpeed(1.0f)
 {
 }
 
@@ -75,35 +77,45 @@ matrix:移動、回転、拡大縮小の行列
 void CXCharacter::Update(const CMatrix& matrix)
 {
 	if (mpModel == nullptr) return;
-	for (size_t i = 0; i < mpModel->AnimationSet().size(); i++)
+
+	auto& animSet = mpModel->AnimationSet();
+	CAnimationSet* currAnim = animSet[mAnimationIndex];
+
+	for (size_t i = 0; i < animSet.size(); i++)
 	{
-		mpModel->AnimationSet()[i]->mWeight = 0.0f;
-		mpModel->AnimationSet()[mAnimationIndex]->mWeight = 1.0f;
+		animSet[i]->mWeight = 0.0f;
+		currAnim->mWeight = 1.0f;
 	}
 	//最後まで再生する
-	if (mAnimationFrame <= mAnimationFrameSize)
+	if (0.0f <= mAnimationFrame && mAnimationFrame <= mAnimationFrameSize)
 	{
-		//アニメーションの時間を計算
-		mpModel->AnimationSet()[mAnimationIndex]->Time(
-			mpModel->AnimationSet()[mAnimationIndex]->MaxTime() *
-			mAnimationFrame / mAnimationFrameSize);
+		//アニメーションの時間を設定
+		currAnim->Time(mAnimationFrame);
 		//フレームを進める
-		mAnimationFrame++;
+		mAnimationFrame += mAnimationSpeed * 60.0f * Time::DeltaTime();
 	}
 	else
 	{
-		//繰り返しの場合は、フレームを0に戻す
+		//アニメーションを繰り返す場合
 		if (mAnimationLoopFlg)
 		{
-			//アニメーションのフレームを最初にする
-			mAnimationFrame = 0.0f;
-			mpModel->AnimationSet()[mAnimationIndex]->Time(mAnimationFrame);
+			//アニメーションのフレーム数をループさせる
+			float maxTime = currAnim->MaxTime();
+			if (maxTime > 0.0f)
+			{
+				mAnimationFrame = fmodf(mAnimationFrame + maxTime, maxTime);
+			}
+			else
+			{
+				mAnimationFrame = 0.0f;
+			}
+			currAnim->Time(mAnimationFrame);
 		}
+		//アニメーションを繰り返さない場合
 		else
 		{
-			mpModel->AnimationSet()[mAnimationIndex]->
-				Time(mpModel->AnimationSet()[mAnimationIndex]
-					->MaxTime());
+			//最終フレームに設定
+			currAnim->TimeProgress(mAnimationFrame >= 0.0f ? 1.0f : 0.0f);
 		}
 	}
 	//フレームの変換行列をアニメーションで更新する
@@ -135,6 +147,12 @@ void CXCharacter::Render()
 	mpModel->RenderShader(mpCombinedMatrix);
 }
 
+// アニメーションの再生速度を設定
+void CXCharacter::SetAnimationSpeed(float speed)
+{
+	mAnimationSpeed = speed;
+}
+
 bool CXCharacter::IsAnimationFinished()
 {
 	return mAnimationFrame >= mAnimationFrameSize;
@@ -143,21 +161,6 @@ bool CXCharacter::IsAnimationFinished()
 int CXCharacter::AnimationIndex()
 {
 	return mAnimationIndex;
-}
-
-//指定したボーンの行列を取得
-const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
-{
-	//モデルデータが設定されていない
-	if (mpModel == nullptr) return nullptr;
-
-	//フレーム検索
-	CModelXFrame* frame = mpModel->FinedFrame(name.c_str());
-	//指定されたフレームが存在しなかった
-	if (frame == nullptr) return nullptr;
-
-	//フレームの行列を返す
-	return &frame->CombinedMatrix();
 }
 
 // 再生中のアニメーションフレームを取得
@@ -177,6 +180,28 @@ float CXCharacter::GetAnimationFrameRatio() const
 float CXCharacter::GetMotionValue() const
 {
 	return mMotionValue;
+}
+
+// アニメーションの再生速度を取得
+float CXCharacter::GetAnimationSpeed() const
+{
+	return mAnimationSpeed;
+}
+
+//指定したボーンの行列を取得
+const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
+{
+	// モデルデータが設定されていない
+	if (mpModel == nullptr) return nullptr;
+
+	// フレーム検索
+	CModelXFrame* frame = mpModel->FinedFrame(name.c_str());
+
+	//指定されたフレームが存在しなかった
+	if (frame == nullptr) return nullptr;
+
+	// フレームの行列祖返す
+	return &frame->CombinedMatrix();
 }
 
 // キャラの最大ステータスを取得
