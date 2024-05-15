@@ -114,6 +114,8 @@ private:
 		eSpecalMove,// 闘技
 	};
 	EState mState;		// プレイヤーの状態
+	// ステータスの切り替え
+	void ChangeState(EState state);
 
 	CVector mInput_save;// 入力ベクトルを仮保存
 	CVector mMoveSpeed;	// 移動速度
@@ -129,6 +131,7 @@ private:
 	bool mSPZeroFlag;	// スタミナが0になった時のスタミナ回復中のフラグ
 	bool mIsUpdateInput;// 入力情報を更新するフラグ
 
+	int mStateStep;		// 各状態の段階
 	int mAttackStep;	// 攻撃の段階
 	int mSPAttackStep;	// 強闘技の攻撃段階
 

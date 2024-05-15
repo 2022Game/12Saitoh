@@ -35,7 +35,7 @@ void CPlayer::Update_Avoidance()
 		// 回避動作後に移動キー入力があれば走り状態へ移行
 		if (input.LengthSqr() > 0)
 		{
-			mState = EState::eMove;
+			ChangeState(EState::eMove);
 			// 納抜の判定
 			if (mIsDrawn)// 抜刀
 			{
@@ -50,11 +50,11 @@ void CPlayer::Update_Avoidance()
 					// スタミナが0以上かつフラグが立っていない
 					if (mStatus.sp > 0 && !mSPZeroFlag)
 					{
-						mState = EState::eFastMove;
+						ChangeState(EState::eFastMove);
 					}
 					else
 					{
-						mState = EState::eMove;
+						ChangeState(EState::eMove);
 						ChangeAnimation(EAnimType::eRollEnd_run);
 					}
 				}
@@ -63,7 +63,7 @@ void CPlayer::Update_Avoidance()
 		// キー入力がない場合はアイドル状態へ移行
 		else
 		{
-			mState = EState::eIdle;
+			ChangeState(EState::eIdle);
 			// 納抜の判定
 			if (mIsDrawn)// 抜刀
 			{

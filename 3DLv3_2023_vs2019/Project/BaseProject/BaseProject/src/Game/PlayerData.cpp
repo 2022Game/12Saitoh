@@ -3,6 +3,7 @@
 // プレイヤーのアニメーションデータテーブル
 std::vector<PlayerData::AnimData> PlayerData::ANIM_DATA = 
 {
+	/*				　パス								　 ループ フレーム	モーション値　*/	
 	{ "",													true,	0.0f,	0.0f },	// Tポーズ
 	{ "Character\\Player\\anim\\idle.x",					true,	601.0f,	0.0f },	// 待機(納刀)
 	{ "Character\\Player\\anim\\idle_combat.x",				true,	601.0f,	0.0f },	// 待機(抜刀)
@@ -16,17 +17,17 @@ std::vector<PlayerData::AnimData> PlayerData::ANIM_DATA =
 	{ "Character\\Player\\anim\\run_combat_start.x",		false,	36.0f,	0.0f },	// 走り開始(抜刀)
 	{ "Character\\Player\\anim\\run_combat.x",				true,	40.0f,	0.0f },	// 走り(抜刀)
 	{ "Character\\Player\\anim\\run_combat_end.x",			false,	50.0f,	0.0f },	// 走り終了(抜刀)
-	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	40.0f,	0.0f },	// 走り中抜刀動作
+	{ "Character\\Player\\anim\\run_drawn_combat.x",		false,	41.0f,	0.0f },	// 走り中抜刀動作
 	{ "Character\\Player\\anim\\run_sheathed_combat.x",		false,	40.0f,	0.0f },	// 走り中納刀動作
 	{ "Character\\Player\\anim\\fastrun_start.x",			false,	11.0f,	0.0f },	// ダッシュ開始
 	{ "Character\\Player\\anim\\fastrun_loop.x",			true,	28.0f,	0.0f },	// ダッシュ	
 	{ "Character\\Player\\anim\\fastrun_end.x",				false,	52.0f,	0.0f },	// ダッシュ終了
-	{ "Character\\Player\\anim\\roll_start.x",				false,	20.0f,	0.0f },	// 回避動作開始(納刀)
-	{ "Character\\Player\\anim\\roll_end_idle.x",			false,	20.0f,	0.0f },	// 回避動作からアイドルへ移行(納刀)
+	{ "Character\\Player\\anim\\roll_start.x",				false,	26.0f,	0.0f },	// 回避動作開始(納刀)
+	{ "Character\\Player\\anim\\roll_end_idle.x",			false,	30.0f,	0.0f },	// 回避動作からアイドルへ移行(納刀)
 	{ "Character\\Player\\anim\\roll_end_run.x",			false,	20.0f,	0.0f },	// 回避動作から走りへ移行(納刀)
-	{ "Character\\Player\\anim\\roll_combat.x",				false,	20.0f,	0.0f },	// 回避動作開始(抜刀)
-	{ "Character\\Player\\anim\\roll_end_combat_idle.x",	false,	20.0f,	0.0f },	// 回避動作からアイドルへ移行(抜刀)
-	{ "Character\\Player\\anim\\roll_end_combat_run.x",		false,	19.0f,	0.0f },	// 回避動作から走りへ移行(抜刀)
+	{ "Character\\Player\\anim\\roll_combat.x",				false,	26.0f,	0.0f },	// 回避動作開始(抜刀)
+	{ "Character\\Player\\anim\\roll_end_combat_idle.x",	false,	31.0f,	0.0f },	// 回避動作からアイドルへ移行(抜刀)
+	{ "Character\\Player\\anim\\roll_end_combat_run.x",		false,	20.0f,	0.0f },	// 回避動作から走りへ移行(抜刀)
 	{ "Character\\Player\\anim\\run_attack.x",				false,	125.0f,	1.0f },	// 走り後攻撃
 	{ "Character\\Player\\anim\\attack_normal_1-1.x",		false,	24.0f,	1.0f },	// 通常攻撃1-1
 	{ "Character\\Player\\anim\\attackwait_normal_1-1.x",	false,	39.0f,	1.0f },	// 通常攻撃1-1攻撃待ち

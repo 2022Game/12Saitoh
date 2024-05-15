@@ -256,8 +256,8 @@ void CPlayer::Update_AttackUp()
 			mMoveSpeed += anglevec * ATTACK_UP_MOVE_SPEED;
 		}
 		// モーションに合わせてジャンプを行う
-		if (ATTACK_UP_JUMPSTART_FRAME == GetAnimationFrame())
-		{
+		if (mIsGrounded && 
+			ATTACK_UP_JUMPSTART_FRAME <= GetAnimationFrame()){
 			mMoveSpeed += CVector(0.0f, ATTACK_UP_JUMP_SPEED, 0.0f);
 			mIsGrounded = false;
 		}
@@ -433,7 +433,7 @@ void CPlayer::Update_AttackWait()
 	if (IsAnimationFinished())
 	{
 		// 待機状態へ移行
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		mAttackStep = 0;
 	}
 
@@ -447,7 +447,7 @@ void CPlayer::Update_AttackWait()
 			if (CInput::PushKey(VK_SPACE))
 			{
 				mAttackStep = 0;
-				mState = EState::eAvoidance;
+				ChangeState(EState::eAvoidance);
 				ChangeAnimation(EAnimType::eRollStart_Combat);
 			}
 		}
@@ -464,12 +464,13 @@ void CPlayer::Update_AttackEnd()
 			CInput::Key('S') || CInput::Key('D'))
 		{
 			mAttackStep = 0;
-			mState = EState::eMove;
+			ChangeState(EState::eMove);
+			ChangeState(EState::eMove);
 			ChangeAnimation(EAnimType::eRunStart_Combat);
 			// 回避動作への切り替え
 			if (CInput::PushKey(VK_SPACE))
 			{
-				mState = EState::eAvoidance;
+				ChangeState(EState::eAvoidance);
 				ChangeAnimation(EAnimType::eRollStart_Combat);
 			}
 		}
@@ -478,7 +479,7 @@ void CPlayer::Update_AttackEnd()
 	if (IsAnimationFinished())
 	{
 		mAttackStep = 0;
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 	}
 }
 

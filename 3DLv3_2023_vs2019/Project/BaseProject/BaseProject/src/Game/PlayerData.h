@@ -110,7 +110,7 @@ enum class EAnimType
 // プレイヤー納刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_SHEATHED_IDLE_FRAME 31
 // プレイヤー抜刀状態へ切り替えるフレーム(走り中)
-#define SWITCH_DRAWN_RUN_FRAME 13
+#define SWITCH_DRAWN_RUN_FRAME 15
 // プレイヤー納刀状態へ切り替えるフレーム(走り中)
 #define SWITCH_SHEATHED_RUN_FRAME 20
 

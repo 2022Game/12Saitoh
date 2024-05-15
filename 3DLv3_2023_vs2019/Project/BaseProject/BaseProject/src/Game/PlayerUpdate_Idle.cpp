@@ -18,7 +18,7 @@ void CPlayer::Update_Idle()
 			{
 				// 走り出しのアニメーションを再生
 				ChangeAnimation(EAnimType::eRunStart_Combat);
-				mState = EState::eMove;
+				ChangeState(EState::eMove);
 			}
 			else
 			{
@@ -32,13 +32,13 @@ void CPlayer::Update_Idle()
 			// 左クリックで通常攻撃へ移行
 			if (CInput::PushKey(VK_LBUTTON))
 			{
-				mState = EState::eAttack;
+				ChangeState(EState::eAttack);
 				ChangeAnimation(EAnimType::eNormalAttack1_1);
 			}
 			// マウスホイールクリックでジャンプ攻撃へ移行
 			if (CInput::PushKey(VK_MBUTTON))
 			{
-				mState = EState::eAttack;
+				ChangeState(EState::eAttack);
 				ChangeAnimation(EAnimType::eAttack_Up);
 			}
 			// Cキー＋左クリックで弱闘技へ移行
@@ -64,7 +64,7 @@ void CPlayer::Update_Idle()
 			// 左クリックで空中攻撃へ移行する
 			if (!mIsAirAttack && CInput::PushKey(VK_LBUTTON))
 			{
-				mState = EState::eAttack;
+				ChangeState(EState::eAttack);
 				ChangeAnimation(EAnimType::eAirAttack1_1);
 				mIsAirAttack = true;
 			}
@@ -79,19 +79,19 @@ void CPlayer::Update_Idle()
 			{
 				// 走り出しのアニメーションを再生
 				ChangeAnimation(EAnimType::eRunStart);
-				mState = EState::eMove;
+				ChangeState(EState::eMove);
 				// ダッシュキーが押されている場合ダッシュ移動状態に切り替える
 				if (CInput::Key(VK_SHIFT))
 				{
 					// スタミナが0以上かつフラグが立っていない
 					if (mStatus.sp > 0 && !mSPZeroFlag)
 					{
-						mState = EState::eFastMove;
+						ChangeState(EState::eFastMove);
 						ChangeAnimation(EAnimType::eFastRunStart);
 					}
 					else
 					{
-						mState = EState::eMove;
+						ChangeState(EState::eMove);
 						ChangeAnimation(EAnimType::eRun);
 					}
 				}

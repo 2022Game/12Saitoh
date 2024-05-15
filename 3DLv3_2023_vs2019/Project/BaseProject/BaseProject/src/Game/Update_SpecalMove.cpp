@@ -4,7 +4,7 @@
 void CPlayer::SetSpecalMove(EAnimType type, bool cutin)
 {
 	mAttackStep = 0;
-	mState = EState::eSpecalMove;
+	ChangeState(EState::eSpecalMove);
 	ChangeAnimation(type);
 
 	// カットインが必要な場合
@@ -150,10 +150,12 @@ void CPlayer::Strong_SpecalMove_Move()
 {
 	switch (mSPAttackStep)
 	{
-	case 0:// 一度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK1_START) mpSword->AttackStart();
-
+	case 0:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+		break;
+	case 1:// 一度目の移動処理
 		if (POWERATTACK1_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK1_END)
 		{
@@ -167,10 +169,11 @@ void CPlayer::Strong_SpecalMove_Move()
 			mSPAttackStep++;
 		}
 		break;
-	case 1:// 二度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK2_START) mpSword->AttackStart();
-
+	case 2:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+	case 3:// 二度目の移動処理
 		if (POWERATTACK2_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK2_END)
 		{
@@ -184,10 +187,12 @@ void CPlayer::Strong_SpecalMove_Move()
 			mSPAttackStep++;
 		}
 		break;
-	case 2:// 三度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK3_START) mpSword->AttackStart();
-
+	case 4:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+		break;
+	case 5:// 三度目の移動処理
 		if (POWERATTACK3_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK3_END)
 		{
@@ -201,10 +206,12 @@ void CPlayer::Strong_SpecalMove_Move()
 			mSPAttackStep++;
 		}
 		break;
-	case 3:// 四度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK4_START) mpSword->AttackStart();
-
+	case 6:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+		break;
+	case 7:// 四度目の移動処理
 		if (POWERATTACK4_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK4_END)
 		{
@@ -218,10 +225,12 @@ void CPlayer::Strong_SpecalMove_Move()
 			mSPAttackStep++;
 		}
 		break;
-	case 4:// 五度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK5_START) mpSword->AttackStart();
-
+	case 8:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+		break;
+	case 9:// 五度目の移動処理
 		if (POWERATTACK5_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK5_END)
 		{
@@ -235,10 +244,12 @@ void CPlayer::Strong_SpecalMove_Move()
 			mSPAttackStep++;
 		}
 		break;
-	case 5:// 六度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK6_START) mpSword->AttackStart();
-
+	case 10:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+		break;
+	case 11:// 六度目の移動処理
 		if (POWERATTACK6_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK6_END)
 		{
@@ -252,16 +263,18 @@ void CPlayer::Strong_SpecalMove_Move()
 			mSPAttackStep++;
 		}
 		break;
-	case 6:// 七度目の移動処理
-		// 始めの1フレーム目に剣に攻撃開始を伝える
-		if (GetAnimationFrame() == POWERATTACK7_START) mpSword->AttackStart();
-
+	case 12:// コライダー有効化
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		mSPAttackStep++;
+		break;
+	case 13:// 七度目の移動処理
 		if (POWERATTACK7_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK7_END)
 		{
 			mMoveSpeed -= POWERATTACL7_VEC;
 		}
-		if (GetAnimationFrame() == POWERATTACK7_END) mpSword->AttackEnd();
+		if (GetAnimationFrame() <= POWERATTACK7_END) mpSword->AttackEnd();
 		break;
 	}
 }

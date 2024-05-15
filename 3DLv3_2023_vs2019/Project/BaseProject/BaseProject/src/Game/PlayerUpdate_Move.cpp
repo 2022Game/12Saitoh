@@ -43,19 +43,19 @@ void CPlayer::Update_Move()
 				// 回避動作への切り替え
 				if (CInput::PushKey(VK_SPACE))
 				{
-					mState = EState::eAvoidance;
+					ChangeState(EState::eAvoidance);
 					ChangeAnimation(EAnimType::eRollStart_Combat);
 				}
 				// 左クリックで攻撃状態へ移行
 				if (CInput::PushKey(VK_LBUTTON))
 				{
-					mState = EState::eAttack;
+					ChangeState(EState::eAttack);
 					ChangeAnimation(EAnimType::eNormalAttack1_1);
 				}
 				// マウスホイールクリックでジャンプ攻撃へ移行
 				if (CInput::PushKey(VK_MBUTTON))
 				{
-					mState = EState::eAttack;
+					ChangeState(EState::eAttack);
 					ChangeAnimation(EAnimType::eAttack_Up);
 				}
 				// Cキー＋左クリックで弱闘技へ移行
@@ -80,13 +80,13 @@ void CPlayer::Update_Move()
 			{
 				// 走り終わりのアニメーションを再生し、アイドル状態に戻す
 				ChangeAnimation(EAnimType::eRunEnd_Combat);
-				mState = EState::eIdle;
+				ChangeState(EState::eIdle);
 			}
 		}
 		else
 		{
 			ChangeAnimation(EAnimType::eIdleAir_Combat);
-			mState = EState::eIdle;
+			ChangeState(EState::eIdle);
 		}
 		break;
 	case false:	// 納刀
@@ -123,14 +123,14 @@ void CPlayer::Update_Move()
 					// スタミナが0以上かつフラグが立っていない
 					if (mStatus.sp > 0 && !mSPZeroFlag)
 					{
-						mState = EState::eFastMove;
+						ChangeState(EState::eFastMove);
 						ChangeAnimation(EAnimType::eFastRun);
 					}
 				}
 				// 回避動作への切り替え
 				if (CInput::PushKey(VK_SPACE))
 				{
-					mState = EState::eAvoidance;
+					ChangeState(EState::eAvoidance);
 					ChangeAnimation(EAnimType::eRollStart);
 				}
 				// 左クリックまたは、マウスホイールクリックで抜刀
@@ -144,13 +144,13 @@ void CPlayer::Update_Move()
 			{
 				// 走り終わりのアニメーションを再生し、アイドル状態に戻す
 				ChangeAnimation(EAnimType::eRunEnd);
-				mState = EState::eIdle;
+				ChangeState(EState::eIdle);
 			}
 		}
 		else
 		{
 			ChangeAnimation(EAnimType::eIdleAir);
-			mState = EState::eIdle;
+			ChangeState(EState::eIdle);
 		}
 		break;
 	}
@@ -201,7 +201,7 @@ void CPlayer::Update_FastMove()
 			// 回避動作への切り替え
 			if (CInput::PushKey(VK_SPACE))
 			{
-				mState = EState::eAvoidance;
+				ChangeState(EState::eAvoidance);
 				ChangeAnimation(EAnimType::eRollStart);
 				mIsDash = false;
 				return;
@@ -210,7 +210,7 @@ void CPlayer::Update_FastMove()
 			// ダッシュのアニメーションから走るアニメーションに切り替える
 			if (!mIsDash)
 			{
-				mState = EState::eMove;
+				ChangeState(EState::eMove);
 				ChangeAnimation(EAnimType::eRun);
 			}
 		}
@@ -219,14 +219,14 @@ void CPlayer::Update_FastMove()
 		{
 			// 走り終わりのアニメーションを再生し、アイドル状態に戻す
 			ChangeAnimation(EAnimType::eFastRunEnd);
-			mState = EState::eIdle;
+			ChangeState(EState::eIdle);
 			mIsDash = false;
 		}
 	}
 	else
 	{
 		ChangeAnimation(EAnimType::eIdleAir);
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		mIsDash = false;
 	}
 	// スタミナがゼロになったら強制的にダッシュを終了
@@ -235,7 +235,7 @@ void CPlayer::Update_FastMove()
 	{
 		mIsDash = false;
 		mSPZeroFlag = true;
-		mState = EState::eMove;
+		ChangeState(EState::eMove);
 		ChangeAnimation(EAnimType::eRun);
 	}
 }

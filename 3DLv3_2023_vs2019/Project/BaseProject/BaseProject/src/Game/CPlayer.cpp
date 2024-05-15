@@ -29,8 +29,9 @@ CPlayer::CPlayer()
 	, mIsAvoid(false)
 	, mSPZeroFlag(false)
 	, mIsUpdateInput(false)
+	, mStateStep(0)
 	, mAttackStep(0)
-	, mSPAttackStep()
+	, mSPAttackStep(0)
 	, mHPRecoveryTime(0.0f)
 	, mpRideObject(nullptr)
 {
@@ -142,6 +143,13 @@ void CPlayer::ChangeAnimation(EAnimType type)
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.motionValue);
 }
 
+// ステータスの切り替え
+void CPlayer::ChangeState(EState state)
+{
+	mState = state;
+	mStateStep = 0;
+}
+
 // 抜納状態を切り替える
 void CPlayer::SwitchDrawn()
 {
@@ -154,41 +162,57 @@ void CPlayer::SwitchDrawn()
 // 抜納の切り替え処理
 void CPlayer::Update_SwitchDrawn()
 {
-	// 特定のアニメーションで抜納状態を切り替える
-	// アニメーション中のフレームによって切り替えるタイミングを決める
-	switch (mIsDrawn)
+	switch (mStateStep)
 	{
-	case true:	// 抜刀
-		switch (mState)	// プレイヤーの状態
+	case 0:
+		EAnimType animType;
+		float animFrame;
+		// 特定のアニメーションで抜納状態を切り替える
+		// アニメーション中のフレームによって切り替えるタイミングを決める
+		if (mIsDrawn)// 抜刀中
 		{
-		case CPlayer::EState::eIdle: // 待機状態
-			if (AnimationIndex() == (int)EAnimType::eIdle_Sheathed_Combat &&
-				GetAnimationFrame() == SWITCH_SHEATHED_IDLE_FRAME){
-				SwitchDrawn();
+			if (mState == EState::eIdle)// アイドル中
+			{
+				animType = EAnimType::eIdle_Sheathed_Combat;
+				animFrame = SWITCH_SHEATHED_IDLE_FRAME;
 			}
-			break;
-		case CPlayer::EState::eMove: // 移動状態
-			if (AnimationIndex() == (int)EAnimType::eRun_Sheathed_Combat &&
-				GetAnimationFrame() == SWITCH_SHEATHED_RUN_FRAME){
+			else// 走り中
+			{
+				animType = EAnimType::eRun_Sheathed_Combat;
+				animFrame = SWITCH_SHEATHED_RUN_FRAME;
+			}
+
+			// 納刀する
+			if (AnimationIndex() == (int)animType &&
+				GetAnimationFrame() >= animFrame)
+			{
 				SwitchDrawn();
+				mStateStep++;
+			}
+		}
+		else// 納刀中
+		{
+			if (mState == EState::eIdle)// アイドル中
+			{
+				animType = EAnimType::eIdle_Drawn_Combat;
+				animFrame = SWITCH_DRAWN_IDLE_FRAME;
+			}
+			else// 走り中
+			{
+				animType = EAnimType::eRun_Drawn_Combat;
+				animFrame = SWITCH_DRAWN_RUN_FRAME;
+			}
+
+			// 抜刀する
+			if (AnimationIndex() == (int)animType &&
+				GetAnimationFrame() >= animFrame)
+			{
+				SwitchDrawn();
+				mStateStep++;
 			}
 		}
 		break;
-	case false:	// 納刀
-		switch (mState) // プレイヤーの状態
-		{
-		case CPlayer::EState::eIdle: // 待機状態
-			if (AnimationIndex() == (int)EAnimType::eIdle_Drawn_Combat &&
-				GetAnimationFrame() == SWITCH_DRAWN_IDLE_FRAME) {
-				SwitchDrawn();
-			}
-			break;
-		case CPlayer::EState::eMove: // 移動状態
-			if (AnimationIndex() == (int)EAnimType::eRun_Drawn_Combat) {
-				if (GetAnimationFrame() == SWITCH_DRAWN_RUN_FRAME)
-				SwitchDrawn();
-			}
-		}
+	case 1:
 		break;
 	}
 }
@@ -380,7 +404,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				// 着地時に移動キーを押していた場合、着地モーションをローリングに設定
 				if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
 				{
-					mState = EState::eAvoidance;
+					ChangeState(EState::eAvoidance);
 					ChangeAnimation(EAnimType::eRollStart);
 				}
 				else
@@ -399,7 +423,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				// 移動キーを押していた場合、着地モーションをローリングに設定
 				if (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'))
 				{
-					mState = EState::eAvoidance;
+					ChangeState(EState::eAvoidance);
 					ChangeAnimation(EAnimType::eRollStart);
 					mIsAirAttack = false;
 				}
