@@ -72,6 +72,7 @@ void CPlayer::Update_Move()
 				// Eキーで納刀
 				if (CInput::PushKey('E'))
 				{
+					ChangeState(EState::eMove);
 					ChangeAnimation(EAnimType::eRun_Sheathed_Combat);
 				}
 			}
@@ -136,6 +137,7 @@ void CPlayer::Update_Move()
 				// 左クリックまたは、マウスホイールクリックで抜刀
 				if (CInput::PushKey(VK_LBUTTON) || CInput::PushKey(VK_MBUTTON))
 				{
+					ChangeState(EState::eMove);
 					ChangeAnimation(EAnimType::eRun_Drawn_Combat);
 				}
 			}

@@ -54,6 +54,7 @@ void CPlayer::Update_Idle()
 			// Eキーで納刀
 			if (CInput::PushKey('E'))
 			{
+				ChangeState(EState::eIdle);
 				ChangeAnimation(EAnimType::eIdle_Sheathed_Combat);
 			}
 		}
@@ -107,6 +108,7 @@ void CPlayer::Update_Idle()
 				// 左クリックまたは、マウスホイールクリックで抜刀
 				if (CInput::PushKey(VK_LBUTTON) || CInput::PushKey(VK_MBUTTON))
 				{
+					ChangeState(EState::eIdle);
 					// 抜刀アニメーションを再生
 					ChangeAnimation(EAnimType::eIdle_Drawn_Combat);
 				}

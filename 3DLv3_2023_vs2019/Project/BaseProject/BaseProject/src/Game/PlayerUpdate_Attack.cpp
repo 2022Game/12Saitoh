@@ -177,6 +177,25 @@ void CPlayer::Update_NormalAttack3()
 		mAttackStep++;
 		break;
 	case 1:
+		// 攻撃に合わせてプレイヤーを移動
+		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
+		{
+			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
+		}
+		if (GetAnimationFrame() >= NORMALATTACK1_3_END_FRAME + 1)
+		{
+			mAttackStep++;
+		}
+		break;
+	case 2:
+		if (GetAnimationFrame() <= NORMALATTACK1_3_COLLIDER)
+		{
+			mpSword->AttackStart();
+			mAttackStep++;
+		}
+		break;
+	case 3:
 		if (IsAnimationFinished())
 		{
 			mAttackStep++;
@@ -184,18 +203,8 @@ void CPlayer::Update_NormalAttack3()
 			// 剣に攻撃終了を伝える
 			mpSword->AttackEnd();
 		}
-		if (GetAnimationFrame() == NORMALATTACK1_3_COLLIDER)
-		{
-			mpSword->AttackStart();
-		}
-		// 攻撃に合わせてプレイヤーを移動
-		if (NORMALATTACK1_3_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= NORMALATTACK1_3_END_FRAME)
-		{
-			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
-		}
 		break;
-	case 2:
+	case 4:
 		if (CInput::PushKey(VK_LBUTTON))
 		{
 			// 通常攻撃1-1へ切り替え
