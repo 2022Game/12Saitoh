@@ -54,6 +54,7 @@ void CDragon::UpdateSpAttack_Step0()
 	{
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eTakeOff);
+		SetAnimationSpeed(0.45f);
 	}
 }
 
@@ -68,6 +69,7 @@ void CDragon::UpdateSpAttack_Step1()
 	{
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eFlyForward);
+		SetAnimationSpeed(0.6f);
 
 		// 次のステップで移動する目的地を設定
 		CVector pPos = CPlayer::Instance()->Position();
@@ -145,6 +147,7 @@ void CDragon::UpdateSpAttack_Step3()
 	{
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eFlyIdle);
+		SetAnimationSpeed(0.31f);
 		mSaveDestination = CVector::zero;
 	}
 	CDebugPrint::Print("目的地までの距離 :  %.0f\n", targetLength);
@@ -162,23 +165,18 @@ void CDragon::UpdateSpAttack_Step4()
 	// ステージの中心に向ける
 	mMoveSpeed = FD * 0.0000000001;
 
-	mMoveSpeed -= CVector(0.0f, 0.5f, 0.0f);
+	mMoveSpeed -= CVector(0.0f, 0.35f, 0.0f);
 
 	// 2秒経過で次のステップへ移行
 	mElapsedTime += Time::DeltaTime();
-	if (mElapsedTime >= 3.0f)
+	if (mElapsedTime >= 2.0f)
 	{
 		if (IsAnimationFinished())
 		{
 			mElapsedTime = 0.0f;
 			mSpAttackStep++;
 			ChangeAnimation(EDragonAnimType::eFlyFlame);
-
-			// 仮のブレスを発射
-			if (!mpSpFlamethrower->IsThrowing())
-			{
-				mpSpFlamethrower->Start();
-			}
+			SetAnimationSpeed(0.2f);
 		}
 	}
 }
@@ -188,11 +186,26 @@ void CDragon::UpdateSpAttack_Step5()
 {
 	// 重力で落ちないように調整
 	mMoveSpeed += CVector(0.0f, GRAVITY, 0.0f);
+
+	// ブレス発射処理
+	if (15.0f <= GetAnimationFrame() &&
+		!mpSpFlamethrower->IsThrowing())
+	{
+		mpSpFlamethrower->Start();
+	}
+	// ブレス停止処理
+	if (77.0f <= GetAnimationFrame() &&
+		mpSpFlamethrower->IsThrowing())
+	{
+		mpSpFlamethrower->Stop();
+	}
+
 	// 攻撃が終わったら、次のステップへ移行
 	if (IsAnimationFinished())
 	{
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eFlyIdle);
+		SetAnimationSpeed(0.31f);
 		if (mpSpFlamethrower->IsThrowing())
 		{
 			mpSpFlamethrower->Stop();
@@ -212,6 +225,7 @@ void CDragon::UpdateSpAttack_Step6()
 			mElapsedTime = 0.0f;
 			mSpAttackStep++;
 			ChangeAnimation(EDragonAnimType::eFlyForward);
+			SetAnimationSpeed(0.6f);
 		}
 	}
 	// 重力で落ちないように調整
@@ -240,7 +254,8 @@ void CDragon::UpdateSpAttack_Step7()
 	{
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eLand);
-		mpColliderLine->Position(mpColliderLine->Position() + CVector(0.0f, 30.0f, 0.0f));
+		SetAnimationSpeed(0.325f);
+		mpColliderLine->Position(mpColliderLine->Position() + CVector(0.0f, 20.0f, 0.0f));
 	}
 }
 
@@ -254,6 +269,7 @@ void CDragon::UpdateSpAttack_Step8()
 		mBatteleStep = 0;
 		mState = EState::eBattle;
 		ChangeAnimation(EDragonAnimType::eIdle1);
+		SetAnimationSpeed(0.4f);
 		mpColliderLine->Position(CVector::zero);
 	}
 

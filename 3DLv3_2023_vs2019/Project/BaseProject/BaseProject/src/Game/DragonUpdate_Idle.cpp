@@ -11,6 +11,7 @@ void CDragon::UpdateIdle()
 	if (IsFoundPlayer())
 	{
 		ChangeAnimation(EDragonAnimType::eScream);
+		SetAnimationSpeed(0.5f);
 		mState = EState::eBattle;
 		mBatteleStep = 2;
 	}
@@ -19,5 +20,6 @@ void CDragon::UpdateIdle()
 	{
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
+		SetAnimationSpeed(0.5f);
 	}
 }

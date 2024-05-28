@@ -22,6 +22,7 @@ CDragon::CDragon()
 	, mAngryValue(0)
 	, mRandSave(0)
 	, mBatteleStep(0)
+	, mAttackStep(0)
 	, mSpAttackStep(0)
 	, mSpAttackNum(0)
 	, mElapsedTime(0.0f)
@@ -48,6 +49,7 @@ CDragon::CDragon()
 
 	// 最初は待機のアニメーションを再生
 	ChangeAnimation(EDragonAnimType::eIdle1);
+	SetAnimationSpeed(0.4f);
 
 	// ランダム値を生成して取得した値によりステータスを設定
 	int rand = Math::Rand(0.0f, 5.0f);
@@ -144,6 +146,7 @@ void CDragon::ChangeAnimation(EDragonAnimType type)
 	if (!(EDragonAnimType::None < type && type < EDragonAnimType::Num)) return;
 	DragonData::AnimData data = DragonData::GetAnimData((int)type);
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.motionValue);
+	SetAnimationSpeed(1.0f);
 }
 
 // プレイヤーを見つけたかどうか
@@ -288,16 +291,15 @@ void CDragon::Update()
 	//else if (mDistanceType == EDistanceType::eMedium) CDebugPrint::Print("中距離\n");
 	//else CDebugPrint::Print("遠距離\n");
 
-	if (CInput::PushKey('1'))
-	{
-		int p = GetHPPercent();
-		printf("%d\n", p);
-	}
+	//if (CInput::PushKey('1'))
+	//{
+	//	int p = GetHPPercent();
+	//	printf("%d\n", p);
+	//}
 
 	// バックステップ判定用
 	//if (IsBackStep()) CDebugPrint::Print("true\n");
 	//else CDebugPrint::Print("false\n");
-
 
 #endif
 }
@@ -399,6 +401,7 @@ void CDragon::TakeDamage(int damage)
 			mIsAngry = true;
 			mAngryValue = mAngryStandardValue;
 			ChangeAnimation(EDragonAnimType::eScream);
+			SetAnimationSpeed(0.5f);
 			// 各ステータスを強化
 			mStatus.atk += 10;
 			mStatus.def += 10;

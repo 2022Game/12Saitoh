@@ -50,6 +50,7 @@ void CDragon::UpdateBattele_Idle()
 		mSpAttackNum++;
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
+		SetAnimationSpeed(0.5f);
 		return;
 	}
 	// HPが25%以下になったらもう一度撃つ
@@ -58,13 +59,14 @@ void CDragon::UpdateBattele_Idle()
 		mSpAttackNum++;
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
+		SetAnimationSpeed(0.5f);
 		return;
 	}
 
 	// 経過時間を加算する
 	mElapsedTime += Time::DeltaTime();
-	// 3秒ごとに攻撃を行う
-	if (mElapsedTime >= 3.0f)
+	// 1.5秒ごとに攻撃を行う
+	if (mElapsedTime >= 1.5f)
 	{
 		// 経過時間を初期化
 		mElapsedTime = 0.0f;
@@ -84,6 +86,7 @@ void CDragon::UpdateBattele_Idle()
 	{
 	case 1: // その場で待機モーションを行う
 		ChangeAnimation(EDragonAnimType::eIdle1);
+		SetAnimationSpeed(0.4f);
 		break;
 
 	case 2:// プレイヤーの元へ移動する
@@ -95,6 +98,7 @@ void CDragon::UpdateBattele_Idle()
 		EP.Y(0.0f);
 		mMoveSpeed += EP * 0.3f;
 		ChangeAnimation(EDragonAnimType::eWalk);
+		SetAnimationSpeed(0.7f);
 	}
 		break;
 
@@ -138,6 +142,7 @@ void CDragon::UpdateBattle_Chase()
 			{
 				// 噛みつき攻撃を行う
 				ChangeAnimation(EDragonAnimType::eAttackMouth);
+				SetAnimationSpeed(0.43);
 				mBatteleStep++;
 				mChaseElapsedTime = 0.0f;
 			}
@@ -146,6 +151,7 @@ void CDragon::UpdateBattle_Chase()
 				// 攻撃ができる範囲まで移動
 				mMoveSpeed += EP * 0.6f;
 				ChangeAnimation(EDragonAnimType::eWalk);
+				SetAnimationSpeed(0.7f);
 				// 移動時間を加算
 				mChaseElapsedTime += Time::DeltaTime();
 			}
@@ -162,34 +168,7 @@ void CDragon::UpdateBattle_Chase()
 			// バックステップ処理
 			if (AnimationIndex() == (int)EDragonAnimType::eBackStep)
 			{
-				// ジャンプ処理
-				if (GetAnimationFrame() == 33.0f)
-				{
-					mMoveSpeed += CVector(0.0f, 3.5f, 0.0f);
-					mIsGrounded = false;
-				}
-
-				// 移動処理
-				if (33.0f <= GetAnimationFrame() &&
-					GetAnimationFrame() <= 65.0f)
-				{
-					mMoveSpeed += -VectorZ() * 4.0;
-				}
-				if (42.0f <= GetAnimationFrame() &&
-					GetAnimationFrame() <= 60.0f)
-				{
-					mMoveSpeed += CVector(0.0f, -0.33f, 0.0f);
-				}
-
-				// コライダー処理
-				if (GetAnimationFrame() >= 0.0f)
-				{
-					mpColliderLine->Position(0.0f, 13.0f, 0.0f);
-				}
-				if (GetAnimationFrame() >= 60.0f)
-				{
-					mpColliderLine->Position(CVector::zero);
-				}
+				Update_BackStep();
 			}
 			// バックステップが終了したら
 			if (IsAnimationFinished())
@@ -223,6 +202,7 @@ void CDragon::UpdateBattle_Chase()
 				if (!(dotZ <= cosf(15 * M_PI / 180.0f)))
 				{
 					ChangeAnimation(EDragonAnimType::eAttackMouth);
+					SetAnimationSpeed(0.43f);
 					mBatteleStep++;
 					mChaseElapsedTime = 0.0f;
 				}
@@ -230,12 +210,14 @@ void CDragon::UpdateBattle_Chase()
 				{
 					mRandSave = 2;
 					ChangeAnimation(EDragonAnimType::eBackStep);
+					SetAnimationSpeed(0.5f);
 				}
 			}
 			else// それ以外の場合
 			{
 				mRandSave = 2;
 				ChangeAnimation(EDragonAnimType::eBackStep);
+				SetAnimationSpeed(0.5f);
 			}
 			break;
 		}
@@ -253,7 +235,7 @@ void CDragon::UpdateBattle_Chase()
 
 		// 求めた角度が視野角度内
 		// もしくは、2秒以上経過で攻撃
-		if (mChaseElapsedTime >= 2.0f || !(dotZ <= cosf(10 * M_PI / 180.0f)))
+		if (mChaseElapsedTime >= 1.5f || !(dotZ <= cosf(10 * M_PI / 180.0f)))
 		{
 			// ランダム値を生成して、行う攻撃を選択
 			// 飛び掛かり攻撃が多めになるよう調整
@@ -262,11 +244,13 @@ void CDragon::UpdateBattle_Chase()
 			case 0:
 			case 1:// ブレス攻撃
 				ChangeAnimation(EDragonAnimType::eAttackFlame);
+				SetAnimationSpeed(0.33f);
 				mBatteleStep++;
 				mChaseElapsedTime = 0.0f;
 				break;
 			default:// 飛び掛かり攻撃
 				ChangeAnimation(EDragonAnimType::eAttackHand);
+				SetAnimationSpeed(0.5f);
 				mBatteleStep++;
 				mChaseElapsedTime = 0.0f;
 				break;
@@ -279,6 +263,7 @@ void CDragon::UpdateBattle_Chase()
 			mMoveSpeed += EP * 0.2f;
 			mChaseElapsedTime += Time::DeltaTime();
 			ChangeAnimation(EDragonAnimType::eWalk);
+			SetAnimationSpeed(0.7f);
 		}
 
 		break;
@@ -304,8 +289,9 @@ void CDragon::UpdateBattle_Chase()
 				CVector EP = (playerPos - enemyPos).Normalized();
 				EP.Y(0.0f);
 				// 一定の範囲まで移動する
-				mMoveSpeed += EP * 0.8f;
+				mMoveSpeed += EP * 1.0f;
 				ChangeAnimation(EDragonAnimType::eWalk);
+				SetAnimationSpeed(0.7f);
 				// 移動時間を加算
 				mChaseElapsedTime += Time::DeltaTime();
 			}
@@ -334,6 +320,7 @@ void CDragon::UpdateBattle_Chase()
 				mRandSave = 0;
 				// ブレス攻撃を行う
 				ChangeAnimation(EDragonAnimType::eAttackFlame);
+				SetAnimationSpeed(0.33f);
 				// 移動時間の初期化
 				mChaseElapsedTime = 0.0f;
 				mBatteleStep++;
@@ -352,97 +339,198 @@ void CDragon::UpdateAttack()
 	switch (AnimationIndex())
 	{
 	case (int)EDragonAnimType::eScream:// 咆哮
-		// 咆哮用のコライダの切り替えなどを行う予定
+		Update_Sceream();
 		break;
-
 	case (int)EDragonAnimType::eAttackMouth:// 噛みつき攻撃
-		if (GetAnimationFrame() == ATTACKMOUTH_COL_START) AttackStart();
-		else if (GetAnimationFrame() == ATTACKMOUTH_COL_END) AttackEnd();
+		Update_AttackMouth();
 		break;
-
 	case (int)EDragonAnimType::eAttackHand:// 飛び掛かり攻撃
-		// 移動処理
-		// 飛び掛かり攻撃
-		if (ATTACKHAND_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= ATTACKHAND_END_FRAME)
-		{
-			// ドラゴンが向いている方向へ移動
-			mMoveSpeed += VectorZ() * ATTACKHAND_MOVESPEED;
-		}
-		// 飛び掛かり攻撃後のバックステップ
-		else if (BACKSTEP_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= BACKSTEP_END_FRAME)
-		{
-			// ドラゴンが向いている方向の逆方向へ移動
-			mMoveSpeed += -VectorZ() * BACKSTEP_MOVESPEED;
-		}
-
-		// ジャンプ処理
-		if (GetAnimationFrame() == JUMP_START_FRAME)
-		{
-			mMoveSpeed += CVector(0.0f, 4.0f, 0.0f);
-			mIsGrounded = false;
-		}
-		// 落下の調整
-		else if (FALLING_FRAME1_START <= GetAnimationFrame() &&
-			GetAnimationFrame() <= FALLING_FRAME1_END)
-		{
-			mMoveSpeed += CVector(0.0f, -0.4f, 0.0f);
-		}
-		// バックステップ
-		else if (GetAnimationFrame() == BACKJUMP_START_FRAME)
-		{
-			mMoveSpeed += CVector(0.0f, 2.0f, 0.0f);
-			mIsGrounded = false;
-		}
-		// 落下の調整
-		else if (FALLING_FRAME2_START <= GetAnimationFrame() &&
-			GetAnimationFrame() <= FALLING_FRAME2_END)
-		{
-			mMoveSpeed += CVector(0.0f, -0.33f, 0.0f);
-		}
-
-		// 地面に足がつかない不具合が発生するため
-		// コライダーの位置を調整で対応
-		if (36.0f <= GetAnimationFrame() && GetAnimationFrame() <= 60.0f)
-		{
-			mpColliderLine->Position(mpColliderLine->Position() + CVector(0.0f, 0.2f, 0.0f));
-		}
-		if (GetAnimationFrame() == 74.0f)
-		{
-			mpColliderLine->Position(0.0f, 4.0f, 0.0f);
-		}
-		else if (GetAnimationFrame() == 148.0f)
-		{
-			mpColliderLine->Position(CVector::zero);
-		}
+		Update_AttackHand();
 		break;
-
-	case (int)EDragonAnimType::eAttackFlame:
-
-		if (FLAME_START_FRAME <= GetAnimationFrame() &&
-			GetAnimationFrame() <= FLAME_END_FRAME)
-		{
-			if (!mpFlamethrower->IsThrowing())
-			{
-				mpFlamethrower->Start();
-			}
-		}
-		else if (mpFlamethrower->IsThrowing())
-		{
-			mpFlamethrower->Stop();
-		}
+	case (int)EDragonAnimType::eAttackFlame:// 地上ブレス攻撃
+		Update_AttackFlame();
 		break;
 	}
 
 	// 攻撃が終了したらアイドルに移行する
 	if (IsAnimationFinished())
 	{
+		mAttackStep = 0;
 		mBatteleStep = 0;
 		// ブレス攻撃をしていたら、ブレスを止める
 		if (mpFlamethrower->IsThrowing())mpFlamethrower->Stop();
 	}
 }
+
+// 咆哮攻撃処理
+void CDragon::Update_Sceream()
+{
+	// 咆哮用のコライダの切り替え
+	// エフェクト関連の処理などを行う予定
+}
+
+// 噛みつき攻撃処理
+void CDragon::Update_AttackMouth()
+{
+	if (GetAnimationFrame() == ATTACKMOUTH_COL_START) AttackStart();
+	else if (GetAnimationFrame() == ATTACKMOUTH_COL_END) AttackEnd();
+}
+
+// 飛び掛かり攻撃処理
+void CDragon::Update_AttackHand()
+{
+	// 攻撃段階に応じて処理を実行
+	switch (mAttackStep)
+	{
+	case 0:// 飛び掛かり攻撃始め
+		// 飛び掛かり攻撃
+		if (ATTACKHAND_START_FRAME <= GetAnimationFrame())
+		{
+			// ドラゴンが向いている方向へ移動
+			mMoveSpeed += VectorZ() * ATTACKHAND_MOVESPEED;
+		}
+		// ジャンプ処理
+		if (JUMP_START_FRAME <= GetAnimationFrame())
+		{
+			mMoveSpeed += CVector(0.0f, 3.6f, 0.0f);
+			mIsGrounded = false;
+			mAttackStep++;
+		}
+		break;
+	case 1:// 飛び掛かり攻撃
+		if (ATTACKHAND_START_FRAME <= GetAnimationFrame())
+		{
+			// ドラゴンが向いている方向へ移動
+			mMoveSpeed += VectorZ() * ATTACKHAND_MOVESPEED;
+		}
+		// 落下の調整
+		if (FALLING_FRAME1_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= FALLING_FRAME1_END)
+		{
+			mMoveSpeed += CVector(0.0f, -0.36f, 0.0f);
+		}
+		// 飛び掛かり攻撃の移動が終了したら
+		if (ATTACKHAND_END_FRAME <= GetAnimationFrame())
+		{
+			mAttackStep++;
+		}
+		break;
+	case 2:// バックステップ
+		// バックステップ移動処理
+		if (BACKSTEP_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= BACKSTEP_END_FRAME)
+		{
+			// ドラゴンが向いている方向の逆方向へ移動
+			mMoveSpeed += -VectorZ() * BACKSTEP_MOVESPEED;
+		}
+		// 落下の調整
+		if (FALLING_FRAME2_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= FALLING_FRAME2_END)
+		{
+			mMoveSpeed += CVector(0.0f, -0.33f, 0.0f);
+		}
+		// バックステップ(ジャンプ)
+		if (BACKJUMP_START_FRAME <= GetAnimationFrame())
+		{
+			mMoveSpeed += CVector(0.0f, 2.5f, 0.0f);
+			mIsGrounded = false;
+			mAttackStep++;
+		}
+		break;
+	case 3:// バックステップ
+		// バックステップ移動処理
+		if (BACKSTEP_START_FRAME <= GetAnimationFrame() &&
+			GetAnimationFrame() <= BACKSTEP_END_FRAME)
+		{
+			// ドラゴンが向いている方向の逆方向へ移動
+			mMoveSpeed += -VectorZ() * BACKSTEP_MOVESPEED;
+		}
+		// 落下の調整
+		if (FALLING_FRAME2_START <= GetAnimationFrame() &&
+			GetAnimationFrame() <= FALLING_FRAME2_END)
+		{
+			mMoveSpeed += CVector(0.0f, -0.4f, 0.0f);
+		}
+		break;
+	}
+
+	//地面に足がつかない不具合が発生するため
+	//コライダーの位置を調整で対応
+	if (18.0f <= GetAnimationFrame() && GetAnimationFrame() <= 25.0f)
+	{
+		mpColliderLine->Position(mpColliderLine->Position() + CVector(0.0f, 0.4f, 0.0f));
+	}
+	if (85.0f <= GetAnimationFrame())
+	{
+		mpColliderLine->Position(CVector::zero);
+	}
+}
+
+// 地上ブレス攻撃処理
+void CDragon::Update_AttackFlame()
+{
+	if (FLAME_START_FRAME <= GetAnimationFrame() &&
+		GetAnimationFrame() <= FLAME_END_FRAME)
+	{
+		if (!mpFlamethrower->IsThrowing())
+		{
+			mpFlamethrower->Start();
+		}
+	}
+	else if (mpFlamethrower->IsThrowing())
+	{
+		mpFlamethrower->Stop();
+	}
+}
+
+// バックステップ
+void CDragon::Update_BackStep()
+{
+	switch (mAttackStep)
+	{
+	case 0:
+		// ジャンプ処理
+		if (12.0f <= GetAnimationFrame())
+		{
+			mMoveSpeed += CVector(0.0f, 2.5f, 0.0f);
+			mIsGrounded = false;
+			mAttackStep++;
+		}
+		// 移動処理
+		if (12.0f <= GetAnimationFrame() &&
+			GetAnimationFrame() <= 21.0f)
+		{
+			mMoveSpeed += -VectorZ() * 4.5;
+		}
+		break;
+	case 1:
+		// 移動処理
+		if (12.0f <= GetAnimationFrame() &&
+			GetAnimationFrame() <= 32.0f)
+		{
+			mMoveSpeed += -VectorZ() * 4.5;
+		}
+		// 落下の調整
+		if (22.0f <= GetAnimationFrame() &&
+			GetAnimationFrame() <= 32.0f)
+		{
+			mMoveSpeed += CVector(0.0f, -0.3f, 0.0f);
+		}
+		break;
+	}
+
+	// コライダー処理
+	if (GetAnimationFrame() >= 0.0f)
+	{
+		mpColliderLine->Position(0.0f, 13.0f, 0.0f);
+	}
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		mpColliderLine->Position(CVector::zero);
+	}
+	if (IsAnimationFinished()) mAttackStep = 0;
+}
+
 
 // 残りのHPの割合を取得
 int CDragon::GetHPPercent() const

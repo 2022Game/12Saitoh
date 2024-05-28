@@ -74,7 +74,6 @@
     <ClCompile Include="src\Game\CCutInTest.cpp" />
     <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp" />
     <ClCompile Include="src\Game\CDragon.cpp" />
-    <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CFlame.cpp" />
     <ClCompile Include="src\Game\CFlamethrower.cpp" />
@@ -103,9 +102,6 @@
     <ClCompile Include="src\Game\PlayerUpdate_Avoidance.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Idle.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Move.cpp" />
-    <ClCompile Include="src\Game\EnemyUpdate_Attack.cpp" />
-    <ClCompile Include="src\Game\EnemyUpdate_Idle.cpp" />
-    <ClCompile Include="src\Game\EnemyUpdate_Move.cpp" />
     <ClCompile Include="src\Game\Update_SpecalMove.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
@@ -191,7 +187,6 @@
     <ClInclude Include="src\Game\CCutInTest.h" />
     <ClInclude Include="src\Game\CCutIn_PowerAttack.h" />
     <ClInclude Include="src\Game\CDragon.h" />
-    <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CField.h" />
     <ClInclude Include="src\Game\CFlame.h" />
     <ClInclude Include="src\Game\CFlamethrower.h" />

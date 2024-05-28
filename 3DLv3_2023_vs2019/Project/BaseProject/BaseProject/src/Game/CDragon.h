@@ -53,6 +53,18 @@ private:
 	// 空中ブレス攻撃処理
 	void UpdateSpecalAttack();
 
+	/* 通常攻撃各処理 */
+	// 咆哮攻撃
+	void Update_Sceream();
+	// 噛みつき攻撃
+	void Update_AttackMouth();
+	// 飛び掛かり攻撃
+	void Update_AttackHand();
+	// 地上ブレス攻撃
+	void Update_AttackFlame();
+	// バックステップ
+	void Update_BackStep();
+
 	/* 空中ブレス攻撃各処理 */
 	// 咆哮処理
 	void UpdateSpAttack_Step0();
@@ -138,6 +150,7 @@ private:
 	int mAngryValue;	// 怒り値
 	int mRandSave;		// 乱数保存用
 	int mBatteleStep;	// 戦闘の段階
+	int mAttackStep;	// 攻撃の段階
 	int mSpAttackStep;	// 必殺技攻撃の攻撃段階
 	int mSpAttackNum;	// 必殺技攻撃を行った回数を記憶
 

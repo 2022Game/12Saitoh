@@ -14,7 +14,10 @@ void CPlayer::Update_Avoidance()
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
 	// 回避中のフラグを立てる
-	if (!mIsAvoid) mIsAvoid = true;
+	if (!mIsAvoid) {
+		mIsAvoid = true;
+		mStatus.sp -= 15.0f;
+	}
 
 	// 仮保存の入力ベクトルが初期値の場合
 	if (mInput_save.LengthSqr() == 0.0f)

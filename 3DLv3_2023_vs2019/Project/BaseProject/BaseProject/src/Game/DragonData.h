@@ -30,24 +30,23 @@ enum class EDragonAnimType
 {
 	None = -1,
 
-	eIdle1,			// 待機1
+	eIdle1,			// 待機1(0.4)
 	eIdle2,			// 待機2
-	eLand,			// 着地
-	eRun,			// 走り
-	eWalk,			// 歩き
-	eScream,		// 咆哮
-	eSleep,			// 寝る
-	eTakeOff,		// 離陸
-	eAttackFlame,	// ブレス攻撃
-	eAttackHand,	// 飛び掛かり攻撃
-	eAttackMouth,	// 噛みつき攻撃
-	eDie,			// 死亡
-	eFlyFlame,		// 空中ブレス攻撃
-	eFlyForward,	// 空中前進
+	eLand,			// 着地(0.325)
+	eRun,			// 走り(0.5)
+	eWalk,			// 歩き(0.7)
+	eScream,		// 咆哮(0.5)
+	eTakeOff,		// 離陸(0.45)
+	eAttackFlame,	// ブレス攻撃(0.33)
+	eAttackHand,	// 飛び掛かり攻撃(0.5)
+	eAttackMouth,	// 噛みつき攻撃(0.43)
+	eDie,			// 死亡(0.25)
+	eFlyFlame,		// 空中ブレス攻撃(0.5)
+	eFlyForward,	// 空中前進(0.6)
 	eFlyGlide,		// 空中滑空
-	eFlyIdle,		// 空中アイドル
-	eGetHit,		// のけ反り
-	eBackStep,		// バックステップ
+	eFlyIdle,		// 空中アイドル(0.31)
+	eGetHit,		// のけ反り(0.49)
+	eBackStep,		// バックステップ(0.5)
 
 	Num
 };
@@ -59,46 +58,52 @@ enum class EDragonAnimType
 
 // 噛みつき攻撃関連
 // 噛みつき攻撃のコライダーを切り替えるフレーム(始め)
-#define ATTACKMOUTH_COL_START 20.0f
+#define ATTACKMOUTH_COL_START 10.0f
 // 噛みつき攻撃のコライダーを切り替えるフレーム(終わり)
-#define ATTACKMOUTH_COL_END 50.0f
+#define ATTACKMOUTH_COL_END 16.0f
 
 // 飛び掛かり攻撃関連
 // 飛び掛かり攻撃の移動開始フレーム
-#define ATTACKHAND_START_FRAME 74.0f
+#define ATTACKHAND_START_FRAME 37.0f
 // 飛び掛かり攻撃の移動終了フレーム
-#define ATTACKHAND_END_FRAME 106.0f
+#define ATTACKHAND_END_FRAME 52.0f
 // 飛び掛かり攻撃の移動速度
-#define ATTACKHAND_MOVESPEED 4.0f
+#define ATTACKHAND_MOVESPEED 5.5f
 // バックステップの移動開始フレーム(飛び掛かり攻撃アニメーション中)
-#define BACKSTEP_START_FRAME 148.0f
+#define BACKSTEP_START_FRAME 77.0f
 // バックステップの移動終了フレーム(飛び掛かり攻撃アニメーション中)
-#define BACKSTEP_END_FRAME 180.0f
+#define BACKSTEP_END_FRAME 90.0f
 // バックステップの移動速度
-#define BACKSTEP_MOVESPEED 3.9f
+#define BACKSTEP_MOVESPEED 5.0f
 // ジャンプ始めのフレーム
-#define JUMP_START_FRAME 74.0f
+#define JUMP_START_FRAME 37.0f
 // バックステップ時のジャンプ始めのフレーム
-#define BACKJUMP_START_FRAME 154.0f
+#define BACKJUMP_START_FRAME 80.0f
+
 // 落下時の調整フレーム１(始め)
-#define FALLING_FRAME1_START 84.0f
+#define FALLING_FRAME1_START 42.0f
 // 落下時の調整フレーム1(終わり)
-#define FALLING_FRAME1_END 100.0f
+#define FALLING_FRAME1_END 50.0f
 // 落下時の調整フレーム2(始め)
-#define FALLING_FRAME2_START 170.0f
+#define FALLING_FRAME2_START 85.0f
 // 落下時の調整フレーム2(終わり)
-#define FALLING_FRAME2_END 182.0f
+#define FALLING_FRAME2_END 91.0f
 
 // バックステップのレイの長さ
 #define BACKSTEP_RAY 250.0f
 
+
 // ブレス攻撃関連
 // ブレス攻撃開始フレーム
-#define FLAME_START_FRAME 60.0f
+#define FLAME_START_FRAME 19.0f
 // ブレス攻撃終了フレーム
-#define FLAME_END_FRAME 200.0f
+#define FLAME_END_FRAME 71.0f
 
 // 空中ブレス攻撃関連
+// 空中ブレス開始フレーム
+#define FLYFLAME_START_FRAME 15.0f
+// 空中ブレス終了フレーム
+#define FLYFLAME_END_FRAME 77.0f
 // 残りのHP割合(50%)
 #define HPPER_50 50
 // 残りのHP割合(25%)
