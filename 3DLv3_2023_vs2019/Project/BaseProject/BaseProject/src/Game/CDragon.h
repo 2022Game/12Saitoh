@@ -151,6 +151,7 @@ private:
 
 	int mAngryStandardValue;// 怒り値の基準値
 	int mAngryValue;	// 怒り値
+	int mFearValue;		// 怯み値
 	int mRandSave;		// 乱数保存用
 	int mBatteleStep;	// 戦闘の段階
 	int mAttackStep;	// 攻撃の段階
@@ -160,6 +161,6 @@ private:
 	float mElapsedTime;		// 経過時間計測長
 	float mAngryElapsedTime;// 怒り経過時間計測長
 	float mChaseElapsedTime;// 移動経過時間計測長
-	float mAngle;
+	float mAngle;	// ステージ中心から見たドラゴンの角度
 };
 #endif

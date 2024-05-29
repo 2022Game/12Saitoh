@@ -4,6 +4,16 @@ class CColor;
 namespace System
 {
 	/// <summary>
+	/// ゲームを終了
+	/// </summary>
+	void ExitGame();
+	/// <summary>
+	/// ゲームを終了するかどうかを返す
+	/// </summary>
+	/// <returns>trueなら、ゲームを終了</returns>
+	bool IsExitGame();
+
+	/// <summary>
 	/// 画面のクリアから―を設定（rgba）
 	/// </summary>
 	/// <param name="r">設定する色の赤要素</param>

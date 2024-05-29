@@ -65,6 +65,14 @@ namespace Math
 	/// <param name="t">補間割合（0.0f～1.0f）</param>
 	/// <returns></returns>
 	float Lerp(float a, float b, float t);
+	/// <summary>
+	/// 2つの値を線形補間する（補間割合クランプなし版）
+	/// </summary>
+	/// <param name="a">開始値</param>
+	/// <param name="b">終了値</param>
+	/// <param name="t">補間割合</param>
+	/// <returns></returns>
+	float LerpUnclamped(float a, float b, float t);
 
 	/// <summary>
 	/// 0から指定値の範囲でループさせる

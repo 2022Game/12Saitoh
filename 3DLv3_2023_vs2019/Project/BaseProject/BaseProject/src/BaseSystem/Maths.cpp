@@ -54,6 +54,13 @@ float Math::Clamp01(float value)
 // 2つの値を線形補間する
 float Math::Lerp(float a, float b, float t)
 {
+	t = Clamp01(t);
+	return a + (b - a) * t;
+}
+
+// 2つの値を線形補間する（補間割合クランプなし版）
+float Math::LerpUnclamped(float a, float b, float t)
+{
 	return a + (b - a) * t;
 }
 

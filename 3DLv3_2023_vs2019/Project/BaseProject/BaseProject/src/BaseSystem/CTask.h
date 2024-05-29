@@ -65,10 +65,11 @@ public:
 private:
 	ETaskPriority mPriority;	//優先度
 	int mSortOrder;		//優先度内での順番
+	bool mIsSort;		//ソートの必要があるか
 	bool mIsKill;		//削除フラグ
 	bool mIsEnable;		//有効フラグ
 	bool mIsShow;		//表示フラグ
 	ETaskPauseType mPauseType;//ポーズの種類
 	bool mAddTaskList;	//タスクリストに追加しているかどうか
-	EScene mSceneType;	//所属するシーンの種類
+	EScene mSceneType;	//所属するシーン種類
 };

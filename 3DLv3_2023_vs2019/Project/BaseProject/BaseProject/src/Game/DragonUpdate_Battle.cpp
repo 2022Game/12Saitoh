@@ -14,6 +14,7 @@ void CDragon::UpdateBattle()
 	// 戦闘の段階によって処理を変更
 	switch (mBatteleStep)
 	{
+		/* 0～2 : 戦闘時の基本的な処理 */
 	case 0:// 戦闘中のアイドル処理
 		UpdateBattele_Idle();
 		// 怒り状態への移行処理
@@ -25,9 +26,20 @@ void CDragon::UpdateBattle()
 	case 2:// 攻撃処理
 		UpdateAttack();
 		break;
+		
+		/* 3以降 : 戦闘時の特別な処理 */
+	case 3:// 怯み処理
+		break;
 	}
 
-	// 怒り状態かどうか
+	// 怯み値が最大値以上になった場合
+	// 怯みモーションを行う
+	if (mFearValue >= FEAR_MAXVALUE)
+	{
+		mFearValue = 0;
+	}
+
+	// 怒り状態のとき
 	if (mIsAngry)
 	{
 		// 怒り状態になってからの時間を取得

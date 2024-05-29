@@ -21,6 +21,7 @@ CDragon::CDragon()
 	, mChangeAngry(false)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
+	, mFearValue(0)
 	, mRandSave(0)
 	, mBatteleStep(0)
 	, mAttackStep(0)
@@ -159,12 +160,18 @@ void CDragon::ChangeAngry()
 	// 怒り状態への移行時に咆哮攻撃を行う
 	ChangeAnimation(EDragonAnimType::eScream);
 	SetAnimationSpeed(0.5f);
-	mBatteleStep = 2;
 	// 各ステータスを強化
 	mStatus.atk += 10;
 	mStatus.def += 10;
 	// 怒り状態への移行フラグを元に戻す
 	mChangeAngry = false;
+
+	// UpdateBattle_Idle()内で使用ていた
+	// 変数を初期化しておく
+	mElapsedTime = 0.0f;
+	mRandSave = 0;
+	// 戦闘の段階は攻撃処理にする
+	mBatteleStep = 2;
 }
 
 // プレイヤーを見つけたかどうか
