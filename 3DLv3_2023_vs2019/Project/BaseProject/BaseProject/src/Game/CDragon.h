@@ -89,9 +89,11 @@ private:
 	// 角度の取得
 	float GetAngle() const;
 
+	// 怒り状態の切り替え処理
+	void ChangeAngry();
 	// アニメーションの切り替え
 	void ChangeAnimation(EDragonAnimType type);
-
+	
 	// プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
 	// バックステップできるかどうか
@@ -145,6 +147,7 @@ private:
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか
+	bool mChangeAngry;	// 怒り状態に移行中かどうか
 
 	int mAngryStandardValue;// 怒り値の基準値
 	int mAngryValue;	// 怒り値

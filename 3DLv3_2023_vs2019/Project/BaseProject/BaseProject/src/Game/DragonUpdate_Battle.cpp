@@ -16,6 +16,8 @@ void CDragon::UpdateBattle()
 	{
 	case 0:// 戦闘中のアイドル処理
 		UpdateBattele_Idle();
+		// 怒り状態への移行処理
+		if (mChangeAngry) ChangeAngry();
 		break;
 	case 1:// 戦闘中の追跡処理
 		UpdateBattle_Chase();
@@ -530,7 +532,6 @@ void CDragon::Update_BackStep()
 	}
 	if (IsAnimationFinished()) mAttackStep = 0;
 }
-
 
 // 残りのHPの割合を取得
 int CDragon::GetHPPercent() const

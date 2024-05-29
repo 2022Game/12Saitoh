@@ -19,5 +19,5 @@ std::vector<DragonData::AnimData> DragonData::ANIM_DATA =
 	{ "Character\\Dragon\\anim\\flyGlide.x",		true,	51.0f,		0.0f },	// 空中滑空(使わない予定)
 	{ "Character\\Dragon\\anim\\flyIdle.x",			true,	31.0f,		0.0f },	// 空中アイドル
 	{ "Character\\Dragon\\anim\\getHit.x",			false,	41.0f,		0.0f },	// のけ反り
-	{ "Character\\Dragon\\anim\\backStep.x",		false,	35.0f,		0.0f },	// バックステップ	
+	{ "Character\\Dragon\\anim\\backStep.x",		false,	35.0f,		0.0f },	// バックステップ
 };

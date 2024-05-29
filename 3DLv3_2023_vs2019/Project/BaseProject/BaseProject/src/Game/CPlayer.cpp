@@ -365,18 +365,19 @@ void CPlayer::Update()
 	//CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
 
 	//CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
-	//if (mTemporaryDamage > 0)
-	//{
-	//	if (mHPRecoveryTime >= 2)
-	//	{
-	//		mTemporaryDamage--;
-	//		mStatus.hp++;
-	//		mHPRecoveryTime = 0;
-	//	}
-	//	else {
-	//		mHPRecoveryTime += 0.016666f;
-	//	}
-	//}
+	if (mTemporaryDamage > 0)
+	{
+		// 2秒経過するごとにHPを回復
+		if (mHPRecoveryTime >= 2)
+		{
+			mTemporaryDamage--;
+			mStatus.hp++;
+			mHPRecoveryTime = 0;
+		}
+		else {
+			mHPRecoveryTime += 0.016666f;
+		}
+	}
 
 #endif
 	// HPゲージに現在のHPを設定

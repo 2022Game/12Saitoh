@@ -18,6 +18,7 @@ CDragon::CDragon()
 	, mSaveVec(CVector::zero)
 	, mIsGrounded(true)
 	, mIsAngry(false)
+	, mChangeAngry(false)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
 	, mRandSave(0)
@@ -147,6 +148,23 @@ void CDragon::ChangeAnimation(EDragonAnimType type)
 	DragonData::AnimData data = DragonData::GetAnimData((int)type);
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength, data.motionValue);
 	SetAnimationSpeed(1.0f);
+}
+
+// 怒り状態の切り替え処理
+void CDragon::ChangeAngry()
+{
+	// 怒り値を基準値に合わせる
+	mAngryValue = mAngryStandardValue;
+	mIsAngry = true;
+	// 怒り状態への移行時に咆哮攻撃を行う
+	ChangeAnimation(EDragonAnimType::eScream);
+	SetAnimationSpeed(0.5f);
+	mBatteleStep = 2;
+	// 各ステータスを強化
+	mStatus.atk += 10;
+	mStatus.def += 10;
+	// 怒り状態への移行フラグを元に戻す
+	mChangeAngry = false;
 }
 
 // プレイヤーを見つけたかどうか
@@ -398,13 +416,8 @@ void CDragon::TakeDamage(int damage)
 		// 怒り値が基準より大きくなった場合、怒り状態へ移行
 		if (mAngryValue >= mAngryStandardValue)
 		{
-			mIsAngry = true;
-			mAngryValue = mAngryStandardValue;
-			ChangeAnimation(EDragonAnimType::eScream);
-			SetAnimationSpeed(0.5f);
-			// 各ステータスを強化
-			mStatus.atk += 10;
-			mStatus.def += 10;
+			// 怒り状態への移行フラグを立てる
+			mChangeAngry = true;
 		}
 	}
 	// 怒り状態で有れば、ダメージの半分の値だけ怒り値を減少
