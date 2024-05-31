@@ -50,6 +50,8 @@ private:
 	void UpdateBattle_Chase();
 	// 攻撃処理
 	void UpdateAttack();
+	// 怯み中の処理
+	void UpdateBattele_Fear();
 	// 空中ブレス攻撃処理
 	void UpdateSpecalAttack();
 
@@ -88,6 +90,7 @@ private:
 	CVector GetDestination() const;
 	// 角度の取得
 	float GetAngle() const;
+
 
 	// 怒り状態の切り替え処理
 	void ChangeAngry();
@@ -153,14 +156,16 @@ private:
 	int mAngryValue;	// 怒り値
 	int mFearValue;		// 怯み値
 	int mRandSave;		// 乱数保存用
-	int mBatteleStep;	// 戦闘の段階
-	int mAttackStep;	// 攻撃の段階
+	int mBatteleStep;	// 戦闘処理の段階
+	int mAttackStep;	// 攻撃処理の段階
+	int mFearStep;		// 怯み処理の段階
 	int mSpAttackStep;	// 必殺技攻撃の攻撃段階
 	int mSpAttackNum;	// 必殺技攻撃を行った回数を記憶
 
 	float mElapsedTime;		// 経過時間計測長
 	float mAngryElapsedTime;// 怒り経過時間計測長
 	float mChaseElapsedTime;// 移動経過時間計測長
+	float mFearElapsedTime; // 怯み中の経過時間計測長
 	float mAngle;	// ステージ中心から見たドラゴンの角度
 };
 #endif

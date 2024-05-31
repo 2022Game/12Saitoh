@@ -25,11 +25,13 @@ CDragon::CDragon()
 	, mRandSave(0)
 	, mBatteleStep(0)
 	, mAttackStep(0)
+	, mFearStep(0)
 	, mSpAttackStep(0)
 	, mSpAttackNum(0)
 	, mElapsedTime(0.0f)
 	, mAngryElapsedTime(0.0f)
 	, mChaseElapsedTime(0.0f)
+	, mFearElapsedTime(0.0f)
 	, mAngle(0.0f)
 {
 	// インスタンスの設定
@@ -415,32 +417,13 @@ void CDragon::TakeDamage(int damage)
 {
 	// ダメージ分HPを減少
 	mStatus.hp -= damage;
+	// ダメージの一割分を怯み値に加算
+	mFearValue += damage / 10;
 
 	// 怒り状態で無ければ、ダメージ分怒り値増加
-	if (!mIsAngry)
-	{
-		mAngryValue += damage;
-		// 怒り値が基準より大きくなった場合、怒り状態へ移行
-		if (mAngryValue >= mAngryStandardValue)
-		{
-			// 怒り状態への移行フラグを立てる
-			mChangeAngry = true;
-		}
-	}
+	if (!mIsAngry) mAngryValue += damage;
 	// 怒り状態で有れば、ダメージの半分の値だけ怒り値を減少
-	else
-	{
-		mAngryValue -= damage / 2;
-		// 怒り値が0以下になった場合、怒り状態を解除
-		if (mAngryValue <= 0)
-		{
-			mIsAngry = false;
-			mAngryValue = 0;
-			// 各ステータスを元に戻す
-			mStatus.atk = mMaxStatus.atk;
-			mStatus.def = mMaxStatus.def;
-		}
-	}
+	else mAngryValue -= damage / 2;
 
 	if (mStatus.hp <= 0)
 	{

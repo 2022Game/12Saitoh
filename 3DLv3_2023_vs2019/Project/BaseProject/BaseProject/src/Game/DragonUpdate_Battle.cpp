@@ -29,6 +29,7 @@ void CDragon::UpdateBattle()
 		
 		/* 3以降 : 戦闘時の特別な処理 */
 	case 3:// 怯み処理
+		UpdateBattele_Fear();
 		break;
 	}
 
@@ -36,7 +37,17 @@ void CDragon::UpdateBattle()
 	// 怯みモーションを行う
 	if (mFearValue >= FEAR_MAXVALUE)
 	{
+		// 各値を初期化
+		mRandSave = 0;
+		mAttackStep = 0;
+		mElapsedTime = 0.0f;
+		mChaseElapsedTime = 0.0f;
+
+		// 怯み値は0する
 		mFearValue = 0;
+		mBatteleStep = 3;
+		ChangeAnimation(EDragonAnimType::eGetHit);
+		SetAnimationSpeed(0.49);
 	}
 
 	// 怒り状態のとき
@@ -49,7 +60,31 @@ void CDragon::UpdateBattle()
 		if (mAngryElapsedTime >= 60.0f)
 		{
 			mIsAngry = false;
+			mAngryValue = 0;
 			mAngryElapsedTime = 0.0f;
+			// 各ステータスを元に戻す
+			mStatus.atk = mMaxStatus.atk;
+			mStatus.def = mMaxStatus.def;
+		}
+		// 怒り値が0以下になった場合、怒り状態を解除
+		else if (mAngryValue < 0)
+		{
+			mIsAngry = false;
+			mAngryValue = 0;
+			mAngryElapsedTime = 0.0f;
+			// 各ステータスを元に戻す
+			mStatus.atk = mMaxStatus.atk;
+			mStatus.def = mMaxStatus.def;
+		}
+	}
+	// 非怒り状態のとき
+	else
+	{
+		// 怒り値が基準より大きくなった場合、怒り状態へ移行
+		if (mAngryValue >= mAngryStandardValue)
+		{
+			// 怒り状態への移行フラグを立てる
+			mChangeAngry = true;
 		}
 	}
 }
@@ -188,8 +223,8 @@ void CDragon::UpdateBattle_Chase()
 			if (IsAnimationFinished())
 			{
 				// 乱数を生成して、攻撃を決定する
-				int rand = Math::Rand(0, 1);
-				if (rand == 0)
+				int rand = Math::Rand(0, 2);
+				if (rand <= 1)
 				{
 					// 中距離攻撃に切り替え
 					mDistanceType = EDistanceType::eMedium;
@@ -252,17 +287,14 @@ void CDragon::UpdateBattle_Chase()
 		if (mChaseElapsedTime >= 1.5f || !(dotZ <= cosf(10 * M_PI / 180.0f)))
 		{
 			// ランダム値を生成して、行う攻撃を選択
-			// 飛び掛かり攻撃が多めになるよう調整
-			switch (Math::Rand(0, 5))
+			switch (Math::Rand(0, 1))
 			{
-			case 0:
-			case 1:// ブレス攻撃
+			case 0:// ブレス攻撃
 				ChangeAnimation(EDragonAnimType::eAttackFlame);
 				SetAnimationSpeed(0.33f);
 				mBatteleStep++;
 				mChaseElapsedTime = 0.0f;
-				break;
-			default:// 飛び掛かり攻撃
+			case 1:// 飛び掛かり攻撃
 				ChangeAnimation(EDragonAnimType::eAttackHand);
 				SetAnimationSpeed(0.5f);
 				mBatteleStep++;
@@ -373,6 +405,45 @@ void CDragon::UpdateAttack()
 		mBatteleStep = 0;
 		// ブレス攻撃をしていたら、ブレスを止める
 		if (mpFlamethrower->IsThrowing())mpFlamethrower->Stop();
+	}
+}
+
+// 怯み中の処理
+void CDragon::UpdateBattele_Fear()
+{
+	switch (mFearStep)
+	{
+	case 0:// 怯み後の処理を決定
+
+		// 怯みアニメーションが終了
+		if (IsAnimationFinished())
+		{
+			// 残りHP割合に応じて処理を変える
+			if (GetHPPercent() <= 30.0f)
+			{
+				// 残りHPが30%以下の場合は、一定時間アイドルを行う
+				ChangeAnimation(EDragonAnimType::eIdle1);
+				SetAnimationSpeed(0.37f);
+				mFearStep++;
+			}
+			else
+			{
+				// 残りHPが30%以上の場合は、戦闘へ戻る
+				mBatteleStep = 0;
+			}
+		}
+		break;
+	case 1:// 一定時間アイドルを行う
+		
+		// 3秒経過で戦闘へ戻る
+		mFearElapsedTime += Time::DeltaTime();
+		if (mFearElapsedTime >= 3.0f)
+		{
+			mFearStep = 0;
+			// 戦闘中アイドルへ戻る
+			mBatteleStep = 0;
+		}
+		break;
 	}
 }
 

@@ -55,7 +55,7 @@ enum class EDragonAnimType
 #define ENEMY_HEIGHT	400.0f	// 敵の高さ
 #define FOV_LANGE		170.0f	// 視野判定用の半径
 #define FOV_ANGLE		60.0f	// 視野判定用の角度
-#define FEAR_MAXVALUE	100.0f	// 怯み値の上限
+#define FEAR_MAXVALUE	200.0f	// 怯み値の上限
 
 // 噛みつき攻撃関連
 // 噛みつき攻撃のコライダーを切り替えるフレーム(始め)
