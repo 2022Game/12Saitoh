@@ -103,7 +103,7 @@ enum class EAnimType
 #define PLAYER_MIN_TOUKI 0		// 闘気ゲージの最小値
 #define ATTACKSTEP_END -1		// 攻撃終了の段階
 #define ATTACKSTEP_COUNTER 3	// カウンターの段階
-
+#define AVOID_SPCOST 20.0f			// 回避に必要なスタミナ
 
 // プレイヤー抜刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_DRAWN_IDLE_FRAME 35

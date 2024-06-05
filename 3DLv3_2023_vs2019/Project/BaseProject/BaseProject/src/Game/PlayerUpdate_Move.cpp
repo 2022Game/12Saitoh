@@ -43,8 +43,11 @@ void CPlayer::Update_Move()
 				// 回避動作への切り替え
 				if (CInput::PushKey(VK_SPACE))
 				{
-					ChangeState(EState::eAvoidance);
-					ChangeAnimation(EAnimType::eRollStart_Combat);
+					if (mStatus.sp >= AVOID_SPCOST)
+					{
+						ChangeState(EState::eAvoidance);
+						ChangeAnimation(EAnimType::eRollStart_Combat);
+					}
 				}
 				// 左クリックで攻撃状態へ移行
 				if (CInput::PushKey(VK_LBUTTON))
@@ -131,8 +134,11 @@ void CPlayer::Update_Move()
 				// 回避動作への切り替え
 				if (CInput::PushKey(VK_SPACE))
 				{
-					ChangeState(EState::eAvoidance);
-					ChangeAnimation(EAnimType::eRollStart);
+					if (mStatus.sp >= AVOID_SPCOST)
+					{
+						ChangeState(EState::eAvoidance);
+						ChangeAnimation(EAnimType::eRollStart);
+					}
 				}
 				// 左クリックまたは、マウスホイールクリックで抜刀
 				if (CInput::PushKey(VK_LBUTTON) || CInput::PushKey(VK_MBUTTON))
@@ -203,10 +209,13 @@ void CPlayer::Update_FastMove()
 			// 回避動作への切り替え
 			if (CInput::PushKey(VK_SPACE))
 			{
-				ChangeState(EState::eAvoidance);
-				ChangeAnimation(EAnimType::eRollStart);
-				mIsDash = false;
-				return;
+				if (mStatus.sp >= AVOID_SPCOST)
+				{
+					ChangeState(EState::eAvoidance);
+					ChangeAnimation(EAnimType::eRollStart);
+					mIsDash = false;
+					return;
+				}
 			}
 			// ダッシュキーを離した場合
 			// ダッシュのアニメーションから走るアニメーションに切り替える

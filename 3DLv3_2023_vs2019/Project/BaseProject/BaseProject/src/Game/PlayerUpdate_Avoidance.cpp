@@ -16,7 +16,7 @@ void CPlayer::Update_Avoidance()
 	// 回避中のフラグを立てる
 	if (!mIsAvoid) {
 		mIsAvoid = true;
-		mStatus.sp -= 15.0f;
+		mStatus.sp -= AVOID_SPCOST;
 	}
 
 	// 仮保存の入力ベクトルが初期値の場合

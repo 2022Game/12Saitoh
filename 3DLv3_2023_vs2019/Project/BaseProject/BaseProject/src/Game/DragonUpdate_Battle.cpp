@@ -204,8 +204,9 @@ void CDragon::UpdateBattle_Chase()
 				// 移動時間を加算
 				mChaseElapsedTime += Time::DeltaTime();
 			}
-			// 5秒以上移動した場合、中距離攻撃に移行する
-			if (mChaseElapsedTime >= 4.0f)
+
+			// 2.5秒以上移動した場合、中距離攻撃に移行する
+			if (mChaseElapsedTime >= 2.5f)
 			{
 				mChaseElapsedTime = 0.0f;
 				mDistanceType = EDistanceType::eMedium;
@@ -283,7 +284,7 @@ void CDragon::UpdateBattle_Chase()
 		float dotZ = forward.Dot(EP);
 
 		// 求めた角度が視野角度内
-		// もしくは、2秒以上経過で攻撃
+		// もしくは、1.5秒以上経過で攻撃
 		if (mChaseElapsedTime >= 1.5f || !(dotZ <= cosf(10 * M_PI / 180.0f)))
 		{
 			// ランダム値を生成して、行う攻撃を選択
@@ -294,6 +295,7 @@ void CDragon::UpdateBattle_Chase()
 				SetAnimationSpeed(0.33f);
 				mBatteleStep++;
 				mChaseElapsedTime = 0.0f;
+				break;
 			case 1:// 飛び掛かり攻撃
 				ChangeAnimation(EDragonAnimType::eAttackHand);
 				SetAnimationSpeed(0.5f);
@@ -359,8 +361,8 @@ void CDragon::UpdateBattle_Chase()
 				}
 			}
 
-			// 5秒以上移動したら、攻撃を行う
-			if (mChaseElapsedTime >= 5.0f)
+			// 3秒以上移動したら、攻撃を行う
+			if (mChaseElapsedTime >= 3.0f)
 			{
 				// 乱数を保存した変数を初期化
 				mRandSave = 0;

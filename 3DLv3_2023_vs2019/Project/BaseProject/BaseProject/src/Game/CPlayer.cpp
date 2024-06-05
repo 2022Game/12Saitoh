@@ -315,32 +315,32 @@ void CPlayer::Update()
 	mIsGrounded = false;
 
 #ifdef _DEBUG
-	CDebugPrint::Print("FPS:%f\n", Time::FPS());
-	CVector pos = Position();
-	CDebugPrint::Print("プレイヤー情報:\n");
-	CDebugPrint::Print("座標(X:%f, Y:%f, Z:%f)\n", pos.X(), pos.Y(), pos.Z());
+	//CDebugPrint::Print("FPS:%f\n", Time::FPS());
+	//CVector pos = Position();
+	//CDebugPrint::Print("プレイヤー情報:\n");
+	//CDebugPrint::Print("座標(X:%f, Y:%f, Z:%f)\n", pos.X(), pos.Y(), pos.Z());
 
 	//CVector angles = EulerAngles();
 	//CDebugPrint::Print("回転値(X:%f, Y:%f, Z:%f)\n", angles.X(), angles.Y(), angles.Z());
 	//CDebugPrint::Print("アニメーションフレーム : %.1f\n",GetAnimationFrame());
-	if (mIsDrawn) CDebugPrint::Print("抜刀\n");
-	else CDebugPrint::Print("納刀\n");
-	
-	CDebugPrint::Print("プレイヤー状態 : ");
-	if (mState == EState::eIdle)			CDebugPrint::Print("待機状態\n");
-	else if (mState == EState::eMove)		CDebugPrint::Print("移動状態\n");
-	else if (mState == EState::eFastMove)	CDebugPrint::Print("ダッシュ状態\n");
-	else if (mState == EState::eAvoidance)	CDebugPrint::Print("回避状態\n");
-	else if (mState == EState::eAttack)		CDebugPrint::Print("攻撃状態\n");
-	else if (mState == EState::eSpecalMove) CDebugPrint::Print("闘技状態\n");
+	//if (mIsDrawn) CDebugPrint::Print("抜刀\n");
+	//else CDebugPrint::Print("納刀\n");
+	//
+	//CDebugPrint::Print("プレイヤー状態 : ");
+	//if (mState == EState::eIdle)			CDebugPrint::Print("待機状態\n");
+	//else if (mState == EState::eMove)		CDebugPrint::Print("移動状態\n");
+	//else if (mState == EState::eFastMove)	CDebugPrint::Print("ダッシュ状態\n");
+	//else if (mState == EState::eAvoidance)	CDebugPrint::Print("回避状態\n");
+	//else if (mState == EState::eAttack)		CDebugPrint::Print("攻撃状態\n");
+	//else if (mState == EState::eSpecalMove) CDebugPrint::Print("闘技状態\n");
 
-	CDebugPrint::Print("  HP 　: %d\n", mStatus.hp);
-	CDebugPrint::Print("攻撃力 : %d\n", mStatus.atk);
-	CDebugPrint::Print("防御力 : %d\n", mStatus.def);
-	CDebugPrint::Print("スタミナ : %.0f\n", mStatus.sp);
-	CDebugPrint::Print("闘気ゲージ : %d\n", mStatus.touki);
+	//CDebugPrint::Print("  HP 　: %d\n", mStatus.hp);
+	//CDebugPrint::Print("攻撃力 : %d\n", mStatus.atk);
+	//CDebugPrint::Print("防御力 : %d\n", mStatus.def);
+	//CDebugPrint::Print("スタミナ : %.0f\n", mStatus.sp);
+	//CDebugPrint::Print("闘気ゲージ : %d\n", mStatus.touki);
 
-	CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
+	//CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
 	
 	//// カウンター攻撃フラグの変更
 	//if (CInput::PushKey('Q')) mIsCounter = true;
@@ -349,18 +349,18 @@ void CPlayer::Update()
 	//if (mIsCounter) CDebugPrint::Print("ture\n");
 	//else CDebugPrint::Print("false\n");
 
-	//  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
-	if (CInput::Key('1'))
-	{
-		if (CInput::Key(VK_UP)) mStatus.hp++;
-		else if (CInput::Key(VK_DOWN)) mStatus.hp--;
-	}
-	// 2キーを押しながら、「↑」キーでSP増加 「↓」でSP減少
-	if (CInput::Key('2'))
-	{
-		if (CInput::Key(VK_UP)) mStatus.sp++;
-		else if (CInput::Key(VK_DOWN)) mStatus.sp--;
-	}
+	////  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
+	//if (CInput::Key('1'))
+	//{
+	//	if (CInput::Key(VK_UP)) mStatus.hp++;
+	//	else if (CInput::Key(VK_DOWN)) mStatus.hp--;
+	//}
+	//// 2キーを押しながら、「↑」キーでSP増加 「↓」でSP減少
+	//if (CInput::Key('2'))
+	//{
+	//	if (CInput::Key(VK_UP)) mStatus.sp++;
+	//	else if (CInput::Key(VK_DOWN)) mStatus.sp--;
+	//}
 
 	//CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
 

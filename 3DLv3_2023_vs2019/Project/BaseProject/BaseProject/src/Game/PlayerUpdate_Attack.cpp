@@ -455,9 +455,12 @@ void CPlayer::Update_AttackWait()
 		{
 			if (CInput::PushKey(VK_SPACE))
 			{
-				mAttackStep = 0;
-				ChangeState(EState::eAvoidance);
-				ChangeAnimation(EAnimType::eRollStart_Combat);
+				if (mStatus.sp >= AVOID_SPCOST)
+				{
+					mAttackStep = 0;
+					ChangeState(EState::eAvoidance);
+					ChangeAnimation(EAnimType::eRollStart_Combat);
+				}
 			}
 		}
 	}
@@ -479,8 +482,11 @@ void CPlayer::Update_AttackEnd()
 			// ‰ñ”ð“®ì‚Ö‚ÌØ‚è‘Ö‚¦
 			if (CInput::PushKey(VK_SPACE))
 			{
-				ChangeState(EState::eAvoidance);
-				ChangeAnimation(EAnimType::eRollStart_Combat);
+				if (mStatus.sp >= AVOID_SPCOST)
+				{
+					ChangeState(EState::eAvoidance);
+					ChangeAnimation(EAnimType::eRollStart_Combat);
+				}
 			}
 		}
 	}

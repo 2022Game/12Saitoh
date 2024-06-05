@@ -30,9 +30,9 @@ CColliderMesh* CField::GetFieldCol() const
 void CField::Update()
 {
 #ifdef _DEBUG
-	CVector pos = Position();
-	CDebugPrint::Print("コロシアムの原点 \nX座標 : %.0f Y座標 : %.0f Z座標 : %.0f\n"
-		, pos.X(), pos.Y(), pos.Z());
+	//CVector pos = Position();
+	//CDebugPrint::Print("コロシアムの原点 \nX座標 : %.0f Y座標 : %.0f Z座標 : %.0f\n"
+	//	, pos.X(), pos.Y(), pos.Z());
 #endif
 }
 

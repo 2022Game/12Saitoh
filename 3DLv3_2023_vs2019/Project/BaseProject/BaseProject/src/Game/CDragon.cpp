@@ -306,14 +306,16 @@ void CDragon::Update()
 	CDebugPrint::Print("レベル : %d\nHP : %d\n攻撃力 : %d\n防御力 : %d\n",
 		mStatus.level, mStatus.hp, mStatus.atk, mStatus.def);
 
+
 	// 怒り状態かどうか
 	mIsAngry ? CDebugPrint::Print("怒り状態\n") : CDebugPrint::Print("非怒り状態\n");
-	// プレイヤーとの距離を表示
-	CVector pPos = CPlayer::Instance()->Position();
-	CVector ePos = Position();
-	float distance = (pPos - ePos).Length();
-	CDebugPrint::Print("プレイヤーとの距離 : %.1f\n", distance);
+	//// プレイヤーとの距離を表示
+	//CVector pPos = CPlayer::Instance()->Position();
+	//CVector ePos = Position();
+	//float distance = (pPos - ePos).Length();
+	//CDebugPrint::Print("プレイヤーとの距離 : %.1f\n", distance);
 
+	//CDebugPrint::Print("プレイヤーとの距離\n");
 	//if (mDistanceType == EDistanceType::eNear) CDebugPrint::Print("近距離\n");
 	//else if (mDistanceType == EDistanceType::eMedium) CDebugPrint::Print("中距離\n");
 	//else CDebugPrint::Print("遠距離\n");
