@@ -96,7 +96,11 @@ private:
 	void ChangeAngry();
 	// アニメーションの切り替え
 	void ChangeAnimation(EDragonAnimType type);
-	
+	// ゲーム開始時にコライダーを生成
+	void CreateCollider();
+	// コライダーの更新処理
+	void ColliderUpdate();
+
 	// プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
 	// バックステップできるかどうか
@@ -138,9 +142,59 @@ private:
 	CColliderLine* mpColliderLine;	// 地面との当たり判定用
 	CColliderLine* mpColliderLine2;	// 壁との当たり判定用
 	CColliderLine* mpColliderLine3;	// 壁との当たり判定用
-	CColliderSphere* mpBodyCol;		//押し戻し用コライダー
-	CColliderSphere* mpDamageCol;	// ダメージ用コライダー
-	CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
+
+	//CColliderSphere* mpBodyCol;		//押し戻し用コライダー
+	//CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
+
+	////* ダメージ判定用コライダー *////
+	/* 頭部 */
+	CColliderCapsule* mpHeadDamageCol;	// 頭
+	CColliderCapsule* mpNeckDamageCol;	// 首
+	/* 胴体 */
+	CColliderCapsule* mpBodyDamageCol;		// 胴体
+	CColliderCapsule* mpTailDamageCol_Root;	// 尻尾(根本)
+	CColliderCapsule* mpTailDamageCol_Tip;	// 尻尾(先端)
+	/* 足(根本) */
+	CColliderCapsule* mpLegDamageCol_RF_Root; // 右前足
+	CColliderCapsule* mpLegDamageCol_LF_Root; // 左前足
+	CColliderCapsule* mpLegDamageCol_RB_Root; // 右後ろ足
+	CColliderCapsule* mpLegDamageCol_LB_Root; // 左後ろ足
+	/* 足 */
+	CColliderCapsule* mpLegDamageCol_RF;	// 右前足
+	CColliderCapsule* mpLegDamageCol_LF;	// 左前足
+	CColliderCapsule* mpLegDamageCol_RB;	// 右後ろ足
+	CColliderCapsule* mpLegDamageCol_LB;	// 左後ろ足
+	/* 足(足先) */
+	CColliderSphere* mpLegDamageCol_RF_Tip; // 右前
+	CColliderSphere* mpLegDamageCol_LF_Tip; // 左前
+	CColliderSphere* mpLegDamageCol_RB_Tip; // 右後ろ足
+	CColliderSphere* mpLegDamageCol_LB_Tip; // 左後ろ足
+	/* 翼 */
+
+	////* 押し戻し用コライダー *////
+	/* 頭部 */
+	CColliderCapsule* mpHeadCol;	// 頭
+	CColliderCapsule* mpNeckCol;	// 首
+	/* 胴体 */
+	CColliderCapsule* mpBodyCol;	// 胴体
+	CColliderCapsule* mpTailCol_Root;// 尻尾(根本)
+	CColliderCapsule* mpTailCol_Tip;// 尻尾(先端)
+	/* 足(根本) */
+	CColliderCapsule* mpLegCol_RF_Root; // 右前足
+	CColliderCapsule* mpLegCol_LF_Root;	// 左前足
+	CColliderCapsule* mpLegCol_RB_Root;	// 右後ろ足
+	CColliderCapsule* mpLegCol_LB_Root;	// 左後ろ足
+	/* 足 */
+	CColliderCapsule* mpLegCol_RF;	// 右前足
+	CColliderCapsule* mpLegCol_LF;	// 左前足
+	CColliderCapsule* mpLegCol_RB;	// 右後ろ足
+	CColliderCapsule* mpLegCol_LB;	// 左後ろ足
+	/* 足(足先) */
+	CColliderSphere* mpLegCol_RF_Tip; // 右前
+	CColliderSphere* mpLegCol_LF_Tip; // 左前
+	CColliderSphere* mpLegCol_RB_Tip; // 右後ろ足
+	CColliderSphere* mpLegCol_LB_Tip; // 左後ろ足
+
 
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
 	CSPFlamethrower* mpSpFlamethrower; // 火炎放射(空中)
@@ -167,5 +221,8 @@ private:
 	float mChaseElapsedTime;// 移動経過時間計測長
 	float mFearElapsedTime; // 怯み中の経過時間計測長
 	float mAngle;	// ステージ中心から見たドラゴンの角度
+
+	// デバッグ用
+	int mDamage;
 };
 #endif

@@ -2,8 +2,10 @@
 #include "Maths.h"
 #include "CPlayer.h"
 #include "Primitive.h"
-#include "CColliderSphere.h"
 #include "CColliderLine.h"
+#include "CColliderTriangle.h"
+#include "CColliderSphere.h"
+#include "CColliderCapsule.h"
 #include "CDebugPrint.h"
 #include "CFlamethrower.h"
 #include "CSPFlamethrower.h"
@@ -67,53 +69,10 @@ CDragon::CDragon()
 	// 状態の設定
 	mState = EState::eIdle;
 
-	// 接地判定用の線分コライダの設定
-	mpColliderLine = new CColliderLine
-	(
-		this, ELayer::eField,
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
-	);
-	mpColliderLine->SetCollisionLayers({ ELayer::eField });
-	// 壁との当たり判定用コライダの設定
-	mpColliderLine2 = new CColliderLine
-	(
-		this, ELayer::eField,
-		CVector(-150.0f, 200.0f, 0.0f),
-		CVector(150.0f, 200.0f, 0.0f)
-	);
-	mpColliderLine2->SetCollisionLayers({ ELayer::eField });
-	mpColliderLine3 = new CColliderLine
-	(
-		this, ELayer::eField,
-		CVector(0.0f, 200.0f, -300.0f),
-		CVector(0.0f, 200.0f, 500.0f)
-	);
-	mpColliderLine3->SetCollisionLayers({ ELayer::eField });
-
 	// コライダーの生成
-	// プレイヤーとの押し戻し用コライダー
-	mpBodyCol = new CColliderSphere(this, ELayer::eEnemy, 200.0f);
-	mpBodyCol->SetCollisionLayers({ ELayer::ePlayer });
-	mpBodyCol->SetCollisionTags({ ETag::ePlayer });
+	CreateCollider();
 
-	// ダメージを受ける用のコライダー
-	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 500.0f);
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
-	mpDamageCol->SetMeat(100);
-
-	// 攻撃用のコライダー
-	mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);
-	mpAttackMouthCol->SetCollisionLayers({ ELayer::eDamageCol });
-	mpAttackMouthCol->SetCollisionTags({ ETag::ePlayer });
-	// コライダーをアタッチ
-	const CMatrix* attackcol = GetFrameMtx("Armature_Tongue02");
-	mpAttackMouthCol->SetAttachMtx(attackcol);
-
-	// 最初は攻撃判定用のコライダーはオフにしておく
-	mpAttackMouthCol->SetEnable(false);
-
+	// 火炎放射の発射位置の設定
 	const CMatrix* flamemtx = GetFrameMtx("Armature_UpperMouth01");
 	mpFlamethrower = new CFlamethrower
 	(
@@ -133,15 +92,421 @@ CDragon::CDragon()
 CDragon::~CDragon()
 {
 	SAFE_DELETE(mpColliderLine);
+	SAFE_DELETE(mpColliderLine2);
+	SAFE_DELETE(mpColliderLine3);
+	// ダメージ用コライダー
+	SAFE_DELETE(mpHeadDamageCol);
+	SAFE_DELETE(mpNeckDamageCol);
+	SAFE_DELETE(mpBodyDamageCol);
+	SAFE_DELETE(mpTailDamageCol_Root);
+	SAFE_DELETE(mpTailDamageCol_Tip);
+	SAFE_DELETE(mpLegDamageCol_RF_Root);
+	SAFE_DELETE(mpLegDamageCol_RF);
+	SAFE_DELETE(mpLegDamageCol_RF_Tip);
+	SAFE_DELETE(mpLegDamageCol_LF_Root);
+	SAFE_DELETE(mpLegDamageCol_LF);
+	SAFE_DELETE(mpLegDamageCol_LF_Tip);
+	SAFE_DELETE(mpLegDamageCol_RB_Root);
+	SAFE_DELETE(mpLegDamageCol_RB);
+	SAFE_DELETE(mpLegDamageCol_RB_Tip);
+	SAFE_DELETE(mpLegDamageCol_LB_Root);
+	SAFE_DELETE(mpLegDamageCol_LB);
+	SAFE_DELETE(mpLegDamageCol_LB_Tip);
+	// 押し戻しようコライダー
+	SAFE_DELETE(mpHeadCol);
+	SAFE_DELETE(mpNeckCol);
 	SAFE_DELETE(mpBodyCol);
-	SAFE_DELETE(mpDamageCol);
-	SAFE_DELETE(mpAttackMouthCol);
+	SAFE_DELETE(mpTailCol_Root);
+	SAFE_DELETE(mpTailCol_Tip);
+	SAFE_DELETE(mpLegCol_RF_Root);
+	SAFE_DELETE(mpLegCol_RF);
+	SAFE_DELETE(mpLegCol_RF_Tip);
+	SAFE_DELETE(mpLegCol_LF_Root);
+	SAFE_DELETE(mpLegCol_LF);
+	SAFE_DELETE(mpLegCol_LF_Tip);
+	SAFE_DELETE(mpLegCol_RB_Root);
+	SAFE_DELETE(mpLegCol_RB);
+	SAFE_DELETE(mpLegCol_RB_Tip);
+	SAFE_DELETE(mpLegCol_LB_Root);
+	SAFE_DELETE(mpLegCol_LB);
+	SAFE_DELETE(mpLegCol_LB_Tip);
 }
 
 // インスタンスを取得
 CDragon* CDragon::Instance()
 {
 	return spInstance;
+}
+
+// ゲーム開始時にコライダーを生成
+void CDragon::CreateCollider()
+{
+	/* 線分コライダーの設定 */
+	// 接地判定用
+	mpColliderLine = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
+	);
+	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+	// 壁との当たり判定用
+	mpColliderLine2 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(-150.0f, 200.0f, 0.0f),
+		CVector(150.0f, 200.0f, 0.0f)
+	);
+	mpColliderLine2->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine3 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 200.0f, -300.0f),
+		CVector(0.0f, 200.0f, 500.0f)
+	);
+	mpColliderLine3->SetCollisionLayers({ ELayer::eField });
+
+	////* ダメージ判定用コライダーの設定 *////
+	/* 頭部 */
+	// 頭
+	mpHeadDamageCol = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.1f, -1.0f, 0.0f), CVector(-0.3f, 0.6f, 0.0f), 9.0f);
+	mpHeadDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpHeadDamageCol->SetCollisionTags({ ETag::eWeapon });
+	mpHeadDamageCol->SetMeat(140);
+	const CMatrix* headcol = GetFrameMtx("Armature_Tongue02");
+	mpHeadDamageCol->SetAttachMtx(headcol);
+	// 首
+	mpNeckDamageCol = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.3f, -0.9f, 0.0f), CVector(0.1f, 1.1f, 0.0f), 9.0f);
+	mpNeckDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpNeckDamageCol->SetCollisionTags({ ETag::eWeapon });
+	mpNeckDamageCol->SetMeat(110);
+	const CMatrix* neckcol = GetFrameMtx("Armature_Neck02");
+	mpNeckDamageCol->SetAttachMtx(neckcol);
+
+	/* 胴体 */
+	// 胴
+	mpBodyDamageCol = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.0f, 0.0f), CVector(0.0f, 2.6f, 0.0f), 13.0f);
+	mpBodyDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpBodyDamageCol->SetCollisionTags({ ETag::eWeapon });
+	mpBodyDamageCol->SetMeat(105);
+	const CMatrix* bodycol = GetFrameMtx("Armature_Spine01");
+	mpBodyDamageCol->SetAttachMtx(bodycol);
+	// 尻尾(根本)
+	mpTailDamageCol_Root = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.1f, 1.8f, 0.0f), CVector(0.1f, -1.3f, 0.0f), 5.4f);
+	mpTailDamageCol_Root->SetCollisionLayers({ ELayer::eAttackCol });
+	mpTailDamageCol_Root->SetCollisionTags({ ETag::eWeapon });
+	mpTailDamageCol_Root->SetMeat(105);
+	const CMatrix* tailcol_root = GetFrameMtx("Armature_joint20");
+	mpTailDamageCol_Root->SetAttachMtx(tailcol_root);
+	// 尻尾(先端)
+	mpTailDamageCol_Tip = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.2f, 3.0f, 0.0f), CVector(0.15f, -1.2f, 0.0f), 3.5f);
+	mpTailDamageCol_Tip->SetCollisionLayers({ ELayer::eAttackCol });
+	mpTailDamageCol_Tip->SetCollisionTags({ ETag::eWeapon });
+	mpTailDamageCol_Tip->SetMeat(100);
+	const CMatrix* tailcol_tip = GetFrameMtx("Armature_joint22");
+	mpTailDamageCol_Tip->SetAttachMtx(tailcol_tip);
+
+	/* 足(根本) */
+	// 右前足
+	mpLegDamageCol_RF_Root = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, -0.1f), 6.0f);
+	mpLegDamageCol_RF_Root->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_RF_Root->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_RF_Root->SetMeat(105);
+	const CMatrix* legcol_rf_root = GetFrameMtx("Armature_UpperArm_R");
+	mpLegDamageCol_RF_Root->SetAttachMtx(legcol_rf_root);
+	// 左前足
+	mpLegDamageCol_LF_Root = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.1f), 6.0f);
+	mpLegDamageCol_LF_Root->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_LF_Root->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_LF_Root->SetMeat(105);
+	const CMatrix* legcol_lf_root = GetFrameMtx("Armature_UpperArm_L");
+	mpLegDamageCol_LF_Root->SetAttachMtx(legcol_lf_root);
+	// 右後ろ足
+	mpLegDamageCol_RB_Root = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.1f, 0.0f, 0.0f), CVector(-0.2f, 1.2f, 0.0f), 8.0f);
+	mpLegDamageCol_RB_Root->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_RB_Root->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_RB_Root->SetMeat(95);
+	const CMatrix* legcol_rb_root = GetFrameMtx("Armature_UpperReg_R");
+	mpLegDamageCol_RB_Root->SetAttachMtx(legcol_rb_root);
+	// 左後ろ足
+	mpLegDamageCol_LB_Root = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.1f, 0.0f, 0.0f), CVector(-0.2f, 1.2f, 0.0f), 8.0f);
+	mpLegDamageCol_LB_Root->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_LB_Root->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_LB_Root->SetMeat(95);
+	const CMatrix* legcol_lb_root = GetFrameMtx("Armature_UpperLeg_L");
+	mpLegDamageCol_LB_Root->SetAttachMtx(legcol_lb_root);
+
+	/* 足 */
+	// 右前足
+	mpLegDamageCol_RF = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegDamageCol_RF->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_RF->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_RF->SetMeat(105);
+	const CMatrix* legcol_rf = GetFrameMtx("Armature_RowerArm_R");
+	mpLegDamageCol_RF->SetAttachMtx(legcol_rf);
+	// 左前足
+	mpLegDamageCol_LF = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegDamageCol_LF->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_LF->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_LF->SetMeat(105);
+	const CMatrix* legcol_lf = GetFrameMtx("Armature_LowerArm_L");
+	mpLegDamageCol_LF->SetAttachMtx(legcol_lf);
+	// 右後ろ足
+	mpLegDamageCol_RB = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegDamageCol_RB->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_RB->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_RB->SetMeat(95);
+	const CMatrix* legcol_rb = GetFrameMtx("Armature_RowerReg_R");
+	mpLegDamageCol_RB->SetAttachMtx(legcol_rb);
+	// 左後ろ足
+	mpLegDamageCol_LB = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegDamageCol_LB->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_LB->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_LB->SetMeat(95);
+	const CMatrix* legcol_lb = GetFrameMtx("Armature_LowerLeg_L");
+	mpLegDamageCol_LB->SetAttachMtx(legcol_lb);
+
+	/* 足(足先) */
+	// 右前足
+	mpLegDamageCol_RF_Tip = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
+	mpLegDamageCol_RF_Tip->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_RF_Tip->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_RF_Tip->SetMeat(105);
+	const CMatrix* legcol_rf_tip = GetFrameMtx("Armature_Middle01_R");
+	mpLegDamageCol_RF_Tip->SetAttachMtx(legcol_rf_tip);
+	// 左前足
+	mpLegDamageCol_LF_Tip = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
+	mpLegDamageCol_LF_Tip->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_LF_Tip->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_LF_Tip->SetMeat(105);
+	const CMatrix* legcol_lf_tip = GetFrameMtx("Armature_Middle01_L");
+	mpLegDamageCol_LF_Tip->SetAttachMtx(legcol_lf_tip);
+	// 右後ろ足
+	mpLegDamageCol_RB_Tip = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
+	mpLegDamageCol_RB_Tip->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_RB_Tip->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_RB_Tip->SetMeat(95);
+	const CMatrix* legcol_rb_tip = GetFrameMtx("Armature_MiddleToe01_R");
+	mpLegDamageCol_RB_Tip->SetAttachMtx(legcol_rb_tip);
+	// 左後ろ足
+	mpLegDamageCol_LB_Tip = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
+	mpLegDamageCol_LB_Tip->SetCollisionLayers({ ELayer::eAttackCol });
+	mpLegDamageCol_LB_Tip->SetCollisionTags({ ETag::eWeapon });
+	mpLegDamageCol_LB_Tip->SetMeat(95);
+	const CMatrix* legcol_lb_tip = GetFrameMtx("Armature_MiddleToe01_L");
+	mpLegDamageCol_LB_Tip->SetAttachMtx(legcol_lb_tip);
+
+	/* 翼 */
+
+
+	////* 押し戻し用コライダーの設定 *////
+	/* 頭部 */
+	// 頭
+	mpHeadCol = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.1f, -1.0f, 0.0f), CVector(-0.3f, 0.6f, 0.0f), 9.0f);
+	mpHeadCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpHeadCol->SetCollisionTags({ ETag::ePlayer });
+	mpHeadCol->SetMeat(140);
+	mpHeadCol->SetAttachMtx(headcol);
+	// 首
+	mpNeckCol = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.3f, -0.9f, 0.0f), CVector(0.1f, 1.1f, 0.0f), 9.0f);
+	mpNeckCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpNeckCol->SetCollisionTags({ ETag::ePlayer });
+	mpNeckCol->SetMeat(110);
+	mpNeckCol->SetAttachMtx(neckcol);
+
+	/* 胴体 */
+	// 胴
+	mpBodyCol = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, -1.0f, 0.0f), CVector(0.0f, 2.6f, 0.0f), 13.0f);
+	mpBodyCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpBodyCol->SetCollisionTags({ ETag::ePlayer });
+	mpBodyCol->SetMeat(105);
+	mpBodyCol->SetAttachMtx(bodycol);
+	// 尻尾(根本)
+	mpTailCol_Root = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.1f, 1.8f, 0.0f), CVector(0.1f, -1.3f, 0.0f), 5.4f);
+	mpTailCol_Root->SetCollisionLayers({ ELayer::ePlayer });
+	mpTailCol_Root->SetCollisionTags({ ETag::ePlayer });
+	mpTailCol_Root->SetMeat(105);
+	mpTailCol_Root->SetAttachMtx(tailcol_root);
+	// 尻尾(先端)
+	mpTailCol_Tip = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.2f, 3.0f, 0.0f), CVector(0.15f, -1.2f, 0.0f), 3.5f);
+	mpTailCol_Tip->SetCollisionLayers({ ELayer::ePlayer });
+	mpTailCol_Tip->SetCollisionTags({ ETag::ePlayer });
+	mpTailCol_Tip->SetMeat(100);
+	mpTailCol_Tip->SetAttachMtx(tailcol_tip);
+
+	/* 足(根本) */
+	// 右前足
+	mpLegCol_RF_Root = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, -0.1f), 6.0f);
+	mpLegCol_RF_Root->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_RF_Root->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_RF_Root->SetMeat(105);
+	mpLegCol_RF_Root->SetAttachMtx(legcol_rf_root);
+	// 左前足
+	mpLegCol_LF_Root = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.1f), 6.0f);
+	mpLegCol_LF_Root->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_LF_Root->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_LF_Root->SetMeat(105);
+	mpLegCol_LF_Root->SetAttachMtx(legcol_lf_root);
+	// 右後ろ足
+	mpLegCol_RB_Root = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.1f, 0.0f, 0.0f), CVector(-0.2f, 1.2f, 0.0f), 8.0f);
+	mpLegCol_RB_Root->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_RB_Root->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_RB_Root->SetMeat(95);
+	mpLegCol_RB_Root->SetAttachMtx(legcol_rb_root);
+	// 左後ろ足
+	mpLegCol_LB_Root = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.1f, 0.0f, 0.0f), CVector(-0.2f, 1.2f, 0.0f), 8.0f);
+	mpLegCol_LB_Root->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_LB_Root->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_LB_Root->SetMeat(95);
+	mpLegCol_LB_Root->SetAttachMtx(legcol_lb_root);
+
+	/* 足 */
+	// 右前足
+	mpLegCol_RF = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegCol_RF->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_RF->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_RF->SetMeat(105);
+	mpLegCol_RF->SetAttachMtx(legcol_rf);
+	// 左前足
+	mpLegCol_LF = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegCol_LF->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_LF->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_LF->SetMeat(105);
+	mpLegCol_LF->SetAttachMtx(legcol_lf);
+	// 右後ろ足
+	mpLegCol_RB = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegCol_RB->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_RB->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_RB->SetMeat(95);
+	mpLegCol_RB->SetAttachMtx(legcol_rb);
+	// 左後ろ足
+	mpLegCol_LB = new CColliderCapsule(this, ELayer::eEnemy,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 1.2f, 0.0f), 4.8f);
+	mpLegCol_LB->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_LB->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_LB->SetMeat(95);
+	mpLegCol_LB->SetAttachMtx(legcol_lb);
+
+	/* 足(足先) */
+	// 右前足
+	mpLegCol_RF_Tip = new CColliderSphere(this, ELayer::eEnemy, 0.7f);
+	mpLegCol_RF_Tip->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_RF_Tip->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_RF_Tip->SetMeat(105);
+	mpLegCol_RF_Tip->SetAttachMtx(legcol_rf_tip);
+	// 左前足
+	mpLegCol_LF_Tip = new CColliderSphere(this, ELayer::eEnemy, 0.7f);
+	mpLegCol_LF_Tip->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_LF_Tip->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_LF_Tip->SetMeat(105);
+	mpLegCol_LF_Tip->SetAttachMtx(legcol_lf_tip);
+	// 右後ろ足
+	mpLegCol_RB_Tip = new CColliderSphere(this, ELayer::eEnemy, 0.7f);
+	mpLegCol_RB_Tip->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_RB_Tip->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_RB_Tip->SetMeat(95);
+	mpLegCol_RB_Tip->SetAttachMtx(legcol_rb_tip);
+	// 左後ろ足
+	mpLegCol_LB_Tip = new CColliderSphere(this, ELayer::eEnemy, 0.7f);
+	mpLegCol_LB_Tip->SetCollisionLayers({ ELayer::ePlayer });
+	mpLegCol_LB_Tip->SetCollisionTags({ ETag::ePlayer });
+	mpLegCol_LB_Tip->SetMeat(95);
+	mpLegCol_LB_Tip->SetAttachMtx(legcol_lb_tip);
+	
+
+	/* 攻撃用コライダーの設定 */
+	//mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);
+	//mpAttackMouthCol->SetCollisionLayers({ ELayer::eDamageCol });
+	//mpAttackMouthCol->SetCollisionTags({ ETag::ePlayer });
+	//// コライダーをアタッチ
+	//const CMatrix* attackcol = GetFrameMtx("Armature_Tongue02");
+	//mpAttackMouthCol->SetAttachMtx(attackcol);
+
+	//// 最初は攻撃判定用のコライダーはオフにしておく
+	//mpAttackMouthCol->SetEnable(false);
+
+}
+
+// コライダーの更新処理
+void CDragon::ColliderUpdate()
+{
+	////* ダメージ用コライダー *////
+	/* 頭部 */
+	mpHeadDamageCol->Update();	// 頭
+	mpNeckDamageCol->Update();	// 首
+	/* 胴体 */
+	mpBodyDamageCol->Update();		// 胴体
+	mpTailDamageCol_Root->Update();// 尻尾(根本)
+	mpTailDamageCol_Tip->Update(); // 尻尾(先端)
+	/* 足 */
+	// 右前足
+	mpLegDamageCol_RF_Root->Update();
+	mpLegDamageCol_RF->Update();
+	mpLegDamageCol_RF_Tip->Update();
+	// 左前足
+	mpLegDamageCol_LF_Root->Update();
+	mpLegDamageCol_LF->Update();
+	mpLegDamageCol_LF_Tip->Update();
+	// 右後ろ足
+	mpLegDamageCol_RB_Root->Update();
+	mpLegDamageCol_RB->Update();
+	mpLegDamageCol_RB_Tip->Update();
+	// 左後ろ足
+	mpLegDamageCol_LB_Root->Update();
+	mpLegDamageCol_LB->Update();
+	mpLegDamageCol_LB_Tip->Update();
+	/* 翼 */
+
+	////* 押し戻し用コライダー *////
+	 /* 頭部 */
+	mpHeadCol->Update();	// 頭
+	mpNeckCol->Update();	// 首
+	/* 胴体 */
+	mpBodyCol->Update();		// 胴体
+	mpTailCol_Root->Update();// 尻尾(根本)
+	mpTailCol_Tip->Update(); // 尻尾(先端)
+	/* 足 */
+	// 右前足
+	mpLegCol_RF_Root->Update();
+	mpLegCol_RF->Update();
+	mpLegCol_RF_Tip->Update();
+	// 左前足
+	mpLegCol_LF_Root->Update();
+	mpLegCol_LF->Update();
+	mpLegCol_LF_Tip->Update();
+	// 右後ろ足
+	mpLegCol_RB_Root->Update();
+	mpLegCol_RB->Update();
+	mpLegCol_RB_Tip->Update();
+	// 左後ろ足
+	mpLegCol_LB_Root->Update();
+	mpLegCol_LB->Update();
+	mpLegCol_LB_Tip->Update();
 }
 
 // アニメーションの切り替え
@@ -298,17 +663,16 @@ void CDragon::Update()
 		}
 	}
 	CXCharacter::Update();
-	mpAttackMouthCol->Update();
-
+	ColliderUpdate();
 #ifdef _DEBUG
 	// ドラゴンのステータスを表示
 	CDebugPrint::Print("敵ステータス\n");
 	CDebugPrint::Print("レベル : %d\nHP : %d\n攻撃力 : %d\n防御力 : %d\n",
 		mStatus.level, mStatus.hp, mStatus.atk, mStatus.def);
-
-
 	// 怒り状態かどうか
 	mIsAngry ? CDebugPrint::Print("怒り状態\n") : CDebugPrint::Print("非怒り状態\n");
+	// ダメージを表示
+	CDebugPrint::Print("%d\n", mDamage);
 	//// プレイヤーとの距離を表示
 	//CVector pPos = CPlayer::Instance()->Position();
 	//CVector ePos = Position();
@@ -368,31 +732,31 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 
 	// 衝突したコライダーが攻撃判定用のコライダーであれば
-	if (self == mpAttackMouthCol)
-	{
-		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
-		// 相手のコライダーの持ち主がキャラであれば
-		if (chara != nullptr)
-		{
-			// ダメージを与える
-			CPlayer* player = CPlayer::Instance();
-			int atk = Status().atk;
-			int def = player->Status().def;
-			float motionvalue = GetMotionValue();
-			// ダメージ計算
-			int damage = player->TakePlayerToDamage(atk, def, motionvalue);
+	//if (self == mpAttackMouthCol)
+	//{
+	//	CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
+	//	// 相手のコライダーの持ち主がキャラであれば
+	//	if (chara != nullptr)
+	//	{
+	//		// ダメージを与える
+	//		CPlayer* player = CPlayer::Instance();
+	//		int atk = Status().atk;
+	//		int def = player->Status().def;
+	//		float motionvalue = GetMotionValue();
+	//		// ダメージ計算
+	//		int damage = player->TakePlayerToDamage(atk, def, motionvalue);
 
-			// 既に攻撃済みのキャラでなければ
-			if (!IsAttackHitObj(chara))
-			{
-				// ダメージを与える
-				chara->TakeDamage(damage);
+	//		// 既に攻撃済みのキャラでなければ
+	//		if (!IsAttackHitObj(chara))
+	//		{
+	//			// ダメージを与える
+	//			chara->TakeDamage(damage);
 
-				// 攻撃済みのリストに追加
-				AddAttackHitObj(chara);
-			}
-		}
-	}
+	//			// 攻撃済みのリストに追加
+	//			AddAttackHitObj(chara);
+	//		}
+	//	}
+	//}
 }
 
 // 描画処理
@@ -402,21 +766,22 @@ void CDragon::Render()
 #ifdef _DEBUG
 
 	// 視野判定用
-	Primitive::DrawSector(
-		Position() + CVector(0.0f, 1.0, 0.0f),
-		-EulerAngles(),
-		-FOV_ANGLE,
-		FOV_ANGLE,
-		FOV_LANGE,
-		CColor::red,
-		45
-	);
+	//Primitive::DrawSector(
+	//	Position() + CVector(0.0f, 1.0, 0.0f),
+	//	-EulerAngles(),
+	//	-FOV_ANGLE,
+	//	FOV_ANGLE,
+	//	FOV_LANGE,
+	//	CColor::red,
+	//	45
+	//);
 #endif
 }
 
 // ダメージ処理
 void CDragon::TakeDamage(int damage)
 {
+	mDamage = damage;
 	// ダメージ分HPを減少
 	mStatus.hp -= damage;
 	// ダメージの一割分を怯み値に加算
@@ -427,13 +792,12 @@ void CDragon::TakeDamage(int damage)
 	// 怒り状態で有れば、ダメージの半分の値だけ怒り値を減少
 	else mAngryValue -= damage / 2;
 
+	// HPが0になったら死亡処理を行う
 	if (mStatus.hp <= 0)
 	{
 		// 死亡処理
-	}
-	else
-	{
-		// のけ反りなどの被弾処理
+		mState = EState::eDeath;
+		ChangeAnimation(EDragonAnimType::eDie);
 	}
 }
 
@@ -445,7 +809,7 @@ void CDragon::AttackStart()
 	switch (AnimationIndex())
 	{
 	case (int)EDragonAnimType::eAttackMouth:// 噛みつき攻撃
-		mpAttackMouthCol->SetEnable(true);
+		//mpAttackMouthCol->SetEnable(true);
 		break;
 	case (int)EDragonAnimType::eAttackHand:// 飛び掛かり攻撃
 		break;
@@ -457,5 +821,5 @@ void CDragon::AttackEnd()
 {
 	CCharaBase::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
-	mpAttackMouthCol->SetEnable(false);
+	//mpAttackMouthCol->SetEnable(false);
 }

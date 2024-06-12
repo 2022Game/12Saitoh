@@ -42,12 +42,13 @@ void CDragon::UpdateBattle()
 		mAttackStep = 0;
 		mElapsedTime = 0.0f;
 		mChaseElapsedTime = 0.0f;
+		mpFlamethrower->Stop();
 
 		// 怯み値は0する
 		mFearValue = 0;
 		mBatteleStep = 3;
 		ChangeAnimation(EDragonAnimType::eGetHit);
-		SetAnimationSpeed(0.49);
+		SetAnimationSpeed(0.3);
 	}
 
 	// 怒り状態のとき
@@ -421,7 +422,7 @@ void CDragon::UpdateBattele_Fear()
 		if (IsAnimationFinished())
 		{
 			// 残りHP割合に応じて処理を変える
-			if (GetHPPercent() <= 30.0f)
+			if (GetHPPercent() <= 30)
 			{
 				// 残りHPが30%以下の場合は、一定時間アイドルを行う
 				ChangeAnimation(EDragonAnimType::eIdle1);
@@ -439,7 +440,7 @@ void CDragon::UpdateBattele_Fear()
 		
 		// 3秒経過で戦闘へ戻る
 		mFearElapsedTime += Time::DeltaTime();
-		if (mFearElapsedTime >= 3.0f)
+		if (mFearElapsedTime >= 4.0f)
 		{
 			mFearStep = 0;
 			// 戦闘中アイドルへ戻る

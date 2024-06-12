@@ -436,7 +436,7 @@ private:
 	float mWeight;			// コライダーの重量
 	int mCollisionLayers;	// 衝突判定を行うレイヤーのビットフラグ
 	int mCollisionTags;		// 衝突判定を行うオブジェクトタグのビットフラグ
-	int mMeat;		// 肉質倍率
+	int mMeat;				// 肉質倍率
 
 	const CMatrix* mpAttachMtx;	// くっつける行列のポインター
 	CMatrix mAttachMtx;			// くっつける行列の本体

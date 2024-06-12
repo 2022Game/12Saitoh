@@ -271,9 +271,13 @@ void CDragon::UpdateSpAttack_Step8()
 		ChangeAnimation(EDragonAnimType::eIdle1);
 		SetAnimationSpeed(0.4f);
 		mpColliderLine->Position(CVector::zero);
+
+		// 着陸後に怯み値が溜まっている場合、
+		// 怯みモーションを行ってしまうため、怯み値を半分にする
+		mFearValue /= 2;
 	}
 
-	mMoveSpeed -= CVector(0.0f, GRAVITY+0.04, 0.0f);
+	mMoveSpeed -= CVector(0.0f, GRAVITY*3, 0.0f);
 }
 
 // 空中ブレス攻撃を行う位置(目的地)の設定
