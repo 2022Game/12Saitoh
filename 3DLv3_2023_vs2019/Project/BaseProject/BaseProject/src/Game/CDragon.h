@@ -55,6 +55,9 @@ private:
 	// 空中ブレス攻撃処理
 	void UpdateSpecalAttack();
 
+	// モーションブラー処理
+	void UpdateMotionBlur();
+
 	/* 通常攻撃各処理 */
 	// 咆哮攻撃
 	void Update_Sceream();
@@ -143,7 +146,6 @@ private:
 	CColliderLine* mpColliderLine2;	// 壁との当たり判定用
 	CColliderLine* mpColliderLine3;	// 壁との当たり判定用
 
-	//CColliderSphere* mpBodyCol;		//押し戻し用コライダー
 	//CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
 
 	////* ダメージ判定用コライダー *////
@@ -195,6 +197,9 @@ private:
 	CColliderSphere* mpLegCol_RB_Tip; // 右後ろ足
 	CColliderSphere* mpLegCol_LB_Tip; // 左後ろ足
 
+	////* 攻撃用のコライダー *////
+	CColliderSphere* mpAttackMouthCol;	// 噛みつき攻撃
+
 
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
 	CSPFlamethrower* mpSpFlamethrower; // 火炎放射(空中)
@@ -221,6 +226,7 @@ private:
 	float mChaseElapsedTime;// 移動経過時間計測長
 	float mFearElapsedTime; // 怯み中の経過時間計測長
 	float mAngle;	// ステージ中心から見たドラゴンの角度
+	float mMotionBlurRemainTime; // モーションブラーを掛ける残り時間
 
 	// デバッグ用
 	int mDamage;

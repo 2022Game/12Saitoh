@@ -109,3 +109,11 @@ enum class EDragonAnimType
 #define HPPER_50 50
 // 残りのHP割合(25%)
 #define HPPER_25 25
+
+// モーションブラー関連
+// モーションブラーを掛ける時間
+#define MOTION_BLUR_TIME 4.0f
+// モーションブラーの幅
+#define MOTION_BLUR_WIDTH 1.0f
+// モーションブラーの反復回数
+#define MOTION_BLUR_COUNT 2

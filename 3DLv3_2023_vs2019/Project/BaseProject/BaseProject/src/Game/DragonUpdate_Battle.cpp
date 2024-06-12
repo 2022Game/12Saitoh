@@ -101,6 +101,13 @@ void CDragon::UpdateBattele_Idle()
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
 		SetAnimationSpeed(0.5f);
+		// モーションブラーを掛けている最中であれば、
+		// 新しくモーションブラーを掛け直さない
+		if (mMotionBlurRemainTime <= 0.0f)
+		{
+			System::SetEnableMotionBlur(true);
+			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+		}
 		return;
 	}
 	// HPが25%以下になったらもう一度撃つ
@@ -110,6 +117,13 @@ void CDragon::UpdateBattele_Idle()
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
 		SetAnimationSpeed(0.5f);
+		// モーションブラーを掛けている最中であれば、
+		// 新しくモーションブラーを掛け直さない
+		if (mMotionBlurRemainTime <= 0.0f)
+		{
+			System::SetEnableMotionBlur(true);
+			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+		}
 		return;
 	}
 

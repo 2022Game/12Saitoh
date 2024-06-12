@@ -43,7 +43,6 @@ void CDragon::UpdateSpecalAttack()
 		UpdateSpAttack_Step8();
 		break;
 	}
-
 }
 
 // ™ôšKˆ—

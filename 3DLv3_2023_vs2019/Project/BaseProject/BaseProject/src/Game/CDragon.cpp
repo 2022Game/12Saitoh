@@ -34,6 +34,7 @@ CDragon::CDragon()
 	, mAngryElapsedTime(0.0f)
 	, mChaseElapsedTime(0.0f)
 	, mFearElapsedTime(0.0f)
+	, mMotionBlurRemainTime(0.0f)
 	, mAngle(0.0f)
 {
 	// インスタンスの設定
@@ -437,18 +438,16 @@ void CDragon::CreateCollider()
 	mpLegCol_LB_Tip->SetCollisionTags({ ETag::ePlayer });
 	mpLegCol_LB_Tip->SetMeat(95);
 	mpLegCol_LB_Tip->SetAttachMtx(legcol_lb_tip);
-	
 
-	/* 攻撃用コライダーの設定 */
-	//mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);
-	//mpAttackMouthCol->SetCollisionLayers({ ELayer::eDamageCol });
-	//mpAttackMouthCol->SetCollisionTags({ ETag::ePlayer });
-	//// コライダーをアタッチ
-	//const CMatrix* attackcol = GetFrameMtx("Armature_Tongue02");
-	//mpAttackMouthCol->SetAttachMtx(attackcol);
+	////* 攻撃用コライダーの設定 *////
+	mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);
+	mpAttackMouthCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpAttackMouthCol->SetCollisionTags({ ETag::ePlayer });
+	const CMatrix* attackcol = GetFrameMtx("Armature_Tongue02");
+	mpAttackMouthCol->SetAttachMtx(attackcol);
 
-	//// 最初は攻撃判定用のコライダーはオフにしておく
-	//mpAttackMouthCol->SetEnable(false);
+	// 最初は攻撃判定用のコライダーはオフにしておく
+	mpAttackMouthCol->SetEnable(false);
 
 }
 
@@ -539,6 +538,47 @@ void CDragon::ChangeAngry()
 	mRandSave = 0;
 	// 戦闘の段階は攻撃処理にする
 	mBatteleStep = 2;
+
+	// モーションブラーを掛けている最中であれば、
+	// 新しくモーションブラーを掛け直さない
+	if (mMotionBlurRemainTime <= 0.0f)
+	{
+		System::SetEnableMotionBlur(true);
+		mMotionBlurRemainTime = MOTION_BLUR_TIME;
+	}
+}
+
+// モーションブラーの更新処理
+void CDragon::UpdateMotionBlur()
+{
+	// モーションブラーの残り時間が残っていなければ、処理しない
+	if (mMotionBlurRemainTime <= 0.0f) return;
+	// 現在のカメラを取得し、存在しなければ処理しない
+	CCamera* currentCamera = CCamera::CurrentCamera();
+	if (currentCamera == nullptr) return;
+
+	// カメラの向きと反対方向へブラーを掛けるため、
+	// 反転したカメラの向きを取得
+	CVector camDir = -currentCamera->VectorZ();
+
+	// 残り時間から経過時間の割合を取得（経過時間の割合 = 1 - 残り時間の割合）
+	float percent = 1.0f - mMotionBlurRemainTime / MOTION_BLUR_TIME;
+	// ブラーの幅をサインカーブで経過時間に合わせて増減させる
+	float ratio = sinf(M_PI * percent);
+	float width = MOTION_BLUR_WIDTH * ratio;
+
+	// モーションブラーのパラメータを設定
+	System::SetMotionBlur(camDir, width, MOTION_BLUR_COUNT);
+
+	// 残り時間を経過時間分減少させる
+	mMotionBlurRemainTime -= Time::DeltaTime();
+	// 残り時間がなくなれば、
+	if (mMotionBlurRemainTime <= 0.0f)
+	{
+		// モーションブラーをオフにする
+		System::SetEnableMotionBlur(false);
+		mMotionBlurRemainTime = 0.0f;
+	}
 }
 
 // プレイヤーを見つけたかどうか
@@ -663,7 +703,10 @@ void CDragon::Update()
 		}
 	}
 	CXCharacter::Update();
+	// 各コライダーの更新処理
 	ColliderUpdate();
+	// モーションブラーの更新処理
+	UpdateMotionBlur();
 #ifdef _DEBUG
 	// ドラゴンのステータスを表示
 	CDebugPrint::Print("敵ステータス\n");
@@ -695,6 +738,17 @@ void CDragon::Update()
 	//else CDebugPrint::Print("false\n");
 
 #endif
+		//「B」キーを押したら、モーションブラー開始
+	if (CInput::PushKey('B'))
+	{
+		// モーションブラーを掛けている最中であれば、
+		// 新しくモーションブラーを掛け直さない
+		if (mMotionBlurRemainTime <= 0.0f)
+		{
+			System::SetEnableMotionBlur(true);
+			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+		}
+	}
 }
 
 // 衝突処理
