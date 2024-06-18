@@ -57,6 +57,10 @@ enum class EDragonAnimType
 #define FOV_ANGLE		60.0f	// 視野判定用の角度
 #define FEAR_MAXVALUE	200.0f	// 怯み値の上限
 
+// 咆哮攻撃関連
+// 咆哮攻撃のモーションブラー付け始めフレーム
+#define SCREAMBLUR_START 25.0f
+
 // 噛みつき攻撃関連
 // 噛みつき攻撃のコライダーを切り替えるフレーム(始め)
 #define ATTACKMOUTH_COL_START 10.0f
@@ -93,7 +97,6 @@ enum class EDragonAnimType
 // バックステップのレイの長さ
 #define BACKSTEP_RAY 250.0f
 
-
 // ブレス攻撃関連
 // ブレス攻撃開始フレーム
 #define FLAME_START_FRAME 19.0f
@@ -112,8 +115,8 @@ enum class EDragonAnimType
 
 // モーションブラー関連
 // モーションブラーを掛ける時間
-#define MOTION_BLUR_TIME 4.0f
+#define MOTION_BLUR_TIME 2.5f
 // モーションブラーの幅
 #define MOTION_BLUR_WIDTH 1.0f
 // モーションブラーの反復回数
-#define MOTION_BLUR_COUNT 2
+#define MOTION_BLUR_COUNT 1

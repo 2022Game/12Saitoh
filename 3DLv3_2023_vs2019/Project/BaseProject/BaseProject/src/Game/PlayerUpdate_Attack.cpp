@@ -189,7 +189,7 @@ void CPlayer::Update_NormalAttack3()
 		}
 		break;
 	case 2:
-		if (GetAnimationFrame() <= NORMALATTACK1_3_COLLIDER)
+		if (NORMALATTACK1_3_COLLIDER <= GetAnimationFrame())
 		{
 			mpSword->AttackStart();
 			mAttackStep++;

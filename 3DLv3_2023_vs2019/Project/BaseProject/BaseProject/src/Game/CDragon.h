@@ -146,8 +146,6 @@ private:
 	CColliderLine* mpColliderLine2;	// 壁との当たり判定用
 	CColliderLine* mpColliderLine3;	// 壁との当たり判定用
 
-	//CColliderSphere* mpAttackMouthCol;// 噛みつき攻撃用コライダー
-
 	////* ダメージ判定用コライダー *////
 	/* 頭部 */
 	CColliderCapsule* mpHeadDamageCol;	// 頭
@@ -172,6 +170,20 @@ private:
 	CColliderSphere* mpLegDamageCol_RB_Tip; // 右後ろ足
 	CColliderSphere* mpLegDamageCol_LB_Tip; // 左後ろ足
 	/* 翼 */
+	// 右翼
+	CColliderLine* mpWingCol_R01;
+	CColliderLine* mpWingCol_R02;
+	CColliderLine* mpWingCol_R03;
+	CColliderLine* mpWingCol_R04;
+	CColliderLine* mpWingCol_R05;
+	CColliderLine* mpWingCol_R06;
+	// 左翼
+	CColliderLine* mpWingCol_L01;
+	CColliderLine* mpWingCol_L02;
+	CColliderLine* mpWingCol_L03;
+	CColliderLine* mpWingCol_L04;
+	CColliderLine* mpWingCol_L05;
+	CColliderLine* mpWingCol_L06;
 
 	////* 押し戻し用コライダー *////
 	/* 頭部 */
@@ -199,6 +211,7 @@ private:
 
 	////* 攻撃用のコライダー *////
 	CColliderSphere* mpAttackMouthCol;	// 噛みつき攻撃
+	CColliderSphere* mpAttackHandCol;	// 飛び掛かり攻撃
 
 
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
@@ -229,6 +242,6 @@ private:
 	float mMotionBlurRemainTime; // モーションブラーを掛ける残り時間
 
 	// デバッグ用
-	int mDamage;
+	int mDamage = 0;
 };
 #endif

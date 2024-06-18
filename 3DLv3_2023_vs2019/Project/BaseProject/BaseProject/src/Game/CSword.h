@@ -31,5 +31,5 @@ public:
 	CMatrix Matrix() const override;
 private:
 	CModel* mpSword;
-	CColliderSphere* mpSwordCollider;
+	CColliderCapsule* mpSwordCollider;
 };

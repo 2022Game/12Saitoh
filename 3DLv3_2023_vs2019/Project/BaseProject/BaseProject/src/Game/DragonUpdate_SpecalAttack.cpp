@@ -55,6 +55,20 @@ void CDragon::UpdateSpAttack_Step0()
 		ChangeAnimation(EDragonAnimType::eTakeOff);
 		SetAnimationSpeed(0.45f);
 	}
+
+	// モーションブラーを掛け始めるフレーム以上の時
+	// モーションブラーを掛ける
+	if (SCREAMBLUR_START <= GetAnimationFrame() &&
+		GetAnimationFrame() <= SCREAMBLUR_START + 10.0f)
+	{
+		// モーションブラーを掛けている最中であれば、
+		// 新しくモーションブラーを掛け直さない
+		if (mMotionBlurRemainTime <= 0.0f)
+		{
+			System::SetEnableMotionBlur(true);
+			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+		}
+	}
 }
 
 // 離陸処理

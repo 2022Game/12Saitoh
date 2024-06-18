@@ -113,6 +113,18 @@ CDragon::~CDragon()
 	SAFE_DELETE(mpLegDamageCol_LB_Root);
 	SAFE_DELETE(mpLegDamageCol_LB);
 	SAFE_DELETE(mpLegDamageCol_LB_Tip);
+	SAFE_DELETE(mpWingCol_R01);
+	SAFE_DELETE(mpWingCol_R02);
+	SAFE_DELETE(mpWingCol_R03);
+	SAFE_DELETE(mpWingCol_R04);
+	SAFE_DELETE(mpWingCol_R05);
+	SAFE_DELETE(mpWingCol_R06);
+	SAFE_DELETE(mpWingCol_L01);
+	SAFE_DELETE(mpWingCol_L02);
+	SAFE_DELETE(mpWingCol_L03);
+	SAFE_DELETE(mpWingCol_L04);
+	SAFE_DELETE(mpWingCol_L05);
+	SAFE_DELETE(mpWingCol_L06);
 	// 押し戻しようコライダー
 	SAFE_DELETE(mpHeadCol);
 	SAFE_DELETE(mpNeckCol);
@@ -131,6 +143,9 @@ CDragon::~CDragon()
 	SAFE_DELETE(mpLegCol_LB_Root);
 	SAFE_DELETE(mpLegCol_LB);
 	SAFE_DELETE(mpLegCol_LB_Tip);
+	// 攻撃用コライダー
+	SAFE_DELETE(mpAttackMouthCol);
+	SAFE_DELETE(mpAttackHandCol);
 }
 
 // インスタンスを取得
@@ -311,7 +326,104 @@ void CDragon::CreateCollider()
 	mpLegDamageCol_LB_Tip->SetAttachMtx(legcol_lb_tip);
 
 	/* 翼 */
-
+	// 右翼
+	// R1
+	mpWingCol_R01 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 2.2f, 0.0f));
+	mpWingCol_R01->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_R01->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_R01->SetMeat(120);
+	const CMatrix* wingcol_r01 = GetFrameMtx("Armature_WingIndex01_R");
+	mpWingCol_R01->SetAttachMtx(wingcol_r01);
+	// R2
+	mpWingCol_R02 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.5f, 0.0f), CVector(0.0f, 6.7f, 0.0f));
+	mpWingCol_R02->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_R02->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_R02->SetMeat(120);
+	const CMatrix* wingcol_r02 = GetFrameMtx("Armature_WingMiddle02_R");
+	mpWingCol_R02->SetAttachMtx(wingcol_r02);
+	// R3
+	mpWingCol_R03 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.5f, 0.0f), CVector(0.0f, 7.0f, 0.0f));
+	mpWingCol_R03->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_R03->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_R03->SetMeat(120);
+	const CMatrix* wingcol_r03 = GetFrameMtx("Armature_WingRing02_R");
+	mpWingCol_R03->SetAttachMtx(wingcol_r03);
+	// R4
+	mpWingCol_R04 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.5f, 0.0f), CVector(0.0f, 5.0f, 0.0f));
+	mpWingCol_R04->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_R04->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_R04->SetMeat(120);
+	const CMatrix* wingcol_r04 = GetFrameMtx("Armature_WingPinky02_R");
+	mpWingCol_R04->SetAttachMtx(wingcol_r04);
+	// R5
+	mpWingCol_R05 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 4.3f, 0.0f));
+	mpWingCol_R05->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_R05->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_R05->SetMeat(120);
+	const CMatrix* wingcol_r05 = GetFrameMtx("Armature_Wing02_R");
+	mpWingCol_R05->SetAttachMtx(wingcol_r05);
+	// R6
+	mpWingCol_R06 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 2.8f, 0.0f));
+	mpWingCol_R06->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_R06->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_R06->SetMeat(120);
+	const CMatrix* wingcol_r06 = GetFrameMtx("Armature_Wing01_R");
+	mpWingCol_R06->SetAttachMtx(wingcol_r06);
+	// 左翼
+	// L1
+	mpWingCol_L01 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 2.2f, 0.0f));
+	mpWingCol_L01->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_L01->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_L01->SetMeat(120);
+	const CMatrix* wingcol_l01 = GetFrameMtx("Armature_WingIndex01_L");
+	mpWingCol_L01->SetAttachMtx(wingcol_l01);
+	// L2
+	mpWingCol_L02 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.5f, 0.0f), CVector(0.0f, 6.7f, 0.0f));
+	mpWingCol_L02->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_L02->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_L02->SetMeat(120);
+	const CMatrix* wingcol_l02 = GetFrameMtx("Armature_WingMiddle02_L");
+	mpWingCol_L02->SetAttachMtx(wingcol_l02);
+	// L3
+	mpWingCol_L03 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.5f, 0.0f), CVector(0.0f, 7.0f, 0.0f));
+	mpWingCol_L03->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_L03->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_L03->SetMeat(120);
+	const CMatrix* wingcol_l03 = GetFrameMtx("Armature_WingRing02_L");
+	mpWingCol_L03->SetAttachMtx(wingcol_l03);
+	// L4
+	mpWingCol_L04 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, -1.5f, 0.0f), CVector(0.0f, 5.0f, 0.0f));
+	mpWingCol_L04->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_L04->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_L04->SetMeat(120);
+	const CMatrix* wingcol_l04 = GetFrameMtx("Armature_WingPinky02_L");
+	mpWingCol_L04->SetAttachMtx(wingcol_l04);
+	// L5
+	mpWingCol_L05 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 4.3f, 0.0f));
+	mpWingCol_L05->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_L05->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_L05->SetMeat(120);
+	const CMatrix* wingcol_l05 = GetFrameMtx("Armature_Wing02_L");
+	mpWingCol_L05->SetAttachMtx(wingcol_l05);
+	// L6
+	mpWingCol_L06 = new CColliderLine(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 2.8f, 0.0f));
+	mpWingCol_L06->SetCollisionLayers({ ELayer::eAttackCol });
+	mpWingCol_L06->SetCollisionTags({ ETag::eWeapon });
+	mpWingCol_L06->SetMeat(120);
+	const CMatrix* wingcol_l06 = GetFrameMtx("Armature_Wing01_L");
+	mpWingCol_L06->SetAttachMtx(wingcol_l06);
 
 	////* 押し戻し用コライダーの設定 *////
 	/* 頭部 */
@@ -440,14 +552,22 @@ void CDragon::CreateCollider()
 	mpLegCol_LB_Tip->SetAttachMtx(legcol_lb_tip);
 
 	////* 攻撃用コライダーの設定 *////
+	// 噛みつき攻撃
 	mpAttackMouthCol = new CColliderSphere(this, ELayer::eAttackCol, 1.5f);
 	mpAttackMouthCol->SetCollisionLayers({ ELayer::eDamageCol });
 	mpAttackMouthCol->SetCollisionTags({ ETag::ePlayer });
-	const CMatrix* attackcol = GetFrameMtx("Armature_Tongue02");
-	mpAttackMouthCol->SetAttachMtx(attackcol);
-
+	const CMatrix* mouthcol = GetFrameMtx("Armature_Tongue02");
+	mpAttackMouthCol->SetAttachMtx(mouthcol);
 	// 最初は攻撃判定用のコライダーはオフにしておく
 	mpAttackMouthCol->SetEnable(false);
+	// 飛び掛かり攻撃
+	mpAttackHandCol = new CColliderSphere(this, ELayer::eAttackCol, 4.0f);
+	mpAttackHandCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpAttackHandCol->SetCollisionTags({ ETag::ePlayer });
+	const CMatrix* handcol = GetFrameMtx("Armature_Spine02");
+	mpAttackHandCol->SetAttachMtx(handcol);
+	// 最初は攻撃判定用のコライダーはオフにしておく
+	mpAttackHandCol->SetEnable(false);
 
 }
 
@@ -480,6 +600,20 @@ void CDragon::ColliderUpdate()
 	mpLegDamageCol_LB->Update();
 	mpLegDamageCol_LB_Tip->Update();
 	/* 翼 */
+	// 右翼
+	mpWingCol_R01->Update();
+	mpWingCol_R02->Update();
+	mpWingCol_R03->Update();
+	mpWingCol_R04->Update();
+	mpWingCol_R05->Update();
+	mpWingCol_R06->Update();
+	// 左翼
+	mpWingCol_L01->Update();
+	mpWingCol_L02->Update();
+	mpWingCol_L03->Update();
+	mpWingCol_L04->Update();
+	mpWingCol_L05->Update();
+	mpWingCol_L06->Update();
 
 	////* 押し戻し用コライダー *////
 	 /* 頭部 */
@@ -506,6 +640,10 @@ void CDragon::ColliderUpdate()
 	mpLegCol_LB_Root->Update();
 	mpLegCol_LB->Update();
 	mpLegCol_LB_Tip->Update();
+
+	////* 攻撃用コライダー *////
+	mpAttackMouthCol->Update();
+	mpAttackHandCol->Update();
 }
 
 // アニメーションの切り替え
@@ -538,14 +676,6 @@ void CDragon::ChangeAngry()
 	mRandSave = 0;
 	// 戦闘の段階は攻撃処理にする
 	mBatteleStep = 2;
-
-	// モーションブラーを掛けている最中であれば、
-	// 新しくモーションブラーを掛け直さない
-	if (mMotionBlurRemainTime <= 0.0f)
-	{
-		System::SetEnableMotionBlur(true);
-		mMotionBlurRemainTime = MOTION_BLUR_TIME;
-	}
 }
 
 // モーションブラーの更新処理
@@ -559,7 +689,11 @@ void CDragon::UpdateMotionBlur()
 
 	// カメラの向きと反対方向へブラーを掛けるため、
 	// 反転したカメラの向きを取得
-	CVector camDir = -currentCamera->VectorZ();
+	
+	CVector pPos = CPlayer::Instance()->Position();
+	CVector dPos = Position();
+	CVector DP = (dPos - pPos).Normalized();
+	CVector camDir = DP;
 
 	// 残り時間から経過時間の割合を取得（経過時間の割合 = 1 - 残り時間の割合）
 	float percent = 1.0f - mMotionBlurRemainTime / MOTION_BLUR_TIME;
@@ -738,17 +872,6 @@ void CDragon::Update()
 	//else CDebugPrint::Print("false\n");
 
 #endif
-		//「B」キーを押したら、モーションブラー開始
-	if (CInput::PushKey('B'))
-	{
-		// モーションブラーを掛けている最中であれば、
-		// 新しくモーションブラーを掛け直さない
-		if (mMotionBlurRemainTime <= 0.0f)
-		{
-			System::SetEnableMotionBlur(true);
-			mMotionBlurRemainTime = MOTION_BLUR_TIME;
-		}
-	}
 }
 
 // 衝突処理
@@ -786,31 +909,32 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 
 	// 衝突したコライダーが攻撃判定用のコライダーであれば
-	//if (self == mpAttackMouthCol)
-	//{
-	//	CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
-	//	// 相手のコライダーの持ち主がキャラであれば
-	//	if (chara != nullptr)
-	//	{
-	//		// ダメージを与える
-	//		CPlayer* player = CPlayer::Instance();
-	//		int atk = Status().atk;
-	//		int def = player->Status().def;
-	//		float motionvalue = GetMotionValue();
-	//		// ダメージ計算
-	//		int damage = player->TakePlayerToDamage(atk, def, motionvalue);
+	if (self == mpAttackMouthCol ||
+		self == mpAttackHandCol)
+	{
+		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
+		// 相手のコライダーの持ち主がキャラであれば
+		if (chara != nullptr)
+		{
+			// ダメージを与える
+			CPlayer* player = CPlayer::Instance();
+			int atk = Status().atk;
+			int def = player->Status().def;
+			float motionvalue = GetMotionValue();
+			// ダメージ計算
+			int damage = player->TakePlayerToDamage(atk, def, motionvalue);
 
-	//		// 既に攻撃済みのキャラでなければ
-	//		if (!IsAttackHitObj(chara))
-	//		{
-	//			// ダメージを与える
-	//			chara->TakeDamage(damage);
+			// 既に攻撃済みのキャラでなければ
+			if (!IsAttackHitObj(chara))
+			{
+				// ダメージを与える
+				chara->TakeDamage(damage);
 
-	//			// 攻撃済みのリストに追加
-	//			AddAttackHitObj(chara);
-	//		}
-	//	}
-	//}
+				// 攻撃済みのリストに追加
+				AddAttackHitObj(chara);
+			}
+		}
+	}
 }
 
 // 描画処理
@@ -818,17 +942,16 @@ void CDragon::Render()
 {
 	CXCharacter::Render();
 #ifdef _DEBUG
-
 	// 視野判定用
-	//Primitive::DrawSector(
-	//	Position() + CVector(0.0f, 1.0, 0.0f),
-	//	-EulerAngles(),
-	//	-FOV_ANGLE,
-	//	FOV_ANGLE,
-	//	FOV_LANGE,
-	//	CColor::red,
-	//	45
-	//);
+	Primitive::DrawSector(
+		Position() + CVector(0.0f, 1.0, 0.0f),
+		-EulerAngles(),
+		-FOV_ANGLE,
+		FOV_ANGLE,
+		FOV_LANGE,
+		CColor::red,
+		45
+	);
 #endif
 }
 
@@ -863,9 +986,10 @@ void CDragon::AttackStart()
 	switch (AnimationIndex())
 	{
 	case (int)EDragonAnimType::eAttackMouth:// 噛みつき攻撃
-		//mpAttackMouthCol->SetEnable(true);
+		mpAttackMouthCol->SetEnable(true);
 		break;
 	case (int)EDragonAnimType::eAttackHand:// 飛び掛かり攻撃
+		mpAttackHandCol->SetEnable(true);
 		break;
 	}
 }
@@ -875,5 +999,6 @@ void CDragon::AttackEnd()
 {
 	CCharaBase::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
-	//mpAttackMouthCol->SetEnable(false);
+	mpAttackMouthCol->SetEnable(false);
+	mpAttackHandCol->SetEnable(false);
 }

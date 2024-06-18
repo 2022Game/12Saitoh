@@ -14,20 +14,5 @@ void CDragon::UpdateIdle()
 		SetAnimationSpeed(0.5f);
 		mState = EState::eBattle;
 		mBatteleStep = 2;
-
-		// モーションブラーを掛けている最中であれば、
-		// 新しくモーションブラーを掛け直さない
-		if (mMotionBlurRemainTime <= 0.0f)
-		{
-			System::SetEnableMotionBlur(true);
-			mMotionBlurRemainTime = MOTION_BLUR_TIME;
-		}
-	}
-
-	if (CInput::PushKey('F'))
-	{
-		mState = EState::eSpAttack;
-		ChangeAnimation(EDragonAnimType::eScream);
-		SetAnimationSpeed(0.5f);
 	}
 }

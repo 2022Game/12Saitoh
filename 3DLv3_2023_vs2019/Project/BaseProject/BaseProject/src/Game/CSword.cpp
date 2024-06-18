@@ -1,14 +1,15 @@
 #include "CSword.h"
 #include "CPlayer.h"
 #include "CDragon.h"
-#include "CColliderSphere.h"
+#include "CColliderCapsule.h"
 
 // コンストラクタ
 CSword::CSword()
 {
 	mpSword = CResourceManager::Get<CModel>("Sword");
 
-	mpSwordCollider = new CColliderSphere(this, ELayer::eAttackCol, 10.0f);
+	mpSwordCollider = new CColliderCapsule(this, ELayer::eAttackCol,
+		CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 16.0f), 1.5f);
 	mpSwordCollider->SetCollisionLayers({ ELayer::eDamageCol });
 	mpSwordCollider->SetCollisionTags({ ETag::eEnemy });
 

@@ -43,6 +43,7 @@ void CDragon::UpdateBattle()
 		mElapsedTime = 0.0f;
 		mChaseElapsedTime = 0.0f;
 		mpFlamethrower->Stop();
+		mpColliderLine->Position(CVector::zero);
 
 		// 怯み値は0する
 		mFearValue = 0;
@@ -101,13 +102,6 @@ void CDragon::UpdateBattele_Idle()
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
 		SetAnimationSpeed(0.5f);
-		// モーションブラーを掛けている最中であれば、
-		// 新しくモーションブラーを掛け直さない
-		if (mMotionBlurRemainTime <= 0.0f)
-		{
-			System::SetEnableMotionBlur(true);
-			mMotionBlurRemainTime = MOTION_BLUR_TIME;
-		}
 		return;
 	}
 	// HPが25%以下になったらもう一度撃つ
@@ -117,13 +111,6 @@ void CDragon::UpdateBattele_Idle()
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
 		SetAnimationSpeed(0.5f);
-		// モーションブラーを掛けている最中であれば、
-		// 新しくモーションブラーを掛け直さない
-		if (mMotionBlurRemainTime <= 0.0f)
-		{
-			System::SetEnableMotionBlur(true);
-			mMotionBlurRemainTime = MOTION_BLUR_TIME;
-		}
 		return;
 	}
 
@@ -468,14 +455,53 @@ void CDragon::UpdateBattele_Fear()
 void CDragon::Update_Sceream()
 {
 	// 咆哮用のコライダの切り替え
-	// エフェクト関連の処理などを行う予定
+	// 攻撃段階に応じて処理を実行
+	switch (mAttackStep)
+	{
+	case 0:// モーションブラーを実行
+		if (GetAnimationFrame() >= SCREAMBLUR_START)
+		{
+			// モーションブラーを掛ける
+			System::SetEnableMotionBlur(true);
+			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+			// 次の段階へ移行
+			mAttackStep++;
+		}
+		break;
+	case 1:
+		if (IsAnimationFinished())
+		{
+			mAttackStep = 0;
+		}
+		break;
+	}
 }
 
 // 噛みつき攻撃処理
 void CDragon::Update_AttackMouth()
 {
-	if (GetAnimationFrame() == ATTACKMOUTH_COL_START) AttackStart();
-	else if (GetAnimationFrame() == ATTACKMOUTH_COL_END) AttackEnd();
+	switch (mAttackStep)
+	{
+	case 0:
+		// 攻撃開始の合図をコライダーに伝える
+		if (ATTACKMOUTH_COL_START <= GetAnimationFrame())
+		{
+			AttackStart();
+			mAttackStep++;
+		}
+		break;
+	case 1:
+		// 攻撃終了の合図をコライダーに伝える
+		if (ATTACKMOUTH_COL_END <= GetAnimationFrame())
+		{
+			AttackEnd();
+		}
+		if (IsAnimationFinished())
+		{
+			mAttackStep = 0;
+		}
+		break;
+	}
 }
 
 // 飛び掛かり攻撃処理
@@ -497,6 +523,7 @@ void CDragon::Update_AttackHand()
 			mMoveSpeed += CVector(0.0f, 3.6f, 0.0f);
 			mIsGrounded = false;
 			mAttackStep++;
+			AttackStart();
 		}
 		break;
 	case 1:// 飛び掛かり攻撃
@@ -515,6 +542,7 @@ void CDragon::Update_AttackHand()
 		if (ATTACKHAND_END_FRAME <= GetAnimationFrame())
 		{
 			mAttackStep++;
+			AttackEnd();
 		}
 		break;
 	case 2:// バックステップ

@@ -11,8 +11,8 @@ std::vector<DragonData::AnimData> DragonData::ANIM_DATA =
 	{ "Character\\Dragon\\anim\\scream.x",			false,	101.0f,		0.0f },	// ™ôšK
 	{ "Character\\Dragon\\anim\\takeOff.x",			false,	121.0f,		0.0f },	// —£—¤
 	{ "Character\\Dragon\\anim\\attackflame.x",		false,	81.0f,		0.2f },	// ƒuƒŒƒXUŒ‚
-	{ "Character\\Dragon\\anim\\attackHand.x",		false,	91.0f,		0.7f },	// ”ò‚ÑŠ|‚©‚èUŒ‚
-	{ "Character\\Dragon\\anim\\attackMouth.x",		false,	36.0f,		0.4f },	// Šš‚İ‚Â‚«UŒ‚
+	{ "Character\\Dragon\\anim\\attackHand.x",		false,	91.0f,		0.5f },	// ”ò‚ÑŠ|‚©‚èUŒ‚
+	{ "Character\\Dragon\\anim\\attackMouth.x",		false,	36.0f,		0.3f },	// Šš‚İ‚Â‚«UŒ‚
 	{ "Character\\Dragon\\anim\\die.x",				false,	65.0f,		0.0f },	// €–S
 	{ "Character\\Dragon\\anim\\flyFlame.x",		false,	91.0f,		0.3f },	// ‹ó’†ƒuƒŒƒXUŒ‚
 	{ "Character\\Dragon\\anim\\flyforward.x",		true,	31.0f,		0.0f },	// ‹ó’†‘Oi
