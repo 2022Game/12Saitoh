@@ -198,7 +198,7 @@ void CPlayer::Update_FastMove()
 
 			mMoveSpeed += move * FASTMOVE_SPEED;
 			// スタミナを減少
-			mStatus.sp -= 0.5;
+			mStatus.sp -= 0.3;
 
 			// ダッシュ開始アニメーションが終了
 			if (IsAnimationFinished())

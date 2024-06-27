@@ -4,6 +4,7 @@
 #include "CColliderLine.h"
 #include "CPlayer.h"
 #include "CFlamethrower.h"
+#include "Global.h"
 
 // 戦闘中の更新処理
 void CDragon::UpdateBattle()
@@ -117,7 +118,7 @@ void CDragon::UpdateBattele_Idle()
 	// 経過時間を加算する
 	mElapsedTime += Time::DeltaTime();
 	// 1.5秒ごとに攻撃を行う
-	if (mElapsedTime >= 1.5f)
+	if (mElapsedTime >= 1.0f)
 	{
 		// 経過時間を初期化
 		mElapsedTime = 0.0f;
@@ -147,7 +148,7 @@ void CDragon::UpdateBattele_Idle()
 		// 自身からプレイヤーまでのベクトルを取得
 		CVector EP = (playerPos - enemyPos).Normalized();
 		EP.Y(0.0f);
-		mMoveSpeed += EP * 0.3f;
+		mMoveSpeed += EP * 2.0f;
 		ChangeAnimation(EDragonAnimType::eWalk);
 		SetAnimationSpeed(0.7f);
 	}
@@ -200,7 +201,7 @@ void CDragon::UpdateBattle_Chase()
 			else
 			{
 				// 攻撃ができる範囲まで移動
-				mMoveSpeed += EP * 0.6f;
+				mMoveSpeed += EP * 0.7f;
 				ChangeAnimation(EDragonAnimType::eWalk);
 				SetAnimationSpeed(0.7f);
 				// 移動時間を加算
@@ -226,8 +227,8 @@ void CDragon::UpdateBattle_Chase()
 			if (IsAnimationFinished())
 			{
 				// 乱数を生成して、攻撃を決定する
-				int rand = Math::Rand(0, 2);
-				if (rand <= 1)
+				int rand = Math::Rand(0, 3);
+				if (rand <= 2)
 				{
 					// 中距離攻撃に切り替え
 					mDistanceType = EDistanceType::eMedium;
@@ -238,14 +239,119 @@ void CDragon::UpdateBattle_Chase()
 					// 一定の範囲まで移動して攻撃を行う
 					mRandSave = 1;
 				}
-
 			}
 			break;
+		case 3:// 乱数を生成して行動を決定
+		{
+			CVector fPos = gField->Position();
+			CVector dPos = Position();
+			float length = (fPos - dPos).Length();
 
+			// ドラゴンがフィールドの中心から半径の半分以上離れていたら
+			// 移動または攻撃を行う
+			if (length >= FIELD_RADIUS / 1.5)
+			{
+				int rand = Math::Rand(0, 2);
+				if (rand <= 1)
+				{
+					// 移動
+					ChangeAnimation(EDragonAnimType::eRun);
+					SetAnimationSpeed(0.5f);
+					// 移動後、攻撃を行う
+					mRandSave = 4;
+					mRayAngle = GetRayAngle();
+				}
+				else if (rand == 2)
+				{
+					// バックステップ
+					if (IsBackStep())
+					{
+						ChangeAnimation(EDragonAnimType::eBackStep);
+						SetAnimationSpeed(0.5f);
+						mRandSave = 2;
+					}
+					// バックステップが出来ない
+					else
+					{
+						ChangeAnimation(EDragonAnimType::eWalk);
+						// 移動後、攻撃を行う
+						mRandSave = 4;
+						mRayAngle = GetRayAngle();
+					}
+
+				}
+			}
+			// 半分以上離れていない場合はバックステップを行う
+			else
+			{
+				// バックステップ
+				if (IsBackStep())
+				{
+					ChangeAnimation(EDragonAnimType::eBackStep);
+					SetAnimationSpeed(0.5f);
+					mRandSave = 2;
+				}
+				else
+				{
+					// 中距離攻撃に切り替え
+					mDistanceType = EDistanceType::eMedium;
+					mRandSave = 0;
+				}
+			}
+			break;
+		}
+		case 4:// 移動
+		{
+			// 求めた角度の方向へ移動する
+			CVector angle = CVector	(
+				sinf(mRayAngle * M_PI / 360.0f), 
+				0.0f, 
+				cosf(mRayAngle * M_PI / 360.0f)).Normalized();
+
+			mMoveSpeed += angle * 2.5f;
+
+			mChaseElapsedTime += Time::DeltaTime();
+			if (mChaseElapsedTime >= 3.0f)
+			{
+				mChaseElapsedTime = 0.0f;
+				mRandSave = 5;
+			}
+		}
+			break;
+		case 5:// 攻撃を行う
+		{
+			CVector pPos = CPlayer::Instance()->Position();
+			CVector dPos = Position();
+			CVector PD = (pPos - dPos).Normalized();
+			
+			mMoveSpeed += PD * 1.0f;
+			mChaseElapsedTime += Time::DeltaTime();
+			if (mChaseElapsedTime >= 2.5f)
+			{
+				int rand = Math::Rand(0, 1);
+				if (rand == 0)
+				{
+					ChangeAnimation(EDragonAnimType::eAttackFlame);
+					SetAnimationSpeed(0.33f);
+					mBatteleStep++;
+					mChaseElapsedTime = 0.0f;
+				}
+				else
+				{
+					ChangeAnimation(EDragonAnimType::eAttackHand);
+					SetAnimationSpeed(0.5f);
+					mBatteleStep++;
+					mChaseElapsedTime = 0.0f;
+				}
+
+			}
+		}
+			break;
 		default:// 最初に一度だけ実行
 			// 噛みつき攻撃の範囲外だった場合
 			if (distance >= 150.0f)
 			{
+				// 噛みつき攻撃の範囲まで移動して攻撃を行う
 				mRandSave = 1;
 			}
 			// 噛みつき範囲内だった場合
@@ -260,16 +366,23 @@ void CDragon::UpdateBattle_Chase()
 				}
 				else
 				{
-					mRandSave = 2;
-					ChangeAnimation(EDragonAnimType::eBackStep);
-					SetAnimationSpeed(0.5f);
+					if (IsBackStep())
+					{
+						// バックステップを行い、その後攻撃
+						mRandSave = 2;
+						ChangeAnimation(EDragonAnimType::eBackStep);
+						SetAnimationSpeed(0.5f);
+					}
+					else
+					{
+						mRandSave = 3;
+					}
 				}
 			}
 			else// それ以外の場合
 			{
-				mRandSave = 2;
-				ChangeAnimation(EDragonAnimType::eBackStep);
-				SetAnimationSpeed(0.5f);
+				// 攻撃または移動を行う
+				mRandSave = 3;
 			}
 			break;
 		}
@@ -464,11 +577,17 @@ void CDragon::Update_Sceream()
 			// モーションブラーを掛ける
 			System::SetEnableMotionBlur(true);
 			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+			AttackStart();
 			// 次の段階へ移行
 			mAttackStep++;
 		}
 		break;
 	case 1:
+		if (SCREAMCOL_END <= GetAnimationFrame())
+		{
+			AttackEnd();
+		}
+
 		if (IsAnimationFinished())
 		{
 			mAttackStep = 0;

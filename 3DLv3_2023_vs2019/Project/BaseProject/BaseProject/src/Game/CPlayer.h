@@ -140,8 +140,8 @@ private:
 	CColliderLine* mpColliderLine;	// 接地判定用線分コライダ
 	CColliderLine* mpColliderLine2;	// 壁との当たり判定用
 	CColliderLine* mpColliderLine3;	// 壁との当たり判定用
-	CColliderSphere* mpBodyCol;		// 推し戻り用コライダ
-	CColliderSphere* mpDamageCol;	// ダメージ用コライダ
+	CColliderCapsule* mpBodyCol;	// 押し戻し用コライダー
+	CColliderCapsule* mpDamageCol;	// ダメージ用コライダー
 
 	CTransform* mpRideObject;
 	CCutIn_PowerAttack* mpCutIn_PowerAttack;

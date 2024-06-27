@@ -115,6 +115,9 @@ private:
 	// 1～3までの乱数を返す
 	int BattleIdleRand() const;
 
+	// レイを飛ばして移動できる角度を取得
+	float GetRayAngle();
+
 	// プレイヤーとの距離
 	enum class EDistanceType
 	{
@@ -212,6 +215,7 @@ private:
 	////* 攻撃用のコライダー *////
 	CColliderSphere* mpAttackMouthCol;	// 噛みつき攻撃
 	CColliderSphere* mpAttackHandCol;	// 飛び掛かり攻撃
+	CColliderSphere* mpAttackScreamCol;	// 咆哮攻撃
 
 
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
@@ -238,7 +242,8 @@ private:
 	float mAngryElapsedTime;// 怒り経過時間計測長
 	float mChaseElapsedTime;// 移動経過時間計測長
 	float mFearElapsedTime; // 怯み中の経過時間計測長
-	float mAngle;	// ステージ中心から見たドラゴンの角度
+	float mAngle;			// ステージ中心から見たドラゴンの角度
+	float mRayAngle;		// 移動する角度
 	float mMotionBlurRemainTime; // モーションブラーを掛ける残り時間
 
 	// デバッグ用

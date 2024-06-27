@@ -60,6 +60,7 @@ enum class EDragonAnimType
 // 咆哮攻撃関連
 // 咆哮攻撃のモーションブラー付け始めフレーム
 #define SCREAMBLUR_START 25.0f
+#define SCREAMCOL_END 33.0f
 
 // 噛みつき攻撃関連
 // 噛みつき攻撃のコライダーを切り替えるフレーム(始め)

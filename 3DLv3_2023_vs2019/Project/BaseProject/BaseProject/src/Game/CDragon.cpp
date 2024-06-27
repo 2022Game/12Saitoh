@@ -34,8 +34,10 @@ CDragon::CDragon()
 	, mAngryElapsedTime(0.0f)
 	, mChaseElapsedTime(0.0f)
 	, mFearElapsedTime(0.0f)
-	, mMotionBlurRemainTime(0.0f)
 	, mAngle(0.0f)
+	, mRayAngle(0.0f)
+	, mMotionBlurRemainTime(0.0f)
+
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -146,6 +148,7 @@ CDragon::~CDragon()
 	// 攻撃用コライダー
 	SAFE_DELETE(mpAttackMouthCol);
 	SAFE_DELETE(mpAttackHandCol);
+	SAFE_DELETE(mpAttackScreamCol);
 }
 
 // インスタンスを取得
@@ -568,7 +571,14 @@ void CDragon::CreateCollider()
 	mpAttackHandCol->SetAttachMtx(handcol);
 	// 最初は攻撃判定用のコライダーはオフにしておく
 	mpAttackHandCol->SetEnable(false);
-
+	// 咆哮攻撃
+	mpAttackScreamCol = new CColliderSphere(this, ELayer::eAttackCol, 7.0f);
+	mpAttackScreamCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpAttackScreamCol->SetCollisionTags({ ETag::ePlayer });
+	const CMatrix* screamcol = GetFrameMtx("Armature_Spine01");
+	mpAttackScreamCol->SetAttachMtx(screamcol);
+	// 最初は攻撃判定用のコライダーはオフにしておく
+	mpAttackScreamCol->SetEnable(false);
 }
 
 // コライダーの更新処理
@@ -747,7 +757,7 @@ bool CDragon::IsFoundPlayer() const
 bool CDragon::IsBackStep() const
 {
 	// レイの開始地点
-	CVector startPos = Position() + CVector(0.0f,50.0f,0.0f);
+	CVector startPos = Position() + CVector(0.0f, 50.0f, 0.0f);
 	// レイの終了地点
 	CVector endPos = Position() + -VectorZ().Normalized() * BACKSTEP_RAY + CVector(0.0f, 50.0f, 0.0f);
 	// 衝突位置までの距離返却用
@@ -756,18 +766,47 @@ bool CDragon::IsBackStep() const
 	// フィールドとレイの当たり判定行う
 	if (gField->CollisionRay(startPos, endPos, &outDist))
 	{
-		// 衝突位置までの長さを表示(デバッグ)
-		CDebugPrint::Print("%.0f\n", outDist);
 		return false;
 	};
 
-	// レイの長さを表示
-	CDebugPrint::Print("%.0f\n", outDist);
 	// 後ろに十分なスペースがあるので
 	// バックステップが可能
 	return true;
 }
 
+// レイを飛ばして移動できる角度を取得
+float CDragon::GetRayAngle()
+{
+	CVector dPos = Position();
+	CVector pPos = CPlayer::Instance()->Position();
+	CVector PD = (pPos - dPos).Normalized();
+	PD.Y(0.0f);
+
+	// レイの開始地点
+	CVector startPos = Position();
+	startPos.Y(50.0f);
+	// レイの終了地点
+	CVector endPos = Position() + PD * FIELD_RADIUS;
+	endPos.Y(50.0f);
+	// 衝突位置までの距離返却用
+	float outDist = 0.0f;
+	float angle = 0.0f;
+
+	CVector savePos = endPos;
+
+	// フィールドとレイの当たり判定を行う
+	while (gField->CollisionRay(startPos, endPos, &outDist))
+	{
+		endPos = CVector
+		(
+			savePos.X() * sinf(angle * M_PI / 360.0f),
+			savePos.Y(),
+			savePos.Z() * cosf(angle * M_PI / 360.0f)
+		);
+		angle += 10.0f;
+	}
+	return angle;
+}
 
 //プレイヤーとの距離を取得
 CDragon::EDistanceType CDragon::PlayerFromDistance()
@@ -910,7 +949,8 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 	// 衝突したコライダーが攻撃判定用のコライダーであれば
 	if (self == mpAttackMouthCol ||
-		self == mpAttackHandCol)
+		self == mpAttackHandCol  ||
+		self == mpAttackScreamCol)
 	{
 		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
 		// 相手のコライダーの持ち主がキャラであれば
@@ -985,11 +1025,14 @@ void CDragon::AttackStart()
 	// 攻撃が始まったら、攻撃判定用のコライダーをオンにする
 	switch (AnimationIndex())
 	{
-	case (int)EDragonAnimType::eAttackMouth:// 噛みつき攻撃
+	case (int)EDragonAnimType::eAttackMouth: // 噛みつき攻撃
 		mpAttackMouthCol->SetEnable(true);
 		break;
-	case (int)EDragonAnimType::eAttackHand:// 飛び掛かり攻撃
+	case (int)EDragonAnimType::eAttackHand: // 飛び掛かり攻撃
 		mpAttackHandCol->SetEnable(true);
+		break;
+	case (int)EDragonAnimType::eScream: // 咆哮攻撃
+		mpAttackScreamCol->SetEnable(true);
 		break;
 	}
 }
@@ -1001,4 +1044,5 @@ void CDragon::AttackEnd()
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpAttackMouthCol->SetEnable(false);
 	mpAttackHandCol->SetEnable(false);
+	mpAttackScreamCol->SetEnable(false);
 }

@@ -4,10 +4,8 @@
 #include "CHPGauge.h"
 #include "CSPGauge.h"
 #include "CEnemy.h"
-#include "CColliderSphere.h"
 #include "CColliderCapsule.h"
 #include "CSword.h"
-
 #include "CFlamethrower.h"
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -80,16 +78,16 @@ CPlayer::CPlayer()
 
 	// コライダの生成
 	// 押し戻し用コライダ
-	mpBodyCol = new CColliderSphere(this, ELayer::ePlayer, 0.5f);
+	mpBodyCol = new CColliderCapsule(this, ELayer::ePlayer,
+		CVector(0.0f, 0.2f, 0.0f),CVector(0.0f, 1.3f, 0.0f),3.0f);
 	mpBodyCol->SetCollisionLayers({ ELayer::eEnemy });
 	mpBodyCol->SetCollisionTags({ ETag::eEnemy });
-	mpBodyCol->Position(0.0f, 1.0f, 0.0f);
 
 	// ダメージ用コライダ
-	mpDamageCol = new CColliderSphere(this, ELayer::eDamageCol, 0.7f);
+	mpDamageCol = new CColliderCapsule(this, ELayer::eDamageCol,
+		CVector(0.0f, 0.2f, 0.0f),CVector(0.0f, 1.5f, 0.0f),3.0f);
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpDamageCol->SetCollisionTags({ ETag::eEnemy, ETag::eFlame });
-	mpDamageCol->Position(0.0f, 1.0f, 0.0f);
 
 	// カットインカメラの生成
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
@@ -126,6 +124,7 @@ CPlayer::~CPlayer()
 	SAFE_DELETE(mpColliderLine2);
 	SAFE_DELETE(mpColliderLine3);
 	SAFE_DELETE(mpBodyCol);
+	SAFE_DELETE(mpDamageCol);
 
 	mpCutIn_PowerAttack->Kill();
 }

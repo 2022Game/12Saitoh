@@ -53,11 +53,11 @@ void CGameScene::Load()
 	CPlayer* player= new CPlayer();
 	player->Scale(10.0f, 10.0f, 10.0f);
 	player->Rotate(0.0f, 180.0f, 0.0f);
-	player->Position(0.0f, 50.0f, 200.0f);
+	player->Position(0.0f, 50.0f, -300.0f);
 
 	// ドラゴン(敵)を生成
 	CDragon* dragon = new CDragon();
-	dragon->Position(-2-0.0f, 50.0f, -100.0f);
+	dragon->Position(-20.0f, 50.0f, -600.0f);
 	dragon->Scale(0.14f, 0.14f, 0.14f);
 
 	////カメラセット
