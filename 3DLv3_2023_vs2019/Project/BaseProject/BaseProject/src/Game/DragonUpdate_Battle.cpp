@@ -18,7 +18,7 @@ void CDragon::UpdateBattle()
 		/* 0～2 : 戦闘時の基本的な処理 */
 	case 0:// 戦闘中のアイドル処理
 		UpdateBattele_Idle();
-		// 怒り状態への移行処理
+		// 怒り状態への移行処理 
 		if (mChangeAngry) ChangeAngry();
 		break;
 	case 1:// 戦闘中の追跡処理
@@ -118,7 +118,7 @@ void CDragon::UpdateBattele_Idle()
 	// 経過時間を加算する
 	mElapsedTime += Time::DeltaTime();
 	// 1.5秒ごとに攻撃を行う
-	if (mElapsedTime >= 1.0f)
+	if (mElapsedTime >= 1.5f)
 	{
 		// 経過時間を初期化
 		mElapsedTime = 0.0f;
@@ -141,16 +141,37 @@ void CDragon::UpdateBattele_Idle()
 		SetAnimationSpeed(0.4f);
 		break;
 
-	case 2:// プレイヤーの元へ移動する
+	case 2:// プレイヤーの元へ移動、または距離を取る
 	{
 		CVector playerPos = CPlayer::Instance()->Position();
 		CVector enemyPos = Position();
-		// 自身からプレイヤーまでのベクトルを取得
-		CVector EP = (playerPos - enemyPos).Normalized();
-		EP.Y(0.0f);
-		mMoveSpeed += EP * 2.0f;
-		ChangeAnimation(EDragonAnimType::eWalk);
-		SetAnimationSpeed(0.7f);
+
+		float distance = (playerPos - enemyPos).Length();
+		// 一定の距離以上の時は、プレイヤーの方向へ移動させる
+		if (distance >= 200.0f)
+		{
+			// 自身からプレイヤーまでのベクトルを取得
+			CVector EP = (playerPos - enemyPos).Normalized();
+			EP.Y(0.0f);
+
+			mMoveSpeed += EP * 2.0f;
+			ChangeAnimation(EDragonAnimType::eWalk);
+			SetAnimationSpeed(0.7f);
+
+		}
+		// 一定の距離まで移動したら攻撃を行う
+		else
+		{
+			// 経過時間を初期化
+			mElapsedTime = 0.0f;
+			mRandSave = 0;
+			mBatteleStep++;
+
+			// プレイヤーとの距離を取得
+			PlayerFromDistance();
+			return;
+		}
+
 	}
 		break;
 
@@ -201,7 +222,7 @@ void CDragon::UpdateBattle_Chase()
 			else
 			{
 				// 攻撃ができる範囲まで移動
-				mMoveSpeed += EP * 0.7f;
+				mMoveSpeed += EP * 1.4f;
 				ChangeAnimation(EDragonAnimType::eWalk);
 				SetAnimationSpeed(0.7f);
 				// 移動時間を加算
@@ -247,9 +268,9 @@ void CDragon::UpdateBattle_Chase()
 			CVector dPos = Position();
 			float length = (fPos - dPos).Length();
 
-			// ドラゴンがフィールドの中心から半径の半分以上離れていたら
+			// フィールドの中心から一定の距離離れていたら
 			// 移動または攻撃を行う
-			if (length >= FIELD_RADIUS / 1.5)
+			if (length >= FIELD_RADIUS / 1.3)
 			{
 				int rand = Math::Rand(0, 2);
 				if (rand <= 1)
@@ -259,7 +280,7 @@ void CDragon::UpdateBattle_Chase()
 					SetAnimationSpeed(0.5f);
 					// 移動後、攻撃を行う
 					mRandSave = 4;
-					mRayAngle = GetRayAngle();
+					mRayAngleVec = GetRayAngleVec();
 				}
 				else if (rand == 2)
 				{
@@ -276,7 +297,7 @@ void CDragon::UpdateBattle_Chase()
 						ChangeAnimation(EDragonAnimType::eWalk);
 						// 移動後、攻撃を行う
 						mRandSave = 4;
-						mRayAngle = GetRayAngle();
+						mRayAngleVec = GetRayAngleVec();
 					}
 
 				}
@@ -303,12 +324,7 @@ void CDragon::UpdateBattle_Chase()
 		case 4:// 移動
 		{
 			// 求めた角度の方向へ移動する
-			CVector angle = CVector	(
-				sinf(mRayAngle * M_PI / 360.0f), 
-				0.0f, 
-				cosf(mRayAngle * M_PI / 360.0f)).Normalized();
-
-			mMoveSpeed += angle * 2.5f;
+			mMoveSpeed += mRayAngleVec * 2.5f;
 
 			mChaseElapsedTime += Time::DeltaTime();
 			if (mChaseElapsedTime >= 3.0f)
@@ -324,9 +340,9 @@ void CDragon::UpdateBattle_Chase()
 			CVector dPos = Position();
 			CVector PD = (pPos - dPos).Normalized();
 			
-			mMoveSpeed += PD * 1.0f;
+			mMoveSpeed += PD * 2.0f;
 			mChaseElapsedTime += Time::DeltaTime();
-			if (mChaseElapsedTime >= 2.5f)
+			if (mChaseElapsedTime >= 2.0f)
 			{
 				int rand = Math::Rand(0, 1);
 				if (rand == 0)
@@ -334,6 +350,7 @@ void CDragon::UpdateBattle_Chase()
 					ChangeAnimation(EDragonAnimType::eAttackFlame);
 					SetAnimationSpeed(0.33f);
 					mBatteleStep++;
+					mRandSave = 0;
 					mChaseElapsedTime = 0.0f;
 				}
 				else
@@ -341,6 +358,7 @@ void CDragon::UpdateBattle_Chase()
 					ChangeAnimation(EDragonAnimType::eAttackHand);
 					SetAnimationSpeed(0.5f);
 					mBatteleStep++;
+					mRandSave = 0;
 					mChaseElapsedTime = 0.0f;
 				}
 
@@ -520,8 +538,12 @@ void CDragon::UpdateAttack()
 	{
 		mAttackStep = 0;
 		mBatteleStep = 0;
+		mRandSave = 0;
+		mElapsedTime = 0.0f;
 		// ブレス攻撃をしていたら、ブレスを止める
 		if (mpFlamethrower->IsThrowing())mpFlamethrower->Stop();
+		// 念のため攻撃用コライダーをオフにする
+		AttackEnd();
 	}
 }
 
@@ -614,10 +636,6 @@ void CDragon::Update_AttackMouth()
 		if (ATTACKMOUTH_COL_END <= GetAnimationFrame())
 		{
 			AttackEnd();
-		}
-		if (IsAnimationFinished())
-		{
-			mAttackStep = 0;
 		}
 		break;
 	}
@@ -713,6 +731,7 @@ void CDragon::Update_AttackHand()
 	{
 		mpColliderLine->Position(CVector::zero);
 	}
+	if (IsAnimationFinished()) mAttackStep = 0;
 }
 
 // 地上ブレス攻撃処理

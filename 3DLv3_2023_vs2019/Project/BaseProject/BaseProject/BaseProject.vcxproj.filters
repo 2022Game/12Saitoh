@@ -415,6 +415,9 @@
     <ClCompile Include="src\Game\CSPFlametrower.cpp">
       <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CHPGauge_Dragon.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -725,6 +728,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSPFlamethrower.h">
       <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CHPGauge_Dragon.h">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

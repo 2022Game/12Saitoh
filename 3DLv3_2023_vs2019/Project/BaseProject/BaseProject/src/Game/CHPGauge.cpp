@@ -8,14 +8,15 @@ CHPGauge::CHPGauge()
 {
 	// HP設定
 	// フレーム
-	mpHPFrameImage = new CImage(FRAME_IMAGE);
+	mpHPFrameImage = new CImage(FRAME_IMAGE_PLAYER);
 	mpHPFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
 	// 緑ゲージバー
-	mpHPBarImage = new CImage(GAUGE_BAR);
+	mpHPBarImage = new CImage(GAUGE_BAR_PLAYER);
 	mpHPBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
 	// 赤ゲージバー
-	mpRedBarImage = new CImage(GAUGE_BAR);
+	mpRedBarImage = new CImage(GAUGE_BAR_PLAYER);
 	mpRedBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
+
 }
 
 // デストラクタ

@@ -43,6 +43,9 @@ public:
 
 	// 納刀状態か抜刀状態か判定
 	bool IsDrawn();
+	// 無敵状態かどうか
+	bool IsInvincible()const;
+
 
 	void TakeDamage(int damage) override;
 private:
@@ -86,6 +89,8 @@ private:
 	void Strong_SpecalMove_Move();
 	// 回避動作
 	void Update_Avoidance();
+	// 死亡処理
+	void Update_Die();
 
 	// アニメーション切り替え
 	void ChangeAnimation(EAnimType type);
@@ -98,6 +103,11 @@ private:
 	// 闘技に必要な情報を設定
 	// type : 再生するアニメーション　cutin : カットインの有無
 	void SetSpecalMove(EAnimType type, bool cutin);
+
+	// 無敵状態にする
+	void InvincibleON();
+	// 無敵状態を解除する
+	void InvincibleOFF();
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
@@ -112,6 +122,7 @@ private:
 		eAvoidance,	// 回避
 		eAttack,	// 攻撃
 		eSpecalMove,// 闘技
+		eDie,		// 死亡
 	};
 	EState mState;		// プレイヤーの状態
 	// ステータスの切り替え
@@ -130,6 +141,7 @@ private:
 	bool mIsAvoid;		// 回避中かどうか
 	bool mSPZeroFlag;	// スタミナが0になった時のスタミナ回復中のフラグ
 	bool mIsUpdateInput;// 入力情報を更新するフラグ
+	bool mIsInvincible;// 無敵状態かどうか
 
 	int mStateStep;		// 各状態の段階
 	int mAttackStep;	// 攻撃の段階

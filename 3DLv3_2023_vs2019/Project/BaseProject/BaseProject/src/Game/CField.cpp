@@ -45,30 +45,18 @@ void CField::Render()
 bool CField::CollisionRay(const CVector start, const CVector end, float* outDistance)
 {
 	CHitInfo hit;
-	CMatrix m = Matrix();
-	float length = 0.0f;
-	std::vector<CTriangle> tris = mpColModel->Triangles();
-	for (CTriangle tri : tris)
+	// フィールドのColliderMeshとの当たり判定を行う
+	bool isHit = CCollider::CollisionRay
+	(
+		mpColliderMesh,
+		start, end, &hit
+	);
+
+	// 衝突していたら衝突地点までの距離を設定
+	if (isHit)
 	{
-		// 三角形のそれぞれの頂点を取得
-		CVector tv[3] = { tri.V0() * m, tri.V1() * m, tri.V2() * m };
-		// 線分(レイ)と三角形の衝突処理
-		if (CCollider::CollisionTriangleLine(tv[1], tv[2], tv[3], start, end, &hit, false))
-		{
-			// 衝突した地点との距離を取得
-			length = hit.dist;
-		}
+		*outDistance = hit.dist;
 	}
 
-	// レイが衝突していた場合
-	if (length > 0.0f)
-	{
-		// 衝突位置までの距離を取得
-		*outDistance = length;
-		return true;
-	}
-
-	// 衝突していなかった場合、レイの長さをそのまま取得
-	*outDistance = (end - start).Length();
-	return false;
+	return isHit;
 }

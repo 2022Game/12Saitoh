@@ -1,6 +1,7 @@
 #include "CDragon.h"
 #include "CInput.h"
 #include "CColliderLine.h"
+#include "CHPGauge_Dragon.h"
 
 // 待機状態の更新処理
 void CDragon::UpdateIdle()
@@ -14,5 +15,10 @@ void CDragon::UpdateIdle()
 		SetAnimationSpeed(0.5f);
 		mState = EState::eBattle;
 		mBatteleStep = 2;
+
+		// HPゲージを作成
+		mpHPGauge = new CHPGauge_Dragon();
+		mpHPGauge->SetPos(250.0f, 600.0f);
+		mpHPGauge->SetMaxValue(mStatus.hp);
 	}
 }

@@ -27,6 +27,7 @@ CPlayer::CPlayer()
 	, mIsAvoid(false)
 	, mSPZeroFlag(false)
 	, mIsUpdateInput(false)
+	, mIsInvincible(false)
 	, mStateStep(0)
 	, mAttackStep(0)
 	, mSPAttackStep(0)
@@ -254,6 +255,10 @@ void CPlayer::Update()
 		case EState::eSpecalMove:
 			Update_SpecialMove();
 			break;
+		// 死亡
+		case EState::eDie:
+			Update_Die();
+			break;
 	}
 
 	// スタミナ回復処理
@@ -363,7 +368,7 @@ void CPlayer::Update()
 
 	//CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
 
-	//CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
+	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
 	if (mTemporaryDamage > 0)
 	{
 		// 2秒経過するごとにHPを回復
@@ -485,10 +490,44 @@ void CPlayer::TakeDamage(int damage)
 	mStatus.hp -= damage;
 	if (mStatus.hp <= 0)
 	{
+		mTemporaryDamage = 0;
 		// 死亡処理
+		//mState = EState::eDie;
+		//ChangeAnimation(EAnimType::eTPose);
 	}
 	else
 	{
 		// のけ反る処理
 	}
+}
+
+// 無敵状態にする
+void CPlayer::InvincibleON()
+{
+	mIsInvincible = true;
+	// ダメージ判定用のコライダーもOFFにしておく
+	mpDamageCol->SetEnable(false);
+}
+
+// 無敵状態を解除する
+void CPlayer::InvincibleOFF()
+{
+	mIsInvincible = false;
+	// ダメージ判定用のコライダーをONにする
+	mpDamageCol->SetEnable(true);
+}
+
+// 無敵状態かどうか
+bool CPlayer::IsInvincible()const
+{
+	if (mIsInvincible == true) return true;
+	else return false;
+}
+
+// 死亡処理
+void CPlayer::Update_Die()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Y(0.0f);
+	mMoveSpeed.Z(0.0f);
 }

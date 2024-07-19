@@ -53,8 +53,8 @@ enum class EDragonAnimType
 
 #define GRAVITY			0.0625f	// 重力
 #define ENEMY_HEIGHT	400.0f	// 敵の高さ
-#define FOV_LANGE		170.0f	// 視野判定用の半径
-#define FOV_ANGLE		60.0f	// 視野判定用の角度
+#define FOV_LANGE		400.0f	// 視野判定用の半径
+#define FOV_ANGLE		180.0f	// 視野判定用の角度
 #define FEAR_MAXVALUE	200.0f	// 怯み値の上限
 
 // 咆哮攻撃関連

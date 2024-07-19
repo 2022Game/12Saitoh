@@ -17,14 +17,17 @@ void CPlayer::Update_Avoidance()
 	if (!mIsAvoid) {
 		mIsAvoid = true;
 		mStatus.sp -= AVOID_SPCOST;
+		// 無敵状態にする
+		InvincibleON();
 	}
 
 	// 仮保存の入力ベクトルが初期値の場合
-	if (mInput_save.LengthSqr() == 0.0f)
+	if (mStateStep == 0)
 	{
 		// 入力ベクトルデータを一時的に保存
 		mInput_save = mCamForward * input.Z() + mCamSide * input.X();
 	}
+	mStateStep++;
 	// カメラの向きに合わせた移動ベクトルに変換
 	CVector move = mInput_save;
 	move.Y(0.0f);
@@ -81,5 +84,7 @@ void CPlayer::Update_Avoidance()
 		mInput_save = CVector::zero;
 		// 回避フラグを元に戻す
 		mIsAvoid = false;
+		// 無敵状態を解除する
+		InvincibleOFF();
 	}
 }

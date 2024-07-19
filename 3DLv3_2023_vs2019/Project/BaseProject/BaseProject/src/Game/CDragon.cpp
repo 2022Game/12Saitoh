@@ -10,6 +10,7 @@
 #include "CFlamethrower.h"
 #include "CSPFlamethrower.h"
 #include "Global.h"
+#include "CHPGauge_Dragon.h"
 
 CDragon* CDragon::spInstance = nullptr;
 
@@ -18,6 +19,8 @@ CDragon::CDragon()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mMoveSpeed(CVector::zero)
 	, mSaveVec(CVector::zero)
+	, mRayAngleVec(CVector::zero)
+	, mpHPGauge(nullptr)
 	, mIsGrounded(true)
 	, mIsAngry(false)
 	, mChangeAngry(false)
@@ -35,9 +38,7 @@ CDragon::CDragon()
 	, mChaseElapsedTime(0.0f)
 	, mFearElapsedTime(0.0f)
 	, mAngle(0.0f)
-	, mRayAngle(0.0f)
 	, mMotionBlurRemainTime(0.0f)
-
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -627,12 +628,12 @@ void CDragon::ColliderUpdate()
 
 	////* 押し戻し用コライダー *////
 	 /* 頭部 */
-	mpHeadCol->Update();	// 頭
-	mpNeckCol->Update();	// 首
+	mpHeadCol->Update();
+	mpNeckCol->Update();
 	/* 胴体 */
-	mpBodyCol->Update();		// 胴体
-	mpTailCol_Root->Update();// 尻尾(根本)
-	mpTailCol_Tip->Update(); // 尻尾(先端)
+	mpBodyCol->Update();
+	mpTailCol_Root->Update();
+	mpTailCol_Tip->Update();
 	/* 足 */
 	// 右前足
 	mpLegCol_RF_Root->Update();
@@ -775,37 +776,65 @@ bool CDragon::IsBackStep() const
 }
 
 // レイを飛ばして移動できる角度を取得
-float CDragon::GetRayAngle()
+CVector CDragon::GetRayAngleVec()
 {
 	CVector dPos = Position();
 	CVector pPos = CPlayer::Instance()->Position();
-	CVector PD = (pPos - dPos).Normalized();
+	CVector PD = pPos - dPos;
 	PD.Y(0.0f);
+	PD.Normalize();
+
+	float rayLength = FIELD_RADIUS * 1.5;
 
 	// レイの開始地点
 	CVector startPos = Position();
-	startPos.Y(50.0f);
+	startPos.Y(100.0f);
 	// レイの終了地点
-	CVector endPos = Position() + PD * FIELD_RADIUS;
-	endPos.Y(50.0f);
+	CVector endPos = startPos + PD * rayLength;
 	// 衝突位置までの距離返却用
 	float outDist = 0.0f;
 	float angle = 0.0f;
 
-	CVector savePos = endPos;
+	float addAngle = 15.0f;
+	if (Math::Rand(0, 1) == 0)
+	{
+		addAngle *= -1.0f;
+	}
+	
+#ifdef _DEBUG
+	mRayAngleData.clear();
 
+	CRayAngleData data;
+	data.start = startPos;
+	data.end = endPos;
+	data.dist = rayLength;
+	mRayAngleData.push_back(data);
+
+	int index = 0;
+#endif
 	// フィールドとレイの当たり判定を行う
 	while (gField->CollisionRay(startPos, endPos, &outDist))
 	{
-		endPos = CVector
-		(
-			savePos.X() * sinf(angle * M_PI / 360.0f),
-			savePos.Y(),
-			savePos.Z() * cosf(angle * M_PI / 360.0f)
-		);
-		angle += 10.0f;
+#ifdef _DEBUG
+		mRayAngleData[index].dist = outDist;
+#endif
+
+		angle += addAngle;
+
+		CVector v = CQuaternion(0.0f, angle, 0.0f) * PD;
+		endPos = startPos + v * rayLength;
+
+#ifdef _DEBUG
+		data.start = startPos;
+		data.end = endPos;
+		data.dist = rayLength;
+		mRayAngleData.push_back(data);
+
+		index++;
+#endif
 	}
-	return angle;
+
+	return (endPos - startPos).Normalized();
 }
 
 //プレイヤーとの距離を取得
@@ -845,6 +874,7 @@ void CDragon::Update()
 		break;
 		// 死亡状態
 	case EState::eDeath:
+		UpdateDie();
 		break;
 	}
 
@@ -909,8 +939,20 @@ void CDragon::Update()
 	// バックステップ判定用
 	//if (IsBackStep()) CDebugPrint::Print("true\n");
 	//else CDebugPrint::Print("false\n");
+	if (CInput::Key('N'))
+	{
+		mStatus.hp-= 50000;
+	}
 
 #endif
+	if (mpHPGauge != nullptr) mpHPGauge->SetValue(mStatus.hp);
+}
+
+// 死亡処理
+void CDragon::UpdateDie()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 }
 
 // 衝突処理
@@ -953,20 +995,21 @@ void CDragon::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		self == mpAttackScreamCol)
 	{
 		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
-		// 相手のコライダーの持ち主がキャラであれば
-		if (chara != nullptr)
+		// 相手のコライダーの持ち主がキャラであるかつ
+		// 無敵状態で無ければ
+		CPlayer* player = CPlayer::Instance();
+		if (chara != nullptr && !player->IsInvincible())
 		{
-			// ダメージを与える
-			CPlayer* player = CPlayer::Instance();
-			int atk = Status().atk;
-			int def = player->Status().def;
-			float motionvalue = GetMotionValue();
-			// ダメージ計算
-			int damage = player->TakePlayerToDamage(atk, def, motionvalue);
-
 			// 既に攻撃済みのキャラでなければ
 			if (!IsAttackHitObj(chara))
 			{
+				// ダメージ計算
+				int atk = Status().atk;
+				int def = player->Status().def;
+				float motionvalue = GetMotionValue();
+				// ダメージ計算
+				int damage = player->TakePlayerToDamage(atk, def, motionvalue);
+
 				// ダメージを与える
 				chara->TakeDamage(damage);
 
@@ -992,6 +1035,44 @@ void CDragon::Render()
 		CColor::red,
 		45
 	);
+
+	// フィールドとのレイ判定結果を表示
+	int size = mRayAngleData.size();
+	for (int i = 0; i < size; i++)
+	{
+		CRayAngleData data = mRayAngleData[i];
+
+		// レイが壁と衝突したデータ
+		if (i < size - 1)
+		{
+			CVector vec = (data.end - data.start).Normalized();
+			CVector pos = data.start + vec * data.dist;
+			// 壁に衝突する手前までのベクトルを表示
+			Primitive::DrawLine
+			(
+				data.start, pos,
+				i == 0 ? CColor::red : CColor::yellow,
+				3.0f
+			);
+			// 壁に衝突した後のベクトルを表示
+			Primitive::DrawLine
+			(
+				pos, data.end,
+				CColor::blue,
+				3.0f
+			);
+		}
+		// レイが衝突しなかったデータ
+		else
+		{
+			Primitive::DrawLine
+			(
+				data.start, data.end,
+				CColor::green,
+				3.0f
+			);
+		}
+	}
 #endif
 }
 
@@ -1015,6 +1096,7 @@ void CDragon::TakeDamage(int damage)
 		// 死亡処理
 		mState = EState::eDeath;
 		ChangeAnimation(EDragonAnimType::eDie);
+		SetAnimationSpeed(0.25);
 	}
 }
 

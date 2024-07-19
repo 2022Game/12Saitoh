@@ -163,7 +163,7 @@ void CDragon::UpdateSpAttack_Step3()
 		SetAnimationSpeed(0.31f);
 		mSaveDestination = CVector::zero;
 	}
-	CDebugPrint::Print("目的地までの距離 :  %.0f\n", targetLength);
+	//CDebugPrint::Print("目的地までの距離 :  %.0f\n", targetLength);
 	// デバッグ表示用
 	GetAngle();
 }
@@ -335,15 +335,15 @@ float CDragon::GetAngle() const
 		if (targetPos.Z() >= 0)
 		{
 			// 第一象限
-			CDebugPrint::Print("第一象限\n");
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+			//CDebugPrint::Print("第一象限\n");
+			//CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
 		}
 		else // Zがマイナス域
 		{
 			// 第四象限
-			CDebugPrint::Print("第四象限\n");
+			//CDebugPrint::Print("第四象限\n");
 			angle = 180.0f + (180.0f - angle);
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+			//CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
 		}
 	}
 	else // Xがマイナス域
@@ -351,16 +351,16 @@ float CDragon::GetAngle() const
 		if (targetPos.Z() >= 0)
 		{
 			// 第二象限
-			CDebugPrint::Print("第二象限\n");
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+			//CDebugPrint::Print("第二象限\n");
+			//CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
 		}
 		// Zがマイナス域
 		else
 		{
 			// 第三象限
-			CDebugPrint::Print("第三象限\n");
+			//CDebugPrint::Print("第三象限\n");
 			angle = 180.0f + (180.0f - angle);
-			CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
+			//CDebugPrint::Print("ドラゴンの現在の角度 : %.1f\n", angle);
 		}
 	}
 	return angle;

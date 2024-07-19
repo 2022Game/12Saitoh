@@ -6,6 +6,7 @@
 
 class CFlamethrower;
 class CSPFlamethrower;
+class CHPGauge_Dragon;
 /*
 ドラゴンクラス
 キャラクタクラスを継承
@@ -44,6 +45,8 @@ private:
 	void UpdateIdle();
 	// 戦闘状態
 	void UpdateBattle();
+	// 死亡状態
+	void UpdateDie();
 	// 戦闘中のアイドル処理
 	void UpdateBattele_Idle();
 	// 戦闘中の追跡処理
@@ -116,7 +119,7 @@ private:
 	int BattleIdleRand() const;
 
 	// レイを飛ばして移動できる角度を取得
-	float GetRayAngle();
+	CVector GetRayAngleVec();
 
 	// プレイヤーとの距離
 	enum class EDistanceType
@@ -220,9 +223,11 @@ private:
 
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
 	CSPFlamethrower* mpSpFlamethrower; // 火炎放射(空中)
+	CHPGauge_Dragon* mpHPGauge;	// HPゲージ
 	CVector mMoveSpeed;			// 移動速度
 	CVector mSaveDestination;	// 目的地の保存用
 	CVector mSaveVec;			// ベクトルの保存用
+	CVector mRayAngleVec;		
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか
@@ -243,9 +248,18 @@ private:
 	float mChaseElapsedTime;// 移動経過時間計測長
 	float mFearElapsedTime; // 怯み中の経過時間計測長
 	float mAngle;			// ステージ中心から見たドラゴンの角度
-	float mRayAngle;		// 移動する角度
 	float mMotionBlurRemainTime; // モーションブラーを掛ける残り時間
 
+#ifdef _DEBUG
+	class CRayAngleData
+	{
+	public:
+		float dist;
+		CVector start;
+		CVector end;
+	};
+	std::vector<CRayAngleData> mRayAngleData;
+#endif
 	// デバッグ用
 	int mDamage = 0;
 };

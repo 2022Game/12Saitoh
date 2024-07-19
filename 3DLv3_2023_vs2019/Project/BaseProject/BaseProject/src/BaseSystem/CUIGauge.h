@@ -3,9 +3,14 @@
 class CImage;
 
 // HP・SPフレーム画像のファイルパス
-#define FRAME_IMAGE "UI\\Gauge_Frame.png"
+#define FRAME_IMAGE_PLAYER "UI\\Gauge_Frame.png"
 // HP・SPゲージバー画像のファイルパス
-#define GAUGE_BAR "UI\\GaugeBar.png"
+#define GAUGE_BAR_PLAYER "UI\\GaugeBar.png"
+
+// ドラゴンのHPフレーム画像のファイルパス
+#define FRAME_IMAGE_DRAGON "UI\\Dragon_HP_Frame.png"
+// ドラゴンんのHPバー画像のファイルパス
+#define GAUGE_BAR_DRAGON "UI\\Dragon_HP_Gauge.png"
 
 // フレームの横のサイズ
 #define FRAME_SIZE_X (256.0f) * 1.5

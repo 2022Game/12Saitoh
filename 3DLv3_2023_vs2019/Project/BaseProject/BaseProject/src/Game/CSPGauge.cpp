@@ -7,9 +7,9 @@ CSPGauge::CSPGauge()
 	: mZeroFlag(false)
 {
 	// SPÝ’è
-	mpSPFrameImage = new CImage(FRAME_IMAGE);
+	mpSPFrameImage = new CImage(FRAME_IMAGE_PLAYER);
 	mpSPFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
-	mpSPBarImage = new CImage(GAUGE_BAR);
+	mpSPBarImage = new CImage(GAUGE_BAR_PLAYER);
 	mpSPBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
 }
 
