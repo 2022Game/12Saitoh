@@ -83,21 +83,14 @@ void CPlayer::Update_NormalAttack1()
 			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAttack_Up);
 		}
-		if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
-		{
-			// ã“¬‹Z‚ÖØ‚è‘Ö‚¦
-			SetSpecalMove(EAnimType::eCounter_Start, false);
-		}
-		if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
-		{
-			// ‹­“¬‹Z‚ÖØ‚è‘Ö‚¦
-			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
-		}
 		if (IsAnimationFinished())
 		{
 			mAttackStep = ATTACKSTEP_END;
 			ChangeAnimation(EAnimType::eNormalEnd1_1);
 		}
+
+		// “¬‹Z‚Ö‚ÌØ‚è‘Ö‚¦“ü—Í‚ª—L‚ê‚Î“¬‹Z‚ÖˆÚs
+		ChangeSpMove();
 		Update_AttackWait();
 		break;
 	}
@@ -144,21 +137,13 @@ void CPlayer::Update_NormalAttack2()
 			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAttack_Up);
 		}
-		if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
-		{
-			// ã“¬‹Z‚ÖØ‚è‘Ö‚¦
-			SetSpecalMove(EAnimType::eCounter_Start, false);
-		}
-		if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
-		{
-			// ‹­“¬‹Z‚ÖØ‚è‘Ö‚¦
-			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
-		}
 		if (IsAnimationFinished())
 		{
 			mAttackStep = ATTACKSTEP_END;
 			ChangeAnimation(EAnimType::eNormalEnd1_2);
 		}
+		// “¬‹Z‚Ö‚ÌØ‚è‘Ö‚¦“ü—Í‚ª—L‚ê‚Î“¬‹Z‚ÖˆÚs
+		ChangeSpMove();
 		Update_AttackWait();
 		break;
 	}
@@ -186,6 +171,7 @@ void CPlayer::Update_NormalAttack3()
 		if (GetAnimationFrame() >= NORMALATTACK1_3_END_FRAME + 1)
 		{
 			mAttackStep++;
+			mpSword->AttackEnd();
 		}
 		break;
 	case 2:
@@ -217,21 +203,13 @@ void CPlayer::Update_NormalAttack3()
 			mAttackStep = 0;
 			ChangeAnimation(EAnimType::eAttack_Up);
 		}
-		if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
-		{
-			// ã“¬‹Z‚ÖØ‚è‘Ö‚¦
-			SetSpecalMove(EAnimType::eCounter_Start, false);
-		}
-		if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
-		{
-			// ‹­“¬‹Z‚ÖØ‚è‘Ö‚¦
-			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
-		}
 		if (IsAnimationFinished())
 		{
 			mAttackStep = ATTACKSTEP_END;
 			ChangeAnimation(EAnimType::eNormalEnd1_3);
 		}
+		// “¬‹Z‚Ö‚ÌØ‚è‘Ö‚¦“ü—Í‚ª—L‚ê‚Î“¬‹Z‚ÖˆÚs
+		ChangeSpMove();
 		Update_AttackWait();
 		break;
 	}
@@ -555,5 +533,29 @@ void CPlayer::Update_Attack()
 	{
 		// UŒ‚I—¹ˆ—‚ğÀs
 		Update_AttackEnd();
+	}
+}
+
+void CPlayer::ChangeSpMove()
+{
+	if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
+	{
+		// “¬‹C‚ª100ˆÈã‚ ‚ê‚Î
+		if (mStatus.touki >= 100)
+		{
+			// ã“¬‹Z‚ÖØ‚è‘Ö‚¦
+			SetSpecalMove(EAnimType::eCounter_Start, false);
+			mStatus.touki -= 100;
+		}
+	}
+	if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
+	{
+		// “¬‹C‚ª200ˆÈã‚ ‚ê‚Î
+		if (mStatus.touki >= 200)
+		{
+			// ‹­“¬‹Z‚ÖØ‚è‘Ö‚¦
+			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
+			mStatus.touki -= 200;
+		}
 	}
 }

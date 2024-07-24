@@ -41,22 +41,14 @@ void CPlayer::Update_Idle()
 				ChangeState(EState::eAttack);
 				ChangeAnimation(EAnimType::eAttack_Up);
 			}
-			// Cキー＋左クリックで弱闘技へ移行
-			if (CInput::Key('C') && CInput::Key(VK_LBUTTON))
-			{
-				SetSpecalMove(EAnimType::eCounter_Start, false);
-			}
-			// Cキー＋右クリックで強闘技へ移行
-			if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
-			{
-				SetSpecalMove(EAnimType::ePowerAttack_Start, true);
-			}
 			// Eキーで納刀
 			if (CInput::PushKey('E'))
 			{
 				ChangeState(EState::eIdle);
 				ChangeAnimation(EAnimType::eIdle_Sheathed_Combat);
 			}
+			// 闘技への切り替え入力が有れば闘技へ移行
+			ChangeSpMove();
 		}
 		else
 		{

@@ -9,6 +9,7 @@
 #include "CCutIn_PowerAttack.h"
 class CSPGauge;
 class CHPGauge;
+class CToukiGauge;
 class CSword;
 
 class CFlamethrower;
@@ -46,8 +47,11 @@ public:
 	// 無敵状態かどうか
 	bool IsInvincible()const;
 
-
+	// ダメージ計算
 	void TakeDamage(int damage) override;
+	// 闘気を増加
+	void UpTouki();
+
 private:
 	// 待機状態
 	void Update_Idle();
@@ -95,6 +99,9 @@ private:
 	// アニメーション切り替え
 	void ChangeAnimation(EAnimType type);
 
+	// 闘技技への切り替え
+	void ChangeSpMove();
+
 	// 抜納状態を切り替える
 	void SwitchDrawn();
 	// 抜納の切り替え処理
@@ -125,6 +132,7 @@ private:
 		eDie,		// 死亡
 	};
 	EState mState;		// プレイヤーの状態
+private:
 	// ステータスの切り替え
 	void ChangeState(EState state);
 
@@ -158,9 +166,10 @@ private:
 	CTransform* mpRideObject;
 	CCutIn_PowerAttack* mpCutIn_PowerAttack;
 
-	CHPGauge* mpHPGauge;	// HPゲージ
-	CSPGauge* mpSPGauge;	// SPゲージ
-	CSword* mpSword;		// 剣
+	CHPGauge* mpHPGauge;		// HPゲージ
+	CSPGauge* mpSPGauge;		// SPゲージ
+	CToukiGauge* mpToukiGauge;	// 闘気ゲージ
+	CSword* mpSword;			// 剣
 
 	CFlamethrower* mpFlamethrower;
 };

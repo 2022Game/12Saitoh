@@ -13,15 +13,15 @@ class CImage;
 #define GAUGE_BAR_DRAGON "UI\\Dragon_HP_Gauge.png"
 
 // フレームの横のサイズ
-#define FRAME_SIZE_X (256.0f) * 1.5
+#define FRAME_SIZE_X (256.0f) * 1.7
 // フレームの縦のサイズ
-#define FRAME_SIZE_Y (20.0f) * 1.5
+#define FRAME_SIZE_Y 20.0f
 // フレームの縁の幅
-#define FRAME_BORDER (5.0f)
+#define FRAME_BORDER 4.2f
 // バーの横のサイズ
 #define BARSIZE_X (FRAME_SIZE_X - FRAME_BORDER * 1.9)
 // バーの縦のサイズ
-#define BARSIZE_Y (FRAME_SIZE_Y - FRAME_BORDER * 1.9)
+#define BARSIZE_Y (FRAME_SIZE_Y - FRAME_BORDER * 1.6f)
 
 // UIのゲージ表示クラス
 class CUIGauge : public CUIBase

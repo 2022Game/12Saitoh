@@ -3,6 +3,7 @@
 #include "CDebugPrint.h"
 #include "CHPGauge.h"
 #include "CSPGauge.h"
+#include "CToukiGauge.h"
 #include "CEnemy.h"
 #include "CColliderCapsule.h"
 #include "CSword.h"
@@ -96,7 +97,6 @@ CPlayer::CPlayer()
 	// プレイヤーのステータスを取得
 	mStatus = PLAYER_STATUS[PLAYER_STATAS];
 	mMaxStatus = mStatus;
-	mStatus.touki = 0;
 
 	// HPゲージを作成
 	mpHPGauge = new CHPGauge();
@@ -105,8 +105,15 @@ CPlayer::CPlayer()
 
 	// SPゲージを作成
 	mpSPGauge = new CSPGauge();
-	mpSPGauge->SetPos(10.0f, 40.0f);
+	mpSPGauge->SetPos(10.0f, 30.0f);
 	mpSPGauge->SetMaxValue(mStatus.sp);
+
+	// 闘気ゲージを作成
+	mpToukiGauge = new CToukiGauge();
+	mpToukiGauge->SetPos(10.0f, 50.0f);
+	mpToukiGauge->SetMaxValue(mStatus.touki);
+	// 闘気は0にする
+	mStatus.touki = 0;
 
 	//剣を作成
 	mpSword = new CSword();
@@ -389,6 +396,8 @@ void CPlayer::Update()
 	// SPゲージに現在のSPを設定
 	mpSPGauge->SetValueF(mStatus.sp);
 	mpSPGauge->SetSPZeroFlag(mSPZeroFlag);
+	// 闘気ゲージに現在の闘気を設定
+	mpToukiGauge->SetValue(mStatus.touki);
 }
 
 // 衝突処理
@@ -498,6 +507,16 @@ void CPlayer::TakeDamage(int damage)
 	else
 	{
 		// のけ反る処理
+	}
+}
+
+// 闘気を増加
+void CPlayer::UpTouki()
+{
+	// 特殊攻撃中で無ければ闘気を増加させる
+	if (mState != EState::eSpecalMove)
+	{
+		mStatus.touki += 100;
 	}
 }
 

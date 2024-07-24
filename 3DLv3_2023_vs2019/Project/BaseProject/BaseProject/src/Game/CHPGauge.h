@@ -7,7 +7,7 @@ class CHPGauge : public CUIGauge
 {
 private:
 	CImage* mpHPFrameImage;	// HPゲージのフレームのイメージ
-	CImage* mpHPBarImage;		// HPゲージのバーイメージ
+	CImage* mpHPBarImage;	// HPゲージのバーイメージ
 	CImage* mpRedBarImage;	// 赤ゲージのバーイメージ
 
 public:

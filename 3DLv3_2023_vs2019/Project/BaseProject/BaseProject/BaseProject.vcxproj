@@ -57,6 +57,7 @@
     <ClCompile Include="src\BaseSystem\CText.cpp" />
     <ClCompile Include="src\BaseSystem\CTexture.cpp" />
     <ClCompile Include="src\BaseSystem\CTextureFont.cpp" />
+    <ClCompile Include="src\BaseSystem\CToukiGauge.cpp" />
     <ClCompile Include="src\BaseSystem\CTrailEffect.cpp" />
     <ClCompile Include="src\BaseSystem\CTransform.cpp" />
     <ClCompile Include="src\BaseSystem\CTriangle.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="src\BaseSystem\CText.h" />
     <ClInclude Include="src\BaseSystem\CTexture.h" />
     <ClInclude Include="src\BaseSystem\CTextureFont.h" />
+    <ClInclude Include="src\BaseSystem\CToukiGauge.h" />
     <ClInclude Include="src\BaseSystem\CTrailEffect.h" />
     <ClInclude Include="src\BaseSystem\CTransform.h" />
     <ClInclude Include="src\BaseSystem\CTriangle.h" />

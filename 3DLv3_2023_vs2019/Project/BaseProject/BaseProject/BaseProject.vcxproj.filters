@@ -418,6 +418,9 @@
     <ClCompile Include="src\BaseSystem\CHPGauge_Dragon.cpp">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CToukiGauge.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -730,6 +733,9 @@
       <Filter>ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CHPGauge_Dragon.h">
+      <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CToukiGauge.h">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClInclude>
   </ItemGroup>
