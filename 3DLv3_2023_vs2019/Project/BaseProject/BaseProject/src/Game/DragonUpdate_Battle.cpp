@@ -100,6 +100,7 @@ void CDragon::UpdateBattele_Idle()
 	if (GetHPPercent() <= HPPER_50 && mSpAttackNum == 0)
 	{
 		mSpAttackNum++;
+		mBatteleStep = 0;
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
 		SetAnimationSpeed(0.5f);
@@ -109,6 +110,7 @@ void CDragon::UpdateBattele_Idle()
 	else if (GetHPPercent() <= HPPER_25 && mSpAttackNum == 1)
 	{
 		mSpAttackNum++;
+		mBatteleStep = 0;
 		mState = EState::eSpAttack;
 		ChangeAnimation(EDragonAnimType::eScream);
 		SetAnimationSpeed(0.5f);

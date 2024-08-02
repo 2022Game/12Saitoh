@@ -101,9 +101,10 @@ enum class EAnimType
 #define PLAYER_MIN_SP	0.0f	// スタミナの最小値
 #define PLAYER_MAX_TOUKI 300	// 闘気ゲージの最大値
 #define PLAYER_MIN_TOUKI 0		// 闘気ゲージの最小値
+#define UP_TOUKI 10
 #define ATTACKSTEP_END -1		// 攻撃終了の段階
 #define ATTACKSTEP_COUNTER 3	// カウンターの段階
-#define AVOID_SPCOST 20.0f			// 回避に必要なスタミナ
+#define AVOID_SPCOST 20.0f		// 回避に必要なスタミナ
 
 // プレイヤー抜刀状態へ切り替えるフレーム(待機状態中)
 #define SWITCH_DRAWN_IDLE_FRAME 35
@@ -147,6 +148,10 @@ enum class EAnimType
 #define ATTACK_UP_JUMPSTART_FRAME 26
 // ジャンプ攻撃のジャンプ初速度
 #define ATTACK_UP_JUMP_SPEED 3.5f
+
+/* 弱闘技*/
+// 二度目の攻撃の開始フレーム
+#define COUNTERATTACK_START 25.0f
 
 /* 強闘技 */
 // 一度目の移動するフレーム区間(始め)

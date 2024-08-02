@@ -3,6 +3,7 @@
 #include "CColliderMesh.h"
 #include "CWeapon.h"
 #include "CCollider.h"
+#include "CNormalSwordEffect.h"
 class CSword : public CWeapon
 {
 public:
@@ -32,4 +33,5 @@ public:
 private:
 	CModel* mpSword;
 	CColliderCapsule* mpSwordCollider;
+	CNormalSwordEffect* mpSwordEffect;
 };

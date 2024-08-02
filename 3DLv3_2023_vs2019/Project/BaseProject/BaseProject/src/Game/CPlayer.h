@@ -46,6 +46,8 @@ public:
 	bool IsDrawn();
 	// 無敵状態かどうか
 	bool IsInvincible()const;
+	// カウンター中かどうか
+	bool IsCounter();
 
 	// ダメージ計算
 	void TakeDamage(int damage) override;
@@ -114,7 +116,7 @@ private:
 	// 無敵状態にする
 	void InvincibleON();
 	// 無敵状態を解除する
-	void InvincibleOFF();
+	void InvincibleOFF();                                                                                                         
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;

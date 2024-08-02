@@ -1026,15 +1026,15 @@ void CDragon::Render()
 	CXCharacter::Render();
 #ifdef _DEBUG
 	// 視野判定用
-	Primitive::DrawSector(
-		Position() + CVector(0.0f, 1.0, 0.0f),
-		-EulerAngles(),
-		-FOV_ANGLE,
-		FOV_ANGLE,
-		FOV_LANGE,
-		CColor::red,
-		45
-	);
+	//Primitive::DrawSector(
+	//	Position() + CVector(0.0f, 1.0, 0.0f),
+	//	-EulerAngles(),
+	//	-FOV_ANGLE,
+	//	FOV_ANGLE,
+	//	FOV_LANGE,
+	//	CColor::red,
+	//	45
+	//);
 
 	// フィールドとのレイ判定結果を表示
 	int size = mRayAngleData.size();

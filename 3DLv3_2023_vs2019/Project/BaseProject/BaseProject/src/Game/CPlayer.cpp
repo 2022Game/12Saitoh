@@ -390,6 +390,8 @@ void CPlayer::Update()
 		}
 	}
 
+	if (CInput::PushKey('Q')) mIsCounter = true;
+	if(CInput::Key(VK_UP)) mStatus.touki++;
 #endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);
@@ -496,6 +498,18 @@ bool CPlayer::IsDrawn()
 // ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
+	// カウンター状態中であれば
+	if (IsCounter())
+	{
+		// カウンターフラグを立てる
+		mIsCounter = true;
+		// ダメージと暫定ダメージは0にする
+		damage = 0;
+		mTemporaryDamage = 0;
+		// カウンター攻撃中は無敵状態にする
+		InvincibleON();
+	}
+
 	mStatus.hp -= damage;
 	if (mStatus.hp <= 0)
 	{
@@ -516,7 +530,7 @@ void CPlayer::UpTouki()
 	// 特殊攻撃中で無ければ闘気を増加させる
 	if (mState != EState::eSpecalMove)
 	{
-		mStatus.touki += 100;
+		mStatus.touki += UP_TOUKI;
 	}
 }
 
@@ -539,8 +553,18 @@ void CPlayer::InvincibleOFF()
 // 無敵状態かどうか
 bool CPlayer::IsInvincible()const
 {
-	if (mIsInvincible == true) return true;
-	else return false;
+	if (mIsInvincible) return true;
+	
+	return false;
+}
+
+// カウンター中かどうか
+bool CPlayer::IsCounter()
+{
+	if (AnimationIndex() == (int)EAnimType::eCounter_Start) return true;
+	else if (AnimationIndex() == (int)EAnimType::eCounter_Loop) return true;
+
+	return false;
 }
 
 // 死亡処理

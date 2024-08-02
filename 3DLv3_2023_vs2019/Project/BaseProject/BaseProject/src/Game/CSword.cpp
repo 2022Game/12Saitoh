@@ -64,6 +64,14 @@ void CSword::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 				// 攻撃済みリストに追加
 				AddAttackHitObj(chara);
+
+				// 攻撃エフェクトを生成
+				mpSwordEffect = new CNormalSwordEffect
+				(
+					hit.cross,
+					CVector::zero,
+					CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
+				);
 			}
 		}
 	}

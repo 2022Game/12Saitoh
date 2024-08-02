@@ -94,6 +94,14 @@ void CPlayer::Update_Weak_SpecalMove()
 		mAttackStep++;
 		break;
 	case 3:// カウンター攻撃
+		// 2度目の攻撃時に武器に攻撃開始を伝える
+		if (COUNTERATTACK_START <= GetAnimationFrame())
+		{
+			mpSword->AttackStart();
+			mAttackStep++;
+		}
+		break;
+	case 4:// カウンター攻撃
 		// カウンター攻撃が終了
 		if (IsAnimationFinished())
 		{
@@ -102,6 +110,8 @@ void CPlayer::Update_Weak_SpecalMove()
 			ChangeAnimation(EAnimType::eParryAttack_End);
 			// 武器に攻撃終了を伝える
 			mpSword->AttackEnd();
+			// 無敵状態を解除
+			InvincibleOFF();
 		}
 		break;
 	}

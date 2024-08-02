@@ -107,6 +107,9 @@
     <Filter Include="ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame">
       <UniqueIdentifier>{a48615a1-9a92-4c30-9887-dbe1fb3b8eec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\BaseSystem\Effect\2DEffect">
+      <UniqueIdentifier>{dce39197-b7d2-4a40-8a10-a556f581cd5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -420,6 +423,9 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CToukiGauge.cpp">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CNormalSwordEffect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -737,6 +743,9 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CToukiGauge.h">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CNormalSwordEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

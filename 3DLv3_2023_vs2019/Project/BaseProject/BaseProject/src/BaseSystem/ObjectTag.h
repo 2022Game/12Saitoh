@@ -17,6 +17,7 @@ enum class ETag
 	eSword, // 剣
 	eBullet,// 銃弾
 	eFlame,	// 炎
+	eEffect,// 各エフェクト
 
 	eCamera,// カメラ
 
