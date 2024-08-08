@@ -110,6 +110,12 @@
     <Filter Include="ソース ファイル\BaseSystem\Effect\2DEffect">
       <UniqueIdentifier>{dce39197-b7d2-4a40-8a10-a556f581cd5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI">
+      <UniqueIdentifier>{3051ef33-9579-4be5-9455-5430a9debeba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Title">
+      <UniqueIdentifier>{4659a3c3-0c93-4981-939d-a25c5712d61e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -426,6 +432,18 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CNormalSwordEffect.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleUI.cpp">
+      <Filter>ソース ファイル\Game\UI\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CUIManager.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CButton.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CExpandButton.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -746,6 +764,18 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CNormalSwordEffect.h">
       <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleUI.h">
+      <Filter>ソース ファイル\Game\UI\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CUIManager.h">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CButton.h">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CExpandButton.h">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

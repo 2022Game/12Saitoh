@@ -16,6 +16,7 @@
     <ClCompile Include="src\BaseSystem\CBillBoard.cpp" />
     <ClCompile Include="src\BaseSystem\CBillBoardImage.cpp" />
     <ClCompile Include="src\BaseSystem\CBounds.cpp" />
+    <ClCompile Include="src\BaseSystem\CButton.cpp" />
     <ClCompile Include="src\BaseSystem\CCamera.cpp" />
     <ClCompile Include="src\BaseSystem\CCollider.cpp" />
     <ClCompile Include="src\BaseSystem\CColliderCapsule.cpp" />
@@ -31,6 +32,7 @@
     <ClCompile Include="src\BaseSystem\CDebugProfiler.cpp" />
     <ClCompile Include="src\BaseSystem\CDebugTimer.cpp" />
     <ClCompile Include="src\BaseSystem\CEffect.cpp" />
+    <ClCompile Include="src\BaseSystem\CExpandButton.cpp" />
     <ClCompile Include="src\BaseSystem\CFade.cpp" />
     <ClCompile Include="src\BaseSystem\CFont.cpp" />
     <ClCompile Include="src\BaseSystem\CCharaBase.cpp" />
@@ -65,6 +67,7 @@
     <ClCompile Include="src\BaseSystem\CUIBase.cpp" />
     <ClCompile Include="src\BaseSystem\CUIGauge.cpp" />
     <ClCompile Include="src\BaseSystem\CHPGauge_Dragon.cpp" />
+    <ClCompile Include="src\BaseSystem\CUIManager.cpp" />
     <ClCompile Include="src\BaseSystem\CVector.cpp" />
     <ClCompile Include="src\BaseSystem\CObjectBase.cpp" />
     <ClCompile Include="src\BaseSystem\Easing.cpp" />
@@ -94,6 +97,7 @@
     <ClCompile Include="src\Game\CSPGauge.cpp" />
     <ClCompile Include="src\Game\CSword.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
+    <ClCompile Include="src\Game\CTitleUI.cpp" />
     <ClCompile Include="src\Game\CWeapon.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
     <ClCompile Include="src\Game\DragonData.cpp" />
@@ -123,6 +127,7 @@
     <ClInclude Include="src\BaseSystem\CBillBoard.h" />
     <ClInclude Include="src\BaseSystem\CBillBoardImage.h" />
     <ClInclude Include="src\BaseSystem\CBounds.h" />
+    <ClInclude Include="src\BaseSystem\CButton.h" />
     <ClInclude Include="src\BaseSystem\CCamera.h" />
     <ClInclude Include="src\BaseSystem\CCollider.h" />
     <ClInclude Include="src\BaseSystem\CColliderCapsule.h" />
@@ -138,6 +143,7 @@
     <ClInclude Include="src\BaseSystem\CDebugProfiler.h" />
     <ClInclude Include="src\BaseSystem\CDebugTimer.h" />
     <ClInclude Include="src\BaseSystem\CEffect.h" />
+    <ClInclude Include="src\BaseSystem\CExpandButton.h" />
     <ClInclude Include="src\BaseSystem\CFade.h" />
     <ClInclude Include="src\BaseSystem\CFont.h" />
     <ClInclude Include="src\BaseSystem\CCharaBase.h" />
@@ -174,6 +180,7 @@
     <ClInclude Include="src\BaseSystem\CTriangle.h" />
     <ClInclude Include="src\BaseSystem\CUIBase.h" />
     <ClInclude Include="src\BaseSystem\CUIGauge.h" />
+    <ClInclude Include="src\BaseSystem\CUIManager.h" />
     <ClInclude Include="src\BaseSystem\CVector.h" />
     <ClInclude Include="src\BaseSystem\CVertex.h" />
     <ClInclude Include="src\BaseSystem\CObjectBase.h" />
@@ -210,6 +217,7 @@
     <ClInclude Include="src\Game\CSPGauge.h" />
     <ClInclude Include="src\Game\CSword.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
+    <ClInclude Include="src\Game\CTitleUI.h" />
     <ClInclude Include="src\Game\CWeapon.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
     <ClInclude Include="src\Game\DragonData.h" />

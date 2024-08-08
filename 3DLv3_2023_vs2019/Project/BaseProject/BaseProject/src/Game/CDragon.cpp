@@ -62,7 +62,7 @@ CDragon::CDragon()
 	SetAnimationSpeed(0.4f);
 
 	// ランダム値を生成して取得した値によりステータスを設定
-	int rand = Math::Rand(0.0f, 5.0f);
+	int rand = Math::Rand(0.0f, 0.0f);
 	mStatus = ENEMY_STATUS[rand];
 	mMaxStatus = mStatus;
 

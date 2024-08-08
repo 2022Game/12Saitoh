@@ -27,6 +27,8 @@ CGameScene::~CGameScene()
 //シーン読み込み
 void CGameScene::Load()
 {
+	// ゲーム画面はカーソル非表示
+	CInput::ShowCursor(false);
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 	//ここでゲーム中に必要な
