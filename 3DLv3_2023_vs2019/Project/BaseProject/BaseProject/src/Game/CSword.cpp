@@ -20,6 +20,7 @@ CSword::CSword()
 // デストラクタ
 CSword::~CSword()
 {
+	SAFE_DELETE(mpSwordCollider);
 }
 
 // 更新処理

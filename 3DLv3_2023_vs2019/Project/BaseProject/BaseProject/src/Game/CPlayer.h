@@ -11,7 +11,6 @@ class CSPGauge;
 class CHPGauge;
 class CToukiGauge;
 class CSword;
-
 class CFlamethrower;
 /*
 プレイヤークラス

@@ -4,6 +4,7 @@
 class CFont;
 class CImage;
 class CExpandButton;
+class CLightingButton;
 
 class CTitleUI : public CTask
 {
@@ -63,5 +64,6 @@ private:
 	CText* mpTitleLogo;	// タイトルロゴ
 	CImage* mpTitleBg;	// タイトル背景イメージ
 	CText* mpStartText;	// 「CLICK TO START」のテキスト
-	std::vector<CExpandButton*> mButtons;
+	//std::vector<CExpandButton*> mButtons;
+	std::vector<CLightingButton*> mLButtons;
 };

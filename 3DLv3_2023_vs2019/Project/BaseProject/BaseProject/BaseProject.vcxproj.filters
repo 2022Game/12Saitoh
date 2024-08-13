@@ -77,9 +77,6 @@
     <Filter Include="ソース ファイル\Game\Character\Player\Player_Update">
       <UniqueIdentifier>{f4f22512-4788-4b96-a2e0-d2018f6bc3cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\CutIn">
-      <UniqueIdentifier>{b0c6f3b1-2d8a-4212-ad46-5c0c403ab710}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\BaseSystem\UI\CIGauge">
       <UniqueIdentifier>{8b2ca422-adbe-44a2-9851-4b525818a2b9}</UniqueIdentifier>
     </Filter>
@@ -115,6 +112,15 @@
     </Filter>
     <Filter Include="ソース ファイル\Game\UI\Title">
       <UniqueIdentifier>{4659a3c3-0c93-4981-939d-a25c5712d61e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Camera">
+      <UniqueIdentifier>{3e0dc309-bc07-454e-860e-4584693504b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Camera\CutIn">
+      <UniqueIdentifier>{b0c6f3b1-2d8a-4212-ad46-5c0c403ab710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\TitleModel">
+      <UniqueIdentifier>{fff1786a-817d-444e-8852-b23d0283f79d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -320,13 +326,13 @@
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CCutInCamera.cpp">
-      <Filter>ソース ファイル\Game\CutIn</Filter>
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CCutInTest.cpp">
-      <Filter>ソース ファイル\Game\CutIn</Filter>
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp">
-      <Filter>ソース ファイル\Game\CutIn</Filter>
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CRect.cpp">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
@@ -361,9 +367,6 @@
     <ClCompile Include="src\Game\CApplication.cpp">
       <Filter>ソース ファイル\Game\System</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CGameCamera.cpp">
-      <Filter>ソース ファイル\Game\System</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CBullet.cpp">
       <Filter>ソース ファイル\Game\Weapon</Filter>
     </ClCompile>
@@ -384,9 +387,6 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CFade.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CDragon.cpp">
-      <Filter>ソース ファイル\Game\Character\Dragon</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\DragonUpdate_Idle.cpp">
       <Filter>ソース ファイル\Game\Character\Dragon\Dragon_Update</Filter>
@@ -443,6 +443,27 @@
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CExpandButton.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleField.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleModel.cpp">
+      <Filter>ソース ファイル\Game\TitleModel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CDragon.cpp">
+      <Filter>ソース ファイル\Game\Character\Dragon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleSword.cpp">
+      <Filter>ソース ファイル\Game\TitleModel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CLightingButton.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -658,13 +679,13 @@
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CCutInCamera.h">
-      <Filter>ソース ファイル\Game\CutIn</Filter>
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CCutInTest.h">
-      <Filter>ソース ファイル\Game\CutIn</Filter>
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CCutIn_PowerAttack.h">
-      <Filter>ソース ファイル\Game\CutIn</Filter>
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CRect.h">
       <Filter>ソース ファイル\BaseSystem\Math</Filter>
@@ -697,9 +718,6 @@
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CApplication.h">
-      <Filter>ソース ファイル\Game\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CGameCamera.h">
       <Filter>ソース ファイル\Game\System</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CBullet.h">
@@ -775,6 +793,24 @@
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CExpandButton.h">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameCamera.h">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleCamera.h">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleField.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleModel.h">
+      <Filter>ソース ファイル\Game\TitleModel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleSword.h">
+      <Filter>ソース ファイル\Game\TitleModel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CLightingButton.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClInclude>
   </ItemGroup>

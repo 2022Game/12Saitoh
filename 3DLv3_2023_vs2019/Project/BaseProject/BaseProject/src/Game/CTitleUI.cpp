@@ -6,12 +6,13 @@
 #include "CInput.h"
 #include "CFade.h"
 #include "CExpandButton.h"
+#include "CLightingButton.h"
 #include "Easing.h"
 
 // 「CLICK TO START」の点滅時間
 #define START_TEXT_BLINK_TIME 1.0f
 // 「CLICK TO START」の点滅間隔
-#define START_TEXT_INTERVAL_TIME 3.0f
+#define START_TEXT_INTERVAL_TIME 1.0f
 // タイトルメニューのアニメーション時間
 #define OPEN_ANIM_TIME 0.25f
 // タイトルメニューのアニメーション後の待ち時間
@@ -26,16 +27,16 @@ CTitleUI::CTitleUI()
 	, mIsEnd(false)
 {
 	// タイトルロゴのフォントデータを生成
-	mpLogoFont = new CFont("res\\Font\\toroman.ttf");
-	mpLogoFont->SetFontSize(128);
-	mpLogoFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
+	mpLogoFont = new CFont("res\\Font\\docktrin.ttf");
+	mpLogoFont->SetFontSize(120);
+	mpLogoFont->SetAlignment(FTGL::TextAlignment::ALIGN_LEFT);
 	mpLogoFont->SetLineLength(WINDOW_WIDTH);
 
 	// タイトルロゴのテキストを生成
 	mpTitleLogo = new CText
 	(
 		mpLogoFont, 128,
-		CVector2(0.0f, 32.0f),
+		CVector2(190.0f, 32.0f),
 		CVector2(WINDOW_WIDTH, WINDOW_HEIGHT),
 		CColor(0.11f, 0.1f, 0.1f),
 		ETaskPriority::eUI,
@@ -44,26 +45,26 @@ CTitleUI::CTitleUI()
 		false,
 		false
 	);
-	mpTitleLogo->SetText("タイトルロゴ");
+	mpTitleLogo->SetText("duelist");
 	mpTitleLogo->SetEnableOutline(true);
 	mpTitleLogo->SetOutlineColor(CColor(0.9f, 0.9f, 0.9f));
 
 	// タイトル画面の背景イメージを生成
-	mpTitleBg = new CImage
-	(
-		"UI/title_bg.png",
-		ETaskPriority::eUI,
-		0,
-		ETaskPauseType::eDefault,
-		false,
-		false
-	);
+	//mpTitleBg = new CImage
+	//(
+	//	"UI/title_bg.png",
+	//	ETaskPriority::eUI,
+	//	0,
+	//	ETaskPauseType::eDefault,
+	//	false,
+	//	false
+	//);
 
 	// 「CLICK TO START」のテキストを生成
 	mpStartText = new CText
 	(
 		nullptr, 32,
-		CVector2(0.0f, -64.0f),
+		CVector2(250.0f, 30.0f),
 		CVector2(WINDOW_WIDTH, WINDOW_HEIGHT),
 		CColor(1.0f, 1.0f, 0.5f),
 		ETaskPriority::eUI,
@@ -73,58 +74,58 @@ CTitleUI::CTitleUI()
 		false
 	);
 	mpStartText->SetText("- CLICK TO START -");
-	mpStartText->SetTextAlignH(ETextAlignH::eCenter);
-	mpStartText->SetTextAlignV(ETextAlignV::eBottom);
+	mpStartText->SetTextAlignH(ETextAlignH::eLeft);
+	mpStartText->SetTextAlignV(ETextAlignV::eMiddle);
 	mpStartText->SetEnableShadow(true);
 	mpStartText->SetShadowColor(CColor(0.25f, 0.125f, 0.0f));
 	mpStartText->SetEnableOutline(true);
 	mpStartText->SetOutlineColor(CColor(0.0f, 0.0f, 0.0f));
 
 	// [START]ボタンを生成
-	CExpandButton* btn1 = new CExpandButton
+	CLightingButton* btn1 = new CLightingButton
 	(
-		CVector2(WINDOW_WIDTH * 0.5f, 450.0f),
-		CVector2(181.0f, 47.0f),
+		CVector2(400.0f, 320.0f),
+		CVector2(181.0f*1.5f, 47.0f*1.5f),
 		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
 		false, false
 	);
 	// ボタンの画像を読み込み
-	btn1->LoadButtonImage("UI/title_start0.png", "UI/title_start1.png");
+	btn1->LoadButtonImage("UI/title_startUI.png", "UI/title_startUI.png");
 	// ボタンクリック時に呼び出されるコールバック関数を設定
 	btn1->SetOnClickFunc(std::bind(&CTitleUI::OnClickStart, this));
 	// ボタンは最初は無効化して、スケール値を0にしておく
 	btn1->SetEnable(false);
 	btn1->SetScale(0.0f);
 	// ボタンリストに追加
-	mButtons.push_back(btn1);
+	mLButtons.push_back(btn1);
 
 	// [OPTION]ボタンを生成
-	CExpandButton* btn2 = new CExpandButton
-	(
-		CVector2(WINDOW_WIDTH * 0.5f, 550.0f),
-		CVector2(181.0f, 47.0f),
-		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
-		false, false
-	);
-	btn2->LoadButtonImage("UI/title_option0.png", "UI/title_option1.png");
-	btn2->SetOnClickFunc(std::bind(&CTitleUI::OnClickOption, this));
-	btn2->SetEnable(false);
-	btn2->SetScale(0.0f);
-	mButtons.push_back(btn2);
+	//CExpandButton* btn2 = new CExpandButton
+	//(
+	//	CVector2(400.0f, 420.0f),
+	//	CVector2(181.0f, 47.0f),
+	//	ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+	//	false, false
+	//);
+	//btn2->LoadButtonImage("UI/title_option0.png", "UI/title_option1.png");
+	//btn2->SetOnClickFunc(std::bind(&CTitleUI::OnClickOption, this));
+	//btn2->SetEnable(false);
+	//btn2->SetScale(0.0f);
+	//mButtons.push_back(btn2);
 
 	// [QUIT]ボタンを生成
-	CExpandButton* btn3 = new CExpandButton
+	CLightingButton* btn3 = new CLightingButton
 	(
-		CVector2(WINDOW_WIDTH * 0.5f, 650.0f),
-		CVector2(181.0f, 47.0f),
+		CVector2(400.0f, 520.0f),
+		CVector2(98.0f, 47.0f),
 		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
 		false, false
 	);
-	btn3->LoadButtonImage("UI/title_quit0.png", "UI/title_quit1.png");
+	btn3->LoadButtonImage("UI/title_quitUI.png", "UI/title_quitUI.png");
 	btn3->SetOnClickFunc(std::bind(&CTitleUI::OnClickQuit, this));
 	btn3->SetEnable(false);
-	btn3->SetScale(0.0f);
-	mButtons.push_back(btn3);
+	btn3->SetScale(1.0f);
+	mLButtons.push_back(btn3);
 }
 
 // デストラクタ
@@ -132,17 +133,25 @@ CTitleUI::~CTitleUI()
 {
 	SAFE_DELETE(mpLogoFont);
 	SAFE_DELETE(mpTitleLogo);
-	SAFE_DELETE(mpTitleBg);
+	//SAFE_DELETE(mpTitleBg);
 	SAFE_DELETE(mpStartText);
 
-	int size = mButtons.size();
-	for (int i = 0; i < size; i++)
+	//int size = mButtons.size();
+	//for (int i = 0; i < size; i++)
+	//{
+	//	CButton* btn = mButtons[i];
+	//	mButtons[i] = nullptr;
+	//	SAFE_DELETE(btn);
+	//}
+	//mButtons.clear();
+	int size1 = mLButtons.size();
+	for (int i = 0; i < size1; i++)
 	{
-		CButton* btn = mButtons[i];
-		mButtons[i] = nullptr;
-		SAFE_DELETE(btn);
+		CButton* btn1 = mLButtons[i];
+		mLButtons[i] = nullptr;
+		SAFE_DELETE(btn1);
 	}
-	mButtons.clear();
+	mLButtons.clear();
 }
 
 // タイトル画面終了か
@@ -259,17 +268,25 @@ void CTitleUI::UpdateOpen()
 			{
 				// スケール値を一旦1.0より大きくして、1.0へ戻るイージングアニメーション
 				float scale = Easing::BackOut(mElapsedTime, OPEN_ANIM_TIME, 0.0f, 1.0f, 2.0f);
-				for (CExpandButton* btn : mButtons)
+				//for (CExpandButton* btn : mButtons)
+				//{
+				//	btn->SetScale(scale);
+				//}
+				for (CLightingButton* btn1 : mLButtons)
 				{
-					btn->SetScale(scale);
+					btn1->SetScale(scale);
 				}
 				mElapsedTime += Time::DeltaTime();
 			}
 			else
 			{
-				for (CExpandButton* btn : mButtons)
+				//for (CExpandButton* btn : mButtons)
+				//{
+				//	btn->SetScale(1.0f);
+				//}
+				for (CLightingButton* btn1 : mLButtons)
 				{
-					btn->SetScale(1.0f);
+					btn1->SetScale(1.0f);
 				}
 				mStateStep++;
 				mElapsedTime = 0.0f;
@@ -285,9 +302,13 @@ void CTitleUI::UpdateOpen()
 			{
 				// 一定時間待ったら、ボタンをオンにしてタッチできるようにする
 				// （誤タッチを防ぐための待ち時間）
-				for (CExpandButton* btn : mButtons)
+				//for (CExpandButton* btn : mButtons)
+				//{
+				//	btn->SetEnable(true);
+				//}
+				for (CLightingButton* btn1 : mLButtons)
 				{
-					btn->SetEnable(true);
+					btn1->SetEnable(true);
 				}
 				ChangeState(EState::eSelect);
 			}
@@ -329,11 +350,15 @@ void CTitleUI::Update()
 	}
 
 	mpTitleLogo->Update();
-	mpTitleBg->Update();
+	//mpTitleBg->Update();
 	mpStartText->Update();
-	for (CButton* btn : mButtons)
+	//for (CButton* btn : mButtons)
+	//{
+	//	btn->Update();
+	//}
+	for (CButton* btn1 : mLButtons)
 	{
-		btn->Update();
+		btn1->Update();
 	}
 }
 
@@ -344,7 +369,7 @@ void CTitleUI::Render()
 	// 背景→タイトルロゴ→「CLICK TO START」かメニューボタン
 
 	// 背景描画
-	mpTitleBg->Render();
+	//mpTitleBg->Render();
 	// タイトルロゴ描画
 	mpTitleLogo->Render();
 
@@ -356,9 +381,14 @@ void CTitleUI::Render()
 	// 待機状態以外は、メニューボタンを表示
 	else
 	{
-		for (CButton* btn : mButtons)
+
+		//for (CButton* btn : mButtons)
+		//{
+		//	btn->Render();
+		//}
+		for (CButton* btn1 : mLButtons)
 		{
-			btn->Render();
+			btn1->Render();
 		}
 	}
 }

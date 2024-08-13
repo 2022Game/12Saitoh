@@ -6,7 +6,6 @@
 #include "CField.h"
 #include "CInput.h"
 #include "CGameMenu.h"
-#include "CGameMenu.h"
 #include "CBGMManager.h"
 #include "Global.h"
 
@@ -31,16 +30,13 @@ void CGameScene::Load()
 	CInput::ShowCursor(false);
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
+
 	//ここでゲーム中に必要な
 	//リソースの読み込みやクラスの生成を行う
-
 	CResourceManager::Load<CModel>("Field", "Field\\Coliseum\\Coliseum.obj");
 	CResourceManager::Load<CModel>("Cylinder", "Field\\Coliseum\\Cylinder.obj");
-	//CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
-	//CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
-	//CResourceManager::Load<CModelX>("Enemy", "Character\\Enemy\\Dragon.x");
 	CResourceManager::Load<CModelX>("Dragon", "Character\\Dragon\\Dragon.x");
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
 	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
@@ -50,9 +46,8 @@ void CGameScene::Load()
 
 	//フィールドを生成
 	gField = new CField();
-
 	//プレイヤーを生成
-	CPlayer* player= new CPlayer();
+	CPlayer* player = new CPlayer();
 	player->Scale(10.0f, 10.0f, 10.0f);
 	player->Rotate(0.0f, 180.0f, 0.0f);
 	player->Position(0.0f, 50.0f, 200.0f);
@@ -61,26 +56,20 @@ void CGameScene::Load()
 	CDragon* dragon = new CDragon();
 	dragon->Position(-20.0f, 50.0f, -400.0f);
 	dragon->Scale(0.14f, 0.14f, 0.14f);
-
-	////カメラセット
-	//CGameCamera* mainCamera = new CGameCamera
-	//(
-	//	CVector(0.0f, 30.0f, 40.0f),
-	//	player->Position()
-	//);
 	
-	// CGameCameraのテスト
+	//カメラセット
 	CVector atPos = player->Position() + CVector(0.0f, 10.0f, 0.0f);
 	CGameCamera* mainCamera = new CGameCamera
 	(
 		atPos + CVector(0.0f, 0.0f, 40.0f),
 		atPos
 	);
-
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	mainCamera->SetFollowTargetTf(player);
 	// メインカメラの衝突判定にフィールドのコライダーを追加
 	mainCamera->AddCollider(gField->GetFieldCol());
+	
+
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
 

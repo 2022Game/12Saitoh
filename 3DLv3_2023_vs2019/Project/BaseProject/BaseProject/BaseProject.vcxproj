@@ -88,6 +88,7 @@
     <ClCompile Include="src\Game\CGameScene.cpp" />
     <ClCompile Include="src\Game\CHPGauge.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
+    <ClCompile Include="src\Game\CLightingButton.cpp" />
     <ClCompile Include="src\Game\CMoveFloor.cpp" />
     <ClCompile Include="src\Game\CPlayer.cpp" />
     <ClCompile Include="src\Game\CRideabeObject.cpp" />
@@ -96,7 +97,9 @@
     <ClCompile Include="src\Game\CSPFlametrower.cpp" />
     <ClCompile Include="src\Game\CSPGauge.cpp" />
     <ClCompile Include="src\Game\CSword.cpp" />
+    <ClCompile Include="src\Game\CTitleField.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
+    <ClCompile Include="src\Game\CTitleSword.cpp" />
     <ClCompile Include="src\Game\CTitleUI.cpp" />
     <ClCompile Include="src\Game\CWeapon.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
@@ -109,6 +112,8 @@
     <ClCompile Include="src\Game\PlayerUpdate_Avoidance.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Idle.cpp" />
     <ClCompile Include="src\Game\PlayerUpdate_Move.cpp" />
+    <ClCompile Include="src\Game\CTitleCamera.cpp" />
+    <ClCompile Include="src\Game\CTitleModel.cpp" />
     <ClCompile Include="src\Game\Update_SpecalMove.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
@@ -208,6 +213,7 @@
     <ClInclude Include="src\Game\CGameScene.h" />
     <ClInclude Include="src\Game\CHPGauge.h" />
     <ClInclude Include="src\Game\CImage.h" />
+    <ClInclude Include="src\Game\CLightingButton.h" />
     <ClInclude Include="src\Game\CMoveFloor.h" />
     <ClInclude Include="src\Game\CPlayer.h" />
     <ClInclude Include="src\Game\CRideableObject.h" />
@@ -217,11 +223,15 @@
     <ClInclude Include="src\Game\CSPGauge.h" />
     <ClInclude Include="src\Game\CSword.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
+    <ClInclude Include="src\Game\CTitleSword.h" />
     <ClInclude Include="src\Game\CTitleUI.h" />
     <ClInclude Include="src\Game\CWeapon.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
     <ClInclude Include="src\Game\DragonData.h" />
     <ClInclude Include="src\Game\PlayerData.h" />
+    <ClInclude Include="src\Game\CTitleCamera.h" />
+    <ClInclude Include="src\Game\CTitleField.h" />
+    <ClInclude Include="src\Game\CTitleModel.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
