@@ -66,22 +66,22 @@ void CExpandButton::Update()
 {
 	CButton::Update();
 
-	//if (IsEnable())
-	//{
-	//	if (mElapsedTime < EXPAND_ANIM_TIME)
-	//	{
-	//		float per = Easing::QuintOut(mElapsedTime, EXPAND_ANIM_TIME, 0.0f, 1.0f);
-	//		mScale = Math::Lerp(mStartScale, mEndScale, per);
-	//		mSize = mBaseSize * mScale;
+	if (IsEnable())
+	{
+		if (mElapsedTime < EXPAND_ANIM_TIME)
+		{
+			float per = Easing::QuintOut(mElapsedTime, EXPAND_ANIM_TIME, 0.0f, 1.0f);
+			mScale = Math::Lerp(mStartScale, mEndScale, per);
+			mSize = mBaseSize * mScale;
 
-	//		mElapsedTime += Time::DeltaTime();
-	//	}
-	//	else
-	//	{
-	//		mScale = mEndScale;
-	//	}
-	//}
-	//mSize = mBaseSize * mScale;
+			mElapsedTime += Time::DeltaTime();
+		}
+		else
+		{
+			mScale = mEndScale;
+		}
+	}
+	mSize = mBaseSize * mScale;
 	mCenter = mSize * 0.5f;
 }
 

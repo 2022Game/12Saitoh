@@ -122,6 +122,12 @@
     <Filter Include="ソース ファイル\Game\TitleModel">
       <UniqueIdentifier>{fff1786a-817d-444e-8852-b23d0283f79d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\ResultScene">
+      <UniqueIdentifier>{d7980878-d74c-4d9d-aa04-0c8f3dc44b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Result">
+      <UniqueIdentifier>{babc8d99-eff2-411e-820a-d45986883d63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -465,6 +471,24 @@
     </ClCompile>
     <ClCompile Include="src\Game\CLightingButton.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameClearScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameOverScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CResultScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameClearUI.cpp">
+      <Filter>ソース ファイル\Game\UI\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameOverUI.cpp">
+      <Filter>ソース ファイル\Game\UI\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CResultUIBase.cpp">
+      <Filter>ソース ファイル\Game\UI\Result</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -812,6 +836,24 @@
     </ClInclude>
     <ClInclude Include="src\Game\CLightingButton.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameClearScene.h">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameOverScene.h">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CResultScene.h">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameClearUI.h">
+      <Filter>ソース ファイル\Game\UI\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameOverUI.h">
+      <Filter>ソース ファイル\Game\UI\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CResultUIBase.h">
+      <Filter>ソース ファイル\Game\UI\Result</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

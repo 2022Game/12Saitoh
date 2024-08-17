@@ -1,15 +1,10 @@
 #include "CTitleScene.h"
 #include "CSceneManager.h"
 #include "CGameScene.h"
-#include "CCamera.h"
 #include "CSound.h"
 #include "CBGMManager.h"
 #include "CTitleUI.h"
 #include "CModel.h"
-#include "CPlayer.h"
-#include "CDragon.h"
-#include "CGameCamera.h"
-#include "Global.h"
 #include "CTitleCamera.h"
 #include "CTitleField.h"
 #include "CTitleModel.h"
@@ -83,7 +78,7 @@ void CTitleScene::Load()
 //シーンの更新処理
 void CTitleScene::Update()
 {
-	// タイトル画面が
+	// タイトル画面が終了
 	if (mpTitleUI->IsEnd())
 	{
 		// ゲーム開始ならば、ゲームシーンを読み込む

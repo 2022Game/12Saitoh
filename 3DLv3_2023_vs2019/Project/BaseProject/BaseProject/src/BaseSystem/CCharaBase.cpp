@@ -68,10 +68,6 @@ int CCharaBase::GetTemporaryDamage() const
 void CCharaBase::TakeDamage(int damage)
 {
 	mStatus.hp -= damage;
-	if (mStatus.hp <= 0)
-	{
-		// Ž€–Sˆ—
-	}
 }
 
 // UŒ‚ŠJŽn

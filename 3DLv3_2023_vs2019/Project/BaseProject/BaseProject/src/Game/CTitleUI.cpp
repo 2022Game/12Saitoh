@@ -136,20 +136,12 @@ CTitleUI::~CTitleUI()
 	//SAFE_DELETE(mpTitleBg);
 	SAFE_DELETE(mpStartText);
 
-	//int size = mButtons.size();
-	//for (int i = 0; i < size; i++)
-	//{
-	//	CButton* btn = mButtons[i];
-	//	mButtons[i] = nullptr;
-	//	SAFE_DELETE(btn);
-	//}
-	//mButtons.clear();
-	int size1 = mLButtons.size();
-	for (int i = 0; i < size1; i++)
+	int size = mLButtons.size();
+	for (int i = 0; i < size; i++)
 	{
-		CButton* btn1 = mLButtons[i];
+		CButton* btn = mLButtons[i];
 		mLButtons[i] = nullptr;
-		SAFE_DELETE(btn1);
+		SAFE_DELETE(btn);
 	}
 	mLButtons.clear();
 }
@@ -268,10 +260,6 @@ void CTitleUI::UpdateOpen()
 			{
 				// スケール値を一旦1.0より大きくして、1.0へ戻るイージングアニメーション
 				float scale = Easing::BackOut(mElapsedTime, OPEN_ANIM_TIME, 0.0f, 1.0f, 2.0f);
-				//for (CExpandButton* btn : mButtons)
-				//{
-				//	btn->SetScale(scale);
-				//}
 				for (CLightingButton* btn1 : mLButtons)
 				{
 					btn1->SetScale(scale);
@@ -280,10 +268,6 @@ void CTitleUI::UpdateOpen()
 			}
 			else
 			{
-				//for (CExpandButton* btn : mButtons)
-				//{
-				//	btn->SetScale(1.0f);
-				//}
 				for (CLightingButton* btn1 : mLButtons)
 				{
 					btn1->SetScale(1.0f);
@@ -302,10 +286,6 @@ void CTitleUI::UpdateOpen()
 			{
 				// 一定時間待ったら、ボタンをオンにしてタッチできるようにする
 				// （誤タッチを防ぐための待ち時間）
-				//for (CExpandButton* btn : mButtons)
-				//{
-				//	btn->SetEnable(true);
-				//}
 				for (CLightingButton* btn1 : mLButtons)
 				{
 					btn1->SetEnable(true);
@@ -352,10 +332,6 @@ void CTitleUI::Update()
 	mpTitleLogo->Update();
 	//mpTitleBg->Update();
 	mpStartText->Update();
-	//for (CButton* btn : mButtons)
-	//{
-	//	btn->Update();
-	//}
 	for (CButton* btn1 : mLButtons)
 	{
 		btn1->Update();
@@ -381,11 +357,6 @@ void CTitleUI::Render()
 	// 待機状態以外は、メニューボタンを表示
 	else
 	{
-
-		//for (CButton* btn : mButtons)
-		//{
-		//	btn->Render();
-		//}
 		for (CButton* btn1 : mLButtons)
 		{
 			btn1->Render();
