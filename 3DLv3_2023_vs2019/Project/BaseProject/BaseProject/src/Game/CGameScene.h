@@ -2,8 +2,9 @@
 #include "CSceneBase.h"
 class CGameMenu;
 class CSound;
-
 class CGameOverScene;
+class CGameClearScene;
+
 //タイトルシーン
 class CGameScene :public CSceneBase
 {
@@ -20,4 +21,5 @@ public:
 private:
 	CGameMenu* mpGameMenu;
 	CGameOverScene* mpGameOver;
+	CGameClearScene* mpGameClear;
 };

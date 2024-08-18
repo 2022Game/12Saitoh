@@ -16,6 +16,7 @@ CGameOverScene::CGameOverScene()
 // デストラクタ
 CGameOverScene::~CGameOverScene()
 {
+	SAFE_DELETE(mpGameOverUI);
 }
 
 // 更新処理
@@ -39,7 +40,6 @@ void CGameOverScene::Update()
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eTitle);
 		}
-		End();
 	}
 }
 

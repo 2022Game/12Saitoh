@@ -26,7 +26,7 @@ CGameOverUI::CGameOverUI()
 	// [タイトルへ戻る]ボタンを生成
 	CLightingButton* btn1 = new CLightingButton
 	(
-		CVector2(400.0f, 320.0f),
+		CVector2(400.0f, 600.0f),
 		CVector2(181.0f * 1.5f, 47.0f * 1.5f),
 		ETaskPriority::eUI, 0, ETaskPauseType::eSystem,
 		false, false
@@ -39,6 +39,21 @@ CGameOverUI::CGameOverUI()
 	btn1->SetScale(1.0f);
 	// ボタンリストに追加
 	mButton.push_back(btn1);
+
+	// [再挑戦]ボタンを生成
+	CLightingButton* btn2 = new CLightingButton
+	(
+		CVector2(850.0f, 600.0f),
+		CVector2(110.0f * 1.5f, 47.0f * 1.5f),
+		ETaskPriority::eUI, 0, ETaskPauseType::eSystem,
+		false, false
+	);
+	btn2->LoadButtonImage("UI/result_retry.png", "UI/result_retry.png");
+	btn2->SetOnClickFunc(std::bind(&CResultUIBase::OnClickReTry, this));
+	btn2->SetEnable(false);
+	btn2->SetScale(1.0f);
+	// ボタンリストに追加
+	mButton.push_back(btn2);
 
 	SetEnable(false);
 	SetShow(false);

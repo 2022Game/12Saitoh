@@ -5,7 +5,7 @@
 
 // コンストラクタ
 CResultScene::CResultScene()
-	: CTask(ETaskPriority::eSystem, 0, ETaskPauseType::eNone)
+	: CTask(ETaskPriority::eMenu, 0, ETaskPauseType::eNone)
 	, mIsPlay(false)
 	, mResultStep(0)
 	, mElapsedTime(0.0f)
@@ -92,6 +92,8 @@ void CResultScene::Update()
 			CInput::ShowCursor(false);
 			// ポーズを解除
 			CTaskManager::Instance()->UnPause(PAUSE_GAME);
+			// ゲームカメラを再開
+			CCamera::MainCamera()->SetEnable(true);
 		}
 		break;
 	}
@@ -118,6 +120,8 @@ void CResultScene::Start()
 	CTaskManager::Instance()->Pause(PAUSE_GAME);
 	// カーソル表示を有効にする
 	CInput::ShowCursor(true);
+	// ゲームカメラも停止
+	CCamera::MainCamera()->SetEnable(false);
 }
 
 // 終了処理

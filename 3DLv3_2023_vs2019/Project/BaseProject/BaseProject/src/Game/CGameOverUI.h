@@ -18,5 +18,4 @@ public:
 	void Start() override;
 	// UIˆ—I—¹
 	void End() override;
-private:
 };

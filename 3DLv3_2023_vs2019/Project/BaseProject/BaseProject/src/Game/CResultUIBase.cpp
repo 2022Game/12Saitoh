@@ -4,12 +4,12 @@
 
 // コンストラクタ
 CResultUIBase::CResultUIBase()
-	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eDefault)
+	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eDefault,false, false)
 	, mIsEnd(false)
 	, mSelectIndex(0)
 {
 	// リザルトロゴのフォントデータを生成
-	mpResultFont = new CFont("res\\Font\\SansSerifShaded.ttf");
+	mpResultFont = new CFont("res\\Font\\GoodChoice.ttf");
 	mpResultFont->SetFontSize(120);
 	mpResultFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
 	mpResultFont->SetLineLength(WINDOW_WIDTH);

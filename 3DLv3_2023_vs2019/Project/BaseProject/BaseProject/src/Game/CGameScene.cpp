@@ -9,7 +9,7 @@
 #include "CBGMManager.h"
 #include "Global.h"
 #include "CGameOverScene.h"
-
+#include "CGameClearScene.h"
 
 CField* gField = nullptr;
 
@@ -18,6 +18,7 @@ CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
 	, mpGameMenu(nullptr)
 	, mpGameOver(nullptr)
+	, mpGameClear(nullptr)
 {
 }
 
@@ -77,6 +78,8 @@ void CGameScene::Load()
 
 	// リザルトシーンを作成
 	mpGameOver = new CGameOverScene();
+	mpGameClear = new CGameClearScene();
+
 	//CLineEffect* le = new CLineEffect(ETag::eNone);
 //le->AddPoint(CVector(0.0f, 10.0f, 10.0f), 1.0f);
 //le->AddPoint(CVector(10.0f, 10.0f, 10.0f), 1.0f);
@@ -107,6 +110,8 @@ void CGameScene::Update()
 			mpGameMenu->Open();
 		}
 	}
+#ifdef _DEBUG
+	// リザルトシーン
 	if (!mpGameOver->IsPlayResult())
 	{
 		if (CInput::PushKey('O'))
@@ -121,4 +126,21 @@ void CGameScene::Update()
 			mpGameOver->End();
 		}
 	}
+
+	if (!mpGameClear->IsPlayResult())
+	{
+		if (CInput::PushKey('I'))
+		{
+			mpGameClear->Start();
+		}
+	}
+	else
+	{
+		if (CInput::PushKey('I'))
+		{
+			mpGameClear->End();
+		}
+	}
+
+#endif
 }
