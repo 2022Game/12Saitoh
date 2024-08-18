@@ -5,7 +5,7 @@
 #include "CGameOverUI.h"
 
 // ゲームオーバーシーン
-class CGameOverScene : public CResultScene
+class CGameOverScene : public CResultScene 
 {
 public:
 	// コンストラクタ 

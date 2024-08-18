@@ -47,7 +47,8 @@ CGameOverUI::CGameOverUI()
 // デストラクタ
 CGameOverUI::~CGameOverUI()
 {
-
+	// ポーズを解除
+	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 }
 
 // 更新処理
@@ -75,6 +76,11 @@ void CGameOverUI::Render()
 // UI処理開始
 void CGameOverUI::Start()
 {
+	for (CButton* btn : mButton)
+	{
+		btn->SetEnable(true);
+	}
+
 	SetEnable(true);
 	SetShow(true);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
@@ -83,7 +89,12 @@ void CGameOverUI::Start()
 // UI処理終了
 void CGameOverUI::End()
 {
+	for (CButton* btn : mButton)
+	{
+		btn->SetEnable(false);
+	}
 	SetEnable(false);
 	SetShow(false);
+	// ポーズを解除
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 }

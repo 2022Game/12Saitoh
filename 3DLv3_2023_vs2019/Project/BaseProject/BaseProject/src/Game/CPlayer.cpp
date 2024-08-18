@@ -135,6 +135,7 @@ CPlayer::~CPlayer()
 	SAFE_DELETE(mpDamageCol);
 
 	mpCutIn_PowerAttack->Kill();
+	mpSword->Kill();
 }
 
 CPlayer* CPlayer::Instance()

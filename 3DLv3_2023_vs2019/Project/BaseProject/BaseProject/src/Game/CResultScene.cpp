@@ -3,23 +3,13 @@
 #include "CInput.h"
 #include "CGameOverUI.h"
 
-CResultScene* CResultScene::mpInstance = nullptr;
-
-// インスタンスを取得
-CResultScene* CResultScene::Instance()
-{
-	return mpInstance;
-}
-
 // コンストラクタ
 CResultScene::CResultScene()
-	: CTask(ETaskPriority::eSystem, 0, ETaskPauseType::eNone, true)
+	: CTask(ETaskPriority::eSystem, 0, ETaskPauseType::eNone)
 	, mIsPlay(false)
 	, mResultStep(0)
 	, mElapsedTime(0.0f)
 {
-	mpInstance = this;
-
 	// リザルト画面の背景用の白イメージを読み込み
 	mpBackImage = new CImage
 	(
@@ -43,6 +33,8 @@ CResultScene::CResultScene()
 CResultScene::~CResultScene()
 {
 	SAFE_DELETE(mpBackImage);
+	// ポーズを解除
+	CTaskManager::Instance()->UnPause(PAUSE_GAME);
 }
 
 // 更新処理

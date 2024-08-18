@@ -1,6 +1,7 @@
 #include "CGameOverScene.h"
 #include "CTaskManager.h"
 #include "CSceneManager.h"
+#include "CSceneBase.h"
 
 // コンストラクタ
 CGameOverScene::CGameOverScene()
@@ -38,6 +39,7 @@ void CGameOverScene::Update()
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eTitle);
 		}
+		End();
 	}
 }
 

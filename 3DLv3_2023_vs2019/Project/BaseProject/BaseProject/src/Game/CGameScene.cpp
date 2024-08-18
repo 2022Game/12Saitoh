@@ -59,7 +59,7 @@ void CGameScene::Load()
 	CDragon* dragon = new CDragon();
 	dragon->Position(-20.0f, 50.0f, -400.0f);
 	dragon->Scale(0.14f, 0.14f, 0.14f);
-	
+
 	//カメラセット
 	CVector atPos = player->Position() + CVector(0.0f, 10.0f, 0.0f);
 	CGameCamera* mainCamera = new CGameCamera
@@ -71,14 +71,12 @@ void CGameScene::Load()
 	mainCamera->SetFollowTargetTf(player);
 	// メインカメラの衝突判定にフィールドのコライダーを追加
 	mainCamera->AddCollider(gField->GetFieldCol());
-	
 
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
 
 	// リザルトシーンを作成
 	mpGameOver = new CGameOverScene();
-
 	//CLineEffect* le = new CLineEffect(ETag::eNone);
 //le->AddPoint(CVector(0.0f, 10.0f, 10.0f), 1.0f);
 //le->AddPoint(CVector(10.0f, 10.0f, 10.0f), 1.0f);

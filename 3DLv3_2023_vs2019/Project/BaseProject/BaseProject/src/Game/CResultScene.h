@@ -1,13 +1,13 @@
 #pragma once
 #include "CTask.h"
 #include "CImage.h"
+#include "CSceneBase.h"
 
 // リザルトシーンのベースクラス
-class CResultScene : public CTask
+class CResultScene : public CTask 
+
 {
 public:
-	// インスタンスを取得
-	static CResultScene* Instance();
 	// コンストラクタ
 	CResultScene();
 	// デストラクタ
@@ -26,8 +26,6 @@ public:
 	// リザルトシーン再生中かどうか取得
 	bool IsPlayResult();
 private:
-	// インスタンス
-	static CResultScene* mpInstance;
 	// リザルトシーン再生中かどうか
 	bool mIsPlay;
 	// リザルトシーンの段階
