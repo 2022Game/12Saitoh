@@ -119,7 +119,7 @@ private:
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
-
+public:
 	// プレイヤーの状態
 	enum class EState
 	{
@@ -132,8 +132,9 @@ private:
 		eSpecalMove,// 闘技
 		eDie,		// 死亡
 	};
-	EState mState;		// プレイヤーの状態
+	EState GetState() const;
 private:
+	EState mState;		// プレイヤーの状態
 	// ステータスの切り替え
 	void ChangeState(EState state);
 

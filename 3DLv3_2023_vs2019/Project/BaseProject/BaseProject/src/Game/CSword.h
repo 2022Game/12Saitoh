@@ -4,6 +4,11 @@
 #include "CWeapon.h"
 #include "CCollider.h"
 #include "CNormalSwordEffect.h"
+#include "CAirAttackEffect.h"
+#include "CCounterEffect.h"
+#include "CCounterEffect2.h"
+
+
 class CSword : public CWeapon
 {
 public:
@@ -31,7 +36,13 @@ public:
 	// 行列の取得
 	CMatrix Matrix() const override;
 private:
+	// エフェクトを作成
+	void CreateEffect(const CHitInfo hit);
+
 	CModel* mpSword;
 	CColliderCapsule* mpSwordCollider;
 	CNormalSwordEffect* mpSwordEffect;
+	CAirAttackEffect* mpAirEffect;
+	CCounterEffect* mpCounterEffect1;
+	CCounterEffect2* mpCounterEffect2;
 };

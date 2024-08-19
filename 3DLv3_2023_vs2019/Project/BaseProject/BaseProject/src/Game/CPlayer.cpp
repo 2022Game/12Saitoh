@@ -443,12 +443,14 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeState(EState::eAvoidance);
 					ChangeAnimation(EAnimType::eRollStart);
 					mIsAirAttack = false;
+					mAttackStep = ATTACKSTEP_END;
 				}
 				else
 				{
 					// íÖínìÆçÏ(î≤ìÅ)Ççƒê∂
 					ChangeAnimation(EAnimType::eLandin_Combat);
 					mIsAirAttack = false;
+					mAttackStep = ATTACKSTEP_END;
 				}
 			}
 
@@ -574,4 +576,9 @@ void CPlayer::Update_Die()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Y(0.0f);
 	mMoveSpeed.Z(0.0f);
+}
+
+CPlayer::EState CPlayer::GetState() const
+{
+	return mState;
 }

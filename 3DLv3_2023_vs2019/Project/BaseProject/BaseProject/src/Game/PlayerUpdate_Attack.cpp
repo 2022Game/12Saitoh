@@ -168,7 +168,7 @@ void CPlayer::Update_NormalAttack3()
 		{
 			mMoveSpeed += anglevec * NORMALATTACK1_3_MOVESPEED;
 		}
-		if (GetAnimationFrame() >= NORMALATTACK1_3_END_FRAME + 1)
+		if (GetAnimationFrame() >= NORMALATTACK1_3_END_FRAME)
 		{
 			mAttackStep++;
 			mpSword->AttackEnd();

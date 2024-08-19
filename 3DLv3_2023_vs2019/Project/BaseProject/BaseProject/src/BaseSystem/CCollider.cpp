@@ -672,11 +672,12 @@ bool CCollider::CollisionCapsuleLine(
 // カプセルとカプセルの衝突判定
 bool CCollider::CollisionCapsule(const CVector& cs0, const CVector& ce0, float cr0, const CVector& cs1, const CVector& ce1, float cr1, CHitInfo* hit)
 {
-	//TODO:調整値の対応
 	hit->adjust = CVector(0.0f, 0.0f, 0.0f);
 
 	CVector V0 = ce0 - cs0;
 	CVector V1 = ce1 - cs1;
+	CVector VN0 = V0.Normalized();
+	CVector VN1 = V1.Normalized();
 
 	CVector S1E1 = ce0 - cs0;
 	CVector S2E2 = ce1 - cs1;
@@ -687,20 +688,40 @@ bool CCollider::CollisionCapsule(const CVector& cs0, const CVector& ce0, float c
 	CVector S2S1 = cs0 - cs1;
 	CVector S2E1 = ce0 - cs1;
 
+	CVector cross = CVector::zero;
+
 	float length = 0.0f;
 	float d1 = S1E1.Cross(S1S2).Dot(S1E1.Cross(S1E2));
 	float d2 = S2E2.Cross(S2S1).Dot(S2E2.Cross(S2E1));
 	if (d1 < 0 && d2 < 0)
 	{
 		length = abs(S1S2.Dot(CD));
+		float d = CVector::Dot(VN0, VN1);
+		float dn0 = CVector::Dot(S1S2, VN0);
+		float dn1 = CVector::Dot(S1S2, VN1);
+		float r = 1.0f - d * d;
+		if (r != 0.0f)
+		{
+			float t1 = (dn0 - d * dn1) / r;
+			float t2 = (d * dn0 - dn1) / r;
+			CVector p1 = cs0 + VN0 * t1;
+			CVector p2 = cs1 + VN1 * t2;
+			cross = (p1 + p2) * 0.5f;
+		}
 	}
 	else
 	{
-		float length1 = CalcDistancePointToLine(cs0, cs1, ce1);
-		float length2 = CalcDistancePointToLine(ce0, cs1, ce1);
-		float length3 = CalcDistancePointToLine(cs1, cs0, ce0);
-		float length4 = CalcDistancePointToLine(ce1, cs0, ce0);
+		CVector n1, n2, n3, n4;
+		float length1 = CalcDistancePointToLine(cs0, cs1, ce1, &n1);
+		float length2 = CalcDistancePointToLine(ce0, cs1, ce1, &n2);
+		float length3 = CalcDistancePointToLine(cs1, cs0, ce0, &n3);
+		float length4 = CalcDistancePointToLine(ce1, cs0, ce0, &n4);
 		length = fminf(fminf(length1, length2), fminf(length3, length4));
+
+		if (length == length1) cross = (cs0 + n1) * 0.5f;
+		else if (length == length2) cross = (ce0 + n2) * 0.5f;
+		else if (length == length3) cross = (cs1 + n3) * 0.5f;
+		else cross = (ce1 + n4) * 0.5f;
 	}
 
 	if (length < cr0 + cr1)
@@ -721,6 +742,7 @@ bool CCollider::CollisionCapsule(const CVector& cs0, const CVector& ce0, float c
 
 		n = -(n.Normalized() * S1S2.Dot(n)).Normalized();
 		hit->adjust = n * ((cr0 + cr1) - length);
+		hit->cross = cross;
 		return true;
 	}
 

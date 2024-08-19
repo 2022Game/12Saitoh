@@ -67,12 +67,7 @@ void CSword::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				AddAttackHitObj(chara);
 
 				// 攻撃エフェクトを生成
-				mpSwordEffect = new CNormalSwordEffect
-				(
-					hit.cross,
-					CVector::zero,
-					CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
-				);
+				CreateEffect(hit);
 			}
 		}
 	}
@@ -127,4 +122,77 @@ void CSword::AttackEnd()
 	CWeapon::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpSwordCollider->SetEnable(false);
+}
+
+// エフェクトを作成
+void CSword::CreateEffect(const CHitInfo hit)
+{
+	CPlayer* player = CPlayer::Instance();
+	int animIndex = player->AnimationIndex();
+
+	// 通常攻撃、ジャンプ攻撃時のエフェクト
+	if (player->GetState() == CPlayer::EState::eAttack)
+	{
+		switch (animIndex)
+		{
+		case (int)EAnimType::eNormalAttack1_1:// 通常攻撃1_1
+			mpSwordEffect = new CNormalSwordEffect(hit.cross);
+			break;
+		case (int)EAnimType::eNormalAttack1_2:// 通常攻撃1_2
+			mpSwordEffect = new CNormalSwordEffect(hit.cross);
+			mpSwordEffect->Rotate(225.0f, 0.0f, 0.0f);
+			break;
+		case (int)EAnimType::eNormalAttack1_3:// 通常攻撃1_3
+
+			// 2度目の攻撃時
+			if (NORMALATTACK1_3_COLLIDER <= player->GetAnimationFrame())
+			{
+				mpSwordEffect = new CNormalSwordEffect(hit.cross);
+				mpSwordEffect->Rotate(-180.0f, 0.0f, 0.0f);
+				return;
+			}
+			// １度目の攻撃時
+			mpSwordEffect = new CNormalSwordEffect(hit.cross);
+			mpSwordEffect->Rotate(-90.0f, 0.0f, 0.0f);
+			break;
+		case (int)EAnimType::eAirAttack1_1:// 空中攻撃1_1
+			mpAirEffect = new CAirAttackEffect(hit.cross);
+			mpAirEffect->Rotate(-230.0f, 0.0f, 0.0f);
+			break;
+		case (int)EAnimType::eAirAttack1_2:// 空中攻撃1_2
+			mpAirEffect = new CAirAttackEffect(hit.cross);
+			mpAirEffect->Rotate(30.0f, 0.0f, 0.0f);
+			break;
+		case (int)EAnimType::eAirAttack1_3:// 空中攻撃1_3
+			mpAirEffect = new CAirAttackEffect(hit.cross);
+			mpAirEffect->Rotate(180.0f, 0.0f, 0.0f);
+			break;
+		case (int)EAnimType::eAirAttack1_4:// 空中攻撃1_4
+			mpAirEffect = new CAirAttackEffect(hit.cross);
+			mpAirEffect->Rotate(350.0f, 0.0f, 0.0f);
+			break;
+		case (int)EAnimType::eAttack_Up:// ジャンプ攻撃
+			mpAirEffect = new CAirAttackEffect(hit.cross);
+			mpAirEffect->Rotate(230.0f, 0.0f, 0.0f);
+			break;
+		}
+	}
+	// 闘技時のエフェクト
+	else if(player->GetState() == CPlayer::EState::eSpecalMove)
+	{
+		switch (animIndex)
+		{
+		case (int)EAnimType::eParryAttack:// カウンター攻撃(弱闘技)
+			if (COUNTERATTACK_START <= player->GetAnimationFrame())
+			{
+				mpCounterEffect2 = new CCounterEffect2(hit.cross);
+				mpCounterEffect2->Rotate(180.0f, 0.0f, 0.0f);
+				return;
+			}
+			mpCounterEffect1 = new CCounterEffect(hit.cross);
+			break;
+		case (int)EAnimType::ePowerAttack:// 強闘技攻撃
+			break;
+		}
+	}
 }

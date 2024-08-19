@@ -490,6 +490,15 @@
     <ClCompile Include="src\Game\CResultUIBase.cpp">
       <Filter>ソース ファイル\Game\UI\Result</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CAirAttackEffect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCounterEffect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCounterEffect2.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -854,6 +863,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CResultUIBase.h">
       <Filter>ソース ファイル\Game\UI\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAirAttackEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCounterEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCounterEffect2.h">
+      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -74,8 +74,11 @@
     <ClCompile Include="src\BaseSystem\Maths.cpp" />
     <ClCompile Include="src\BaseSystem\Primitive.cpp" />
     <ClCompile Include="src\BaseSystem\System.cpp" />
+    <ClCompile Include="src\Game\CAirAttackEffect.cpp" />
     <ClCompile Include="src\Game\CApplication.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
+    <ClCompile Include="src\Game\CCounterEffect.cpp" />
+    <ClCompile Include="src\Game\CCounterEffect2.cpp" />
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
     <ClCompile Include="src\Game\CCutInTest.cpp" />
     <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp" />
@@ -205,8 +208,11 @@
     <ClInclude Include="src\BaseSystem\ObjectTag.h" />
     <ClInclude Include="src\BaseSystem\Time.h" />
     <ClInclude Include="src\Define.h" />
+    <ClInclude Include="src\Game\CAirAttackEffect.h" />
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CBullet.h" />
+    <ClInclude Include="src\Game\CCounterEffect.h" />
+    <ClInclude Include="src\Game\CCounterEffect2.h" />
     <ClInclude Include="src\Game\CCutInCamera.h" />
     <ClInclude Include="src\Game\CCutInTest.h" />
     <ClInclude Include="src\Game\CCutIn_PowerAttack.h" />

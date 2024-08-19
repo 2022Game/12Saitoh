@@ -1,16 +1,16 @@
 #pragma once
 #include "CBillBoardImage.h"
 
-#define EFFECTDATA "Effect/NormalAttack.png"
+#define AIR_EFFECTDATA "Effect/AirAttack.png"
 
 // 通常攻撃エフェクト
-class CNormalSwordEffect : public CBillBoardImage
+class CAirAttackEffect : public CBillBoardImage
 {
 public:
 	// コンストラクタ
-	CNormalSwordEffect(const CVector& hitpos);
+	CAirAttackEffect(const CVector& hitpos);
 	// デストラクタ
-	~CNormalSwordEffect();
+	~CAirAttackEffect();
 
 	// 描画位置を取得
 	CVector HitPos()const;
