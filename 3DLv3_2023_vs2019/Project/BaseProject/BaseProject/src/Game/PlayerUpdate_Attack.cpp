@@ -47,14 +47,15 @@ void CPlayer::Update_NormalAttack1()
 {
 	CVector anglevec;
 	Update_AttackAngleVec(&anglevec);
-
+	CVector pos = Position();
 	switch (mAttackStep)
 	{
 	case 0:
+	{
 		// Œ•‚ÉUŒ‚ŠJŽn‚ð“`‚¦‚é
 		mpSword->AttackStart();
 		mAttackStep++;
-		break;
+	}
 	case 1:
 		if (IsAnimationFinished())
 		{

@@ -158,12 +158,16 @@ void CPlayer::Update_Strong_SpecalMove()
 // 強闘技中のプレイヤーの移動処理
 void CPlayer::Strong_SpecalMove_Move()
 {
+	CVector pos = Position();
 	switch (mSPAttackStep)
 	{
 	case 0:// コライダー有効化
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 40.0f + CVector(0.0f, 15.0f, 0.0f));
+		mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 180.0f));
 		break;
 	case 1:// 一度目の移動処理
 		if (POWERATTACK1_START <= GetAnimationFrame() &&
@@ -183,6 +187,9 @@ void CPlayer::Strong_SpecalMove_Move()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 20.0f + CVector(0.0f, 10.0f, 0.0f));
+		//mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 180.0f));
 	case 3:// 二度目の移動処理
 		if (POWERATTACK2_START <= GetAnimationFrame() &&
 			GetAnimationFrame() <= POWERATTACK2_END)
@@ -201,6 +208,9 @@ void CPlayer::Strong_SpecalMove_Move()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 20.0f + CVector(0.0f, 10.0f, 0.0f));
+		mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 180.0f));
 		break;
 	case 5:// 三度目の移動処理
 		if (POWERATTACK3_START <= GetAnimationFrame() &&
@@ -220,6 +230,9 @@ void CPlayer::Strong_SpecalMove_Move()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 20.0f + CVector(0.0f, 10.0f, 0.0f));
+		mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 340.0f));
 		break;
 	case 7:// 四度目の移動処理
 		if (POWERATTACK4_START <= GetAnimationFrame() &&
@@ -239,6 +252,9 @@ void CPlayer::Strong_SpecalMove_Move()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 20.0f + CVector(0.0f, 10.0f, 0.0f));
+		mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 160.0f));
 		break;
 	case 9:// 五度目の移動処理
 		if (POWERATTACK5_START <= GetAnimationFrame() &&
@@ -258,6 +274,9 @@ void CPlayer::Strong_SpecalMove_Move()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 20.0f + CVector(0.0f, 10.0f, 0.0f));
+		mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 50.0f));
 		break;
 	case 11:// 六度目の移動処理
 		if (POWERATTACK6_START <= GetAnimationFrame() &&
@@ -277,6 +296,9 @@ void CPlayer::Strong_SpecalMove_Move()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mSPAttackStep++;
+		mpSwordEffect = new CSPMoveEffect_Sword(
+			pos + VectorZ().Normalized() * 20.0f + CVector(0.0f, 10.0f, 0.0f));
+		mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 270.0f));
 		break;
 	case 13:// 七度目の移動処理
 		if (POWERATTACK7_START <= GetAnimationFrame() &&
@@ -284,7 +306,18 @@ void CPlayer::Strong_SpecalMove_Move()
 		{
 			mMoveSpeed -= POWERATTACL7_VEC;
 		}
-		if (GetAnimationFrame() <= POWERATTACK7_END) mpSword->AttackEnd();
+		if (GetAnimationFrame() <= POWERATTACK7_END)
+		{
+			CSPMoveEndEffect* effect1 = new CSPMoveEndEffect(
+				pos + VectorZ().Normalized() * 25.0f + CVector(0.0f, 20.0f, 0.0f));
+			mEndEffect.push_back(effect1);
+			CSPMoveEndEffect* effect2 = new CSPMoveEndEffect(
+				pos + VectorZ().Normalized() * 25.0f + CVector(0.0f, 20.0f, 0.0f));
+			effect2->Rotation(CQuaternion(90.0f, 0.0f, 0.0f));
+			mEndEffect.push_back(effect2);
+
+			mpSword->AttackEnd();
+		}
 		break;
 	}
 }

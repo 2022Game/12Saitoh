@@ -32,9 +32,6 @@
     <Filter Include="ソース ファイル\Game\Character">
       <UniqueIdentifier>{72debf50-9646-4186-80a0-951072c29999}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Scene">
-      <UniqueIdentifier>{7ddeeb75-320d-4391-819c-2a0c8f8f0538}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\BaseSystem\Effect">
       <UniqueIdentifier>{25224d48-fbee-4330-9c49-651acfb6e52a}</UniqueIdentifier>
     </Filter>
@@ -104,9 +101,6 @@
     <Filter Include="ソース ファイル\Game\Character\Dragon\Flame\SpecalFlame">
       <UniqueIdentifier>{a48615a1-9a92-4c30-9887-dbe1fb3b8eec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\BaseSystem\Effect\2DEffect">
-      <UniqueIdentifier>{dce39197-b7d2-4a40-8a10-a556f581cd5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\UI">
       <UniqueIdentifier>{3051ef33-9579-4be5-9455-5430a9debeba}</UniqueIdentifier>
     </Filter>
@@ -122,11 +116,29 @@
     <Filter Include="ソース ファイル\Game\TitleModel">
       <UniqueIdentifier>{fff1786a-817d-444e-8852-b23d0283f79d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Scene\ResultScene">
-      <UniqueIdentifier>{d7980878-d74c-4d9d-aa04-0c8f3dc44b66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\UI\Result">
       <UniqueIdentifier>{babc8d99-eff2-411e-820a-d45986883d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Effect">
+      <UniqueIdentifier>{4505f414-decb-4e3b-a42d-85b23347d6af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Effect\2DEffect">
+      <UniqueIdentifier>{dce39197-b7d2-4a40-8a10-a556f581cd5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Effect\2DEffect\Normal&amp;Air">
+      <UniqueIdentifier>{e425c9ee-3c75-4668-989f-fb771fd7d6e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Effect\2DEffect\Counter">
+      <UniqueIdentifier>{a4cbaa06-5a46-4749-b6af-78e61b713b68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Effect\2DEffect\SPMove">
+      <UniqueIdentifier>{98cbe2bd-7b70-4895-8f7e-63b39f3a34e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene">
+      <UniqueIdentifier>{7ddeeb75-320d-4391-819c-2a0c8f8f0538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\ResultScene">
+      <UniqueIdentifier>{d7980878-d74c-4d9d-aa04-0c8f3dc44b66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -436,9 +448,6 @@
     <ClCompile Include="src\BaseSystem\CToukiGauge.cpp">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseSystem\CNormalSwordEffect.cpp">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CTitleUI.cpp">
       <Filter>ソース ファイル\Game\UI\Title</Filter>
     </ClCompile>
@@ -491,13 +500,22 @@
       <Filter>ソース ファイル\Game\UI\Result</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CAirAttackEffect.cpp">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Normal&amp;Air</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CCounterEffect.cpp">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    <ClCompile Include="src\BaseSystem\CNormalSwordEffect.cpp">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Normal&amp;Air</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CCounterEffect2.cpp">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Counter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCounterEffect.cpp">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Counter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSPMoveEffect_Sword.cpp">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\SPMove</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSPMoveEndEffect.cpp">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\SPMove</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -813,9 +831,6 @@
     <ClInclude Include="src\BaseSystem\CToukiGauge.h">
       <Filter>ソース ファイル\BaseSystem\UI\CIGauge</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseSystem\CNormalSwordEffect.h">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CTitleUI.h">
       <Filter>ソース ファイル\Game\UI\Title</Filter>
     </ClInclude>
@@ -865,13 +880,22 @@
       <Filter>ソース ファイル\Game\UI\Result</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CAirAttackEffect.h">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Normal&amp;Air</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CCounterEffect.h">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+    <ClInclude Include="src\BaseSystem\CNormalSwordEffect.h">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Normal&amp;Air</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CCounterEffect2.h">
-      <Filter>ソース ファイル\BaseSystem\Effect\2DEffect</Filter>
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Counter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCounterEffect.h">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\Counter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSPMoveEffect_Sword.h">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\SPMove</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSPMoveEndEffect.h">
+      <Filter>ソース ファイル\Game\Effect\2DEffect\SPMove</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

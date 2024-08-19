@@ -140,7 +140,7 @@ void CSword::CreateEffect(const CHitInfo hit)
 			break;
 		case (int)EAnimType::eNormalAttack1_2:// ’ÊíUŒ‚1_2
 			mpSwordEffect = new CNormalSwordEffect(hit.cross);
-			mpSwordEffect->Rotate(225.0f, 0.0f, 0.0f);
+			mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 225.0f));
 			break;
 		case (int)EAnimType::eNormalAttack1_3:// ’ÊíUŒ‚1_3
 
@@ -148,12 +148,12 @@ void CSword::CreateEffect(const CHitInfo hit)
 			if (NORMALATTACK1_3_COLLIDER <= player->GetAnimationFrame())
 			{
 				mpSwordEffect = new CNormalSwordEffect(hit.cross);
-				mpSwordEffect->Rotate(-180.0f, 0.0f, 0.0f);
+				mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 190.0f));
 				return;
 			}
 			// ‚P“x–Ú‚ÌUŒ‚
 			mpSwordEffect = new CNormalSwordEffect(hit.cross);
-			mpSwordEffect->Rotate(-90.0f, 0.0f, 0.0f);
+			mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 90.0f));
 			break;
 		case (int)EAnimType::eAirAttack1_1:// ‹ó’†UŒ‚1_1
 			mpAirEffect = new CAirAttackEffect(hit.cross);

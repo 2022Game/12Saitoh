@@ -118,12 +118,6 @@ CPlayer::CPlayer()
 	//Œ•‚ðì¬
 	mpSword = new CSword();
 	mpSword->Rotate(CVector(0.0f, 0.0f, 0.0f));
-
-	mpFlamethrower = new CFlamethrower
-	(
-		this, nullptr,
-		CVector(0.0f, 14.0f, -1.0f)
-	);
 }
 
 CPlayer::~CPlayer()
@@ -136,6 +130,11 @@ CPlayer::~CPlayer()
 
 	mpCutIn_PowerAttack->Kill();
 	mpSword->Kill();
+
+	//for (CSPMoveEndEffect* effect : mEndEffect)
+	//{
+	//	effect->Kill();
+	//}
 }
 
 CPlayer* CPlayer::Instance()

@@ -105,6 +105,8 @@
     <ClCompile Include="src\Game\CSPFlame.cpp" />
     <ClCompile Include="src\Game\CSPFlametrower.cpp" />
     <ClCompile Include="src\Game\CSPGauge.cpp" />
+    <ClCompile Include="src\Game\CSPMoveEffect_Sword.cpp" />
+    <ClCompile Include="src\Game\CSPMoveEndEffect.cpp" />
     <ClCompile Include="src\Game\CSword.cpp" />
     <ClCompile Include="src\Game\CTitleField.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
@@ -239,6 +241,8 @@
     <ClInclude Include="src\Game\CSPFlame.h" />
     <ClInclude Include="src\Game\CSPFlamethrower.h" />
     <ClInclude Include="src\Game\CSPGauge.h" />
+    <ClInclude Include="src\Game\CSPMoveEffect_Sword.h" />
+    <ClInclude Include="src\Game\CSPMoveEndEffect.h" />
     <ClInclude Include="src\Game\CSword.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CTitleSword.h" />

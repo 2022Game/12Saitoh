@@ -7,11 +7,12 @@
 #include "CInput.h"
 #include "CCamera.h"
 #include "CCutIn_PowerAttack.h"
+#include "CSPMoveEffect_Sword.h"
+#include "CSPMoveEndEffect.h"
 class CSPGauge;
 class CHPGauge;
 class CToukiGauge;
 class CSword;
-class CFlamethrower;
 /*
 プレイヤークラス
 キャラクタクラスを継承
@@ -172,6 +173,6 @@ private:
 	CSPGauge* mpSPGauge;		// SPゲージ
 	CToukiGauge* mpToukiGauge;	// 闘気ゲージ
 	CSword* mpSword;			// 剣
-
-	CFlamethrower* mpFlamethrower;
+	CSPMoveEffect_Sword* mpSwordEffect;
+	std::list<CSPMoveEndEffect*> mEndEffect;
 };
