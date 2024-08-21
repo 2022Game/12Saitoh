@@ -2,6 +2,7 @@
 #include "CTaskManager.h"
 #include "CSceneManager.h"
 #include "CSceneBase.h"
+#include "CSound.h"
 
 // コンストラクタ
 CGameClearScene::CGameClearScene()
@@ -11,6 +12,9 @@ CGameClearScene::CGameClearScene()
 
 	SetEnable(false);
 	SetShow(false);
+	mpButton = CResourceManager::Load<CSound>("ButtonSE", "Sound\\SE\\button_se.wav");
+
+	mpButton->SetSimultaneousPlayCount(1);
 };
 
 // デストラクタ
@@ -34,11 +38,13 @@ void CGameClearScene::Update()
 		if (mpGameClearUI->IsReTry())
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eGame);
+			mpButton->Play(0.1f, false, 0.0f);
 		}
 		// タイトルへ戻るならば、タイトルシーンを読み込む
 		else if (mpGameClearUI->IsTitle())
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eTitle);
+			mpButton->Play(0.1f, false, 0.0f);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 #include "CTaskManager.h"
 #include "CSceneManager.h"
 #include "CSceneBase.h"
+#include "CSound.h"
 
 // コンストラクタ
 CGameOverScene::CGameOverScene()
@@ -11,6 +12,7 @@ CGameOverScene::CGameOverScene()
 
 	SetEnable(false);
 	SetShow(false);
+	mpButton = CResourceManager::Load<CSound>("ButtonSE", "Sound\\SE\\button_se.wav");
 };
 
 // デストラクタ
@@ -34,11 +36,13 @@ void CGameOverScene::Update()
 		if (mpGameOverUI->IsReTry())
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eGame);
+			mpButton->Play(0.1f, false, 0.0f);
 		}
 		// タイトルへ戻るならば、タイトルシーンを読み込む
 		else if (mpGameOverUI->IsTitle())
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eTitle);
+			mpButton->Play(0.1f, false, 0.0f);
 		}
 	}
 }

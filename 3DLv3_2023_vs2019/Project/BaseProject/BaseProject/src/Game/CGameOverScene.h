@@ -3,6 +3,7 @@
 #include "CImage.h"
 #include "CLightingButton.h"
 #include "CGameOverUI.h"
+class CSound;
 
 // ゲームオーバーシーン
 class CGameOverScene : public CResultScene 
@@ -24,4 +25,5 @@ public:
 
 private:
 	CGameOverUI* mpGameOverUI;
+	CSound* mpButton;// ボタンSE
 };

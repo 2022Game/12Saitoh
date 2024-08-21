@@ -4,6 +4,7 @@ class CGameMenu;
 class CSound;
 class CGameOverScene;
 class CGameClearScene;
+class CBGMManager;
 
 //タイトルシーン
 class CGameScene :public CSceneBase
@@ -22,4 +23,7 @@ private:
 	CGameMenu* mpGameMenu;
 	CGameOverScene* mpGameOver;
 	CGameClearScene* mpGameClear;
+	CSound* mpGameBGM;		// ゲーム中BGM
+	CSound* mpNature;		// 環境音
+	//CBGMManager* mpGameBGM;
 };

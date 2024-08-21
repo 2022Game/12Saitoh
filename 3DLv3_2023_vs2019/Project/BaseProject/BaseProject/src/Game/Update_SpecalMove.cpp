@@ -92,13 +92,22 @@ void CPlayer::Update_Weak_SpecalMove()
 		// 武器に攻撃開始を使える
 		mpSword->AttackStart();
 		mAttackStep++;
-		break;
+	break;
 	case 3:// カウンター攻撃
 		// 2度目の攻撃時に武器に攻撃開始を伝える
 		if (COUNTERATTACK_START <= GetAnimationFrame())
 		{
 			mpSword->AttackStart();
 			mAttackStep++;
+			CCounterEffect2* effect =
+				new CCounterEffect2
+				(
+					Position()
+					+ VectorZ().Normalized() * 15.0f
+					+ CVector(0.0f, 15.0f, 0.0f)
+				);
+			effect->Rotation(CQuaternion(0.0f, 0.0f, 160.0f));
+
 		}
 		break;
 	case 4:// カウンター攻撃

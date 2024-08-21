@@ -40,6 +40,9 @@ public:
 	/// </summary>
 	void AttackEnd() override;
 
+	// プレイヤーを見つけたかどうか
+	bool IsFoundPlayer() const;
+
 private:
 	// 待機状態
 	void UpdateIdle();
@@ -107,8 +110,6 @@ private:
 	// コライダーの更新処理
 	void ColliderUpdate();
 
-	// プレイヤーを見つけたかどうか
-	bool IsFoundPlayer() const;
 	// バックステップできるかどうか
 	bool IsBackStep() const;
 

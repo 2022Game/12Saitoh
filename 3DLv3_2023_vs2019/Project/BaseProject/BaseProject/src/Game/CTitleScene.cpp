@@ -35,6 +35,11 @@ void CTitleScene::Load()
 	CResourceManager::Load<CModel>("TitleField", "Field\\WaitingRoom\\WaitingRoom.obj");
 	CResourceManager::Load<CModelX>("TitleModel", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
+	//CResourceManager::Load<CSound>("ButtonSE", "Sound\\SE\\button_se.wav");
+	
+	// タイトルBGMを再生
+	mpTitleBGM = CResourceManager::Load<CSound>("TitleBGM","Sound\\BGM\\title_bgm.wav");
+	mpTitleBGM->PlayLoop(-1, true, 0.1f, false, 0.0f);
 
 	// タイトル用のステージを生成
 	CTitleField* titleField = new CTitleField();
@@ -57,22 +62,10 @@ void CTitleScene::Load()
 	//メインカメラの追従ターゲットをプレイヤーに設定
 	//titleCamera->SetFollowTargetTf(player);
 
-	// タイトルBGMを再生
-	CBGMManager::Instance()->Play(EBGMType::eTitle);
-
-	//mBgImage = new CImage("white.png");
-	//mBgImage->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
-	//mBgImage->SetPos(0.0f, 0.0f);
-	//mBgImage->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-	//CCamera* mainCamera = new CCamera
-	//(
-	//	CVector(0.0f, 50.0f, 75.0f),
-	//	CVector::zero
-	//);
-
 	mpTitleUI = new CTitleUI();
 	AddTask(mpTitleUI);
+
+	mpButton = CResourceManager::Load<CSound>("ButtonSE", "Sound\\SE\\button_se.wav");
 }
 
 //シーンの更新処理
@@ -85,11 +78,15 @@ void CTitleScene::Update()
 		if (mpTitleUI->IsStartGame())
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eGame);
+			mpButton->Play(0.1f, false, 0.0f);
+			mpTitleBGM->Stop();
 		}
 		// ゲーム終了ならば、アプリを閉じる
 		else if (mpTitleUI->IsExitGame())
 		{
 			System::ExitGame();
+			mpButton->Play(0.1f, false, 0.0f);
+			mpTitleBGM->Stop();
 		}
 	}
 }

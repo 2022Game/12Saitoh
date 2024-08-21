@@ -1,43 +1,47 @@
 #include "CNormalSwordEffect.h"
 
-// アニメーションの1コマ表示時間
-#define ANIM_TIME 0.1f
-// エフェクトのサイズ
-#define EFFECTSIZE 8.0f
-
-// 通常攻撃エフェクトのアニメーションデータ
-TexAnimData CNormalSwordEffect::msAnimData = TexAnimData(1, 5, false, 5, ANIM_TIME);
-
 // コンストラクタ
-CNormalSwordEffect::CNormalSwordEffect(const CVector& hitpos)
-	: CBillBoardImage(EFFECTDATA, ETag::eEffect , ETaskPauseType::eGame)
-	, mHitPos(hitpos)
+CNormalSwordEffect::CNormalSwordEffect(const CVector& start, const CVector& end)
+	: CLineEffect(ETag::eEffect)
 {
-	SetAnimData(&msAnimData);
-	Position(mHitPos);
+
+	CVector2 size = CVector2(64.0f, 256.0f);
+	// テクスチャを設定
+	SetTexture("NormalSwordEffect");
+	// ベースUVを設定
+	SetBaseUV(CRect(0.0f, 0.0f, size.X(), size.Y()));
+	// エフェクトのアニメーションデータを生成して設定
+	SetAnimData(new TexAnimData(1, 5, false, 5, 0.05f));
+
+	// 線分エフェクトの始点と終点を設定
+	float length = (start - end).Length();
+	float width = length * (size.X() / size.Y());
+	AddPoint(start, width, width);
+	AddPoint(end, width, width);
 }
 
 // デストラクタ
 CNormalSwordEffect::~CNormalSwordEffect()
 {
-}
-
-// 描画位置を取得
-CVector CNormalSwordEffect::HitPos()const
-{
-	return mHitPos;
+	SAFE_DELETE(mpAnimData);
 }
 
 // 更新処理
 void CNormalSwordEffect::Update()
 {
-	// 基底クラスの更新処理
-	CBillBoardImage::Update();
-	
-	Scale(CVector::one * EFFECTSIZE);
-	// アニメーションが終わったら、削除フラグを立てる
+	CLineEffect::Update();
+
+	// エフェクトのアニメーションが終わったら、エフェクトを削除
 	if (IsEndAnim())
 	{
 		Kill();
 	}
+}
+
+// 描画処理
+void CNormalSwordEffect::Render()
+{
+	//glDisable(GL_DEPTH_TEST);
+	CLineEffect::Render();
+	//glEnable(GL_DEPTH_TEST);
 }

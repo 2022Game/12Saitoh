@@ -20,4 +20,6 @@ public:
 
 private:
 	CTitleUI* mpTitleUI;
+	CSound* mpButton;
+	CSound* mpTitleBGM;
 };

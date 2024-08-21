@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CDragon.h"
 #include "CColliderCapsule.h"
+#define NORMALATTACK_EFFECTLENGTH 40.0f
 
 // コンストラクタ
 CSword::CSword()
@@ -124,8 +125,50 @@ void CSword::AttackEnd()
 	mpSwordCollider->SetEnable(false);
 }
 
+void CSword::CreateNormalEffect(const CHitInfo& hit)
+{
+	CPlayer* player = CPlayer::Instance();
+	int animIndex = player->AnimationIndex();
+
+	CVector side = player->VectorX();
+	CVector up = player->VectorY();
+	CVector forward = player->VectorZ();
+
+	CVector pos = hit.cross;
+	CVector dir;
+	float length = NORMALATTACK_EFFECTLENGTH;
+
+	switch (animIndex)
+	{
+	case (int)EAnimType::eNormalAttack1_1:// 通常攻撃1_1
+		dir = (side + up).Normalized();
+		break;
+	case (int)EAnimType::eNormalAttack1_2:// 通常攻撃1_2
+		dir = -(side + forward * 0.25f).Normalized();
+		break;
+	case (int)EAnimType::eNormalAttack1_3:// 通常攻撃1_3
+		// 1度目の攻撃時
+		if (NORMALATTACK1_3_COLLIDER > player->GetAnimationFrame())
+		{
+			dir = -(-side + up + forward * 0.5f).Normalized();
+		}
+		// 2度目の攻撃時
+		else
+		{
+			dir = -(side + up + forward * 0.5f).Normalized();
+		}
+		break;
+	}
+	// 斬撃エフェクトを生成
+	new CNormalSwordEffect
+	(
+		pos + dir * length,	// エフェクトの始点
+		pos - dir * length // エフェクトの終点
+	);
+}
+
 // エフェクトを作成
-void CSword::CreateEffect(const CHitInfo hit)
+void CSword::CreateEffect(const CHitInfo& hit)
 {
 	CPlayer* player = CPlayer::Instance();
 	int animIndex = player->AnimationIndex();
@@ -136,24 +179,9 @@ void CSword::CreateEffect(const CHitInfo hit)
 		switch (animIndex)
 		{
 		case (int)EAnimType::eNormalAttack1_1:// 通常攻撃1_1
-			mpSwordEffect = new CNormalSwordEffect(hit.cross);
-			break;
 		case (int)EAnimType::eNormalAttack1_2:// 通常攻撃1_2
-			mpSwordEffect = new CNormalSwordEffect(hit.cross);
-			mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 225.0f));
-			break;
 		case (int)EAnimType::eNormalAttack1_3:// 通常攻撃1_3
-
-			// 2度目の攻撃時
-			if (NORMALATTACK1_3_COLLIDER <= player->GetAnimationFrame())
-			{
-				mpSwordEffect = new CNormalSwordEffect(hit.cross);
-				mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 190.0f));
-				return;
-			}
-			// １度目の攻撃時
-			mpSwordEffect = new CNormalSwordEffect(hit.cross);
-			mpSwordEffect->Rotation(CQuaternion(0.0f, 0.0f, 90.0f));
+			CreateNormalEffect(hit);
 			break;
 		case (int)EAnimType::eAirAttack1_1:// 空中攻撃1_1
 			mpAirEffect = new CAirAttackEffect(hit.cross);
@@ -183,13 +211,10 @@ void CSword::CreateEffect(const CHitInfo hit)
 		switch (animIndex)
 		{
 		case (int)EAnimType::eParryAttack:// カウンター攻撃(弱闘技)
-			if (COUNTERATTACK_START <= player->GetAnimationFrame())
+			if (COUNTERATTACK_START >= player->GetAnimationFrame())
 			{
-				mpCounterEffect2 = new CCounterEffect2(hit.cross);
-				mpCounterEffect2->Rotate(180.0f, 0.0f, 0.0f);
-				return;
+				mpCounterEffect1 = new CCounterEffect(hit.cross);
 			}
-			mpCounterEffect1 = new CCounterEffect(hit.cross);
 			break;
 		case (int)EAnimType::ePowerAttack:// 強闘技攻撃
 			break;

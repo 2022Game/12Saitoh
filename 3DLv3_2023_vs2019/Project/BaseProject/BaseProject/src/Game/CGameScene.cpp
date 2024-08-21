@@ -10,6 +10,7 @@
 #include "Global.h"
 #include "CGameOverScene.h"
 #include "CGameClearScene.h"
+#include "CBGMManager.h"
 
 CField* gField = nullptr;
 
@@ -41,12 +42,14 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Cylinder", "Field\\Coliseum\\Cylinder.obj");
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
-	CResourceManager::Load<CModelX>("Dragon", "Character\\Dragon\\Dragon.x");
-	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
-	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
-
+	CResourceManager::Load<CModelX>("Dragon", "Character\\Dragon\\Dragon.x");	
+	CResourceManager::Load<CTexture>("NormalSwordEffect", "Effect\\NormalAttack.png");
+	//CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+	//CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
+	
 	// ゲームBGMを読み込み
-	//CBGMManager::Instance()->Play(EBGMType::eGame);
+	mpGameBGM = CResourceManager::Load<CSound>("GameBGM", "Sound\\BGM\\battle_bgm.wav");
+	mpNature = CResourceManager::Load<CSound>("Nature", "Sound\\BGM\\nature.wav");
 
 	//フィールドを生成
 	gField = new CField();
@@ -91,11 +94,22 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	// BGM再生中でなければ、BGMを再生
-//if (!mpGameBGM->IsPlaying())
-//{
-//	mpGameBGM->PlayLoop(-1, 1.0f, false, 1.0f);
-//}
+	if (!mpNature->IsPlaying())
+	{
+		// 環境音を再生
+		mpNature->PlayLoop(-1, true, 0.08f, 0.0f);
+	}
+
+	CDragon* dragon = CDragon::Instance();
+	if (dragon->IsFoundPlayer())
+	{
+		// BGM再生中でなければ、BGMを再生
+		if (!mpGameBGM->IsPlaying())
+		{
+			mpGameBGM->PlayLoop(-1, true, 0.09f, false, 0.0f);
+			mpNature->SetVolume(0.01);
+		}
+	}
 
 	if (CInput::PushKey('T'))
 	{
@@ -141,6 +155,5 @@ void CGameScene::Update()
 			mpGameClear->End();
 		}
 	}
-
 #endif
 }

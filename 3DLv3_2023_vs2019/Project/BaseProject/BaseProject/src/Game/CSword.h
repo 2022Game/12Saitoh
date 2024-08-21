@@ -8,7 +8,6 @@
 #include "CCounterEffect.h"
 #include "CCounterEffect2.h"
 
-
 class CSword : public CWeapon
 {
 public:
@@ -37,12 +36,11 @@ public:
 	CMatrix Matrix() const override;
 private:
 	// エフェクトを作成
-	void CreateEffect(const CHitInfo hit);
+	void CreateEffect(const CHitInfo& hit);
+	void CreateNormalEffect(const CHitInfo& hit);
 
 	CModel* mpSword;
 	CColliderCapsule* mpSwordCollider;
-	CNormalSwordEffect* mpSwordEffect;
 	CAirAttackEffect* mpAirEffect;
 	CCounterEffect* mpCounterEffect1;
-	CCounterEffect2* mpCounterEffect2;
 };
