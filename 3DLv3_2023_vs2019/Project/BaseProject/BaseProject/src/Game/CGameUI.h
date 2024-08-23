@@ -7,6 +7,7 @@
 #define CKEY_IMAGE "UI\\CKey.png"
 #define LBUTTON_IMAGE "UI\\LButton.png"
 #define RBUTTON_IMAGE "UI\\RButton.png"
+#define USETOUKI_IMAGE "UI\\target.png"
 
 class CImage;
 // ゲーム中に表示するUIクラス

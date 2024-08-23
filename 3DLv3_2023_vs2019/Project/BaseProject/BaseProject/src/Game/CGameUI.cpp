@@ -22,6 +22,12 @@ CGameUI::CGameUI()
 	mpRButtonUI = new CImage(RBUTTON_IMAGE);
 	mpRButtonUI->SetPos(1240.0f, 650.0f);
 	mpRButtonUI->SetSize(30.0f, 35.0f);
+	CImage* toukiUI = new CImage(USETOUKI_IMAGE);
+	toukiUI->SetPos(1195.0f, 530.0f);
+	toukiUI->SetSize(50.0f, 50.0f);
+	CImage* toukiUI2 = new CImage(USETOUKI_IMAGE);
+	toukiUI2->SetPos(1225.0f, 530.0f);
+	toukiUI2->SetSize(50.0f, 50.0f);
 
 	// Žã“¬‹ZUI
 	mpCounterUI = new CImage(COUNTER_IMAGE);
@@ -33,6 +39,9 @@ CGameUI::CGameUI()
 	mpLButtonUI = new CImage(LBUTTON_IMAGE);
 	mpLButtonUI->SetPos(1150.0f, 650.0f);
 	mpLButtonUI->SetSize(30.0f, 35.0f);
+	CImage* toukiUI3 = new CImage(USETOUKI_IMAGE);
+	toukiUI3->SetPos(1125.0f, 530.0f);
+	toukiUI3->SetSize(50.0f, 50.0f);
 
 }
 
