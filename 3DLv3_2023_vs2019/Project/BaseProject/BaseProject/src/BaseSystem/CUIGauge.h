@@ -6,10 +6,12 @@ class CImage;
 #define FRAME_IMAGE_PLAYER "UI\\Gauge_Frame.png"
 // HP・SPゲージバー画像のファイルパス
 #define GAUGE_BAR_PLAYER "UI\\GaugeBar.png"
+// 闘気ゲージ用のフレームの区切り画像のファイルパス
+#define FRAME_IMAGE_SEPARATOR "UI\\Gauge_Frame_Separator.png"
 
 // ドラゴンのHPフレーム画像のファイルパス
 #define FRAME_IMAGE_DRAGON "UI\\Dragon_HP_Frame.png"
-// ドラゴンんのHPバー画像のファイルパス
+// ドラゴンのHPバー画像のファイルパス
 #define GAUGE_BAR_DRAGON "UI\\Dragon_HP_Gauge.png"
 
 // フレームの横のサイズ

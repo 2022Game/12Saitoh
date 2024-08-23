@@ -15,8 +15,9 @@
 class CToukiGauge : public CUIGauge
 {
 private:
-	CImage* mpFrameImage;	// HPゲージのフレームイメージ
-	CImage* mpBarImage;		// HPゲージのバーイメージ
+	CImage* mpFrameImage;		// 闘気ゲージのフレームイメージ
+	CImage* mpBarImage;			// 闘気ゲージのバーイメージ
+	CImage* mpFrameSeparator;	// 闘気ゲージのフレームの区切りイメージ
 
 public:
 	// コンストラクタ
