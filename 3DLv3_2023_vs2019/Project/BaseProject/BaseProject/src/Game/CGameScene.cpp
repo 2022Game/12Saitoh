@@ -17,6 +17,7 @@ CField* gField = nullptr;
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
+	, mElapsedTime(0.0f)
 	, mpGameMenu(nullptr)
 	, mpGameOver(nullptr)
 	, mpGameClear(nullptr)
@@ -76,6 +77,8 @@ void CGameScene::Load()
 	// ゲームBGMを読み込み
 	mpGameBGM = CResourceManager::Load<CSound>("GameBGM", "Sound\\BGM\\battle_bgm.wav");
 	mpGameBGM2 = CResourceManager::Load<CSound>("GameBGM2", "Sound\\BGM\\battle2_bgm.wav");
+	mpGameClearBGM = CResourceManager::Load<CSound>("ClearBGM", "Sound\\BGM\\clear_bgm.wav");
+	mpGameOverBGM = CResourceManager::Load<CSound>("OverBGM", "Sound\\BGM\\over_bgm.wav");
 	mpNature = CResourceManager::Load<CSound>("Nature", "Sound\\BGM\\nature.wav");
 
 	//フィールドを生成
@@ -144,7 +147,7 @@ void CGameScene::Update()
 		// 空中ブレス中はBGMの音量を抑える
 		if (dragon->IsFlyBreath())
 		{
-			mpGameBGM->SetVolume(0.07f);
+			mpGameBGM->SetVolume(0.06f);
 		}
 		else
 		{
@@ -165,24 +168,58 @@ void CGameScene::Update()
 			if (mpGameBGM2->IsPlaying())
 			{
 				mpGameBGM2->SetVolume(0.15f);
-				mpGameBGM->SetVolume(0.0f);
+				mpGameBGM->Stop();
 			}
 		}
 	}
 
-	if (CInput::PushKey('T'))
+	CPlayer* player = CPlayer::Instance();
+	// プレイヤーの死亡フラグが立ったら
+	// 5秒後にゲームオーバーシーンへ以降
+	if (player->IsDie())
 	{
-		CSceneManager::Instance()->LoadScene(EScene::eTitle);
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime >= 4.0f)
+		{
+			mpGameOver->Start();
+		}
+		// ゲームオーバーBGMが再生されていなければ
+		// BGMを再生
+		if (!mpGameClearBGM->IsPlaying())
+		{
+			mpGameOverBGM->PlayLoop(-1, true, 0.2f);
+			mpGameBGM->Stop();
+			mpGameBGM2->Stop();
+		}
+	}
+	// ドラゴンの死亡フラグが立ったら
+	// 5秒後にゲームオーバーシーンへ以降
+	if (dragon->IsDie())
+	{
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime >= 10.0f)
+		{
+			mpGameClear->Start();
+			mpGameBGM2->Stop();
+		}
+		// ゲームクリアBGMが再生されていなければ
+		// BGMを再生
+		if (!mpGameClearBGM->IsPlaying())
+		{
+			mpGameClearBGM->PlayLoop(-1, true, 0.2f);
+			mpGameBGM->Stop();
+			mpGameBGM2->Stop();
+		}
 	}
 
 	// ゲームメニューを開いてなければ、[Ｍ]キーでメニューを開く
-	if (!mpGameMenu->IsOpened())
-	{
-		if (CInput::PushKey('M'))
-		{
-			mpGameMenu->Open();
-		}
-	}
+	//if (!mpGameMenu->IsOpened())
+	//{
+	//	if (CInput::PushKey('M'))
+	//	{
+	//		mpGameMenu->Open();
+	//	}
+	//}
 #ifdef _DEBUG
 	// リザルトシーン
 	if (!mpGameOver->IsPlayResult())

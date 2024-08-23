@@ -85,6 +85,10 @@ enum class EAnimType
 	ePowerAttack,			// 強闘技攻撃
 	eLanding,				// 着地動作(納刀)
 	eLandin_Combat,			// 着地動作(抜刀)
+	eDie_Start,				// 死亡開始(納刀)
+	eDie_Loop,				// 死亡ループ(納刀)
+	eDie_Start_Combat,		// 死亡開始(抜刀)
+	eDie_Loop_Combat,		// 死亡ループ(抜刀)
 	Num
 };
 

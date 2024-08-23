@@ -20,10 +20,14 @@ public:
 	void Update();
 
 private:
+	float mElapsedTime;
+
 	CGameMenu* mpGameMenu;
 	CGameOverScene* mpGameOver;
 	CGameClearScene* mpGameClear;
 	CSound* mpGameBGM;		// ゲーム中BGM
 	CSound* mpGameBGM2;		// ゲーム中のBGM
+	CSound* mpGameClearBGM;	// ゲームクリア時のBGM
+	CSound* mpGameOverBGM;	// ゲームオーバー時のBGM
 	CSound* mpNature;		// 環境音
 };

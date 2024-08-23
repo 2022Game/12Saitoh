@@ -29,6 +29,7 @@ CPlayer::CPlayer()
 	, mSPZeroFlag(false)
 	, mIsUpdateInput(false)
 	, mIsInvincible(false)
+	, mIsDie(false)
 	, mStateStep(0)
 	, mAttackStep(0)
 	, mSPAttackStep(0)
@@ -376,31 +377,12 @@ void CPlayer::Update()
 	//CDebugPrint::Print("スタミナ : %.0f\n", mStatus.sp);
 	//CDebugPrint::Print("闘気ゲージ : %d\n", mStatus.touki);
 
-	//CDebugPrint::Print("攻撃段階 : %d\n", mAttackStep);
-	
-	//// カウンター攻撃フラグの変更
-	//if (CInput::PushKey('Q')) mIsCounter = true;
-	//
-	//CDebugPrint::Print("カウンターフラグ : ");
-	//if (mIsCounter) CDebugPrint::Print("ture\n");
-	//else CDebugPrint::Print("false\n");
-
-	////  1キーを押しながら、「↑」キーでHP増加 「↓」でHP減少
-	//if (CInput::Key('1'))
-	//{
-	//	if (CInput::Key(VK_UP)) mStatus.hp++;
-	//	else if (CInput::Key(VK_DOWN)) mStatus.hp--;
-	//}
-	//// 2キーを押しながら、「↑」キーでSP増加 「↓」でSP減少
-	//if (CInput::Key('2'))
-	//{
-	//	if (CInput::Key(VK_UP)) mStatus.sp++;
-	//	else if (CInput::Key(VK_DOWN)) mStatus.sp--;
-	//}
-
-	//CDebugPrint::Print("モーション値 : %.2f\n", mMotionValue);
-
 	CDebugPrint::Print("暫定ダメージ : %d\n", mTemporaryDamage);
+
+	if (CInput::PushKey('Q')) mIsCounter = true;
+	if(CInput::Key(VK_UP)) mStatus.touki++;
+	if (CInput::Key(VK_DOWN)) mStatus.hp--;
+#endif
 	if (mTemporaryDamage > 0)
 	{
 		// 2秒経過するごとにHPを回復
@@ -414,10 +396,6 @@ void CPlayer::Update()
 			mHPRecoveryTime += 0.016666f;
 		}
 	}
-
-	if (CInput::PushKey('Q')) mIsCounter = true;
-	if(CInput::Key(VK_UP)) mStatus.touki++;
-#endif
 	// HPゲージに現在のHPを設定
 	mpHPGauge->SetValue(mStatus.hp);
 	// SPゲージに現在のSPを設定
@@ -543,12 +521,26 @@ void CPlayer::TakeDamage(int damage)
 	{
 		mTemporaryDamage = 0;
 		// 死亡処理
-		//mState = EState::eDie;
-		//ChangeAnimation(EAnimType::eTPose);
-	}
-	else
-	{
-		// のけ反る処理
+		if (IsDrawn())
+		{
+			// 抜刀中
+			ChangeAnimation(EAnimType::eDie_Start_Combat);
+		}
+		else
+		{
+			// 納刀中
+			ChangeAnimation(EAnimType::eDie_Start_Combat);
+		}
+		mState = EState::eDie;
+		// ダメージ用のコライダーをオフにしておく
+		mpDamageCol->SetEnable(false);
+		// プレイヤーUIもオフにする
+		mpHPGauge->SetEnable(false);
+		mpHPGauge->SetShow(false);
+		mpSPGauge->SetEnable(false);
+		mpSPGauge->SetShow(false);
+		// 死亡フラグを立てる
+ 		mIsDie = true;
 	}
 }
 
@@ -595,12 +587,36 @@ bool CPlayer::IsCounter()
 	return false;
 }
 
+// 死亡したかどうか
+bool CPlayer::IsDie() const
+{
+	return mIsDie;
+}
+
 // 死亡処理
 void CPlayer::Update_Die()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Y(0.0f);
 	mMoveSpeed.Z(0.0f);
+	if (IsAnimationFinished())
+	{
+		if (AnimationIndex() == (int)EAnimType::eDie_Start)
+		{
+			ChangeAnimation(EAnimType::eDie_Loop);
+		}
+		else if (AnimationIndex() == (int)EAnimType::eDie_Start_Combat)
+		{
+			ChangeAnimation(EAnimType::eDie_Loop_Combat);
+		}
+	}
+
+	// 各SEが再生中の場合、停止する
+	if (mpRunSE->IsPlaying()) mpRunSE->Stop();
+	if (mpFastRunSE->IsPlaying()) mpFastRunSE->Stop();
+	if (mpNormalAttackSE1->IsPlaying()) mpNormalAttackSE1->Stop();
+	if (mpNormalAttackSE2->IsPlaying()) mpNormalAttackSE2->Stop();
+	if (mpSpMoveSE->IsPlaying()) mpSpMoveSE->Stop();
 }
 
 CPlayer::EState CPlayer::GetState() const

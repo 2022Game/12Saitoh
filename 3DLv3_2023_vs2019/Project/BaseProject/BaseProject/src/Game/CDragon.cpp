@@ -25,6 +25,7 @@ CDragon::CDragon()
 	, mIsAngry(false)
 	, mChangeAngry(false)
 	, mIsFlyBreath(false)
+	, mIsDie(false)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
 	, mFearValue(0)
@@ -780,6 +781,12 @@ bool CDragon::IsBackStep() const
 	return true;
 }
 
+// 死亡したかどうか
+bool CDragon::IsDie() const
+{
+	return mIsDie;
+}
+
 // レイを飛ばして移動できる角度を取得
 CVector CDragon::GetRayAngleVec()
 {
@@ -950,6 +957,10 @@ void CDragon::Update()
 	}
 
 #endif
+	// プレイヤーに死亡フラグが立ったら、HPゲージを非表示にする
+	CPlayer* player = CPlayer::Instance();
+	if (player->IsDie()) mpHPGauge->SetEnable(false);
+
 	if (mpHPGauge != nullptr) mpHPGauge->SetValue(mStatus.hp);
 }
 
@@ -958,6 +969,15 @@ void CDragon::UpdateDie()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	
+	mpHPGauge->SetEnable(false);
+	mpHPGauge->SetShow(false);
+	// SEが再生されていたら停止する
+	if (mpFlySE->IsPlaying()) mpFlySE->Stop();
+	if (mpFlamethrower->IsThrowing())
+	{
+		mpFlamethrower->Stop();
+	}
 }
 
 // 衝突処理
@@ -1102,6 +1122,7 @@ void CDragon::TakeDamage(int damage)
 		mState = EState::eDeath;
 		ChangeAnimation(EDragonAnimType::eDie);
 		SetAnimationSpeed(0.25);
+		mIsDie = true;
 	}
 }
 

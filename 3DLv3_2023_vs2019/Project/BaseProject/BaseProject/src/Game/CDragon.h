@@ -45,6 +45,8 @@ public:
 	bool IsFoundPlayer() const;
 	// 空中ブレス中かどうか
 	bool IsFlyBreath() const;
+	// 死亡したかどうか
+	bool IsDie() const;
 	// 空中ブレスの攻撃回数
 	int SpAttackNum() const;
 
@@ -240,6 +242,7 @@ private:
 	bool mIsAngry;		// 怒り状態かどうか
 	bool mChangeAngry;	// 怒り状態に移行中かどうか
 	bool mIsFlyBreath;	// 空中ブレス中かどうか
+	bool mIsDie;		// 死亡フラグ
 
 	int mAngryStandardValue;// 怒り値の基準値
 	int mAngryValue;	// 怒り値

@@ -49,11 +49,14 @@ public:
 	bool IsInvincible()const;
 	// カウンター中かどうか
 	bool IsCounter();
+	// 死亡しかたどうか
+	bool IsDie() const;
 
 	// ダメージ計算
 	void TakeDamage(int damage) override;
 	// 闘気を増加
 	void UpTouki();
+
 
 private:
 	// 待機状態
@@ -153,7 +156,8 @@ private:
 	bool mIsAvoid;		// 回避中かどうか
 	bool mSPZeroFlag;	// スタミナが0になった時のスタミナ回復中のフラグ
 	bool mIsUpdateInput;// 入力情報を更新するフラグ
-	bool mIsInvincible;// 無敵状態かどうか
+	bool mIsInvincible;	// 無敵状態かどうか
+	bool mIsDie;		// 死亡したかどうか
 
 	int mStateStep;		// 各状態の段階
 	int mAttackStep;	// 攻撃の段階
