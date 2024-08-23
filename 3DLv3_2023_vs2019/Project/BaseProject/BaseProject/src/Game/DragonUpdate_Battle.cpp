@@ -340,9 +340,8 @@ void CDragon::UpdateBattle_Chase()
 		{
 			CVector pPos = CPlayer::Instance()->Position();
 			CVector dPos = Position();
-			CVector PD = pPos - dPos;
+			CVector PD = (pPos - dPos).Normalized();
 			PD.Y(0.0f);
-			PD.Normalized();
 
 			mMoveSpeed += PD * 2.0f;
 			mChaseElapsedTime += Time::DeltaTime();
