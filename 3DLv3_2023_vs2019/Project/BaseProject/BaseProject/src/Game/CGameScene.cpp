@@ -11,6 +11,7 @@
 #include "CGameOverScene.h"
 #include "CGameClearScene.h"
 #include "CBGMManager.h"
+#include "CSky.h"
 
 CField* gField = nullptr;
 
@@ -40,6 +41,8 @@ void CGameScene::Load()
 	//ここでゲーム中に必要な
 	//リソースの読み込みやクラスの生成を行う
 	CResourceManager::Load<CModel>("Field", "Field\\Coliseum\\Coliseum.obj");
+	CResourceManager::Load<CModel>("Cylinder", "Field\\Coliseum\\Cylinder.obj");
+	CResourceManager::Load<CModel>("Sky", "Field\\sky.obj");
 	CResourceManager::Load<CModel>("Cylinder", "Field\\Coliseum\\Cylinder.obj");
 	CResourceManager::Load<CModelX>("Player", "Character\\Player\\player.x");
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
@@ -83,6 +86,9 @@ void CGameScene::Load()
 
 	//フィールドを生成
 	gField = new CField();
+	CSky* sky = new CSky();
+	sky->Scale(25.0f, 25.0f, 25.0f);
+	sky->Rotate(70.0f, 0.0f, 40.0f);
 	//プレイヤーを生成
 	CPlayer* player = new CPlayer();
 	player->Scale(10.0f, 10.0f, 10.0f);

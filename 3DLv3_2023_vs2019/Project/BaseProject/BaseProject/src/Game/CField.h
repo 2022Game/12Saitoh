@@ -19,7 +19,6 @@ public:
 
 private:
 	CModel* mpModel;
-
 	CModel* mpColModel;
 	CColliderMesh* mpColliderMesh;
 };

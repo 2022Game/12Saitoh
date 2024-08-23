@@ -523,6 +523,9 @@
     <ClCompile Include="src\Game\CCutIn_GameOver.cpp">
       <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CSky.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -908,6 +911,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCutIn_GameOver.h">
       <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSky.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -214,9 +214,8 @@ void CSword::CreateEffect(const CHitInfo& hit)
 			if (COUNTERATTACK_START >= player->GetAnimationFrame())
 			{
 				mpCounterEffect1 = new CCounterEffect(hit.cross);
+				mpCounterEffect1->Scale(2.0f, 2.0f, 2.0f);
 			}
-			break;
-		case (int)EAnimType::ePowerAttack:// ‹­“¬‹ZUŒ‚
 			break;
 		}
 	}

@@ -104,6 +104,7 @@
     <ClCompile Include="src\Game\CResultUIBase.cpp" />
     <ClCompile Include="src\Game\CRideabeObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloor.cpp" />
+    <ClCompile Include="src\Game\CSky.cpp" />
     <ClCompile Include="src\Game\CSPFlame.cpp" />
     <ClCompile Include="src\Game\CSPFlametrower.cpp" />
     <ClCompile Include="src\Game\CSPGauge.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="src\Game\CResultUIBase.h" />
     <ClInclude Include="src\Game\CRideableObject.h" />
     <ClInclude Include="src\Game\CRotateFloor.h" />
+    <ClInclude Include="src\Game\CSky.h" />
     <ClInclude Include="src\Game\CSPFlame.h" />
     <ClInclude Include="src\Game\CSPFlamethrower.h" />
     <ClInclude Include="src\Game\CSPGauge.h" />
