@@ -57,7 +57,7 @@ std::vector<PlayerData::AnimData> PlayerData::ANIM_DATA =
 	{ "Character\\Player\\anim\\attack_counter_end.x",		false,	46.0f,  0.0f },	// ƒJƒEƒ“ƒ^[\‚¦I—¹
 	{ "Character\\Player\\anim\\powerattack_start.x",		false,	20.0f,	0.0f },	// ‹­“¬‹Z\‚¦ŠJn
 	{ "Character\\Player\\anim\\powerattack_loop.x",		true,	45.0f,	0.0f },	// ‹­“¬‹Z\‚¦’†
-	{ "Character\\Player\\anim\\powerattack.x",				false,	139.0f,	8.0f },	// ‹­“¬‹ZUŒ‚
+	{ "Character\\Player\\anim\\powerattack.x",				false,	139.0f,	7.0f },	// ‹­“¬‹ZUŒ‚
 	{ "Character\\Player\\anim\\landing.x",					false,	35.0f,	0.0f },	// ’…’n“®ì(”[“)
 	{ "Character\\Player\\anim\\landing_combat.x",			false,	35.0f,	0.0f },	// ’…’n“®ì(”²“)
 	{ "Character\\Player\\anim\\die_start.x",				false,	61.0f,	0.0f },	// €–SŠJn(”[“)
