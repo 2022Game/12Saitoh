@@ -526,6 +526,12 @@
     <ClCompile Include="src\Game\CSky.cpp">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CTargetCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameUI.cpp">
+      <Filter>ソース ファイル\Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -914,6 +920,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSky.h">
       <Filter>ソース ファイル\Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTargetCamera.h">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameUI.h">
+      <Filter>ソース ファイル\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

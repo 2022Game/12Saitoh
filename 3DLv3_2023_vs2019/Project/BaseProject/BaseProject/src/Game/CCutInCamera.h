@@ -17,8 +17,6 @@ public:
 	// カットイン終了
 	virtual bool End();
 
-
-	
 	// カットイン再生中かどうか
 	bool IsPlaying() const;
 
@@ -29,5 +27,4 @@ protected:
 	// 現在再生中のカットインカメラ
 	static CCutInCamera* spCutInCamera;
 	bool mIsPlaying;	// カットイン再生中かどうか
-
 };

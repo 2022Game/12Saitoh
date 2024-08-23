@@ -95,6 +95,7 @@
     <ClCompile Include="src\Game\CGameOverScene.cpp" />
     <ClCompile Include="src\Game\CGameOverUI.cpp" />
     <ClCompile Include="src\Game\CGameScene.cpp" />
+    <ClCompile Include="src\Game\CGameUI.cpp" />
     <ClCompile Include="src\Game\CHPGauge.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
     <ClCompile Include="src\Game\CLightingButton.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="src\Game\CSPMoveEffect_Sword.cpp" />
     <ClCompile Include="src\Game\CSPMoveEndEffect.cpp" />
     <ClCompile Include="src\Game\CSword.cpp" />
+    <ClCompile Include="src\Game\CTargetCamera.cpp" />
     <ClCompile Include="src\Game\CTitleField.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CTitleSword.cpp" />
@@ -234,6 +236,7 @@
     <ClInclude Include="src\Game\CGameOverScene.h" />
     <ClInclude Include="src\Game\CGameOverUI.h" />
     <ClInclude Include="src\Game\CGameScene.h" />
+    <ClInclude Include="src\Game\CGameUI.h" />
     <ClInclude Include="src\Game\CHPGauge.h" />
     <ClInclude Include="src\Game\CImage.h" />
     <ClInclude Include="src\Game\CLightingButton.h" />
@@ -250,6 +253,7 @@
     <ClInclude Include="src\Game\CSPMoveEffect_Sword.h" />
     <ClInclude Include="src\Game\CSPMoveEndEffect.h" />
     <ClInclude Include="src\Game\CSword.h" />
+    <ClInclude Include="src\Game\CTargetCamera.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CTitleSword.h" />
     <ClInclude Include="src\Game\CTitleUI.h" />

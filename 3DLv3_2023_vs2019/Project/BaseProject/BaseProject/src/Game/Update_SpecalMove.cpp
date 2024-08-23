@@ -11,6 +11,8 @@ void CPlayer::SetSpecalMove(EAnimType type, bool cutin)
 	// カットインカメラの設定を行う
 	if (cutin)
 	{
+		// ターゲットカメラがオンの時はオフにする
+		if (mpTargetCamera->IsPlaying())mpTargetCamera->End();
 		mpCutIn_PowerAttack->Setup(this);
 		mpCutIn_PowerAttack->Start();
 		CSound* cutinse = CResourceManager::Get<CSound>("SpMoveCutinSE");

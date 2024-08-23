@@ -12,6 +12,7 @@
 #include "CGameClearScene.h"
 #include "CBGMManager.h"
 #include "CSky.h"
+#include "CGameUI.h"
 
 CField* gField = nullptr;
 
@@ -118,6 +119,9 @@ void CGameScene::Load()
 	// リザルトシーンを作成
 	mpGameOver = new CGameOverScene();
 	mpGameClear = new CGameClearScene();
+
+	// ゲーム用UIを作成
+	CGameUI* mpUI = new CGameUI();
 
 	//CLineEffect* le = new CLineEffect(ETag::eNone);
 //le->AddPoint(CVector(0.0f, 10.0f, 10.0f), 1.0f);

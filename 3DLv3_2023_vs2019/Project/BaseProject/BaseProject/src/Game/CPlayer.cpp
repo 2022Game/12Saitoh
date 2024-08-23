@@ -8,6 +8,8 @@
 #include "CColliderCapsule.h"
 #include "CSword.h"
 #include "CFlamethrower.h"
+#include "CDragon.h"
+#include "Global.h"
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
@@ -96,6 +98,9 @@ CPlayer::CPlayer()
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
 	// ゲームオーバーカットインカメラの生成
 	mpCutIn_GameOver = new CCutIn_GameOver();
+	// ターゲットカメラの生成
+	mpTargetCamera = new CTargetCamera();
+	mpTargetCamera->AddCollider(gField->GetFieldCol());
 
 	// プレイヤーのステータスを取得
 	mStatus = PLAYER_STATUS[PLAYER_STATAS];
@@ -256,12 +261,31 @@ void CPlayer::Update_SwitchDrawn()
 void CPlayer::Update()
 {
 	// カメラの正面・サイドベクトルを設定
-	CCamera* mainCamera = CCamera::MainCamera();
-	mCamForward = mainCamera->VectorZ();
+	CCamera* CurrentCamera = CCamera::CurrentCamera();
+	mCamForward = CurrentCamera->VectorZ();
 	mCamSide = CVector::Cross(CVector::up, mCamForward);
 
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
+
+	// ターゲットカメラの切り替え処理
+	if (!mpTargetCamera->IsPlaying())
+	{
+		if (CInput::PushKey('Q')) 
+		{
+			mpTargetCamera->Start();
+		}
+	}
+	// ターゲットカメラが再生中の場合、必要な情報を入れる
+	else
+	{
+		if (CInput::PushKey('Q'))
+		{
+			mpTargetCamera->End();
+		}
+		CDragon* dragon = CDragon::Instance();
+		mpTargetCamera->Update_Set(this, dragon);
+	}
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)

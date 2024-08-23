@@ -8,6 +8,7 @@
 #include "CCamera.h"
 #include "CCutIn_PowerAttack.h"
 #include "CCutIn_GameOver.h"
+#include "CTargetCamera.h"
 #include "CSPMoveEffect_Sword.h"
 #include "CSPMoveEndEffect.h"
 #include "CSound.h"
@@ -175,6 +176,7 @@ private:
 	CTransform* mpRideObject;
 	CCutIn_PowerAttack* mpCutIn_PowerAttack;
 	CCutIn_GameOver* mpCutIn_GameOver;
+	CTargetCamera* mpTargetCamera;
 
 	CHPGauge* mpHPGauge;		// HPÉQÅ[ÉW
 	CSPGauge* mpSPGauge;		// SPÉQÅ[ÉW

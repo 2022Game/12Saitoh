@@ -121,7 +121,7 @@ void CResultScene::Start()
 	// カーソル表示を有効にする
 	CInput::ShowCursor(true);
 	// ゲームカメラも停止
-	CCamera::MainCamera()->SetEnable(false);
+	CCamera::CurrentCamera()->SetEnable(false);
 }
 
 // 終了処理
