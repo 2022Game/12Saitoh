@@ -3,6 +3,7 @@
 #include "DragonData.h"
 #include "CXCharacter.h"
 #include "CCollider.h"
+#include "CSound.h"
 
 class CFlamethrower;
 class CSPFlamethrower;
@@ -42,6 +43,10 @@ public:
 
 	// プレイヤーを見つけたかどうか
 	bool IsFoundPlayer() const;
+	// 空中ブレス中かどうか
+	bool IsFlyBreath() const;
+	// 空中ブレスの攻撃回数
+	int SpAttackNum() const;
 
 private:
 	// 待機状態
@@ -229,10 +234,12 @@ private:
 	CVector mSaveDestination;	// 目的地の保存用
 	CVector mSaveVec;			// ベクトルの保存用
 	CVector mRayAngleVec;		
+	CSound* mpFlySE;
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか
 	bool mChangeAngry;	// 怒り状態に移行中かどうか
+	bool mIsFlyBreath;	// 空中ブレス中かどうか
 
 	int mAngryStandardValue;// 怒り値の基準値
 	int mAngryValue;	// 怒り値

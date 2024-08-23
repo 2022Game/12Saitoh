@@ -24,6 +24,7 @@ CDragon::CDragon()
 	, mIsGrounded(true)
 	, mIsAngry(false)
 	, mChangeAngry(false)
+	, mIsFlyBreath(false)
 	, mAngryStandardValue(0)
 	, mAngryValue(0)
 	, mFearValue(0)
@@ -90,6 +91,10 @@ CDragon::CDragon()
 		CVector(0.0f, -30.0f, 0.0f),
 		CQuaternion(0.0f, 90.0f, 0.0f).Matrix()
 	);
+
+	// SEの設定
+	mpFlySE = CResourceManager::Get<CSound>("Fly");
+
 }
 
 // デストラクタ
@@ -1127,4 +1132,10 @@ void CDragon::AttackEnd()
 	mpAttackMouthCol->SetEnable(false);
 	mpAttackHandCol->SetEnable(false);
 	mpAttackScreamCol->SetEnable(false);
+}
+
+// 空中ブレスの攻撃回数を取得
+int CDragon::SpAttackNum() const
+{
+	return mSpAttackNum;
 }

@@ -118,6 +118,16 @@ CPlayer::CPlayer()
 	//Œ•‚ğì¬
 	mpSword = new CSword();
 	mpSword->Rotate(CVector(0.0f, 0.0f, 0.0f));
+
+	// SE“Ç‚İ‚İ
+	mpRunSE = CResourceManager::Get<CSound>("RunSE");
+	mpFastRunSE = CResourceManager::Get<CSound>("FastRunSE");
+	mpNormalAttackSE1 = CResourceManager::Get<CSound>("NormalAttackSE1");
+	mpNormalAttackSE2 = CResourceManager::Get<CSound>("NormalAttackSE2");
+	mpSpMoveSE = CResourceManager::Get<CSound>("SpMoveSE");
+	mpNormalAttackSE1->SetSimultaneousPlayCount(10);
+	mpNormalAttackSE2->SetSimultaneousPlayCount(10);
+	mpSpMoveSE->SetSimultaneousPlayCount(10);
 }
 
 CPlayer::~CPlayer()
@@ -155,15 +165,30 @@ void CPlayer::ChangeState(EState state)
 {
 	mState = state;
 	mStateStep = 0;
+
+	// SE‚Ì‰¹—Ê‚ğ’²®
+	// SE‚ğ’â~‚·‚é‚ÆAŸ‚ÌÄ¶‚ªo—ˆ‚È‚¢‚½‚ß‰¹—Ê‚ğ•Ï‚¦‚Ä’²®
+	if (mpRunSE->IsPlaying()) mpRunSE->SetVolume(0.0f);
+	if (mpFastRunSE->IsPlaying()) mpFastRunSE->SetVolume(0.0f);
 }
 
 // ”²”[ó‘Ô‚ğØ‚è‘Ö‚¦‚é
 void CPlayer::SwitchDrawn()
 {
 	// ”²“ó‘Ô‚ÌA”[“ó‘Ô‚ÖØ‚è‘Ö‚¦‚é
-	if (mIsDrawn) mIsDrawn = false;
+	if (mIsDrawn)
+	{
+		mIsDrawn = false;
+		CSound* sheathedSE = CResourceManager::Get<CSound>("SheathedSE");
+		sheathedSE->Play(0.1f);
+	}
 	// ”[“ó‘Ô‚ÌA”²“ó‘Ô‚ÖØ‚è‘Ö‚¦‚é
-	else mIsDrawn = true;
+	else
+	{
+		mIsDrawn = true;
+		CSound* drawnSE = CResourceManager::Get<CSound>("DrawnSE");
+		drawnSE->Play(0.07f);
+	}
 }
 
 // ”²”[‚ÌØ‚è‘Ö‚¦ˆ—
@@ -442,14 +467,15 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeState(EState::eAvoidance);
 					ChangeAnimation(EAnimType::eRollStart);
 					mIsAirAttack = false;
-					mAttackStep = ATTACKSTEP_END;
+					mAttackStep = 0;
 				}
 				else
 				{
 					// ’…’n“®ì(”²“)‚ğÄ¶
+					ChangeState(EState::eIdle);
 					ChangeAnimation(EAnimType::eLandin_Combat);
 					mIsAirAttack = false;
-					mAttackStep = ATTACKSTEP_END;
+					mAttackStep = 0;
 				}
 			}
 

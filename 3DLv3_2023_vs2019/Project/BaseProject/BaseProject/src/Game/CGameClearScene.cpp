@@ -26,6 +26,7 @@ CGameClearScene::~CGameClearScene()
 // 更新処理
 void CGameClearScene::Update()
 {
+	if (!CSceneManager::Instance()->IsReady()) return;
 	// ベースクラスの更新
 	CResultScene::Update();
 	// UIの更新

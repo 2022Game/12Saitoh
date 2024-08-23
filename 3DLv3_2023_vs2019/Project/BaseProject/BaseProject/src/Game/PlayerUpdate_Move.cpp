@@ -6,6 +6,14 @@ void CPlayer::Update_Move()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
+	if (!mpRunSE->IsPlaying())
+	{
+		mpRunSE->PlayLoop(-1, true, 0.1f);
+	}
+	else
+	{
+		mpRunSE->SetVolume(0.1f);
+	}
 	//”²”[ó‘Ô‚Ì”»’è
 	switch (mIsDrawn)
 	{
@@ -160,6 +168,15 @@ void CPlayer::Update_FastMove()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
+	if (!mpFastRunSE->IsPlaying())
+	{
+		mpFastRunSE->PlayLoop(-1, true, 0.2f);
+	}
+	else
+	{
+		mpFastRunSE->SetVolume(0.2f);
+	}
 
 	//’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©”»’è
 	if (mIsGrounded)

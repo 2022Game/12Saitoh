@@ -44,11 +44,38 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Sword", "Character\\Sword\\sword.obj");
 	CResourceManager::Load<CModelX>("Dragon", "Character\\Dragon\\Dragon.x");	
 	CResourceManager::Load<CTexture>("NormalSwordEffect", "Effect\\NormalAttack.png");
-	//CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
-	//CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
-	
+	// SEの読み込み
+	// プレイヤー
+	// 移動
+	CResourceManager::Load<CSound>("RunSE", "Sound\\SE\\Player\\run.wav");
+	CResourceManager::Load<CSound>("FastRunSE", "Sound\\SE\\Player\\fastrun.wav");
+	// 抜納刀
+	CResourceManager::Load<CSound>("SheathedSE", "Sound\\SE\\Player\\sheathed.wav");
+	CResourceManager::Load<CSound>("DrawnSE", "Sound\\SE\\Player\\drawn.wav");
+	// 通常・空中攻撃
+	CResourceManager::Load<CSound>("NormalAttackSE1", "Sound\\SE\\Player\\normalattack1.wav");
+	CResourceManager::Load<CSound>("NormalAttackSE2", "Sound\\SE\\Player\\normalattack2.wav");
+	CResourceManager::Load<CSound>("JumpAttackSE", "Sound\\SE\\Player\\jumpattack.wav");
+	// 弱闘技
+	CResourceManager::Load<CSound>("CounterSE1", "Sound\\SE\\Player\\counter1.wav");
+	CResourceManager::Load<CSound>("CounterSE2", "Sound\\SE\\Player\\counter3.wav");
+	// 強闘技
+	CResourceManager::Load<CSound>("SpMoveCutinSE", "Sound\\SE\\Player\\cutin.wav");
+	CResourceManager::Load<CSound>("SpMoveSE", "Sound\\SE\\Player\\spmove.wav");
+	CResourceManager::Load<CSound>("SpMoveENDSE", "Sound\\SE\\Player\\spmove_finish.wav");
+
+	// ドラゴン
+	CResourceManager::Load<CSound>("Breath", "Sound\\SE\\Dragon\\breath.wav");
+	CResourceManager::Load<CSound>("FlyBreath", "Sound\\SE\\Dragon\\flybreath.wav");
+	CResourceManager::Load<CSound>("Fly", "Sound\\SE\\Dragon\\fly.wav");
+	CResourceManager::Load<CSound>("Scream", "Sound\\SE\\Dragon\\scream.wav");
+	CResourceManager::Load<CSound>("Maouth1", "Sound\\SE\\Dragon\\maouth1.wav");
+	CResourceManager::Load<CSound>("Maouth2", "Sound\\SE\\Dragon\\maouth2.wav");
+	CResourceManager::Load<CSound>("Jump", "Sound\\SE\\Dragon\\jump.wav");
+
 	// ゲームBGMを読み込み
 	mpGameBGM = CResourceManager::Load<CSound>("GameBGM", "Sound\\BGM\\battle_bgm.wav");
+	mpGameBGM2 = CResourceManager::Load<CSound>("GameBGM2", "Sound\\BGM\\battle2_bgm.wav");
 	mpNature = CResourceManager::Load<CSound>("Nature", "Sound\\BGM\\nature.wav");
 
 	//フィールドを生成
@@ -97,7 +124,7 @@ void CGameScene::Update()
 	if (!mpNature->IsPlaying())
 	{
 		// 環境音を再生
-		mpNature->PlayLoop(-1, true, 0.08f, 0.0f);
+		mpNature->PlayLoop(-1, true, 0.09f, 0.0f);
 	}
 
 	CDragon* dragon = CDragon::Instance();
@@ -106,8 +133,40 @@ void CGameScene::Update()
 		// BGM再生中でなければ、BGMを再生
 		if (!mpGameBGM->IsPlaying())
 		{
-			mpGameBGM->PlayLoop(-1, true, 0.09f, false, 0.0f);
-			mpNature->SetVolume(0.01);
+			mpGameBGM->PlayLoop(-1, true, 0.15f, false, 0.0f);
+			mpNature->SetVolume(0.03);
+		}
+	}
+
+	// 2回目の空中ブレスを放つまでのBGMの処理
+	if (dragon->SpAttackNum() <= 1)
+	{
+		// 空中ブレス中はBGMの音量を抑える
+		if (dragon->IsFlyBreath())
+		{
+			mpGameBGM->SetVolume(0.07f);
+		}
+		else
+		{
+			mpGameBGM->SetVolume(0.15);
+		}
+	}
+	// 2回目以降の処理
+	else
+	{
+		// 空中ブレス中はBGMの音量を抑える
+		if (dragon->IsFlyBreath())
+		{
+			mpGameBGM->SetVolume(0.05f);
+			mpGameBGM2->PlayLoop(-1, true, 0.0f);
+		}
+		else
+		{
+			if (mpGameBGM2->IsPlaying())
+			{
+				mpGameBGM2->SetVolume(0.15f);
+				mpGameBGM->SetVolume(0.0f);
+			}
 		}
 	}
 

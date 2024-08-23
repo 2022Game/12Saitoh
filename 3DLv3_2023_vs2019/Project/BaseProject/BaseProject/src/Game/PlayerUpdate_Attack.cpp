@@ -55,6 +55,7 @@ void CPlayer::Update_NormalAttack1()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE1->Play(0.2f);
 	}
 	case 1:
 		if (IsAnimationFinished())
@@ -106,9 +107,12 @@ void CPlayer::Update_NormalAttack2()
 	switch (mAttackStep)
 	{
 	case 0:
+	{
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE2->Play(0.2f);
+	}
 		break;
 	case 1:
 		if (IsAnimationFinished())
@@ -157,10 +161,13 @@ void CPlayer::Update_NormalAttack3()
 	Update_AttackAngleVec(&anglevec);
 	switch (mAttackStep)
 	{
-	case 0:		
+	case 0:	
+	{
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE1->Play(0.2f);
+	}
 		break;
 	case 1:
 		// 攻撃に合わせてプレイヤーを移動
@@ -176,11 +183,14 @@ void CPlayer::Update_NormalAttack3()
 		}
 		break;
 	case 2:
+	{
 		if (NORMALATTACK1_3_COLLIDER <= GetAnimationFrame())
 		{
 			mpSword->AttackStart();
 			mAttackStep++;
+			mpNormalAttackSE2->Play(0.2f);
 		}
+	}
 		break;
 	case 3:
 		if (IsAnimationFinished())
@@ -224,9 +234,13 @@ void CPlayer::Update_AttackUp()
 	switch (mAttackStep)
 	{
 	case 0:
+	{
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		CSound* jumpse = CResourceManager::Get<CSound>("JumpAttackSE");
+		jumpse->Play(0.2f);
+	}
 		break;
 	case 1:
 		if (IsAnimationFinished())
@@ -275,6 +289,7 @@ void CPlayer::Update_AirAttack1()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE1->Play(0.2f);
 		break;
 	case 1:
 		if (IsAnimationFinished())
@@ -316,6 +331,7 @@ void CPlayer::Update_AirAttack2()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE1->Play(0.2f);
 		break;
 	case 1:
 		if (IsAnimationFinished())
@@ -357,6 +373,7 @@ void CPlayer::Update_AirAttack3()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE1->Play(0.2f);
 		break;
 	case 1:
 		if (IsAnimationFinished())
@@ -395,6 +412,7 @@ void CPlayer::Update_AirAttack4()
 		// 剣に攻撃開始を伝える
 		mpSword->AttackStart();
 		mAttackStep++;
+		mpNormalAttackSE1->Play(0.2f);
 		break;
 	case 1:
 		CVector anglevec;
@@ -472,8 +490,8 @@ void CPlayer::Update_AttackEnd()
 	// 攻撃終了モーションが終了したら待機状態へ移行する
 	if (IsAnimationFinished())
 	{
-		mAttackStep = 0;
 		ChangeState(EState::eIdle);
+		mAttackStep = 0;
 	}
 }
 

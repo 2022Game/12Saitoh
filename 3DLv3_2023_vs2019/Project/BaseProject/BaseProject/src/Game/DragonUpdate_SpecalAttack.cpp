@@ -54,6 +54,14 @@ void CDragon::UpdateSpAttack_Step0()
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eTakeOff);
 		SetAnimationSpeed(0.45f);
+		if (!mpFlySE->IsPlaying())
+		{
+			mpFlySE->PlayLoop(-1, true, 0.2f);
+		}
+		else
+		{
+			mpFlySE->SetBaseVolume(0.2f);
+		}
 	}
 
 	// モーションブラーを掛け始めるフレーム以上の時
@@ -67,6 +75,9 @@ void CDragon::UpdateSpAttack_Step0()
 		{
 			System::SetEnableMotionBlur(true);
 			mMotionBlurRemainTime = MOTION_BLUR_TIME;
+			// SEを再生
+			CSound* screamSE = CResourceManager::Get<CSound>("Scream");
+			screamSE->Play(0.4f);
 		}
 	}
 }
@@ -83,6 +94,7 @@ void CDragon::UpdateSpAttack_Step1()
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eFlyForward);
 		SetAnimationSpeed(0.6f);
+		mpFlySE->SetVolume(0.0f);
 
 		// 次のステップで移動する目的地を設定
 		CVector pPos = CPlayer::Instance()->Position();
@@ -162,8 +174,8 @@ void CDragon::UpdateSpAttack_Step3()
 		ChangeAnimation(EDragonAnimType::eFlyIdle);
 		SetAnimationSpeed(0.31f);
 		mSaveDestination = CVector::zero;
+		mpFlySE->SetVolume(0.2f);
 	}
-	//CDebugPrint::Print("目的地までの距離 :  %.0f\n", targetLength);
 	// デバッグ表示用
 	GetAngle();
 }
@@ -190,6 +202,8 @@ void CDragon::UpdateSpAttack_Step4()
 			mSpAttackStep++;
 			ChangeAnimation(EDragonAnimType::eFlyFlame);
 			SetAnimationSpeed(0.2f);
+			mpFlySE->SetVolume(0.0f);
+			mIsFlyBreath = true;
 		}
 	}
 }
@@ -205,7 +219,15 @@ void CDragon::UpdateSpAttack_Step5()
 		!mpSpFlamethrower->IsThrowing())
 	{
 		mpSpFlamethrower->Start();
+		// ブレス攻撃が終わった後にも再生されないように
+		// 再生フレームを指定
+		if (50.0f > GetAnimationFrame())
+		{
+			CSound* flybreathSE = CResourceManager::Get<CSound>("FlyBreath");
+			flybreathSE->Play(0.35f);
+		}
 	}
+
 	// ブレス停止処理
 	if (77.0f <= GetAnimationFrame() &&
 		mpSpFlamethrower->IsThrowing())
@@ -219,10 +241,12 @@ void CDragon::UpdateSpAttack_Step5()
 		mSpAttackStep++;
 		ChangeAnimation(EDragonAnimType::eFlyIdle);
 		SetAnimationSpeed(0.31f);
+		mIsFlyBreath = false;
 		if (mpSpFlamethrower->IsThrowing())
 		{
 			mpSpFlamethrower->Stop();
 		}
+		mpFlySE->SetVolume(0.2f);
 	}
 }
 
@@ -230,7 +254,7 @@ void CDragon::UpdateSpAttack_Step5()
 void CDragon::UpdateSpAttack_Step6()
 {
 	mElapsedTime += Time::DeltaTime();
-	// 2秒経過で次のステップへ移行
+	// 4秒経過で次のステップへ移行
 	if (mElapsedTime >= 4.0f)
 	{
 		if (IsAnimationFinished())
@@ -239,6 +263,7 @@ void CDragon::UpdateSpAttack_Step6()
 			mSpAttackStep++;
 			ChangeAnimation(EDragonAnimType::eFlyForward);
 			SetAnimationSpeed(0.6f);
+			mpFlySE->SetVolume(0.0f);
 		}
 	}
 	// 重力で落ちないように調整
@@ -269,6 +294,7 @@ void CDragon::UpdateSpAttack_Step7()
 		ChangeAnimation(EDragonAnimType::eLand);
 		SetAnimationSpeed(0.325f);
 		mpColliderLine->Position(mpColliderLine->Position() + CVector(0.0f, 20.0f, 0.0f));
+		mpFlySE->SetVolume(0.2f);
 	}
 }
 
@@ -284,6 +310,7 @@ void CDragon::UpdateSpAttack_Step8()
 		ChangeAnimation(EDragonAnimType::eIdle1);
 		SetAnimationSpeed(0.4f);
 		mpColliderLine->Position(CVector::zero);
+		mpFlySE->SetVolume(0.0f);
 
 		// 着陸後に怯み値が溜まっている場合、
 		// 怯みモーションを行ってしまうため、怯み値を半分にする
@@ -364,4 +391,10 @@ float CDragon::GetAngle() const
 		}
 	}
 	return angle;
+}
+
+// 空中ブレス中かどうか
+bool CDragon::IsFlyBreath() const
+{
+	return mIsFlyBreath;
 }

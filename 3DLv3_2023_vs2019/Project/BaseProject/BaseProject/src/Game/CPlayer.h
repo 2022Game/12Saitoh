@@ -9,6 +9,7 @@
 #include "CCutIn_PowerAttack.h"
 #include "CSPMoveEffect_Sword.h"
 #include "CSPMoveEndEffect.h"
+#include "CSound.h"
 class CSPGauge;
 class CHPGauge;
 class CToukiGauge;
@@ -175,4 +176,10 @@ private:
 	CSword* mpSword;			// Œ•
 	CSPMoveEffect_Sword* mpSwordEffect;
 	std::list<CSPMoveEndEffect*> mEndEffect;
+
+	CSound* mpRunSE;
+	CSound* mpFastRunSE;
+	CSound* mpNormalAttackSE1;
+	CSound* mpNormalAttackSE2;
+	CSound* mpSpMoveSE;
 };

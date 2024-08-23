@@ -24,6 +24,7 @@ CGameOverScene::~CGameOverScene()
 // 更新処理
 void CGameOverScene::Update()
 {
+	if (!CSceneManager::Instance()->IsReady()) return;
 	// ベースクラスの更新
 	CResultScene::Update();
 	// UIの更新

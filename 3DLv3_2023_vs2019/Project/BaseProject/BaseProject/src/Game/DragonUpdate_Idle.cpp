@@ -11,14 +11,14 @@ void CDragon::UpdateIdle()
 	// プレイヤーを見つけたら戦闘状態へ移行する
 	if (IsFoundPlayer())
 	{
-		//ChangeAnimation(EDragonAnimType::eScream);
-		//SetAnimationSpeed(0.5f);
-		//mState = EState::eBattle;
-		//mBatteleStep = 2;
+		ChangeAnimation(EDragonAnimType::eScream);
+		SetAnimationSpeed(0.5f);
+		mState = EState::eBattle;
+		mBatteleStep = 2;
 
-		////HPゲージを作成
-		//mpHPGauge = new CHPGauge_Dragon();
-		//mpHPGauge->SetPos(250.0f, 600.0f);
-		//mpHPGauge->SetMaxValue(mStatus.hp);
+		//HPゲージを作成
+		mpHPGauge = new CHPGauge_Dragon();
+		mpHPGauge->SetPos(250.0f, 600.0f);
+		mpHPGauge->SetMaxValue(mStatus.hp);
 	}
 }

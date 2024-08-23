@@ -24,6 +24,6 @@ private:
 	CGameOverScene* mpGameOver;
 	CGameClearScene* mpGameClear;
 	CSound* mpGameBGM;		// ƒQ[ƒ€’†BGM
+	CSound* mpGameBGM2;		// ƒQ[ƒ€’†‚ÌBGM
 	CSound* mpNature;		// ŠÂ‹«‰¹
-	//CBGMManager* mpGameBGM;
 };

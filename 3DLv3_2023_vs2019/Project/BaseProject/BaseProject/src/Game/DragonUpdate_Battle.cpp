@@ -604,6 +604,9 @@ void CDragon::Update_Sceream()
 			AttackStart();
 			// 次の段階へ移行
 			mAttackStep++;
+			// SEを再生
+			CSound* screamSE = CResourceManager::Get<CSound>("Scream");
+			screamSE->Play(0.4f);
 		}
 		break;
 	case 1:
@@ -626,14 +629,23 @@ void CDragon::Update_AttackMouth()
 	switch (mAttackStep)
 	{
 	case 0:
+	{
+		CSound* maouth1SE = CResourceManager::Get<CSound>("Maouth1");
+		maouth1SE->Play(0.05f);
+		mAttackStep++;
+	}
+		break;
+	case 1:
 		// 攻撃開始の合図をコライダーに伝える
 		if (ATTACKMOUTH_COL_START <= GetAnimationFrame())
 		{
 			AttackStart();
 			mAttackStep++;
+			CSound* maouth2SE = CResourceManager::Get<CSound>("Maouth2");
+			maouth2SE->Play(0.03f);
 		}
 		break;
-	case 1:
+	case 2:
 		// 攻撃終了の合図をコライダーに伝える
 		if (ATTACKMOUTH_COL_END <= GetAnimationFrame())
 		{
@@ -663,6 +675,8 @@ void CDragon::Update_AttackHand()
 			mIsGrounded = false;
 			mAttackStep++;
 			AttackStart();
+			CSound* jumpSE = CResourceManager::Get<CSound>("Jump");
+			jumpSE->Play(0.2f);
 		}
 		break;
 	case 1:// 飛び掛かり攻撃
@@ -704,6 +718,8 @@ void CDragon::Update_AttackHand()
 			mMoveSpeed += CVector(0.0f, 2.5f, 0.0f);
 			mIsGrounded = false;
 			mAttackStep++;
+			CSound* backSE = CResourceManager::Get<CSound>("Fly");
+			backSE->Play(0.2f);
 		}
 		break;
 	case 3:// バックステップ
@@ -745,6 +761,9 @@ void CDragon::Update_AttackFlame()
 		if (!mpFlamethrower->IsThrowing())
 		{
 			mpFlamethrower->Start();
+			// SEを再生
+			CSound* breathSE = CResourceManager::Get<CSound>("Breath");
+			breathSE->Play(0.3f);
 		}
 	}
 	else if (mpFlamethrower->IsThrowing())
@@ -765,6 +784,8 @@ void CDragon::Update_BackStep()
 			mMoveSpeed += CVector(0.0f, 2.5f, 0.0f);
 			mIsGrounded = false;
 			mAttackStep++;
+			CSound* backSE = CResourceManager::Get<CSound>("Fly");
+			backSE->Play(0.2f);
 		}
 		// 移動処理
 		if (12.0f <= GetAnimationFrame() &&
