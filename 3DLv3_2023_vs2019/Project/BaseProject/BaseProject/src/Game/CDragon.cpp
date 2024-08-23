@@ -95,6 +95,8 @@ CDragon::CDragon()
 
 	// SEの設定
 	mpFlySE = CResourceManager::Get<CSound>("Fly");
+	// ゲームクリア時のカットインカメラを生成
+	mpCutIn_GameClear = new CCutIn_GameClear();
 
 }
 
@@ -156,6 +158,8 @@ CDragon::~CDragon()
 	SAFE_DELETE(mpAttackMouthCol);
 	SAFE_DELETE(mpAttackHandCol);
 	SAFE_DELETE(mpAttackScreamCol);
+
+	mpCutIn_GameClear->Kill();
 }
 
 // インスタンスを取得
@@ -593,12 +597,12 @@ void CDragon::ColliderUpdate()
 {
 	////* ダメージ用コライダー *////
 	/* 頭部 */
-	mpHeadDamageCol->Update();	// 頭
-	mpNeckDamageCol->Update();	// 首
+	mpHeadDamageCol->Update();
+	mpNeckDamageCol->Update();
 	/* 胴体 */
-	mpBodyDamageCol->Update();		// 胴体
-	mpTailDamageCol_Root->Update();// 尻尾(根本)
-	mpTailDamageCol_Tip->Update(); // 尻尾(先端)
+	mpBodyDamageCol->Update();
+	mpTailDamageCol_Root->Update();
+	mpTailDamageCol_Tip->Update();
 	/* 足 */
 	// 右前足
 	mpLegDamageCol_RF_Root->Update();
@@ -661,6 +665,50 @@ void CDragon::ColliderUpdate()
 	////* 攻撃用コライダー *////
 	mpAttackMouthCol->Update();
 	mpAttackHandCol->Update();
+}
+
+// 全てのコライダーを無効化
+void CDragon::DisableCollider()
+{
+	/* 頭部 */
+	mpHeadDamageCol->SetEnable(false);
+	mpNeckDamageCol->SetEnable(false);
+	/* 胴体 */
+	mpBodyDamageCol->SetEnable(false);
+	mpTailDamageCol_Root->SetEnable(false);
+	mpTailDamageCol_Tip->SetEnable(false);
+	/* 足 */
+	// 右前足
+	mpLegDamageCol_RF_Root->SetEnable(false);
+	mpLegDamageCol_RF->SetEnable(false);
+	mpLegDamageCol_RF_Tip->SetEnable(false);
+	// 左前足
+	mpLegDamageCol_LF_Root->SetEnable(false);
+	mpLegDamageCol_LF->SetEnable(false);
+	mpLegDamageCol_LF_Tip->SetEnable(false);
+	// 右後ろ足
+	mpLegDamageCol_RB_Root->SetEnable(false);
+	mpLegDamageCol_RB->SetEnable(false);
+	mpLegDamageCol_RB_Tip->SetEnable(false);
+	// 左後ろ足
+	mpLegDamageCol_LB_Root->SetEnable(false);
+	mpLegDamageCol_LB->SetEnable(false);
+	mpLegDamageCol_LB_Tip->SetEnable(false);
+	/* 翼 */
+	// 右翼
+	mpWingCol_R01->SetEnable(false);
+	mpWingCol_R02->SetEnable(false);
+	mpWingCol_R03->SetEnable(false);
+	mpWingCol_R04->SetEnable(false);
+	mpWingCol_R05->SetEnable(false);
+	mpWingCol_R06->SetEnable(false);
+	// 左翼
+	mpWingCol_L01->SetEnable(false);
+	mpWingCol_L02->SetEnable(false);
+	mpWingCol_L03->SetEnable(false);
+	mpWingCol_L04->SetEnable(false);
+	mpWingCol_L05->SetEnable(false);
+	mpWingCol_L06->SetEnable(false);
 }
 
 // アニメーションの切り替え
@@ -978,6 +1026,10 @@ void CDragon::UpdateDie()
 	{
 		mpFlamethrower->Stop();
 	}
+	if (mpCutIn_GameClear->IsPlaying())
+	{
+		mpCutIn_GameClear->Setup(this);
+	}
 }
 
 // 衝突処理
@@ -1123,6 +1175,14 @@ void CDragon::TakeDamage(int damage)
 		ChangeAnimation(EDragonAnimType::eDie);
 		SetAnimationSpeed(0.25);
 		mIsDie = true;
+		// カットインを再生
+		mpCutIn_GameClear->Setup(this);
+		mpCutIn_GameClear->Start();
+		// ダメージ用コライダーの有効フラグを降ろす
+		DisableCollider();
+		// 飛んでいる時に死亡すると地面にめり込む場合があるので
+		// 床との当たり判定用コライダーの座標を初期化する
+		mpColliderLine->Position(CVector::zero);
 	}
 }
 

@@ -81,6 +81,8 @@
     <ClCompile Include="src\Game\CCounterEffect2.cpp" />
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
     <ClCompile Include="src\Game\CCutInTest.cpp" />
+    <ClCompile Include="src\Game\CCutIn_GameClear.cpp" />
+    <ClCompile Include="src\Game\CCutIn_GameOver.cpp" />
     <ClCompile Include="src\Game\CCutIn_PowerAttack.cpp" />
     <ClCompile Include="src\Game\CDragon.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
@@ -217,6 +219,8 @@
     <ClInclude Include="src\Game\CCounterEffect2.h" />
     <ClInclude Include="src\Game\CCutInCamera.h" />
     <ClInclude Include="src\Game\CCutInTest.h" />
+    <ClInclude Include="src\Game\CCutIn_GameClear.h" />
+    <ClInclude Include="src\Game\CCutIn_GameOver.h" />
     <ClInclude Include="src\Game\CCutIn_PowerAttack.h" />
     <ClInclude Include="src\Game\CDragon.h" />
     <ClInclude Include="src\Game\CField.h" />

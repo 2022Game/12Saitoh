@@ -12,8 +12,12 @@ public:
 
 	// カットイン開始
 	virtual bool Start();
+	// カットイン開始(ポーズ無し)
+	virtual bool Start_NoPause();
 	// カットイン終了
 	virtual bool End();
+
+
 	
 	// カットイン再生中かどうか
 	bool IsPlaying() const;

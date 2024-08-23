@@ -39,7 +39,6 @@ void CTitleScene::Load()
 	
 	// タイトルBGMを再生
 	mpTitleBGM = CResourceManager::Load<CSound>("TitleBGM","Sound\\BGM\\title_bgm.wav");
-	mpTitleBGM->PlayLoop(-1, true, 0.1f, false, 0.0f);
 
 	// タイトル用のステージを生成
 	CTitleField* titleField = new CTitleField();
@@ -71,6 +70,10 @@ void CTitleScene::Load()
 //シーンの更新処理
 void CTitleScene::Update()
 {
+	if (!mpTitleBGM->IsPlaying())
+	{
+		mpTitleBGM->PlayLoop(-1, true, 0.2f, false, 0.0f);
+	}
 	// タイトル画面が終了
 	if (mpTitleUI->IsEnd())
 	{

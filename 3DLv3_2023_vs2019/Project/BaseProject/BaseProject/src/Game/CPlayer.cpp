@@ -94,6 +94,8 @@ CPlayer::CPlayer()
 
 	// カットインカメラの生成
 	mpCutIn_PowerAttack = new CCutIn_PowerAttack();
+	// ゲームオーバーカットインカメラの生成
+	mpCutIn_GameOver = new CCutIn_GameOver();
 
 	// プレイヤーのステータスを取得
 	mStatus = PLAYER_STATUS[PLAYER_STATAS];
@@ -382,6 +384,11 @@ void CPlayer::Update()
 	if (CInput::PushKey('Q')) mIsCounter = true;
 	if(CInput::Key(VK_UP)) mStatus.touki++;
 	if (CInput::Key(VK_DOWN)) mStatus.hp--;
+	if (CInput::PushKey('L'))
+	{
+		mpCutIn_GameOver->Setup(this);
+		mpCutIn_GameOver->Start();
+	}
 #endif
 	if (mTemporaryDamage > 0)
 	{
@@ -541,6 +548,10 @@ void CPlayer::TakeDamage(int damage)
 		mpSPGauge->SetShow(false);
 		// 死亡フラグを立てる
  		mIsDie = true;
+		// ゲームオーバーカットインカメラを再生
+		mpCutIn_GameOver->Setup(this);
+		mpCutIn_GameOver->Start();
+
 	}
 }
 
@@ -617,6 +628,8 @@ void CPlayer::Update_Die()
 	if (mpNormalAttackSE1->IsPlaying()) mpNormalAttackSE1->Stop();
 	if (mpNormalAttackSE2->IsPlaying()) mpNormalAttackSE2->Stop();
 	if (mpSpMoveSE->IsPlaying()) mpSpMoveSE->Stop();
+
+	mpCutIn_GameOver->Setup(this);
 }
 
 CPlayer::EState CPlayer::GetState() const

@@ -33,6 +33,21 @@ bool CCutInCamera::Start()
 	return true;
 }
 
+// カットイン開始(ポーズ無し)
+bool CCutInCamera::Start_NoPause()
+{
+	// 既にカットインカメラがオンになっていたら、開始しない
+	if (spCutInCamera != nullptr) return false;
+
+	// 再生中のカットインカメラに自身を設定
+	spCutInCamera = this;
+	mIsPlaying = true;
+	// 現在のカメラを自身に設定
+	SetCurrent(true);
+
+	return true;
+}
+
 // カットイン終了
 bool CCutInCamera::End()
 {

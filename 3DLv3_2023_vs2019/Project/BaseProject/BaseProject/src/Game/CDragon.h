@@ -4,6 +4,7 @@
 #include "CXCharacter.h"
 #include "CCollider.h"
 #include "CSound.h"
+#include "CCutin_GameClear.h"
 
 class CFlamethrower;
 class CSPFlamethrower;
@@ -116,6 +117,8 @@ private:
 	void CreateCollider();
 	// コライダーの更新処理
 	void ColliderUpdate();
+	// すべてコライダーの無効化
+	void DisableCollider();
 
 	// バックステップできるかどうか
 	bool IsBackStep() const;
@@ -228,7 +231,7 @@ private:
 	CColliderSphere* mpAttackHandCol;	// 飛び掛かり攻撃
 	CColliderSphere* mpAttackScreamCol;	// 咆哮攻撃
 
-
+	CCutIn_GameClear* mpCutIn_GameClear;
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
 	CSPFlamethrower* mpSpFlamethrower; // 火炎放射(空中)
 	CHPGauge_Dragon* mpHPGauge;	// HPゲージ

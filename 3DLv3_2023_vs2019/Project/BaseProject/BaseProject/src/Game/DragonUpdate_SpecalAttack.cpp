@@ -62,6 +62,9 @@ void CDragon::UpdateSpAttack_Step0()
 		{
 			mpFlySE->SetBaseVolume(0.2f);
 		}
+		// ドラゴンが飛行中進行方向に向かないバグが発生するため
+		// 念のためここでもmBatteleStepを0にしておく
+		mBatteleStep = 0;
 	}
 
 	// モーションブラーを掛け始めるフレーム以上の時

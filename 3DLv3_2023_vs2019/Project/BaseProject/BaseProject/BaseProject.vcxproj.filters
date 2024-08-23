@@ -517,6 +517,12 @@
     <ClCompile Include="src\Game\CSPMoveEndEffect.cpp">
       <Filter>ソース ファイル\Game\Effect\2DEffect\SPMove</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CCutIn_GameClear.cpp">
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutIn_GameOver.cpp">
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -896,6 +902,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSPMoveEndEffect.h">
       <Filter>ソース ファイル\Game\Effect\2DEffect\SPMove</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutIn_GameClear.h">
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutIn_GameOver.h">
+      <Filter>ソース ファイル\Game\Camera\CutIn</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

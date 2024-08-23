@@ -193,11 +193,11 @@ void CGameScene::Update()
 		}
 	}
 	// ƒhƒ‰ƒSƒ“‚ÌŽ€–Sƒtƒ‰ƒO‚ª—§‚Á‚½‚ç
-	// 5•bŒã‚ÉƒQ[ƒ€ƒI[ƒo[ƒV[ƒ“‚ÖˆÈ~
+	// 15•bŒã‚ÉƒQ[ƒ€ƒI[ƒo[ƒV[ƒ“‚ÖˆÈ~
 	if (dragon->IsDie())
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime >= 10.0f)
+		if (mElapsedTime >= 15.0f)
 		{
 			mpGameClear->Start();
 			mpGameBGM2->Stop();
