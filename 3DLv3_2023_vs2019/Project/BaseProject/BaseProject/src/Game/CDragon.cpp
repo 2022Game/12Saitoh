@@ -11,6 +11,7 @@
 #include "CSPFlamethrower.h"
 #include "Global.h"
 #include "CHPGauge_Dragon.h"
+#include "CGameUI.h"
 
 CDragon* CDragon::spInstance = nullptr;
 
@@ -20,7 +21,6 @@ CDragon::CDragon()
 	, mMoveSpeed(CVector::zero)
 	, mSaveVec(CVector::zero)
 	, mRayAngleVec(CVector::zero)
-	, mpHPGauge(nullptr)
 	, mIsGrounded(true)
 	, mIsAngry(false)
 	, mChangeAngry(false)
@@ -1006,10 +1006,7 @@ void CDragon::Update()
 
 #endif
 	// プレイヤーに死亡フラグが立ったら、HPゲージを非表示にする
-	CPlayer* player = CPlayer::Instance();
-	if (player->IsDie()) mpHPGauge->SetEnable(false);
-
-	if (mpHPGauge != nullptr) mpHPGauge->SetValue(mStatus.hp);
+	CGameUI::SetDragonHP(mStatus.hp);
 }
 
 // 死亡処理
@@ -1018,8 +1015,7 @@ void CDragon::UpdateDie()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	
-	mpHPGauge->SetEnable(false);
-	mpHPGauge->SetShow(false);
+	CGameUI::SetShowDragonHPGauge(false);
 	// SEが再生されていたら停止する
 	if (mpFlySE->IsPlaying()) mpFlySE->Stop();
 	if (mpFlamethrower->IsThrowing())
@@ -1156,6 +1152,7 @@ void CDragon::Render()
 // ダメージ処理
 void CDragon::TakeDamage(int damage)
 {
+	if (mIsDie) return;
 	mDamage = damage;
 	// ダメージ分HPを減少
 	mStatus.hp -= damage;
@@ -1183,6 +1180,9 @@ void CDragon::TakeDamage(int damage)
 		// 飛んでいる時に死亡すると地面にめり込む場合があるので
 		// 床との当たり判定用コライダーの座標を初期化する
 		mpColliderLine->Position(CVector::zero);
+
+		// ゲームUIを非表示
+		CGameUI::SetShowUI(false);
 	}
 }
 

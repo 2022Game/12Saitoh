@@ -178,9 +178,6 @@ private:
 	CCutIn_GameOver* mpCutIn_GameOver;
 	CTargetCamera* mpTargetCamera;
 
-	CHPGauge* mpHPGauge;		// HPゲージ
-	CSPGauge* mpSPGauge;		// SPゲージ
-	CToukiGauge* mpToukiGauge;	// 闘気ゲージ
 	CSword* mpSword;			// 剣
 	CSPMoveEffect_Sword* mpSwordEffect;
 	std::list<CSPMoveEndEffect*> mEndEffect;

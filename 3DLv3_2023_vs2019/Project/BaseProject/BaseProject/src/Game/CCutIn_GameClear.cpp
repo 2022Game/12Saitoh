@@ -15,6 +15,8 @@ CCutIn_GameClear::CCutIn_GameClear()
 // デストラクタ
 CCutIn_GameClear::~CCutIn_GameClear()
 {
+	// 終了処理を呼び出しておく
+	End();
 }
 
 // カットイン開始

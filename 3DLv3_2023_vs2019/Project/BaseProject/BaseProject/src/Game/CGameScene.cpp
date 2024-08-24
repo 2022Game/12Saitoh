@@ -85,6 +85,9 @@ void CGameScene::Load()
 	mpGameOverBGM = CResourceManager::Load<CSound>("OverBGM", "Sound\\BGM\\over_bgm.wav");
 	mpNature = CResourceManager::Load<CSound>("Nature", "Sound\\BGM\\nature.wav");
 
+	// ゲーム用UIを作成
+	CGameUI* mpUI = new CGameUI();
+
 	//フィールドを生成
 	gField = new CField();
 	CSky* sky = new CSky();
@@ -119,9 +122,6 @@ void CGameScene::Load()
 	// リザルトシーンを作成
 	mpGameOver = new CGameOverScene();
 	mpGameClear = new CGameClearScene();
-
-	// ゲーム用UIを作成
-	CGameUI* mpUI = new CGameUI();
 
 	//CLineEffect* le = new CLineEffect(ETag::eNone);
 //le->AddPoint(CVector(0.0f, 10.0f, 10.0f), 1.0f);
@@ -185,7 +185,7 @@ void CGameScene::Update()
 
 	CPlayer* player = CPlayer::Instance();
 	// プレイヤーの死亡フラグが立ったら
-	// 5秒後にゲームオーバーシーンへ以降
+	// 4秒後にゲームオーバーシーンへ以降
 	if (player->IsDie())
 	{
 		mElapsedTime += Time::DeltaTime();

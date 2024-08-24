@@ -10,6 +10,7 @@
 #include "CFlamethrower.h"
 #include "CDragon.h"
 #include "Global.h"
+#include "CGameUI.h"
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
@@ -102,24 +103,20 @@ CPlayer::CPlayer()
 	mpTargetCamera = new CTargetCamera();
 	mpTargetCamera->AddCollider(gField->GetFieldCol());
 
+
 	// プレイヤーのステータスを取得
 	mStatus = PLAYER_STATUS[PLAYER_STATAS];
 	mMaxStatus = mStatus;
 
 	// HPゲージを作成
-	mpHPGauge = new CHPGauge();
-	mpHPGauge->SetPos(10.0f, 10.0f);
-	mpHPGauge->SetMaxValue(mStatus.hp);
+	CGameUI::SetMaxHP(mStatus.hp);
 
 	// SPゲージを作成
-	mpSPGauge = new CSPGauge();
-	mpSPGauge->SetPos(10.0f, 30.0f);
-	mpSPGauge->SetMaxValue(mStatus.sp);
+	CGameUI::SetMaxSP(mStatus.sp);
 
 	// 闘気ゲージを作成
-	mpToukiGauge = new CToukiGauge();
-	mpToukiGauge->SetPos(10.0f, 50.0f);
-	mpToukiGauge->SetMaxValue(mStatus.touki);
+	CGameUI::SetMaxTouki(mStatus.touki);
+
 	// 闘気は0にする
 	mStatus.touki = 0;
 
@@ -269,11 +266,14 @@ void CPlayer::Update()
 	mpRideObject = nullptr;
 
 	// ターゲットカメラの切り替え処理
-	if (!mpTargetCamera->IsPlaying())
+	if (!mpTargetCamera->IsPlaying() &&
+		!mpCutIn_PowerAttack->IsPlaying())
 	{
 		if (CInput::PushKey('Q')) 
 		{
 			mpTargetCamera->Start();
+			CDragon* dragon = CDragon::Instance();
+			mpTargetCamera->Update_Set(this, dragon);
 		}
 	}
 	// ターゲットカメラが再生中の場合、必要な情報を入れる
@@ -428,12 +428,12 @@ void CPlayer::Update()
 		}
 	}
 	// HPゲージに現在のHPを設定
-	mpHPGauge->SetValue(mStatus.hp);
+	CGameUI::SetHP(mStatus.hp);
 	// SPゲージに現在のSPを設定
-	mpSPGauge->SetValueF(mStatus.sp);
-	mpSPGauge->SetSPZeroFlag(mSPZeroFlag);
+	CGameUI::SetSP(mStatus.sp);
+	CGameUI::SetSPZeroFlag(mSPZeroFlag);
 	// 闘気ゲージに現在の闘気を設定
-	mpToukiGauge->SetValue(mStatus.touki);
+	CGameUI::SetTouki(mStatus.touki);
 }
 
 // 衝突処理
@@ -535,6 +535,7 @@ bool CPlayer::IsDrawn()
 // ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
+	if (mIsDie) return;
 	// カウンター状態中であれば
 	if (IsCounter())
 	{
@@ -566,15 +567,14 @@ void CPlayer::TakeDamage(int damage)
 		// ダメージ用のコライダーをオフにしておく
 		mpDamageCol->SetEnable(false);
 		// プレイヤーUIもオフにする
-		mpHPGauge->SetEnable(false);
-		mpHPGauge->SetShow(false);
-		mpSPGauge->SetEnable(false);
-		mpSPGauge->SetShow(false);
+		CGameUI::SetShowUI(false);
 		// 死亡フラグを立てる
  		mIsDie = true;
 		// ゲームオーバーカットインカメラを再生
 		mpCutIn_GameOver->Setup(this);
 		mpCutIn_GameOver->Start();
+		// ゲームUIを非表示
+		CGameUI::SetShowUI(false);
 
 	}
 }

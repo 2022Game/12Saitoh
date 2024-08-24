@@ -28,4 +28,5 @@ public:
 
 	// XV
 	void Update() override;
+	void Render() override;
 };

@@ -4,7 +4,8 @@
 
 // コンストラクタ
 CUIGauge::CUIGauge()
-	: mMaxValue(0)
+	: CUIBase(ETaskPriority::eUI,0, ETaskPauseType::eGame,false,false)
+	, mMaxValue(0)
 	, mValue(0)
 	, mValueF(0)
 {

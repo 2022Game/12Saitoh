@@ -10,6 +10,10 @@
 #define USETOUKI_IMAGE "UI\\target.png"
 
 class CImage;
+class CHPGauge;
+class CSPGauge;
+class CToukiGauge;
+class CHPGauge_Dragon;
 // ゲーム中に表示するUIクラス
 class CGameUI : public CUIBase
 {
@@ -19,9 +23,26 @@ public:
 	// デストラクタ
 	~CGameUI();
 
+	static void SetHP(int hp);
+	static void SetMaxHP(int maxHp);
+	static void SetSP(float sp);
+	static void SetSPZeroFlag(bool flag);
+	static void SetMaxSP(int maxSp);
+	static void SetTouki(int touki);
+	static void SetMaxTouki(int maxTouki);
+
+	static void SetDragonHP(int hp);
+	static void SetDragonMaxHP(int maxHP);
+	static void SetShowDragonHPGauge(bool show);
+
+	static void SetShowUI(bool show);
+
 	// 更新処理
 	void Update() override;
+	void Render() override;
 private:
+	static CGameUI* spInstance;
+
 	CImage* mpTargetUI;
 	CImage* mpQKeyUI;
 	CImage* mpCKeyUI1;
@@ -30,4 +51,12 @@ private:
 	CImage* mpCounterUI;
 	CImage* mpLButtonUI;
 	CImage* mpRButtonUI;
+	CImage* mpToukiUI1;
+	CImage* mpToukiUI2;
+	CImage* mpToukiUI3;
+
+	CHPGauge* mpHPGauge;
+	CSPGauge* mpSPGauge;
+	CToukiGauge* mpToukiGauge;
+	CHPGauge_Dragon* mpDragonHPGauge;
 };

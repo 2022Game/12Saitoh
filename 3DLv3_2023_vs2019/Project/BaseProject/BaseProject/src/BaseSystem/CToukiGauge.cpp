@@ -6,21 +6,37 @@
 CToukiGauge::CToukiGauge()
 {	
 	// フレーム
-	mpFrameImage = new CImage(FRAME_IMAGE_PLAYER);
+	mpFrameImage = new CImage
+	(
+		FRAME_IMAGE_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpFrameImage->SetSize(TOUKI_FRAME_SIZE_X, TOUKI_FRAME_SIZE_Y);
 	// ゲージバー
-	mpBarImage = new CImage(GAUGE_BAR_PLAYER);
+	mpBarImage = new CImage
+	(
+		GAUGE_BAR_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpBarImage->SetSize(TOUKI_BARSIZE_X, TOUKI_BARSIZE_Y);
 	// フレームの区切り
-	mpFrameSeparator = new CImage(FRAME_IMAGE_SEPARATOR);
+	mpFrameSeparator = new CImage
+	(
+		FRAME_IMAGE_SEPARATOR,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpFrameSeparator->SetSize(TOUKI_FRAME_SIZE_X, TOUKI_FRAME_SIZE_Y);
 }
 
 // デストラクタ
 CToukiGauge::~CToukiGauge()
 {
-	mpFrameImage->Kill();
-	mpBarImage->Kill();
+	SAFE_DELETE(mpFrameImage);
+	SAFE_DELETE(mpBarImage);
+	SAFE_DELETE(mpFrameSeparator);
 }
 
 // 更新処理
@@ -44,4 +60,15 @@ void CToukiGauge::Update()
 
 	// バーに色を設定
 	mpBarImage->SetColor(color);
+
+	mpFrameImage->Update();
+	mpBarImage->Update();
+	mpFrameSeparator->Update();
+}
+
+void CToukiGauge::Render()
+{
+	mpFrameImage->Render();
+	mpBarImage->Render();
+	mpFrameSeparator->Render();
 }

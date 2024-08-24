@@ -234,7 +234,6 @@ private:
 	CCutIn_GameClear* mpCutIn_GameClear;
 	CFlamethrower* mpFlamethrower; // 火炎放射(地上)
 	CSPFlamethrower* mpSpFlamethrower; // 火炎放射(空中)
-	CHPGauge_Dragon* mpHPGauge;	// HPゲージ
 	CVector mMoveSpeed;			// 移動速度
 	CVector mSaveDestination;	// 目的地の保存用
 	CVector mSaveVec;			// ベクトルの保存用

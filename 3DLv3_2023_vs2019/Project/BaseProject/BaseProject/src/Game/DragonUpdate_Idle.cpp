@@ -2,6 +2,7 @@
 #include "CInput.h"
 #include "CColliderLine.h"
 #include "CHPGauge_Dragon.h"
+#include "CGameUI.h"
 
 // 待機状態の更新処理
 void CDragon::UpdateIdle()
@@ -17,8 +18,7 @@ void CDragon::UpdateIdle()
 		mBatteleStep = 2;
 
 		//HPゲージを作成
-		mpHPGauge = new CHPGauge_Dragon();
-		mpHPGauge->SetPos(250.0f, 600.0f);
-		mpHPGauge->SetMaxValue(mStatus.hp);
+		CGameUI::SetShowDragonHPGauge(true);
+		CGameUI::SetDragonMaxHP(mStatus.hp);
 	}
 }

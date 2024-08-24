@@ -6,18 +6,28 @@
 CHPGauge_Dragon::CHPGauge_Dragon()
 {
 	// HP設定
-	mpHPFrameImage = new CImage(FRAME_IMAGE_DRAGON);
+	mpHPFrameImage = new CImage
+	(
+		FRAME_IMAGE_DRAGON,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpHPFrameImage->SetSize(DRAGON_FRAME_SIZE_X, DRAGON_FRAME_SIZE_Y);
 	// 緑ゲージバー
-	mpHPBarImage = new CImage(GAUGE_BAR_DRAGON);
+	mpHPBarImage = new CImage
+	(
+		GAUGE_BAR_DRAGON,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpHPBarImage->SetSize(DRAGON_BARSIZE_X, DRAGON_BARSIZE_Y);
 }
 
 // デストラクタ
 CHPGauge_Dragon::~CHPGauge_Dragon()
 {
-	mpHPFrameImage->Kill();
-	mpHPBarImage->Kill();
+	SAFE_DELETE(mpHPFrameImage);
+	SAFE_DELETE(mpHPBarImage);
 }
 
 // 更新
@@ -32,4 +42,13 @@ void CHPGauge_Dragon::Update()
 	float percent = Math::Clamp01((float)mValue / mMaxValue);
 	size.X(DRAGON_BARSIZE_X * percent);
 	mpHPBarImage->SetSize(size);
+
+	mpHPFrameImage->Update();
+	mpHPBarImage->Update();
+}
+
+void CHPGauge_Dragon::Render()
+{
+	mpHPFrameImage->Render();
+	mpHPBarImage->Render();
 }

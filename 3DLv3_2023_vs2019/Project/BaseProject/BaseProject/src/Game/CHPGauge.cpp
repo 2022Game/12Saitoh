@@ -8,13 +8,28 @@ CHPGauge::CHPGauge()
 {
 	// HP設定
 	// フレーム
-	mpHPFrameImage = new CImage(FRAME_IMAGE_PLAYER);
+	mpHPFrameImage = new CImage
+	(
+		FRAME_IMAGE_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame, 
+		false, false
+	);
 	mpHPFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
 	// 緑ゲージバー
-	mpHPBarImage = new CImage(GAUGE_BAR_PLAYER);
+	mpHPBarImage = new CImage
+	(
+		GAUGE_BAR_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpHPBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
 	// 赤ゲージバー
-	mpRedBarImage = new CImage(GAUGE_BAR_PLAYER);
+	mpRedBarImage = new CImage
+	(
+		GAUGE_BAR_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpRedBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
 
 }
@@ -22,9 +37,9 @@ CHPGauge::CHPGauge()
 // デストラクタ
 CHPGauge::~CHPGauge()
 {
-	mpHPFrameImage->Kill();
-	mpHPBarImage->Kill();
-	mpRedBarImage->Kill();
+	SAFE_DELETE(mpHPFrameImage);
+	SAFE_DELETE(mpHPBarImage);
+	SAFE_DELETE(mpRedBarImage);
 }
 
 void CHPGauge::Update_RedBar()
@@ -71,4 +86,15 @@ void CHPGauge::Update()
 
 	// バーに色を設定
 	mpHPBarImage->SetColor(color);
+
+	mpHPFrameImage->Update();
+	mpHPBarImage->Update();
+	mpRedBarImage->Update();
+}
+
+void CHPGauge::Render()
+{
+	mpHPFrameImage->Render();
+	mpHPBarImage->Render();
+	mpRedBarImage->Render();
 }

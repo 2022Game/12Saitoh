@@ -7,17 +7,27 @@ CSPGauge::CSPGauge()
 	: mZeroFlag(false)
 {
 	// SP設定
-	mpSPFrameImage = new CImage(FRAME_IMAGE_PLAYER);
+	mpSPFrameImage = new CImage
+	(
+		FRAME_IMAGE_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpSPFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
-	mpSPBarImage = new CImage(GAUGE_BAR_PLAYER);
+	mpSPBarImage = new CImage
+	(
+		GAUGE_BAR_PLAYER,
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
 	mpSPBarImage->SetSize(BARSIZE_X, BARSIZE_Y);
 }
 
 // デストラクタ
 CSPGauge::~CSPGauge()
 {
-	mpSPFrameImage->Kill();
-	mpSPBarImage->Kill();
+	SAFE_DELETE(mpSPFrameImage);
+	SAFE_DELETE(mpSPBarImage);
 }
 
 // ダッシュ時のスタミナ回復中のフラグを取得
@@ -57,4 +67,10 @@ void CSPGauge::Update()
 	}
 	// バーに色を設定
 	mpSPBarImage->SetColor(color);
+}
+
+void CSPGauge::Render()
+{
+	mpSPFrameImage->Render();
+	mpSPBarImage->Render();
 }
