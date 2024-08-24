@@ -37,6 +37,9 @@ public:
 
 	static void SetShowUI(bool show);
 
+	static void SetColorSpMove(CColor color);
+	static void SetColorCounter(CColor color);
+
 	// XVˆ—
 	void Update() override;
 	void Render() override;

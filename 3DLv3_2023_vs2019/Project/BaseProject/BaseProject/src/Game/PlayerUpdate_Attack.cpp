@@ -566,6 +566,10 @@ void CPlayer::ChangeSpMove()
 			SetSpecalMove(EAnimType::eCounter_Start, false);
 			mStatus.touki -= 100;
 		}
+		else
+		{
+			mpMissSE->Play(0.25f);
+		}
 	}
 	if (CInput::Key('C') && CInput::Key(VK_RBUTTON))
 	{
@@ -575,6 +579,10 @@ void CPlayer::ChangeSpMove()
 			// ‹­“¬‹Z‚ÖØ‚è‘Ö‚¦
 			SetSpecalMove(EAnimType::ePowerAttack_Start, true);
 			mStatus.touki -= 200;
+		}
+		else
+		{
+			mpMissSE->Play(0.25f);
 		}
 	}
 }

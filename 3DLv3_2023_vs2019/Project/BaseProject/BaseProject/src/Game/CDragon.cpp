@@ -95,6 +95,10 @@ CDragon::CDragon()
 
 	// SEの設定
 	mpFlySE = CResourceManager::Get<CSound>("Fly");
+	mpJumpSE = CResourceManager::Get<CSound>("Jump");
+	mpJumpEndSE = CResourceManager::Get<CSound>("JumpEnd");
+	mpBackSE = CResourceManager::Get<CSound>("Fly");
+
 	// ゲームクリア時のカットインカメラを生成
 	mpCutIn_GameClear = new CCutIn_GameClear();
 

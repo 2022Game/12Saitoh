@@ -8,11 +8,11 @@ void CPlayer::Update_Move()
 
 	if (!mpRunSE->IsPlaying())
 	{
-		mpRunSE->PlayLoop(-1, true, 0.1f);
+		mpRunSE->PlayLoop(-1, true, 0.18f);
 	}
 	else
 	{
-		mpRunSE->SetVolume(0.1f);
+		mpRunSE->SetVolume(0.18f);
 	}
 	//”²”[ó‘Ô‚Ì”»’è
 	switch (mIsDrawn)
@@ -171,11 +171,11 @@ void CPlayer::Update_FastMove()
 
 	if (!mpFastRunSE->IsPlaying())
 	{
-		mpFastRunSE->PlayLoop(-1, true, 0.2f);
+		mpFastRunSE->PlayLoop(-1, true, 0.22f);
 	}
 	else
 	{
-		mpFastRunSE->SetVolume(0.2f);
+		mpFastRunSE->SetVolume(0.22f);
 	}
 
 	//’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©”»’è

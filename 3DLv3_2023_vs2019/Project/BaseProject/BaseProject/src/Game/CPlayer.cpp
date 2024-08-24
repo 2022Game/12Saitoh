@@ -130,9 +130,11 @@ CPlayer::CPlayer()
 	mpNormalAttackSE1 = CResourceManager::Get<CSound>("NormalAttackSE1");
 	mpNormalAttackSE2 = CResourceManager::Get<CSound>("NormalAttackSE2");
 	mpSpMoveSE = CResourceManager::Get<CSound>("SpMoveSE");
+	mpMissSE = CResourceManager::Get<CSound>("SpMissSE");
 	mpNormalAttackSE1->SetSimultaneousPlayCount(10);
 	mpNormalAttackSE2->SetSimultaneousPlayCount(10);
 	mpSpMoveSE->SetSimultaneousPlayCount(10);
+	mpMissSE->SetSimultaneousPlayCount(1);
 }
 
 CPlayer::~CPlayer()
@@ -145,11 +147,6 @@ CPlayer::~CPlayer()
 
 	mpCutIn_PowerAttack->Kill();
 	mpSword->Kill();
-
-	//for (CSPMoveEndEffect* effect : mEndEffect)
-	//{
-	//	effect->Kill();
-	//}
 }
 
 CPlayer* CPlayer::Instance()
@@ -434,6 +431,25 @@ void CPlayer::Update()
 	CGameUI::SetSPZeroFlag(mSPZeroFlag);
 	// 闘気ゲージに現在の闘気を設定
 	CGameUI::SetTouki(mStatus.touki);
+	// 闘気の値を見てUIの表示を変更
+	if (mStatus.touki < 100)
+	{
+		// 両方グレーで表示
+		CGameUI::SetColorCounter(CColor::gray);
+		CGameUI::SetColorSpMove(CColor::gray);
+	}
+	else if (mStatus.touki < 200)
+	{
+		// 弱闘技のみ色を付ける
+		CGameUI::SetColorCounter(CColor::white);
+		CGameUI::SetColorSpMove(CColor::gray);
+	}
+	else
+	{
+		// 両方に色を付ける
+		CGameUI::SetColorCounter(CColor::white);
+		CGameUI::SetColorSpMove(CColor::white);
+	}
 }
 
 // 衝突処理

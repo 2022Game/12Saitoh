@@ -239,6 +239,9 @@ private:
 	CVector mSaveVec;			// ベクトルの保存用
 	CVector mRayAngleVec;		
 	CSound* mpFlySE;
+	CSound* mpJumpSE;
+	CSound* mpJumpEndSE;
+	CSound* mpBackSE;
 
 	bool mIsGrounded;	// 接地しているかどうか
 	bool mIsAngry;		// 怒り状態かどうか

@@ -187,4 +187,5 @@ private:
 	CSound* mpNormalAttackSE1;
 	CSound* mpNormalAttackSE2;
 	CSound* mpSpMoveSE;
+	CSound* mpMissSE;
 };

@@ -213,6 +213,18 @@ void CGameUI::SetShowUI(bool show)
 	spInstance->SetShow(show);
 }
 
+void CGameUI::SetColorSpMove(CColor color)
+{
+	if (spInstance == nullptr) return;
+	spInstance->mpSPMoveUI->SetColor(color);
+}
+
+void CGameUI::SetColorCounter(CColor color)
+{
+	if (spInstance == nullptr) return;
+	spInstance->mpCounterUI->SetColor(color);
+}
+
 // XVˆ—
 void CGameUI::Update()
 {

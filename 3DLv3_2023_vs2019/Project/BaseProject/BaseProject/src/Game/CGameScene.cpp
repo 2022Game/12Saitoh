@@ -61,13 +61,13 @@ void CGameScene::Load()
 	CResourceManager::Load<CSound>("NormalAttackSE1", "Sound\\SE\\Player\\normalattack1.wav");
 	CResourceManager::Load<CSound>("NormalAttackSE2", "Sound\\SE\\Player\\normalattack2.wav");
 	CResourceManager::Load<CSound>("JumpAttackSE", "Sound\\SE\\Player\\jumpattack.wav");
-	// é„ì¨ãZ
+	// é„ÅEã≠ì¨ãZ
 	CResourceManager::Load<CSound>("CounterSE1", "Sound\\SE\\Player\\counter1.wav");
 	CResourceManager::Load<CSound>("CounterSE2", "Sound\\SE\\Player\\counter3.wav");
-	// ã≠ì¨ãZ
 	CResourceManager::Load<CSound>("SpMoveCutinSE", "Sound\\SE\\Player\\cutin.wav");
 	CResourceManager::Load<CSound>("SpMoveSE", "Sound\\SE\\Player\\spmove.wav");
 	CResourceManager::Load<CSound>("SpMoveENDSE", "Sound\\SE\\Player\\spmove_finish.wav");
+	CResourceManager::Load<CSound>("SpMissSE", "Sound\\SE\\Player\\miss.wav");
 
 	// ÉhÉâÉSÉì
 	CResourceManager::Load<CSound>("Breath", "Sound\\SE\\Dragon\\breath.wav");
@@ -77,6 +77,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CSound>("Maouth1", "Sound\\SE\\Dragon\\maouth1.wav");
 	CResourceManager::Load<CSound>("Maouth2", "Sound\\SE\\Dragon\\maouth2.wav");
 	CResourceManager::Load<CSound>("Jump", "Sound\\SE\\Dragon\\jump.wav");
+	CResourceManager::Load<CSound>("JumpEnd", "Sound\\SE\\Dragon\\jumpend.wav");
 
 	// ÉQÅ[ÉÄBGMÇì«Ç›çûÇ›
 	mpGameBGM = CResourceManager::Load<CSound>("GameBGM", "Sound\\BGM\\battle_bgm.wav");
